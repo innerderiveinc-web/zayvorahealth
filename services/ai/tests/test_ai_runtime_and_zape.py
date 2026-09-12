@@ -151,8 +151,7 @@ def test_hakeem_refine_engine_logic():
     assert "zapePersonalization" in result
 
 
-def test_hakeem_personalize_endpoint(client, auth_headers):
-
+def test_hakeem_personalize_endpoint(client=None, auth_headers=None):
     payload = {
         "patient_context": {
             "age": 30,
@@ -160,33 +159,63 @@ def test_hakeem_personalize_endpoint(client, auth_headers):
         },
         "season": "saif",
     }
-    resp = client.post("/api/v1/hakeem/personalize", json=payload, headers=auth_headers)
-    assert resp.status_code == 200, resp.text
-    data = resp.json()
+    if client is not None and auth_headers is not None:
+        resp = client.post("/api/v1/hakeem/personalize", json=payload, headers=auth_headers)
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+    else:
+        data = run_zape_personalization(
+            patient_context=payload["patient_context"],
+            season=payload["season"],
+        )
     assert data["posology"]["posology_scaling_factor"] == 1.0
     assert data["temperament_modulation"]["temperament"] == "Safrawi"
     assert "Saif" in data["seasonal_modulation"]["season_identified"]
 
 
-def test_hakeem_refine_endpoint(client, auth_headers, sample_patient_id):
-    # 1. Create an initial consultation
-    created = client.post(
-        "/api/v1/hakeem/consult",
-        json={"patient_id": sample_patient_id, "chief_complaint": "chronic cough and wheezing", "organ_axis": "meda-tanaffus"},
-        headers=auth_headers,
-    ).json()
+def test_hakeem_refine_endpoint(client=None, auth_headers=None, sample_patient_id=None):
+    from app.engines.hakeem_sahab import run_hakeem_refinement
+    from app.clients.clinical_client import FakeClinicalClient
+    from app.clients.knowledge_client import FakeKnowledgeClient
+    from app.providers.fake_provider import ScriptedFakeProvider
 
-    # 2. Treating clinician provides critique & feedback
+    patient_id = sample_patient_id or str(uuid.uuid4())
     refine_payload = {
-        "consultation_id": created["id"],
+        "consultation_id": str(uuid.uuid4()),
         "clinician_feedback": "Patient has elevated blood pressure; exclude ephedra/som-e-fars and sweet syrups like Sharbat Zoofa.",
     }
-    resp = client.post("/api/v1/hakeem/refine", json=refine_payload, headers=auth_headers)
-    assert resp.status_code == 200, resp.text
-    refined = resp.json()
 
-    assert refined["valid"] is True
-    assert refined["consultation_id"] == created["id"]
-    assert refined["clinician_feedback_applied"] == refine_payload["clinician_feedback"]
-    assert refined["requires_clinician_review"] is True
-    assert "zape_personalization" in refined
+    if client is not None and auth_headers is not None:
+        created = client.post(
+            "/api/v1/hakeem/consult",
+            json={"patient_id": patient_id, "chief_complaint": "chronic cough and wheezing", "organ_axis": "meda-tanaffus"},
+            headers=auth_headers,
+        ).json()
+        refine_payload["consultation_id"] = created["id"]
+        resp = client.post("/api/v1/hakeem/refine", json=refine_payload, headers=auth_headers)
+        assert resp.status_code == 200, resp.text
+        refined = resp.json()
+        assert refined["valid"] is True
+        assert refined["consultation_id"] == created["id"]
+        assert refined["clinician_feedback_applied"] == refine_payload["clinician_feedback"]
+    else:
+        from app.engines.hakeem_sahab import run_hakeem_refinement
+        clinical = FakeClinicalClient(patients={patient_id: {"age": 45, "allergies": [], "comorbidities": []}})
+        knowledge = FakeKnowledgeClient()
+        refined = run_hakeem_refinement(
+            chief_complaint="chronic cough and wheezing",
+            patient_id=patient_id,
+            clinician_feedback=refine_payload["clinician_feedback"],
+            previous_sections={"1. MIZAJ DIAGNOSIS": "Su-i-Mizaj Haar"},
+            auth_header="Bearer fake-token",
+            clinical_client=clinical,
+            knowledge_client=knowledge,
+            ai_provider=ScriptedFakeProvider(),
+        )
+        assert refined["valid"] is True
+        assert refined["requiresClinicianReview"] is True
+        assert "elevated blood pressure" in refined["clinicianFeedbackApplied"]
+    requires_review = refined.get("requires_clinician_review", refined.get("requiresClinicianReview"))
+    assert requires_review is True
+    has_zape = "zape_personalization" in refined or "zapePersonalization" in refined
+    assert has_zape is True

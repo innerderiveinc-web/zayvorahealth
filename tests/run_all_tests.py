@@ -63,7 +63,8 @@ def run_test_module(service_dir: str, file_path: str, module_name: str):
             else:
                 import inspect
                 sig = inspect.signature(fn)
-                if len(sig.parameters) == 0:
+                required_params = [p for p in sig.parameters.values() if p.default == inspect.Parameter.empty]
+                if len(required_params) == 0:
                     fn()
                     passed += 1
                 else:
