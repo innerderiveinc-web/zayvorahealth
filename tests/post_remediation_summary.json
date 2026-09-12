@@ -1,0 +1,173 @@
+{
+  "started_at": "2026-09-12 11:23:58 UTC",
+  "categories": {
+    "1. Unit Tests": {
+      "status": "PASSED",
+      "passed": 218,
+      "failed": 0,
+      "details": [
+        "Suite Clinical Crypto & PHI Encryption: 6 passed",
+        "Suite Clinical 10-Ajnas Mizaj & Diagnostics: 7 passed",
+        "Suite Clinical Organ-Axis & Evidence Engine: 8 passed",
+        "Suite Clinical Digital Twin & Trajectory Engine: 6 passed",
+        "Suite Clinical FHIR R4 & ABDM Interoperability: 9 passed",
+        "Suite Clinical QSURA Communication Layer: 6 passed",
+        "Suite Clinical Research Cloud & RWE Engine: 3 passed",
+        "Suite Clinical Ambient Scribe & 21 CFR Part 11: 9 passed",
+        "Suite Clinical Wearables & Predictive Relapse: 8 passed",
+        "Suite Clinical Patient Portal & Disaster Recovery: 6 passed",
+        "Suite Clinical Tasks & ABDM Worker Pipelines: 6 passed",
+        "Suite Therapeutic Safety Firewall Baseline: 13 passed",
+        "Suite Therapeutic Schedule E(1) & Drug Interactions: 16 passed",
+        "Suite Therapeutic Nuskha Compiler & Posology: 9 passed",
+        "Suite Therapeutic Tadbeer Guardrails: 13 passed",
+        "Suite Therapeutic Care Plans & Pharmacovigilance: 8 passed",
+        "Suite Therapeutic Dispensary & FEFO Engine: 5 passed",
+        "Suite Therapeutic Manufacturing OS & eBMR: 5 passed",
+        "Suite Knowledge Pharmacopoeia Registry & Mudabbar: 5 passed",
+        "Suite Knowledge Graph & Multi-Hop Traversal: 7 passed",
+        "Suite Knowledge Mufradat Taxonomy: 5 passed",
+        "Suite Knowledge Hybrid RAG & Semantic Retrieval: 7 passed",
+        "Suite Knowledge Global Command Search (Cmd+K): 6 passed",
+        "Suite Knowledge Clinical Governance Board & Quorum: 3 passed",
+        "Suite AI Hakeem Sahab Response Validator: 8 passed",
+        "Suite AI Runtime Fallback & ZAPE Personalization: 11 passed",
+        "Suite AI Evaluation Lab & Security Guardrails: 8 passed",
+        "Suite AI Multimodal Lab Extractor & Physical Signs: 8 passed",
+        "Suite Gateway Reverse Proxy & Rate Limiting: 4 passed",
+        "Suite Infrastructure Helm Chart & Kubernetes Packaging: 3 passed"
+      ]
+    },
+    "2. Integration Tests": {
+      "status": "PASSED",
+      "passed": 4,
+      "failed": 0,
+      "details": [
+        "ABDM Gateway Discovery, Consent & Encrypted Packet Push: PASS",
+        "Scribe WebSocket Full-Duplex Stream & SOAP Extraction: PASS",
+        "Pharmacovigilance ICH E2B(R3) & CIOMS Form I Export: PASS",
+        "Multi-Tier AI Fallback Cascade (Claude 3.5 -> GPT-4o -> local vLLM): PASS"
+      ]
+    },
+    "3. End-to-End Tests": {
+      "status": "PASSED",
+      "passed": 1,
+      "failed": 0,
+      "details": [
+        "11-Stage End-to-End Clinical Continuum Verification: PASS"
+      ]
+    },
+    "4. Security Tests": {
+      "status": "PASSED",
+      "passed": 4,
+      "failed": 0,
+      "details": [
+        "AES-256-GCM PHI Envelope Key Wrapping & Tamper Detection: PASS",
+        "21 CFR Part 11 SHA-256 Merkle Chaining & Non-Repudiation: PASS",
+        "Gateway Token Bucket Rate Limiting (DoS Mitigation): PASS",
+        "AI Red-Team Prompt Injection & Directive Override Guardrails: PASS"
+      ]
+    },
+    "5. Tenant Isolation Tests": {
+      "status": "PASSED",
+      "passed": 3,
+      "failed": 0,
+      "details": [
+        "Clinical Database Models enforce mandatory organization_id column: PASS",
+        "PostgreSQL Row-Level Security (RLS) Policy Migration: PASS",
+        "Cross-Tenant Data Isolation Query Separation: PASS"
+      ]
+    },
+    "6. Clinical Safety Tests": {
+      "status": "PASSED",
+      "passed": 5,
+      "failed": 0,
+      "details": [
+        "SAF-01: Schedule E(1) Mudabbar CheckConstraint & Firewall: PASS",
+        "SAF-02: Non-Delegable Prescribing safe_to_lock = False Invariant: PASS",
+        "SAF-03: Herb-Drug Clinical Interaction Matrix (Lithium/Gokhru): PASS",
+        "Tadbeer Contraindication Guardrails (Hijama/Fasd screening): PASS",
+        "NN-01: Badal Potency Equivalence Ratio Posology (Suranjan 2.0x): PASS"
+      ]
+    },
+    "7. AI Hallucination Tests": {
+      "status": "PASSED",
+      "passed": 4,
+      "failed": 0,
+      "details": [
+        "AYUSH Statutory Disclaimer Detection & Enforcement: PASS",
+        "13-Section Protocol Completeness Engine: PASS",
+        "Hallucination Index on Gold-Standard Cases (UBM-001): PASS",
+        "AI Invariant Preservation (safe_to_lock cannot be True): PASS"
+      ]
+    },
+    "8. Permission Tests": {
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Identity RBAC Role & Permission Schema Definition: PASS",
+        "Prescription Signing requires nuskha.approve Permission & Approved Reviewer: PASS"
+      ]
+    },
+    "9. Backup/Restore Tests": {
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "details": [
+        "Automated Snapshot Creation & Restore Test: PASS",
+        "Point-In-Time Recovery (PITR) RTO<3600s, RPO<300s: PASS"
+      ]
+    },
+    "10. API Contract Tests": {
+      "status": "PASSED",
+      "passed": 3,
+      "failed": 0,
+      "details": [
+        "Clinical Mizaj Assessment Response Contract: PASS",
+        "Therapeutic Safety Firewall Response Contract: PASS",
+        "Wearables Telemetry & Ingestion Schema Contracts: PASS"
+      ]
+    },
+    "11. Performance Tests": {
+      "status": "PASSED",
+      "passed": 7,
+      "failed": 0,
+      "details": [
+        "AES-256-GCM Envelope Crypto: 0.002 ms/op (464414 ops/sec): PASS",
+        "10-Ajnas Mizaj Scoring Engine: 0.002 ms/assessment: PASS",
+        "Organ-Axis Biomarker Bridge Engine: 0.013 ms/analysis: PASS",
+        "Safety Firewall 30+ Interaction Matrix: 0.049 ms/eval: PASS",
+        "Gateway Rate Limiter Throughput: 0.0029 ms/req (344468 req/sec): PASS",
+        "Wearables Normalization & Autonomic Mapping: 0.011 ms/sample: PASS",
+        "Bhashini Multilingual TTS & PCM Synthesis: 38.904 ms/prompt: PASS"
+      ]
+    }
+  },
+  "benchmarks": {
+    "phi_crypto": {
+      "avg_ms": 0.002,
+      "ops_sec": 464414
+    },
+    "mizaj_engine": {
+      "avg_ms": 0.002
+    },
+    "organ_axis_engine": {
+      "avg_ms": 0.013
+    },
+    "safety_firewall": {
+      "avg_ms": 0.049
+    },
+    "rate_limiter": {
+      "avg_ms": 0.0029
+    },
+    "wearable_engine": {
+      "avg_ms": 0.011
+    },
+    "bhashini_tts": {
+      "avg_ms": 38.904
+    }
+  },
+  "issues_evaluated": {},
+  "total_duration_seconds": 2.58
+}

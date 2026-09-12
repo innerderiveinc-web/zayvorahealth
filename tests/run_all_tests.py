@@ -75,46 +75,47 @@ def run_test_module(service_dir: str, file_path: str, module_name: str):
             
     return passed, failed, errors
 
+TEST_SUITES = [
+    # (Suite Name, Service Dir, Test File Path)
+    ("Clinical Crypto & PHI Encryption", "services/clinical", "services/clinical/tests/test_crypto.py"),
+    ("Clinical 10-Ajnas Mizaj & Diagnostics", "services/clinical", "services/clinical/tests/test_mizaj_and_diagnostics.py"),
+    ("Clinical Organ-Axis & Evidence Engine", "services/clinical", "services/clinical/tests/test_organ_axis_and_evidence.py"),
+    ("Clinical Digital Twin & Trajectory Engine", "services/clinical", "services/clinical/tests/test_digital_twin.py"),
+    ("Clinical FHIR R4 & ABDM Interoperability", "services/clinical", "services/clinical/tests/test_interop_and_fhir.py"),
+    ("Clinical QSURA Communication Layer", "services/clinical", "services/clinical/tests/test_qsura_communication.py"),
+    ("Clinical Research Cloud & RWE Engine", "services/clinical", "services/clinical/tests/test_research_and_rwe.py"),
+    ("Clinical Ambient Scribe & 21 CFR Part 11", "services/clinical", "services/clinical/tests/test_ambient_scribe_and_governance.py"),
+    ("Clinical Wearables & Predictive Relapse", "services/clinical", "services/clinical/tests/test_wearables_and_predictive.py"),
+    ("Clinical Patient Portal & Disaster Recovery", "services/clinical", "services/clinical/tests/test_patient_portal_and_dr.py"),
+    ("Clinical Tasks & ABDM Worker Pipelines", "services/clinical", "services/clinical/tests/test_tasks_and_abdm_workers.py"),
+    ("Therapeutic Safety Firewall Baseline", "services/therapeutic", "services/therapeutic/tests/test_safety_firewall.py"),
+    ("Therapeutic Schedule E(1) & Drug Interactions", "services/therapeutic", "services/therapeutic/tests/test_schedule_e1_and_interactions.py"),
+    ("Therapeutic Nuskha Compiler & Posology", "services/therapeutic", "services/therapeutic/tests/test_nuskha_compiler.py"),
+    ("Therapeutic Tadbeer Guardrails", "services/therapeutic", "services/therapeutic/tests/test_tadbeer_guardrails.py"),
+    ("Therapeutic Care Plans & Pharmacovigilance", "services/therapeutic", "services/therapeutic/tests/test_care_plans_and_pharmacovigilance.py"),
+    ("Therapeutic Dispensary & FEFO Engine", "services/therapeutic", "services/therapeutic/tests/test_dispensary_and_fefo.py"),
+    ("Therapeutic Manufacturing OS & eBMR", "services/therapeutic", "services/therapeutic/tests/test_ebmr_and_manufacturing.py"),
+    ("Knowledge Pharmacopoeia Registry & Mudabbar", "services/knowledge", "services/knowledge/tests/test_pharmacopoeia.py"),
+    ("Knowledge Graph & Multi-Hop Traversal", "services/knowledge", "services/knowledge/tests/test_knowledge_graph.py"),
+    ("Knowledge Mufradat Taxonomy", "services/knowledge", "services/knowledge/tests/test_taxonomy.py"),
+    ("Knowledge Hybrid RAG & Semantic Retrieval", "services/knowledge", "services/knowledge/tests/test_hybrid_rag.py"),
+    ("Knowledge Global Command Search (Cmd+K)", "services/knowledge", "services/knowledge/tests/test_command_search.py"),
+    ("Knowledge Clinical Governance Board & Quorum", "services/knowledge", "services/knowledge/tests/test_governance_board.py"),
+    ("AI Hakeem Sahab Response Validator", "services/ai", "services/ai/tests/test_response_validator.py"),
+    ("AI Runtime Fallback & ZAPE Personalization", "services/ai", "services/ai/tests/test_ai_runtime_and_zape.py"),
+    ("AI Evaluation Lab & Security Guardrails", "services/ai", "services/ai/tests/test_evaluation_and_red_team.py"),
+    ("AI Multimodal Lab Extractor & Physical Signs", "services/ai", "services/ai/tests/test_multimodal_extractor.py"),
+    ("Gateway Reverse Proxy & Rate Limiting", "services/gateway", "services/gateway/tests/test_gateway.py"),
+    ("Infrastructure Helm Chart & Kubernetes Packaging", ".", "tests/test_helm_chart.py"),
+    ("End-to-End Clinical Continuum (11 Milestones)", ".", "tests/test_end_to_end_clinical_continuum.py"),
+]
+
 def main():
     print("=" * 70)
     print(" ZAYVORA HEALTH™ — MASTER SYSTEM VERIFICATION TEST RUNNER")
     print("=" * 70)
     
-    test_suites = [
-        # (Suite Name, Service Dir, Test File Path)
-        ("Clinical Crypto & PHI Encryption", "services/clinical", "services/clinical/tests/test_crypto.py"),
-        ("Clinical 10-Ajnas Mizaj & Diagnostics", "services/clinical", "services/clinical/tests/test_mizaj_and_diagnostics.py"),
-        ("Clinical Organ-Axis & Evidence Engine", "services/clinical", "services/clinical/tests/test_organ_axis_and_evidence.py"),
-        ("Clinical Digital Twin & Trajectory Engine", "services/clinical", "services/clinical/tests/test_digital_twin.py"),
-        ("Clinical FHIR R4 & ABDM Interoperability", "services/clinical", "services/clinical/tests/test_interop_and_fhir.py"),
-        ("Clinical QSURA Communication Layer", "services/clinical", "services/clinical/tests/test_qsura_communication.py"),
-        ("Clinical Research Cloud & RWE Engine", "services/clinical", "services/clinical/tests/test_research_and_rwe.py"),
-        ("Clinical Ambient Scribe & 21 CFR Part 11", "services/clinical", "services/clinical/tests/test_ambient_scribe_and_governance.py"),
-        ("Clinical Wearables & Predictive Relapse", "services/clinical", "services/clinical/tests/test_wearables_and_predictive.py"),
-        ("Clinical Patient Portal & Disaster Recovery", "services/clinical", "services/clinical/tests/test_patient_portal_and_dr.py"),
-        ("Clinical Tasks & ABDM Worker Pipelines", "services/clinical", "services/clinical/tests/test_tasks_and_abdm_workers.py"),
-        ("Therapeutic Safety Firewall Baseline", "services/therapeutic", "services/therapeutic/tests/test_safety_firewall.py"),
-        ("Therapeutic Schedule E(1) & Drug Interactions", "services/therapeutic", "services/therapeutic/tests/test_schedule_e1_and_interactions.py"),
-        ("Therapeutic Nuskha Compiler & Posology", "services/therapeutic", "services/therapeutic/tests/test_nuskha_compiler.py"),
-        ("Therapeutic Tadbeer Guardrails", "services/therapeutic", "services/therapeutic/tests/test_tadbeer_guardrails.py"),
-        ("Therapeutic Care Plans & Pharmacovigilance", "services/therapeutic", "services/therapeutic/tests/test_care_plans_and_pharmacovigilance.py"),
-        ("Therapeutic Dispensary & FEFO Engine", "services/therapeutic", "services/therapeutic/tests/test_dispensary_and_fefo.py"),
-        ("Therapeutic Manufacturing OS & eBMR", "services/therapeutic", "services/therapeutic/tests/test_ebmr_and_manufacturing.py"),
-        ("Knowledge Pharmacopoeia Registry & Mudabbar", "services/knowledge", "services/knowledge/tests/test_pharmacopoeia.py"),
-        ("Knowledge Graph & Multi-Hop Traversal", "services/knowledge", "services/knowledge/tests/test_knowledge_graph.py"),
-        ("Knowledge Mufradat Taxonomy", "services/knowledge", "services/knowledge/tests/test_taxonomy.py"),
-        ("Knowledge Hybrid RAG & Semantic Retrieval", "services/knowledge", "services/knowledge/tests/test_hybrid_rag.py"),
-        ("Knowledge Global Command Search (Cmd+K)", "services/knowledge", "services/knowledge/tests/test_command_search.py"),
-        ("Knowledge Clinical Governance Board & Quorum", "services/knowledge", "services/knowledge/tests/test_governance_board.py"),
-        ("AI Hakeem Sahab Response Validator", "services/ai", "services/ai/tests/test_response_validator.py"),
-        ("AI Runtime Fallback & ZAPE Personalization", "services/ai", "services/ai/tests/test_ai_runtime_and_zape.py"),
-        ("AI Evaluation Lab & Security Guardrails", "services/ai", "services/ai/tests/test_evaluation_and_red_team.py"),
-        ("AI Multimodal Lab Extractor & Physical Signs", "services/ai", "services/ai/tests/test_multimodal_extractor.py"),
-        ("Gateway Reverse Proxy & Rate Limiting", "services/gateway", "services/gateway/tests/test_gateway.py"),
-        ("Infrastructure Helm Chart & Kubernetes Packaging", ".", "tests/test_helm_chart.py"),
-        ("End-to-End Clinical Continuum (11 Milestones)", ".", "tests/test_end_to_end_clinical_continuum.py"),
-    ]
-
+    test_suites = TEST_SUITES
     
     total_passed = 0
     total_failed = 0
