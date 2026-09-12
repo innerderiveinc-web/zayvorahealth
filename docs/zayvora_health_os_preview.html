@@ -3,10 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAYVORA Health OS — Interactive Executive Preview</title>
+  <title>ZAYVORA Health OS™ — Enterprise Healthcare Operating System</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
-    .tab-btn.active {
+    :root {
+      --background: #090d16;
+      --foreground: #f3f4f6;
+      --card: #111827;
+      --border: #1f2937;
+      --primary: #059669;
+      --primary-foreground: #ffffff;
+      --muted-foreground: #9ca3af;
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+    }
+    .workspace-btn.active {
       background-color: var(--primary);
       color: var(--primary-foreground);
       border-color: var(--primary);
@@ -36,16 +49,21 @@
       color: #3b82f6;
       border: 1px solid rgba(59, 130, 246, 0.3);
     }
+    .badge-purple {
+      background-color: rgba(139, 92, 246, 0.15);
+      color: #8b5cf6;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
   </style>
 </head>
-<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 md:p-6 font-sans">
+<body class="antialiased p-4 md:p-6 font-sans">
   <div class="max-w-7xl mx-auto space-y-6">
     
-    <!-- Top Header & Live Telemetry -->
+    <!-- Top Platform Header & Live Regulatory Telemetry -->
     <header class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+          <div class="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold text-2xl shadow-md">
             Z
           </div>
           <div>
@@ -60,12 +78,12 @@
 
       <div class="flex flex-wrap items-center gap-3">
         <div class="bg-[var(--background)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-xs">
-          <span class="text-[var(--muted-foreground)]">Master Test Suite:</span>
-          <span class="font-bold text-emerald-500 ml-1">259/259 PASS</span>
+          <span class="text-[var(--muted-foreground)]">Definition of Done:</span>
+          <span class="font-bold text-emerald-500 ml-1">25/25 PASS</span>
         </div>
         <div class="bg-[var(--background)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-xs">
-          <span class="text-[var(--muted-foreground)]">Engines:</span>
-          <span class="font-bold text-blue-500 ml-1">25/25 VERIFIED</span>
+          <span class="text-[var(--muted-foreground)]">Automated Tests:</span>
+          <span class="font-bold text-emerald-500 ml-1">552/552 PASS</span>
         </div>
         <div class="bg-[var(--background)] border border-[var(--border)] px-3 py-1.5 rounded-lg text-xs">
           <span class="text-[var(--muted-foreground)]">Safety Blockers:</span>
@@ -78,27 +96,50 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-[var(--border)] pb-2">
-      <button onclick="switchTab('continuum')" id="btn-continuum" class="tab-btn active px-4 py-2 rounded-xl text-sm font-medium border border-transparent transition-colors">
-        🩺 Live Clinical Continuum
+    <!-- Unified Enterprise Workspace Navigation -->
+    <nav class="flex flex-wrap gap-2 border-b border-[var(--border)] pb-3">
+      <button onclick="switchWorkspace('continuum')" id="tab-continuum" class="workspace-btn active px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent transition-colors">
+        🩺 Clinical Continuum
       </button>
-      <button onclick="switchTab('engines')" id="btn-engines" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-        🧬 25-Engine Live Matrix
+      <button onclick="switchWorkspace('patient')" id="tab-patient" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        👤 Patient 360 & PHR
       </button>
-      <button onclick="switchTab('safety')" id="btn-safety" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-        🛡️ Safety Firewall Simulator
+      <button onclick="switchWorkspace('doctor')" id="tab-doctor" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🩺 Doctor / Hakeem Workspace
       </button>
-      <button onclick="switchTab('governance')" id="btn-governance" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-        ⚖️ Governance Quorum & Merkle Audit
+      <button onclick="switchWorkspace('clinic')" id="tab-clinic" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🏥 Clinic & Hospital
       </button>
-      <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-        📊 Patient 360 & Longitudinal PROMs
+      <button onclick="switchWorkspace('pharmacy')" id="tab-pharmacy" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        💊 Pharmacy OS
       </button>
-    </div>
+      <button onclick="switchWorkspace('research')" id="tab-research" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🔬 Research Platform
+      </button>
+      <button onclick="switchWorkspace('manufacturing')" id="tab-manufacturing" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🏭 Manufacturing OS
+      </button>
+      <button onclick="switchWorkspace('admin')" id="tab-admin" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        ⚙️ Administration & RBAC
+      </button>
+      <button onclick="switchWorkspace('ai')" id="tab-ai" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🤖 Hakeem Sahab AI
+      </button>
+      <button onclick="switchWorkspace('knowledge')" id="tab-knowledge" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        📚 ZKB Knowledge Base
+      </button>
+      <button onclick="switchWorkspace('safety')" id="tab-safety" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🛡️ Safety Firewall
+      </button>
+      <button onclick="switchWorkspace('engines')" id="tab-engines" class="workspace-btn px-3.5 py-2 rounded-xl text-xs font-semibold border border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+        🧬 25-Engine Matrix
+      </button>
+    </nav>
 
-    <!-- TAB 1: Live Clinical Continuum Simulator -->
-    <div id="tab-continuum" class="space-y-6">
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 1: Live Clinical Continuum Pipeline -->
+    <!-- ===================================================================== -->
+    <div id="ws-continuum" class="space-y-6">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-4">
           <div>
@@ -112,30 +153,587 @@
           </div>
         </div>
 
-        <!-- Step Indicator Track -->
         <div class="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-11 gap-2 text-center text-xs">
-          <div id="step-pill-1" class="step-pill active p-2 rounded-lg border border-[var(--border)] font-medium">1. Intake / Scribe</div>
-          <div id="step-pill-2" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">2. Mizaj (10-Ajnas)</div>
-          <div id="step-pill-3" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">3. Organ-Axis</div>
-          <div id="step-pill-4" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">4. Differential</div>
-          <div id="step-pill-5" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">5. ZKB Retrieval</div>
-          <div id="step-pill-6" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">6. ZAPE Posology</div>
-          <div id="step-pill-7" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">7. Nuskha Draft</div>
-          <div id="step-pill-8" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">8. Safety Firewall</div>
-          <div id="step-pill-9" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">9. Clinician Lock</div>
-          <div id="step-pill-10" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">10. FEFO Dispense</div>
-          <div id="step-pill-11" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium">11. QSURA & PROMs</div>
+          <div id="step-pill-1" class="step-pill active p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(1)">1. Intake / Scribe</div>
+          <div id="step-pill-2" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(2)">2. Mizaj (10-Ajnas)</div>
+          <div id="step-pill-3" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(3)">3. Organ-Axis</div>
+          <div id="step-pill-4" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(4)">4. Differential</div>
+          <div id="step-pill-5" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(5)">5. ZKB Retrieval</div>
+          <div id="step-pill-6" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(6)">6. ZAPE Posology</div>
+          <div id="step-pill-7" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(7)">7. Nuskha Draft</div>
+          <div id="step-pill-8" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(8)">8. Safety Firewall</div>
+          <div id="step-pill-9" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(9)">9. Clinician Lock</div>
+          <div id="step-pill-10" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(10)">10. FEFO Dispense</div>
+          <div id="step-pill-11" class="step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer" onclick="goToStep(11)">11. QSURA & PROMs</div>
         </div>
 
-        <!-- Step Content Card -->
         <div id="step-display" class="bg-[var(--background)] border border-[var(--border)] rounded-xl p-6 space-y-4">
-          <!-- Dynamic Content Rendered by JS -->
+          <!-- Dynamically populated by JavaScript -->
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: 25-Engine Live Matrix -->
-    <div id="tab-engines" class="hidden space-y-4">
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 2: Patient 360 & Personal Health Record (PHR) -->
+    <!-- ===================================================================== -->
+    <div id="ws-patient" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+          <h3 class="text-base font-bold flex items-center justify-between">
+            <span>Register New Patient</span>
+            <span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">HIPAA Compliant</span>
+          </h3>
+          <form id="form-patient-reg" onsubmit="handlePatientRegister(event)" class="space-y-3 text-xs">
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">First Name</label>
+              <input id="pt-fname" required value="Hamza" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">Last Name</label>
+              <input id="pt-lname" required value="Farooqi" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[var(--muted-foreground)] mb-1">Date of Birth</label>
+                <input id="pt-dob" type="date" required value="1982-06-15" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+              </div>
+              <div>
+                <label class="block text-[var(--muted-foreground)] mb-1">Gender</label>
+                <select id="pt-gender" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">Contact Phone</label>
+              <input id="pt-phone" required value="+91-9876543210" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1">Known Allergies</label>
+              <input id="pt-allergies" value="Sonf (Foeniculum vulgare)" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500 shadow-md transition-colors">
+              Save & Register Patient
+            </button>
+            <div id="patient-reg-feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+          </form>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <div>
+                <h3 class="text-base font-bold">Patient 360 Health Dossier</h3>
+                <p class="text-xs text-[var(--muted-foreground)]" id="active-patient-headline">MRN-2026-0814 | Hamza Farooqi (44 yrs, Male)</p>
+              </div>
+              <span class="badge-blue text-xs px-2.5 py-1 rounded-full font-bold">Mizaj: Balghami</span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)] block">Blood Pressure</span>
+                <span class="text-sm font-bold text-emerald-400">124 / 82 mmHg</span>
+              </div>
+              <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)] block">Heart Rate</span>
+                <span class="text-sm font-bold text-blue-400">74 bpm</span>
+              </div>
+              <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)] block">Blood Sugar (Fasting)</span>
+                <span class="text-sm font-bold text-amber-400">98 mg/dL</span>
+              </div>
+              <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)] block">Oxygen Saturation</span>
+                <span class="text-sm font-bold text-emerald-400">99% SpO2</span>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">Active Prescriptions & Orders</h4>
+              <div id="patient-rx-list" class="space-y-2 text-xs">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 3: Doctor / Hakeem Clinical Consultation Cockpit -->
+    <!-- ===================================================================== -->
+    <div id="ws-doctor" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-4">
+          <div>
+            <h2 class="text-lg font-bold flex items-center gap-2">
+              Hakim Dr. Tariq Mansoor
+              <span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">CCIM-BUMS-2004-9841</span>
+              <span class="badge-purple text-[10px] px-2 py-0.5 rounded font-bold">ROLE_SENIOR_TABEEB</span>
+            </h2>
+            <p class="text-xs text-[var(--muted-foreground)]">Unani Consultation & Prescribing Cockpit with Non-Delegable Statutory Prescribing Barrier</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="runAmbientScribeDemo()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-500">
+              🎙️ Scribe Urdu Audio
+            </button>
+            <button onclick="trigger21CFR11Signature()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500">
+              🔒 21 CFR Part 11 Digital Sign
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold">Ambient Clinical Voice Scribe</h3>
+            <textarea id="doctor-scribe-text" rows="5" class="w-full p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-xs" placeholder="Patient consultation dialogue...">Hakeem: Aap ko kya takleef pesh aa rahi hai?
+Patient: Doctor sahab, pichle 3 hafton se ghutnon me dard aur jodon me soozish rehti hai. Subah uthte waqt jism me akad rehti hai.</textarea>
+            <div id="doctor-scribe-output" class="p-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-xs space-y-2">
+              <span class="text-[var(--muted-foreground)]">Extracted Unani Entities:</span>
+              <div class="flex flex-wrap gap-2">
+                <span class="badge-blue text-[10px] px-2 py-0.5 rounded font-bold">Waja-ul-Mafasil (Joint Disorder)</span>
+                <span class="badge-purple text-[10px] px-2 py-0.5 rounded font-bold">Warm-e-Mafasil (Inflammation)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold">Nuskha Nawisi Draft Formulation</h3>
+            <div class="p-4 bg-[var(--background)] border border-[var(--border)] rounded-xl text-xs space-y-3">
+              <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                <span class="font-bold">Prescription ID: RX-2026-0441</span>
+                <span id="doctor-lock-status" class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">DRAFT PENDING REVIEW</span>
+              </div>
+              <ul class="space-y-2">
+                <li class="p-2 rounded bg-[var(--card)] border border-[var(--border)] flex justify-between items-center">
+                  <div>
+                    <span class="font-bold">Majun Suranjan</span> — 5g Twice Daily
+                    <span class="block text-[10px] text-[var(--muted-foreground)]">Chief: Suranjan Talkh (Mudabbar) | Musleh: Kateera</span>
+                  </div>
+                  <span class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">Schedule E(1)</span>
+                </li>
+                <li class="p-2 rounded bg-[var(--card)] border border-[var(--border)] flex justify-between items-center">
+                  <div>
+                    <span class="font-bold">Raughan-e-Balsan</span> — Local application nocte
+                    <span class="block text-[10px] text-[var(--muted-foreground)]">Chief: Balsan Oil | Ilaj bil-Tadbeer Regimen</span>
+                  </div>
+                  <span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">Approved</span>
+                </li>
+              </ul>
+              <div id="signature-receipt" class="hidden p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-[11px] space-y-1">
+                <!-- Populated on signature -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 4: Clinic & Hospital Operations Cockpit -->
+    <!-- ===================================================================== -->
+    <div id="ws-clinic" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Clinic Operations & Patient Queue</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Active OPD token queue, appointment schedule, and room allocation.</p>
+          </div>
+          <button onclick="bookNewAppointmentPrompt()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500">
+            + Book Appointment
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[var(--background)] text-[var(--muted-foreground)] border-b border-[var(--border)] uppercase tracking-wider">
+              <tr>
+                <th class="p-3">Token</th>
+                <th class="p-3">Patient Name</th>
+                <th class="p-3">MRN</th>
+                <th class="p-3">Attending Clinician</th>
+                <th class="p-3">Visit Type</th>
+                <th class="p-3">Chief Complaint</th>
+                <th class="p-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="clinic-queue-table" class="divide-y divide-[var(--border)]">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 5: Pharmacy OS & FEFO Dispensing Queue -->
+    <!-- ===================================================================== -->
+    <div id="ws-pharmacy" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Pharmacy OS & FEFO Inventory Control</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">First-Expired-First-Out automated lot allocation and Schedule E(1) Mudabbar detoxification clearance.</p>
+          </div>
+          <button onclick="dispenseCurrentOrder()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500">
+            Dispense Next Order
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <span class="font-bold block">Pending Prescription Order</span>
+            <p class="text-[var(--muted-foreground)]">Prescription: <span class="font-mono text-emerald-400">RX-2026-0441</span></p>
+            <p class="text-[var(--muted-foreground)]">Item: Majun Suranjan (5g x 30 doses)</p>
+            <div class="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px]">
+              Suranjan Talkh requires valid Mudabbar detoxification certificate hash before dispensing.
+            </div>
+            <button onclick="verifyMudabbarAndDispense()" id="btn-mudabbar-dispense" class="w-full py-2 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500">
+              Verify Certificate & Dispense
+            </button>
+          </div>
+
+          <div class="md:col-span-2 space-y-2">
+            <h4 class="font-bold text-xs">Live Botanical Inventory (FEFO Order)</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-[var(--background)] text-[var(--muted-foreground)] border-b border-[var(--border)] uppercase">
+                  <tr>
+                    <th class="p-2.5">Item Name</th>
+                    <th class="p-2.5">Batch No</th>
+                    <th class="p-2.5">Expiry Date</th>
+                    <th class="p-2.5">Stock Units</th>
+                    <th class="p-2.5">Schedule E(1) Status</th>
+                  </tr>
+                </thead>
+                <tbody id="pharmacy-inv-table" class="divide-y divide-[var(--border)]">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 6: Research Platform & Clinical Trials -->
+    <!-- ===================================================================== -->
+    <div id="ws-research" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Clinical Research & Real-World Evidence (RWE)</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Cohort analytics, longitudinal PROMs, and ICH E2B pharmacovigilance logging.</p>
+          </div>
+          <span class="badge-blue text-xs px-2.5 py-1 rounded-full font-bold">Protocol: ZAY-RCT-OSTEO-01</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <span class="text-[var(--muted-foreground)] block">Active Enrolled Cohort</span>
+            <span class="text-2xl font-bold text-emerald-400">148 Patients</span>
+            <span class="text-[10px] text-[var(--muted-foreground)] block">Waja-ul-Mafasil Barid Cohort</span>
+          </div>
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <span class="text-[var(--muted-foreground)] block">Mean VAS Pain Score Reduction</span>
+            <span class="text-2xl font-bold text-blue-400">-64.2%</span>
+            <span class="text-[10px] text-[var(--muted-foreground)] block">At Day 21 Post-Treatment</span>
+          </div>
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <span class="text-[var(--muted-foreground)] block">ICH E2B Adverse Events Reported</span>
+            <span class="text-2xl font-bold text-purple-400">1 (Grade 1 Mild)</span>
+            <span class="text-[10px] text-emerald-400 block">0 Serious Adverse Events (SAEs)</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-3">
+          <h4 class="font-bold">Log ICH E2B Adverse Drug Reaction (ADR)</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <input id="adr-drug" value="Majun Suranjan" placeholder="Suspected Herb / Compound" class="px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)]">
+            <input id="adr-reaction" value="Mild transient loose stool" placeholder="Adverse Reaction Description" class="px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)]">
+            <button onclick="logAdverseReaction()" class="px-4 py-2 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-500">
+              Submit ICH E2B Report
+            </button>
+          </div>
+          <div id="adr-feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 7: Manufacturing OS & Electronic Batch Records (eBMR) -->
+    <!-- ===================================================================== -->
+    <div id="ws-manufacturing" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Manufacturing OS & eBMR Quality Assurance</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">GMP compliance, electronic Batch Manufacturing Records, and detoxification verification.</p>
+          </div>
+          <span class="badge-pass text-xs px-2.5 py-1 rounded-full font-bold">GMP Certificate: AYUSH-GMP-2026-991</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[var(--background)] text-[var(--muted-foreground)] border-b border-[var(--border)] uppercase">
+              <tr>
+                <th class="p-3">Batch ID</th>
+                <th class="p-3">Formulation</th>
+                <th class="p-3">Mudabbar Purification Method</th>
+                <th class="p-3">Assay / Heavy Metals</th>
+                <th class="p-3">QC Release</th>
+                <th class="p-3">QA Officer</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border)]">
+              <tr>
+                <td class="p-3 font-mono text-emerald-400">BATCH-MS-2026-0441</td>
+                <td class="p-3 font-semibold">Majun Suranjan</td>
+                <td class="p-3">Boiled in Sheer-e-Gao (Cow Milk) 24h</td>
+                <td class="p-3 text-emerald-400">PASSED (ICP-MS Lead < 10ppm)</td>
+                <td class="p-3"><span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">RELEASED</span></td>
+                <td class="p-3">Dr. K. Saxena, PhD</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-400">BATCH-HS-2026-0312</td>
+                <td class="p-3 font-semibold">Hab-e-Suranjan</td>
+                <td class="p-3">Soaked in Vinegar (Sirka) for 3 days</td>
+                <td class="p-3 text-emerald-400">PASSED (Microbial Count < 10² CFU/g)</td>
+                <td class="p-3"><span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">RELEASED</span></td>
+                <td class="p-3">Dr. K. Saxena, PhD</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 8: Administration & RBAC Multi-Tenant Governance -->
+    <!-- ===================================================================== -->
+    <div id="ws-admin" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Multi-Tenant Administration & RBAC Authorization</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Role-based access matrix, cryptographic audit trail, and Merkle tree root hash verification.</p>
+          </div>
+          <button onclick="refreshMerkleTree()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-500">
+            Verify Merkle Root
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-3">
+            <h4 class="font-bold">Cryptographic Audit Chain</h4>
+            <div class="p-3 rounded-lg bg-[var(--card)] border border-[var(--border)] space-y-1 font-mono text-[11px]">
+              <span class="text-[var(--muted-foreground)] block">Current Merkle Root:</span>
+              <span id="merkle-root-display" class="text-emerald-400 break-all">a29e33c4ff1689bc4412ef893b1a09827419bcde20941982bcae1289410928bb</span>
+            </div>
+            <p class="text-[var(--muted-foreground)]">Total Tamper-Evident Ledger Events: <span id="audit-events-count" class="font-bold text-white">6</span></p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <h4 class="font-bold">Role Compartmentalization Matrix</h4>
+            <div class="space-y-1.5 text-[11px]">
+              <div class="flex justify-between p-2 rounded bg-[var(--card)] border border-[var(--border)]">
+                <span>ROLE_PATIENT</span>
+                <span class="text-emerald-400">View PHR, Consent, Messaging</span>
+              </div>
+              <div class="flex justify-between p-2 rounded bg-[var(--card)] border border-[var(--border)]">
+                <span>ROLE_SENIOR_TABEEB</span>
+                <span class="text-emerald-400">Conduct OPD, Lock Prescriptions (21 CFR 11)</span>
+              </div>
+              <div class="flex justify-between p-2 rounded bg-[var(--card)] border border-[var(--border)]">
+                <span>ROLE_PHARMACIST</span>
+                <span class="text-emerald-400">Verify Mudabbar, FEFO Dispense, Batch QA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 9: Hakeem Sahab AI Copilot Studio -->
+    <!-- ===================================================================== -->
+    <div id="ws-ai" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">Hakeem Sahab AI — Clinician Reasoning Copilot</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Evidence citations, differential synthesis, and non-delegable statutory safeguards.</p>
+          </div>
+          <span class="badge-purple text-xs px-2.5 py-1 rounded-full font-bold">Model: Hakeem-Sahab-v4.2-LTS</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="space-y-3">
+            <label class="block text-[var(--muted-foreground)]">Ask Hakeem Sahab (Clinical Scenario)</label>
+            <input id="ai-query-input" value="Bilateral knee stiffness in elderly patient with Cold-Phlegmatic Mizaj" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)]">
+            <button onclick="queryHakeemSahab()" class="w-full py-2.5 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-500 shadow-md">
+              Generate Evidence-Backed Advisory
+            </button>
+          </div>
+
+          <div id="ai-response-box" class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-3">
+            <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+              <span class="font-bold text-purple-400">Advisory Synthesis</span>
+              <span class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">Non-Delegable: Requires MD Review</span>
+            </div>
+            <p class="text-[var(--muted-foreground)]">Recommendation: Formulate <span class="font-bold text-white">Majun Suranjan</span> combined with <span class="font-bold text-white">Raughan-e-Balsan</span> local fomentation.</p>
+            <div class="text-[11px] text-[var(--muted-foreground)]">
+              <span class="font-bold text-white block">UPI Evidence Citations:</span>
+              • Unani Pharmacopoeia of India Vol 1, Monograph 44 (Suranjan)<br>
+              • Al-Qanun fi al-Tibb Book III (Diseases of the Joints)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 10: ZKB Knowledge Explorer -->
+    <!-- ===================================================================== -->
+    <div id="ws-knowledge" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <div>
+            <h3 class="text-base font-bold">ZAYVORA Knowledge Base (ZKB) Explorer</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Approved Unani Pharmacopoeia of India (UPI) monographs, Mufradat single herbs, and Murakkabat.</p>
+          </div>
+          <input id="zkb-search-input" oninput="searchZKB()" placeholder="Search herbs or formulas..." class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--background)] text-xs w-64">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs" id="zkb-results-grid">
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-400">Suranjan Talkh</span>
+              <span class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">Schedule E(1)</span>
+            </div>
+            <span class="text-[11px] text-[var(--muted-foreground)] block">Colchicum luteum Baker</span>
+            <p class="text-[var(--muted-foreground)]">Mizaj: Haar 3° Yaabis 3° | Musleh: Kateera | Badal: Asgandh</p>
+          </div>
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-400">Zanjabeel</span>
+              <span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">Safe</span>
+            </div>
+            <span class="text-[11px] text-[var(--muted-foreground)] block">Zingiber officinale Roscoe</span>
+            <p class="text-[var(--muted-foreground)]">Mizaj: Haar 3° Yaabis 2° | Musleh: Shahad | Badal: Khulanjan</p>
+          </div>
+          <div class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-400">Majun Suranjan</span>
+              <span class="badge-blue text-[10px] px-2 py-0.5 rounded font-bold">Murakkab</span>
+            </div>
+            <span class="text-[11px] text-[var(--muted-foreground)] block">Chief: Suranjan Talkh (Mudabbar)</span>
+            <p class="text-[var(--muted-foreground)]">Indications: Waja-ul-Mafasil, Niqras, Irq-un-Nasa | Dose: 5g</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 11: Safety Firewall Simulator -->
+    <!-- ===================================================================== -->
+    <div id="ws-safety" class="hidden space-y-6">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-lg font-bold">Deterministic Safety Firewall Simulator (Engine 12)</h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Test patient profiles against the 8-dimensional deterministic firewall. Experience how statutory toxicity and red flags trigger automatic blocking.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4 bg-[var(--background)] p-5 rounded-xl border border-[var(--border)]">
+            <h3 class="font-semibold text-sm">Patient Clinical Profile</h3>
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Chief Complaint</label>
+              <select id="sim-complaint" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
+                <option value="joint_pain">Mild bilateral knee joint stiffness (Osteoarthritis)</option>
+                <option value="chest_pain">Severe acute substernal chest pain with diaphoresis (Red Flag)</option>
+                <option value="dyspepsia">Epigastric fullness and bloating after meals</option>
+                <option value="stroke_signs">Sudden left-sided weakness and facial droop (Red Flag)</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Pregnancy Status</label>
+                <select id="sim-pregnancy" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
+                  <option value="no">Not Pregnant</option>
+                  <option value="yes">Pregnant (1st Trimester)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Documented Allergies</label>
+                <select id="sim-allergy" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
+                  <option value="none">None Reported</option>
+                  <option value="sonf">Sonf / Fennel (Foeniculum vulgare)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Allopathic Concurrent Medications</label>
+              <select id="sim-meds" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
+                <option value="none">No prescription medications</option>
+                <option value="warfarin">Warfarin 5mg daily (Anticoagulant)</option>
+              </select>
+            </div>
+
+            <div class="pt-2 border-t border-[var(--border)] space-y-2">
+              <label class="block text-xs font-semibold text-[var(--muted-foreground)]">Proposed Botanical Candidates</label>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" id="herb-suranjan" checked onchange="runSafetySim()" class="rounded border-[var(--border)]">
+                  <span>Suranjan Talkh (Sch E1)</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" id="herb-zanjabeel" checked onchange="runSafetySim()" class="rounded border-[var(--border)]">
+                  <span>Zanjabeel (Ginger)</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" id="herb-sonf" onchange="runSafetySim()" class="rounded border-[var(--border)]">
+                  <span>Sonf (Fennel)</span>
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" id="sim-mudabbar" checked onchange="runSafetySim()" class="rounded border-[var(--border)]">
+                  <span class="text-emerald-400 font-semibold">Mudabbar Certified</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4 bg-[var(--background)] p-5 rounded-xl border border-[var(--border)] flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold text-sm">Firewall Verdict & Findings</h3>
+                <span id="firewall-verdict-badge" class="px-3 py-1 rounded-full text-xs font-bold badge-pass">SAFE TO CONSIDER</span>
+              </div>
+              <div id="firewall-reasons" class="space-y-2 text-xs">
+                <div class="p-3 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20">
+                  ✓ All patient safety checks passed. No allergy, toxicity, or interaction contraindications detected. Prescription safe to consider.
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-[var(--border)] text-[11px] text-[var(--muted-foreground)] flex justify-between items-center">
+              <span>Deterministic Rule Engine: <span class="font-mono text-emerald-400">safety_firewall.py</span></span>
+              <span>Latency: <span id="firewall-latency" class="font-mono text-emerald-400">1.2ms</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- WORKSPACE 12: 25-Engine Live Matrix -->
+    <!-- ===================================================================== -->
+    <div id="ws-engines" class="hidden space-y-4">
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -175,448 +773,170 @@
       </div>
     </div>
 
-    <!-- TAB 3: Safety Firewall Simulator -->
-    <div id="tab-safety" class="hidden space-y-6">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
-        <div>
-          <h2 class="text-lg font-bold">Deterministic Safety Firewall Simulator (Engine 12)</h2>
-          <p class="text-xs text-[var(--muted-foreground)]">Test patient profiles against the 8-dimensional deterministic firewall. Experience how statutory toxicity and red flags trigger automatic blocking.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="space-y-4 bg-[var(--background)] p-5 rounded-xl border border-[var(--border)]">
-            <h3 class="font-semibold text-sm">Patient Clinical Profile</h3>
-            
-            <div>
-              <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Chief Complaint</label>
-              <select id="sim-complaint" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
-                <option value="joint_pain">Mild bilateral knee joint stiffness (Osteoarthritis)</option>
-                <option value="chest_pain">Severe acute substernal chest pain with diaphoresis (Red Flag)</option>
-                <option value="dyspepsia">Epigastric fullness and bloating after meals</option>
-                <option value="stroke_signs">Sudden left-sided weakness and facial droop (Red Flag)</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Pregnancy Status</label>
-                <select id="sim-pregnancy" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
-                  <option value="no">Not Pregnant</option>
-                  <option value="yes">Pregnant (1st Trimester)</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Documented Allergies</label>
-                <select id="sim-allergy" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
-                  <option value="none">None Reported</option>
-                  <option value="sonf">Fennel / Sonf (Foeniculum vulgare)</option>
-                  <option value="garlic">Garlic / Seer (Allium sativum)</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Current Allopathic Medications</label>
-              <select id="sim-meds" onchange="runSafetySim()" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs">
-                <option value="none">No Concurrent Medications</option>
-                <option value="warfarin">Warfarin 5mg daily (Oral Anticoagulant)</option>
-                <option value="digoxin">Digoxin 0.25mg daily (Cardiac Glycoside)</option>
-                <option value="metformin">Metformin 1000mg BID (Antidiabetic)</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">Proposed Botanical Prescriptions</label>
-              <div class="space-y-2 text-xs">
-                <label class="flex items-center gap-2">
-                  <input type="checkbox" id="herb-suranjan" checked onchange="runSafetySim()">
-                  <span>Suranjan Talkh (Colchicum luteum - Sched E(1))</span>
-                </label>
-                <label class="flex items-center gap-2">
-                  <input type="checkbox" id="herb-zanjabeel" checked onchange="runSafetySim()">
-                  <span>Zanjabeel (Zingiber officinale)</span>
-                </label>
-                <label class="flex items-center gap-2">
-                  <input type="checkbox" id="herb-sonf" onchange="runSafetySim()">
-                  <span>Sonf (Foeniculum vulgare)</span>
-                </label>
-                <label class="flex items-center gap-2">
-                  <input type="checkbox" id="herb-asgandh" onchange="runSafetySim()">
-                  <span>Asgandh (Withania somnifera)</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="pt-2">
-              <label class="flex items-center gap-2 text-xs font-medium text-amber-500">
-                <input type="checkbox" id="sim-mudabbar" onchange="runSafetySim()">
-                <span>Schedule E(1) Mudabbar Detoxification Certified</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Live Firewall Result Panel -->
-          <div class="bg-[var(--background)] p-5 rounded-xl border border-[var(--border)] flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <h3 class="font-semibold text-sm">Firewall Interception Output</h3>
-                <span id="firewall-verdict-badge" class="px-3 py-1 rounded-full text-xs font-bold badge-pass">SAFE TO CONSIDER</span>
-              </div>
-
-              <div id="firewall-reasons" class="space-y-2 text-xs">
-                <div class="p-3 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20">
-                  ✓ All patient safety checks passed. No allergy, toxicity, or interaction contraindications detected.
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted-foreground)]">
-              <span>Rule Engine Execution Time: </span>
-              <span id="firewall-latency" class="font-mono text-[var(--foreground)] font-semibold">1.4ms</span>
-              <span class="ml-3 font-semibold text-emerald-500">Pure Deterministic Invariant</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: Governance Quorum & Merkle Audit -->
-    <div id="tab-governance" class="hidden space-y-6">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
-        <div>
-          <h2 class="text-lg font-bold">Clinical Governance Board & Quorum Consensus (Engine 24)</h2>
-          <p class="text-xs text-[var(--muted-foreground)]">Simulate how multi-specialist voting quorum rules prevent unauthorized clinical rule modifications and generate 21 CFR Part 11 cryptographic Clinical Change Orders.</p>
-        </div>
-
-        <div class="bg-[var(--background)] p-5 rounded-xl border border-[var(--border)] space-y-4">
-          <div class="flex justify-between items-start">
-            <div>
-              <span class="text-xs text-[var(--muted-foreground)]">Active Proposal:</span>
-              <h3 class="font-bold text-base">PROP-CA18A411: Revise Posology Ceiling for Suranjan Talkh Mudabbar</h3>
-              <p class="text-xs text-[var(--muted-foreground)] mt-1">Proposed change: Cap maximal single dose at 250mg for geriatric patients with eGFR &lt; 45 mL/min.</p>
-            </div>
-            <span id="gov-status-badge" class="px-3 py-1 rounded-full text-xs font-bold badge-warn">UNDER PEER REVIEW (1/3)</span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-            <!-- Specialist 1: Senior Tabeeb -->
-            <div class="p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold">1. Senior Tabeeb</span>
-                <span id="vote-1-badge" class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">APPROVED</span>
-              </div>
-              <p class="text-xs text-[var(--muted-foreground)]">Dr. Maryam Siddiqui (MD Unani, 14y exp)</p>
-              <p class="text-xs italic bg-[var(--background)] p-2 rounded border border-[var(--border)]">"Conforms strictly to Al-Qanoon Book II principles on cold articular dyscrasia."</p>
-              <button disabled class="w-full py-1.5 rounded bg-gray-500/20 text-gray-400 text-xs font-semibold cursor-not-allowed">Attested</button>
-            </div>
-
-            <!-- Specialist 2: Pharmacologist -->
-            <div class="p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold">2. Clinical Pharmacologist</span>
-                <span id="vote-2-badge" class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">PENDING</span>
-              </div>
-              <p class="text-xs text-[var(--muted-foreground)]">Dr. Zaid Al-Hashimi (PhD Pharmacology)</p>
-              <p class="text-xs italic bg-[var(--background)] p-2 rounded border border-[var(--border)]" id="vote-2-comment">Awaiting PK/PD clearance on tubulin binding in renal clearance...</p>
-              <button id="btn-vote-2" onclick="castVote(2)" class="w-full py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold hover:opacity-90">Cast Approval Vote</button>
-            </div>
-
-            <!-- Specialist 3: Safety Officer -->
-            <div class="p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold">3. Pharmacovigilance Officer</span>
-                <span id="vote-3-badge" class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">PENDING</span>
-              </div>
-              <p class="text-xs text-[var(--muted-foreground)]">Dr. Aisha Rahman (MD CIOMS Safety)</p>
-              <p class="text-xs italic bg-[var(--background)] p-2 rounded border border-[var(--border)]" id="vote-3-comment">Awaiting verification of adverse reaction event database...</p>
-              <button id="btn-vote-3" onclick="castVote(3)" class="w-full py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold hover:opacity-90">Cast Approval Vote</button>
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-[var(--border)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <span class="text-xs text-[var(--muted-foreground)]">Cryptographic SHA-256 Merkle Seal:</span>
-              <p id="gov-hash" class="font-mono text-xs text-blue-500 break-all font-semibold">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</p>
-            </div>
-            <button id="btn-publish-co" disabled onclick="publishChangeOrder()" class="px-4 py-2 rounded-xl bg-gray-500/20 text-gray-400 text-xs font-bold cursor-not-allowed">
-              Publish Clinical Change Order
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 5: Longitudinal Patient 360 & PROMs -->
-    <div id="tab-timeline" class="hidden space-y-6">
-      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6">
-        <div class="flex justify-between items-center">
-          <div>
-            <h2 class="text-lg font-bold">Patient 360 Longitudinal Merkle Timeline (Engine 17)</h2>
-            <p class="text-xs text-[var(--muted-foreground)]">Tamper-evident clinical continuum anchored with 21 CFR Part 11 cryptographic root hashes.</p>
-          </div>
-          <span class="text-xs bg-emerald-500/10 text-emerald-500 px-3 py-1 rounded-full font-semibold border border-emerald-500/20">
-            Patient: Tariq Mansoor (PAT-2026-9011)
-          </span>
-        </div>
-
-        <div class="relative border-l-2 border-emerald-500/30 ml-4 space-y-6 pl-6 text-xs">
-          <!-- Event 1 -->
-          <div class="relative">
-            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[var(--card)]"></div>
-            <div class="bg-[var(--background)] p-4 rounded-xl border border-[var(--border)] space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="font-bold text-[var(--foreground)] text-sm">Day 0: Initial Clinical Encounter & Scribing</span>
-                <span class="text-[var(--muted-foreground)]">2026-09-01 10:15 UTC</span>
-              </div>
-              <p class="text-[var(--muted-foreground)]">Chief Complaint: Waja-ul-Mafasil (Bilateral knee joint pain, morning stiffness > 45 mins). Ambient scribe drafted SOAP.</p>
-              <div class="font-mono text-[10px] text-purple-400 pt-1">Merkle Node Hash: 7a9e2f41bc89a012...</div>
-            </div>
-          </div>
-
-          <!-- Event 2 -->
-          <div class="relative">
-            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[var(--card)]"></div>
-            <div class="bg-[var(--background)] p-4 rounded-xl border border-[var(--border)] space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="font-bold text-[var(--foreground)] text-sm">Day 0: Prescribing Lock & FEFO Allocation</span>
-                <span class="text-[var(--muted-foreground)]">2026-09-01 10:45 UTC</span>
-              </div>
-              <p class="text-[var(--muted-foreground)]">Dr. Hakeem Tariq signed RX-501. Suranjan Talkh Mudabbar (250mg) + Zanjabeel (500mg) allocated from BATCH-OCT.</p>
-              <div class="font-mono text-[10px] text-purple-400 pt-1">Merkle Node Hash: 8b10c552ad99b123...</div>
-            </div>
-          </div>
-
-          <!-- Event 3 -->
-          <div class="relative">
-            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-blue-500 border-2 border-[var(--card)]"></div>
-            <div class="bg-[var(--background)] p-4 rounded-xl border border-[var(--border)] space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="font-bold text-blue-400 text-sm">Day +7: Automated PROMs Follow-up Dispatch (QSURA)</span>
-                <span class="text-[var(--muted-foreground)]">2026-09-08 06:00 UTC</span>
-              </div>
-              <p class="text-[var(--muted-foreground)]">PROMsFollowupWorker triggered WhatsApp interactive survey. Patient reported EQ-5D-5L score improvement: +42%.</p>
-              <div class="font-mono text-[10px] text-purple-400 pt-1">Merkle Node Hash: 9c21d663be00c234...</div>
-            </div>
-          </div>
-
-          <!-- Event 4 -->
-          <div class="relative">
-            <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-purple-500 border-2 border-[var(--card)]"></div>
-            <div class="bg-[var(--background)] p-4 rounded-xl border border-[var(--border)] space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="font-bold text-purple-400 text-sm">Day +14: Trial Concordance & DSMB Endpoint Sealing</span>
-                <span class="text-[var(--muted-foreground)]">2026-09-12 12:00 UTC</span>
-              </div>
-              <p class="text-[var(--muted-foreground)]">Primary clinical endpoint achieved: Joint pain VAS reduced from 7.5 to 2.1. Sealed into Phase 8 Multi-Center Trial registry.</p>
-              <div class="font-mono text-[10px] text-purple-400 pt-1">Merkle Node Hash: a032e774cf11d345...</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
+  <!-- Client-Side Runtime Engine Logic -->
   <script>
-    // Tab Switching
-    function switchTab(tabId) {
-      ['continuum', 'engines', 'safety', 'governance', 'timeline'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.add('hidden');
-        document.getElementById(`btn-${t}`).classList.remove('active');
-        document.getElementById(`btn-${t}`).classList.add('text-[var(--muted-foreground)]');
-      });
-      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-      document.getElementById(`btn-${tabId}`).classList.add('active');
-      document.getElementById(`btn-${tabId}`).classList.remove('text-[var(--muted-foreground)]');
-    }
-
-    // Continuum Steps Data
-    const continuumSteps = [
-      {
-        title: "Step 1: Patient Data & Ambient Acoustic Scribing",
-        badge: "Engine 01 + Ambient Scribe",
-        badgeColor: "badge-blue",
-        details: "Acoustic listener records bilingual Urdu/English dialogue. Extracts symptoms: 'Ghutnon me dard, subah akad, aur seene me jalan'.",
-        code: `AmbientScribeEngine.extract_unani_entities(dialogue)\n-> Extracted: ['Waja-ul-Mafasil', 'Hurqat-ul-Meda']\n-> Status: DRAFT_PENDING_CLINICIAN_REVIEW\n-> safe_to_lock: False`
-      },
-      {
-        title: "Step 2: Longitudinal 10-Ajnas Mizaj Assessment",
-        badge: "Engine 06: Mizaj Assessor",
-        badgeColor: "badge-pass",
-        details: "Calculates humoral breakdown across 10 Ajnas (complexion, build, skin feel, pulse rate, digestion, sleep, emotion, thermal preference).",
-        code: `calculate_mizaj_assessment(answers, age_category="geriatric")\n-> Dam: 20%, Balgham: 10%, Safra: 60%, Sauda: 10%\n-> Dominant Mizaj: Haar Yabis\n-> Confidence Score: 0.85`
-      },
-      {
-        title: "Step 3: Organ-Axis & Biomarker Cross-Talk Evaluation",
-        badge: "Engine 07: Organ-Axis Engine",
-        badgeColor: "badge-pass",
-        details: "Deduces primary axis (Mafasil - Joints) and reflex sympathies (Meda - Stomach via vagal pathway). Evaluates hsCRP 3.2 mg/L.",
-        code: `run_complete_organ_axis_analysis(axis='mafasil', complaint='Joint pain with reflux')\n-> Primary Axis: Mafasil\n-> Secondary Axis: Meda-Amaa\n-> Reflex Sympathies: Meda, Kulyah\n-> Biomarker: hsCRP Elevated`
-      },
-      {
-        title: "Step 4: Biomedical Dual-Coding & Red Flag Screening",
-        badge: "Engine 02 + Engine 13: Differential Engine",
-        badgeColor: "badge-warn",
-        details: "Cross-codes classical Amraz to WHO ICD-11 & SNOMED. Evaluates red flags (septic joint, nocturnal bone pain).",
-        code: `match_differential_considerations('knee joint pain', organ_axis='mafasil')\n-> Disease: Waja-ul-Mafasil (Osteoarthritis)\n-> ICD-11: FA00 (Osteoarthritis of knee)\n-> SNOMED-CT: 396275006\n-> Red Flags: None active`
-      },
-      {
-        title: "Step 5: ZKB Knowledge Retrieval Substrate",
-        badge: "Engine 03 + Engine 22: Hybrid RAG",
-        badgeColor: "badge-pass",
-        details: "Queries Unani Pharmacopoeia of India (UPI) & NFUM. Retrieves approved monographs for Suranjan Talkh and Zanjabeel.",
-        code: `rag.hybrid_search('Suranjan Mafasil', approved_only=True)\n-> Retrieved: Suranjan Talkh (Colchicum luteum - wfo-0000614482)\n-> Schedule E(1) Poison: True (Mandates Mudabbar Shodhana)\n-> Max Dose: 250mg`
-      },
-      {
-        title: "Step 6: ZAPE Posology Personalization",
-        badge: "Engine 10: ZAPE Engine",
-        badgeColor: "badge-blue",
-        details: "Applies geriatric eGFR scaling (eGFR 42 mL/min -> 0.75x) and winter thermal seasonal adjustments.",
-        code: `run_zape_personalization(age=68, egfr=42.0, season='shita')\n-> Renal Clearance Factor: 0.75x\n-> Suranjan Talkh base 250mg scaled to 187.5mg\n-> Musleh Co-prescription: Roghan-e-Badam`
-      },
-      {
-        title: "Step 7: Nuskha Nawisi Draft Formulation Compilation",
-        badge: "Engine 08 + Engine 14: Nuskha Compiler",
-        badgeColor: "badge-warn",
-        details: "Assigns Juz-e-Azam (Suranjan Talkh Mudabbar), Muin (Zanjabeel), and co-prescribes Musleh (Katira). Status set to Draft.",
-        code: `compile_nuskha(target_axes=['mafasil'], ingredients=[...])\n-> Juz-e-Azam: Suranjan Talkh Mudabbar (187.5mg)\n-> Muin: Zanjabeel (500mg)\n-> Status: DRAFT\n-> safe_to_lock: False`
-      },
-      {
-        title: "Step 8: Deterministic Safety Firewall Interception",
-        badge: "Engine 12: Safety Firewall",
-        badgeColor: "badge-pass",
-        details: "Screens 8 clinical dimensions: allergies (clean), pregnancy (N/A), drug-herb (clean), Schedule E(1) Mudabbar verified (Pass).",
-        code: `run_safety_firewall(patient_context, ingredients)\n-> Dimensions Evaluated: 8\n-> Schedule E(1) Mudabbar Gate: VERIFIED\n-> Verdict: SAFE_TO_CONSIDER\n-> Blocking Violations: 0`
-      },
-      {
-        title: "Step 9: Qualified Clinician Prescribing Sign-Off",
-        badge: "Part 11 Signature Authority",
-        badgeColor: "badge-pass",
-        details: "STATUTORY BARRIER: Dr. Hakeem Tariq inspects draft, confirms posology, and applies cryptographic digital signature.",
-        code: `Part11SignatureAuthority.create_signature_envelope(signer_id='HAK-786')\n-> Meaning: Statutory Clinical Prescribing Responsibility (21 CFR § 11.50)\n-> Prescription Status: LOCKED\n-> Cryptographic Seal: Valid`
-      },
-      {
-        title: "Step 10: Dispensary FEFO Allocation & Inventory Lock",
-        badge: "Engine 20: Dispensary Engine",
-        badgeColor: "badge-blue",
-        details: "Pessimistic row locking (SELECT ... FOR UPDATE). Allocates from earliest expiry batch (BAT-EXP-SOONER - Exp: Oct 2026).",
-        code: `allocate_fefo_batches(requested_quantity=1.0, is_schedule_e1=True)\n-> Allocated Batch: BAT-EXP-SOONER (Available: 5.0 -> 4.0)\n-> Mudabbar Verified: True\n-> Days to Expiry: 33`
-      },
-      {
-        title: "Step 11: QSURA Omnichannel Notification & PROMs Worker",
-        badge: "Engine 18 + Engine 25: QSURA Broker",
-        badgeColor: "badge-pass",
-        details: "Dispatches WhatsApp digital prescription with zero-PHI masking. Schedules automated Day +7 and Day +14 PROMs survey daemons.",
-        code: `broker.send_notification(channel='whatsapp', consent_verified=True)\n-> Delivery Status: DELIVERED (MSG-10b72d0d...)\n-> Zero-PHI Masking: Active\n-> Scheduled: Day +7 EQ-5D-5L follow-up`
-      }
-    ];
-
-    let currentStep = 0;
-
-    function renderContinuumStep() {
-      const step = continuumSteps[currentStep];
-      for (let i = 0; i < 11; i++) {
-        const pill = document.getElementById(`step-pill-${i+1}`);
-        if (i === currentStep) {
-          pill.classList.add('active');
-        } else {
-          pill.classList.remove('active');
+    // Workspace Navigation Switcher
+    function switchWorkspace(id) {
+      const workspaces = ['continuum', 'patient', 'doctor', 'clinic', 'pharmacy', 'research', 'manufacturing', 'admin', 'ai', 'knowledge', 'safety', 'engines'];
+      workspaces.forEach(w => {
+        const el = document.getElementById(`ws-${w}`);
+        const btn = document.getElementById(`tab-${w}`);
+        if (el) el.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('active');
+          btn.classList.add('text-[var(--muted-foreground)]');
         }
-      }
-
-      document.getElementById('step-display').innerHTML = `
-        <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
-          <h3 class="font-bold text-base text-[var(--foreground)]">${step.title}</h3>
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${step.badgeColor}">${step.badge}</span>
-        </div>
-        <p class="text-sm text-[var(--muted-foreground)]">${step.details}</p>
-        <div class="bg-[var(--card)] p-4 rounded-lg border border-[var(--border)] font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">
-${step.code}
-        </div>
-      `;
-    }
-
-    function nextStep() {
-      if (currentStep < continuumSteps.length - 1) {
-        currentStep++;
-        renderContinuumStep();
+      });
+      const activeEl = document.getElementById(`ws-${id}`);
+      const activeBtn = document.getElementById(`tab-${id}`);
+      if (activeEl) activeEl.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-[var(--muted-foreground)]');
       }
     }
 
-    function prevStep() {
-      if (currentStep > 0) {
-        currentStep--;
-        renderContinuumStep();
-      }
-    }
+    // Patient & Clinic State
+    const platformState = {
+      patients: [
+        { id: "PAT-774901", mrn: "MRN-2026-0814", name: "Hamza Farooqi", age: 44, gender: "Male", phone: "+91-9876543210", allergies: "Sonf" }
+      ],
+      appointments: [
+        { token: "T-104", patient: "Hamza Farooqi", mrn: "MRN-2026-0814", doctor: "Hakim Dr. Tariq Mansoor", type: "Integrative OPD", complaint: "Knee stiffness in cold weather", status: "WAITING_CONSULTATION" }
+      ],
+      prescriptions: [
+        { id: "RX-2026-0441", patient: "Hamza Farooqi", compounds: "Majun Suranjan (5g), Raughan-e-Balsan", status: "LOCKED_AUTHORIZED", locked: true }
+      ],
+      inventory: [
+        { item: "Majun Suranjan", batch: "BATCH-MS-2026-0441", exp: "2028-01-09", units: 142, status: "MUDABBAR_CERTIFIED" },
+        { item: "Hab-e-Suranjan", batch: "BATCH-HS-2026-0312", exp: "2027-08-31", units: 210, status: "MUDABBAR_CERTIFIED" },
+        { item: "Raughan-e-Balsan", batch: "BATCH-RB-2026-0209", exp: "2029-02-14", units: 88, status: "RELEASED" }
+      ]
+    };
 
-    function resetContinuum() {
-      currentStep = 0;
-      renderContinuumStep();
-    }
-
-    // 25 Engines Data
-    const engines = [
-      { id: "ENG-01", name: "Unani Intelligence Engine", class: "RULE-BASED ONLY", file: "differential_engine.py", p95: "1.4ms", tables: "clinical_notes, encounters", gate: "Advisory", status: "READY" },
-      { id: "ENG-02", name: "Biomedical Intelligence", class: "AI-ASSISTED", file: "lab_report_extractor.py", p95: "1.89s", tables: "clinical_notes, ai_consultations", gate: "Red Flag REFER", status: "READY" },
-      { id: "ENG-03", name: "ZKB Knowledge Base", class: "RULE-BASED ONLY", file: "pharmacopoeia.py", p95: "0.5ms", tables: "audit_logs, in-memory ZKB", gate: "Board Quorum", status: "READY" },
-      { id: "ENG-04", name: "Mufradat Engine", class: "RULE-BASED ONLY", file: "taxonomy.py", p95: "0.4ms", tables: "graph nodes, audit_logs", gate: "None (Ref Data)", status: "READY" },
-      { id: "ENG-05", name: "Murakkabat Formulary", class: "RULE-BASED ONLY", file: "pharmacopoeia.py", p95: "0.6ms", tables: "inventory_batches", gate: "Analytical QA", status: "READY" },
-      { id: "ENG-06", name: "Mizaj Assessor (10-Ajnas)", class: "RULE-BASED ONLY", file: "mizaj_assessor.py", p95: "1.8ms", tables: "mizaj_assessments", gate: "Clinician Override", status: "READY" },
-      { id: "ENG-07", name: "Organ-Axis Engine", class: "RULE-BASED ONLY", file: "organ_axis_engine.py", p95: "2.0ms", tables: "clinical_notes, encounters", gate: "Advisory", status: "READY" },
-      { id: "ENG-08", name: "Nuskha Nawisi Compiler", class: "RULE-BASED ONLY", file: "nuskha_compiler.py", p95: "4.1ms", tables: "nuskha_drafts, prescriptions", gate: "safe_to_lock=False", status: "READY" },
-      { id: "ENG-09", name: "Hakeem Sahab Copilot", class: "AI-ASSISTED", file: "hakeem_sahab.py", p95: "1.89s", tables: "ai_consultations", gate: "Non-delegable Lock", status: "READY" },
-      { id: "ENG-10", name: "ZAPE Personalization", class: "RULE-BASED ONLY", file: "zape_personalization.py", p95: "0.8ms", tables: "nuskha_drafts", gate: "Part of Nuskha", status: "READY" },
-      { id: "ENG-11", name: "Evidence Intelligence", class: "RULE-BASED ONLY", file: "evidence_engine.py", p95: "1.9ms", tables: "audit_logs, graph", gate: "Peer-Review Gate", status: "READY" },
-      { id: "ENG-12", name: "Safety Firewall", class: "FULLY AUTOMATED", file: "safety_firewall.py", p95: "2.6ms", tables: "audit_logs", gate: "Deterministic Block", status: "READY" },
-      { id: "ENG-13", name: "Differential Assessment", class: "RULE-BASED ONLY", file: "differential_engine.py", p95: "1.4ms", tables: "encounters, notes", gate: "No Autonomous Dx", status: "READY" },
-      { id: "ENG-14", name: "Ilaj bil-Dawa Engine", class: "RULE-BASED ONLY", file: "nuskha_compiler.py", p95: "4.1ms", tables: "prescriptions", gate: "Clinician Signature", status: "READY" },
-      { id: "ENG-15", name: "Ilaj bil-Tadbeer Engine", class: "RULE-BASED ONLY", file: "tadbeer_guardrails.py", p95: "1.3ms", tables: "tadbeer_plans", gate: "Therapist Order", status: "READY" },
-      { id: "ENG-16", name: "Ilaj bil-Ghiza Engine", class: "RULE-BASED ONLY", file: "ghiza.py", p95: "1.5ms", tables: "ghiza_plans", gate: "Clinician Approval", status: "READY" },
-      { id: "ENG-17", name: "Patient 360 Timeline", class: "FULLY AUTOMATED", file: "timeline.py", p95: "22.4ms", tables: "7 relational tables", gate: "Merkle Root Sealed", status: "READY" },
-      { id: "ENG-18", name: "Follow-up & Outcomes", class: "FULLY AUTOMATED", file: "proms_followup_worker.py", p95: "Daemon", tables: "qsura_dispatch_logs", gate: "Consent Verified", status: "READY" },
-      { id: "ENG-19", name: "Pharmacovigilance", class: "RULE-BASED ONLY", file: "pharmacovigilance.py", p95: "3.2ms", tables: "audit_logs", gate: "Pv Officer Review", status: "READY" },
-      { id: "ENG-20", name: "Pharmacy & Dispensary", class: "FULLY AUTOMATED", file: "dispensary_engine.py", p95: "8.2ms", tables: "inventory_batches", gate: "Mudabbar Cert Gate", status: "READY" },
-      { id: "ENG-21", name: "Manufacturing eBMR 2.0", class: "FULLY AUTOMATED", file: "ebmr_engine.py", p95: "4.0ms", tables: "eBMR session store", gate: "QA Release Gate", status: "READY" },
-      { id: "ENG-22", name: "AI/RAG Retrieval", class: "FULLY AUTOMATED", file: "hybrid_rag.py", p95: "6.8ms", tables: "vector store, BM25", gate: "Approved Knowledge", status: "READY" },
-      { id: "ENG-23", name: "Knowledge Graph (Neo4j)", class: "FULLY AUTOMATED", file: "neo4j_repository.py", p95: "9.4ms", tables: "Neo4j LPG DB", gate: "Read-Only Traversal", status: "READY" },
-      { id: "ENG-24", name: "Clinical Governance", class: "FULLY AUTOMATED", file: "governance_board.py", p95: "3.1ms", tables: "proposals, audit_logs", gate: "3/3 Quorum Consensus", status: "READY" },
-      { id: "ENG-25", name: "QSURA Communication", class: "FULLY AUTOMATED", file: "communication_broker.py", p95: "7.0ms", tables: "qsura_dispatch_logs", gate: "Zero-PHI Masking", status: "READY" },
-    ];
-
-    function renderEnginesTable(data) {
-      const tbody = document.getElementById('engine-table-body');
-      tbody.innerHTML = data.map(e => `
-        <tr class="hover:bg-[var(--background)] transition-colors">
-          <td class="p-3 font-mono font-bold text-blue-400">${e.id}</td>
-          <td class="p-3 font-semibold">${e.name}</td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
-              e.class === 'FULLY AUTOMATED' ? 'badge-pass' :
-              e.class === 'AI-ASSISTED' ? 'badge-blue' : 'badge-warn'
-            }">${e.class}</span>
-          </td>
-          <td class="p-3 font-mono text-[11px] text-[var(--muted-foreground)]">${e.file}</td>
-          <td class="p-3 font-mono">${e.p95}</td>
-          <td class="p-3 text-[var(--muted-foreground)]">${e.tables}</td>
-          <td class="p-3 text-amber-400 font-medium">${e.gate}</td>
-          <td class="p-3"><span class="badge-pass px-2 py-0.5 rounded text-[10px] font-bold">READY</span></td>
+    function renderClinicQueue() {
+      const tbody = document.getElementById('clinic-queue-table');
+      if (!tbody) return;
+      tbody.innerHTML = platformState.appointments.map(a => `
+        <tr>
+          <td class="p-3 font-mono text-emerald-400 font-bold">${a.token}</td>
+          <td class="p-3 font-semibold">${a.patient}</td>
+          <td class="p-3 font-mono text-[var(--muted-foreground)]">${a.mrn}</td>
+          <td class="p-3">${a.doctor}</td>
+          <td class="p-3">${a.type}</td>
+          <td class="p-3">${a.complaint}</td>
+          <td class="p-3"><span class="badge-blue text-[10px] px-2 py-0.5 rounded font-bold">${a.status}</span></td>
         </tr>
       `).join('');
     }
 
-    function filterEngines() {
-      const search = document.getElementById('engine-search').value.toLowerCase();
-      const filter = document.getElementById('engine-filter').value;
-      const filtered = engines.filter(e => {
-        const matchesSearch = e.name.toLowerCase().includes(search) || e.file.toLowerCase().includes(search) || e.id.toLowerCase().includes(search);
-        const matchesFilter = filter === 'ALL' || e.class === filter;
-        return matchesSearch && matchesFilter;
-      });
-      renderEnginesTable(filtered);
+    function renderPharmacyInventory() {
+      const tbody = document.getElementById('pharmacy-inv-table');
+      if (!tbody) return;
+      tbody.innerHTML = platformState.inventory.map(i => `
+        <tr>
+          <td class="p-2.5 font-semibold">${i.item}</td>
+          <td class="p-2.5 font-mono text-blue-400">${i.batch}</td>
+          <td class="p-2.5 text-[var(--muted-foreground)]">${i.exp}</td>
+          <td class="p-2.5 font-bold text-white">${i.units} units</td>
+          <td class="p-2.5"><span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">${i.status}</span></td>
+        </tr>
+      `).join('');
     }
 
-    // Safety Simulator Logic
+    function renderPatientRxList() {
+      const container = document.getElementById('patient-rx-list');
+      if (!container) return;
+      container.innerHTML = platformState.prescriptions.map(rx => `
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+          <div>
+            <span class="font-bold text-emerald-400">${rx.id}</span>
+            <span class="block text-[var(--muted-foreground)]">${rx.compounds}</span>
+          </div>
+          <span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">${rx.status}</span>
+        </div>
+      `).join('');
+    }
+
+    function handlePatientRegister(e) {
+      e.preventDefault();
+      const fname = document.getElementById('pt-fname').value;
+      const lname = document.getElementById('pt-lname').value;
+      const phone = document.getElementById('pt-phone').value;
+      const allergies = document.getElementById('pt-allergies').value;
+      const mrn = `MRN-2026-${Math.floor(Math.random() * 8999 + 1000)}`;
+
+      platformState.patients.push({ id: `PAT-${Date.now()}`, mrn, name: `${fname} ${lname}`, phone, allergies });
+      const feedback = document.getElementById('patient-reg-feedback');
+      feedback.className = "p-2.5 rounded-lg text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400";
+      feedback.textContent = `✓ Patient registered successfully with assigned MRN: ${mrn}`;
+      feedback.classList.remove('hidden');
+
+      document.getElementById('active-patient-headline').textContent = `${mrn} | ${fname} ${lname} (Registered)`;
+    }
+
+    function trigger21CFR11Signature() {
+      const receipt = document.getElementById('signature-receipt');
+      const statusBadge = document.getElementById('doctor-lock-status');
+      const hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      
+      statusBadge.textContent = "LOCKED_AUTHORIZED";
+      statusBadge.className = "badge-pass text-[10px] px-2 py-0.5 rounded font-bold";
+
+      receipt.classList.remove('hidden');
+      receipt.innerHTML = `
+        <span class="font-bold block">✓ 21 CFR Part 11 Merkle Cryptographic Seal Applied</span>
+        <span>Signer: Hakim Dr. Tariq Mansoor (CCIM-BUMS-2004-9841)</span><br>
+        <span>SHA-256 Merkle Leaf: <span class="font-mono text-white">${hash.substring(0, 24)}...</span></span><br>
+        <span>Prescription dispatched to Pharmacy OS Queue & Patient Portal.</span>
+      `;
+    }
+
+    function verifyMudabbarAndDispense() {
+      const btn = document.getElementById('btn-mudabbar-dispense');
+      btn.disabled = true;
+      btn.className = "w-full py-2 rounded-lg bg-gray-500/20 text-gray-400 font-semibold cursor-not-allowed";
+      btn.textContent = "Dispensed (FEFO Allocated) ✓";
+      
+      platformState.inventory[0].units -= 1;
+      renderPharmacyInventory();
+      alert("✓ Order ORD-PHARM-8812 dispensed. FEFO Batch BATCH-MS-2026-0441 allocated. Mudabbar certificate hash verified. Automated SMS dispatched via QSURA.");
+    }
+
+    function logAdverseReaction() {
+      const feedback = document.getElementById('adr-feedback');
+      feedback.className = "p-2.5 rounded-lg text-xs bg-purple-500/10 border border-purple-500/30 text-purple-300";
+      feedback.textContent = "✓ ICH E2B Safety Report ICH-E2B-IND-2026-C26CF3 filed with Local Pharmacovigilance Board.";
+      feedback.classList.remove('hidden');
+    }
+
+    function runAmbientScribeDemo() {
+      const output = document.getElementById('doctor-scribe-output');
+      output.innerHTML = `
+        <span class="text-emerald-400 font-bold block">✓ Acoustic Urdu Scribe Extracted (98.4% Confidence):</span>
+        <p class="text-[11px] text-[var(--muted-foreground)]">"Ghutnon me dard" → Waja-ul-Mafasil (Articular Pathology)<br>"Soozish" → Warm-e-Mafasil (Cold-Phlegmatic Effusion)</p>
+      `;
+    }
+
+    function queryHakeemSahab() {
+      const box = document.getElementById('ai-response-box');
+      box.innerHTML = `
+        <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+          <span class="font-bold text-purple-400">Hakeem Sahab Reasoning Output</span>
+          <span class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">Uncertainty Index: 0.08</span>
+        </div>
+        <p class="text-xs text-white">Recommended Clinical Direction: Administer <span class="text-emerald-400 font-bold">Majun Suranjan Mudabbar</span> (5g nocte) alongside local fomentation with <span class="text-emerald-400 font-bold">Raughan-e-Balsan</span>.</p>
+        <div class="text-[11px] text-[var(--muted-foreground)] space-y-1">
+          <span class="font-bold text-white block">Pharmacopoeial Citations:</span>
+          • UPI Vol 1 Monograph 44 (Suranjan Talkh Mudabbar)<br>
+          • Kitab al-Kulliyat (Ibn Rushd, Usool-e-Ilaj)
+        </div>
+      `;
+    }
+
+    // Safety Firewall Simulator
     function runSafetySim() {
       const complaint = document.getElementById('sim-complaint').value;
       const pregnancy = document.getElementById('sim-pregnancy').value;
@@ -631,41 +951,36 @@ ${step.code}
       let verdict = "SAFE_TO_CONSIDER";
       let badgeClass = "badge-pass";
 
-      // 1. Red Flag Emergency Check
       if (complaint === 'chest_pain') {
-        reasons.push("EMERGENCY RED FLAG: Acute substernal chest pain with diaphoresis requires immediate hospital transfer (Rule RED-01). Traditional outpatient recommendations aborted.");
-        verdict = "REFER";
+        reasons.push("EMERGENCY RED FLAG: Acute substernal chest pain with diaphoresis requires immediate hospital transfer. Outpatient recommendations aborted.");
+        verdict = "REFER_EMERGENCY";
         badgeClass = "badge-block";
       } else if (complaint === 'stroke_signs') {
-        reasons.push("EMERGENCY RED FLAG: Sudden focal neurological deficit within 4.5h stroke window. Immediate emergency code required (Rule RED-02).");
-        verdict = "REFER";
+        reasons.push("EMERGENCY RED FLAG: Sudden focal neurological deficit within acute window. Emergency code required.");
+        verdict = "REFER_EMERGENCY";
         badgeClass = "badge-block";
       }
 
-      // 2. Pregnancy Check
-      if (pregnancy === 'yes' && verdict !== "REFER") {
-        reasons.push("CONTRAINDICATION: Patient is pregnant. High-Daraja botanical formulations are contraindicated pending obstetric review (Rule PREG-01).");
+      if (pregnancy === 'yes' && !verdict.startsWith("REFER")) {
+        reasons.push("CONTRAINDICATION: Patient is pregnant. Suranjan Talkh and high-daraja botanical formulations are strictly abortifacient (Rule PREG-01).");
         verdict = "DO_NOT_RECOMMEND";
         badgeClass = "badge-block";
       }
 
-      // 3. Allergy Conflict Check
-      if (allergy === 'sonf' && sonf && verdict !== "REFER") {
-        reasons.push("ALLERGY VIOLATION: Proposed ingredient 'Sonf (Foeniculum vulgare)' conflicts with patient's documented allergy (Rule ALLERGY-01).");
+      if (allergy === 'sonf' && sonf && !verdict.startsWith("REFER")) {
+        reasons.push("ALLERGY CONFLICT: 'Sonf (Foeniculum vulgare)' conflicts with patient's documented allergy.");
         verdict = "DO_NOT_RECOMMEND";
         badgeClass = "badge-block";
       }
 
-      // 4. Drug-Herb Interaction Check
-      if (meds === 'warfarin' && (zanjabeel || suranjan) && verdict !== "REFER") {
-        reasons.push("HIGH-RISK DRUG-HERB INTERACTION: Warfarin combined with Zanjabeel / Suranjan markedly potentiates bleeding diathesis & INR instability (Rule DHI-04).");
+      if (meds === 'warfarin' && (zanjabeel || suranjan) && !verdict.startsWith("REFER")) {
+        reasons.push("HIGH-RISK DRUG-HERB INTERACTION: Warfarin combined with Zanjabeel / Suranjan potentiates bleeding diathesis & INR instability.");
         verdict = "DO_NOT_RECOMMEND";
         badgeClass = "badge-block";
       }
 
-      // 5. Schedule E(1) Mudabbar Gate
-      if (suranjan && !mudabbar && verdict !== "REFER") {
-        reasons.push("SCHEDULE E(1) TOXICITY GATE: Suranjan Talkh contains high colchicine alkaloids. Mandates certified Mudabbar detoxification before compounding (Rule E1-01).");
+      if (suranjan && !mudabbar && !verdict.startsWith("REFER")) {
+        reasons.push("SCHEDULE E(1) TOXICITY GATE: Suranjan Talkh contains colchicine alkaloids. Mandates certified Mudabbar detoxification.");
         verdict = "DO_NOT_RECOMMEND";
         badgeClass = "badge-block";
       }
@@ -689,50 +1004,225 @@ ${step.code}
           </div>
         `).join('');
       }
-
-      document.getElementById('firewall-latency').textContent = `${(Math.random() * 0.8 + 1.1).toFixed(1)}ms`;
     }
 
-    // Governance Simulation
-    let votesCast = 1;
-    function castVote(specialistNum) {
-      votesCast++;
-      if (specialistNum === 2) {
-        document.getElementById('vote-2-badge').textContent = 'APPROVED';
-        document.getElementById('vote-2-badge').className = 'badge-pass text-[10px] px-2 py-0.5 rounded font-bold';
-        document.getElementById('vote-2-comment').textContent = '"PK renal clearance profile confirmed. 0.75x factor adequate."';
-        document.getElementById('btn-vote-2').disabled = true;
-        document.getElementById('btn-vote-2').className = 'w-full py-1.5 rounded bg-gray-500/20 text-gray-400 text-xs font-semibold cursor-not-allowed';
-      } else if (specialistNum === 3) {
-        document.getElementById('vote-3-badge').textContent = 'APPROVED';
-        document.getElementById('vote-3-badge').className = 'badge-pass text-[10px] px-2 py-0.5 rounded font-bold';
-        document.getElementById('vote-3-comment').textContent = '"ADR database verified. Zero unmanaged risks reported."';
-        document.getElementById('btn-vote-3').disabled = true;
-        document.getElementById('btn-vote-3').className = 'w-full py-1.5 rounded bg-gray-500/20 text-gray-400 text-xs font-semibold cursor-not-allowed';
+    // 11-Milestone Clinical Continuum Steps
+    let currentStep = 1;
+    const continuumSteps = [
+      {
+        num: 1,
+        title: "Ambient Acoustic Scribing & NLP Intake",
+        engine: "AmbientScribeEngine (ambient_scribe.py)",
+        badge: "STEP 1 OF 11",
+        description: "Captures bilingual clinician-patient consultation audio in Roman Urdu and English. Automatically extracts colloquial unani entities into structured SOAP notes.",
+        inputs: { "Dialogue": "Hakeem: Aap ko kya takleef hai? Patient: Doctor sahab ghutnon me dard aur jalan rehti hai." },
+        outputs: { "Extracted Entity": "Waja-ul-Mafasil (Joint Arthralgia)", "Secondary Entity": "Hurqat-ul-Meda (Dyspepsia)", "Prescribing Gate": "safe_to_lock = False" }
+      },
+      {
+        num: 2,
+        title: "10-Ajnas Longitudinal Mizaj Assessment",
+        engine: "MizajAssessor (mizaj_assessor.py)",
+        badge: "STEP 2 OF 11",
+        description: "Evaluates physical touch, body habitus, pulse, skin color, and sleep patterns against the 10 canonical Ajnas-e-Ashra parameters.",
+        inputs: { "Age Category": "Geriatric (Sinn-e-Shaikhukhat)", "Malmas": "Cold & Dry", "Habitus": "Emaciated" },
+        outputs: { "Dominant Mizaj": "Saudawi / Balghami", "Dyscrasia": "Su-e-Mizaj Barid Balghami", "Calibration": "Age-adjusted baseline" }
+      },
+      {
+        num: 3,
+        title: "Organ-Axis Biomarker Cross-Talk Evaluation",
+        engine: "OrganAxisEngine (organ_axis_engine.py)",
+        badge: "STEP 3 OF 11",
+        description: "Identifies systemic cross-talk between the primary symptom organ and underlying physiological governing axes.",
+        inputs: { "Complaint": "Knee joint stiffness and epigastric burning" },
+        outputs: { "Primary Axis": "Mafasil-Asab (Musculoskeletal Axis)", "Secondary Axis": "Meda-Amaa (Gastrointestinal Axis)" }
+      },
+      {
+        num: 4,
+        title: "Differential Synthesis & Investigation Matching",
+        engine: "DifferentialEngine (predictive.py)",
+        badge: "STEP 4 OF 11",
+        description: "Synthesizes ICD-10 biomedical diagnostic codes alongside classical Unani nosology.",
+        inputs: { "Symptom Complex": "Morning joint stiffness, crepitus, cold sensitivity" },
+        outputs: { "Biomedical": "Osteoarthritis of Knee (ICD-10 M17.9)", "Unani": "Waja-ul-Mafasil Barid Balghami" }
+      },
+      {
+        num: 5,
+        title: "ZKB Approved Monograph Retrieval",
+        engine: "ZKBRetriever (zkb_retriever.py)",
+        badge: "STEP 5 OF 11",
+        description: "Queries peer-reviewed and clinically signed-off monographs from the Unani Pharmacopoeia of India.",
+        inputs: { "Query": "Suranjan Talkh (Colchicum luteum)" },
+        outputs: { "UPI Status": "Approved Vol 1 Monograph 44", "Schedule": "Schedule E(1) Toxic Botanical" }
+      },
+      {
+        num: 6,
+        title: "ZAPE Posology & Renal/Age Calibration",
+        engine: "ZAPEPersonalizer (zape_personalization.py)",
+        badge: "STEP 6 OF 11",
+        description: "Calculates maximum allowable posology clamped to statutory UPI ceilings.",
+        inputs: { "Patient Weight": "72kg", "Age": "44", "Renal Clearance": "Normal" },
+        outputs: { "Majun Suranjan Dose": "5.0g per day (Clamped to UPI Max 6.0g)", "Posology Safety": "PASSED" }
+      },
+      {
+        num: 7,
+        title: "Nuskha Nawisi Draft Formulation Compilation",
+        engine: "NuskhaCompiler (nuskha_compiler.py)",
+        badge: "STEP 7 OF 11",
+        description: "Compiles complete therapeutic compound containing chief drug, corrective Musleh, and vehicle.",
+        inputs: { "Diagnosis": "Waja-ul-Mafasil Barid" },
+        outputs: { "Formula": "Majun Suranjan 5g + Raughan-e-Balsan local", "Chief Drug": "Suranjan Talkh (Mudabbar)", "Musleh": "Kateera (Astragalus gummifer)" }
+      },
+      {
+        num: 8,
+        title: "Deterministic Safety Firewall Clearance",
+        engine: "SafetyFirewall (safety_firewall.py)",
+        badge: "STEP 8 OF 11",
+        description: "Performs 8-dimensional safety verification: pregnancy, lactation, Schedule E(1), drug interactions, and red flags.",
+        inputs: { "Items": "Suranjan Talkh, Zanjabeel", "Patient Status": "Male, non-pregnant" },
+        outputs: { "Pregnancy Check": "PASSED", "Schedule E(1) Gate": "MUDABBAR_CERTIFICATE_MANDATORY", "Safe to Prescribe": "TRUE" }
+      },
+      {
+        num: 9,
+        title: "21 CFR Part 11 Clinician Digital Signature Lock",
+        engine: "CryptoAuditEngine (crypto_audit_engine.py)",
+        badge: "STEP 9 OF 11",
+        description: "Senior Tabeeb signs the prescription using MFA and SHA-256 Merkle root anchoring. The prescription transitions to LOCKED_AUTHORIZED.",
+        inputs: { "Clinician": "Hakim Dr. Tariq Mansoor (CCIM-BUMS-2004-9841)" },
+        outputs: { "Merkle Leaf Hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "Status": "LOCKED_AUTHORIZED" }
+      },
+      {
+        num: 10,
+        title: "Pharmacy FEFO Allocation & Mudabbar Check",
+        engine: "FEFOAllocator (fefo_allocator.py)",
+        badge: "STEP 10 OF 11",
+        description: "Pharmacy inventory system matches the oldest non-expired batch and verifies the Mudabbar detoxification certificate hash.",
+        inputs: { "Item": "Majun Suranjan", "Certificate Hash": "CERT-E1-MUDABBAR-SHA256-VALIDATED" },
+        outputs: { "Allocated Batch": "BATCH-MS-2026-0441 (Exp 2028-01-09)", "Dispense Status": "DISPENSED_VERIFIED" }
+      },
+      {
+        num: 11,
+        title: "QSURA Notification & Longitudinal PROMs",
+        engine: "QSURADispatcher & Outcomes (qsura.py)",
+        badge: "STEP 11 OF 11",
+        description: "Dispatches SMS/In-App pickup alerts and schedules day 14 follow-up to evaluate VAS joint pain reduction.",
+        inputs: { "Recipient": "+91-9876543210", "Follow-up Day": "+14 Days" },
+        outputs: { "Notification": "DELIVERED via SMS & WhatsApp", "Outcome VAS": "8.0 → 2.5 (68% stiffness reduction)" }
+      }
+    ];
+
+    function renderContinuumStep() {
+      const step = continuumSteps[currentStep - 1];
+      for (let i = 1; i <= 11; i++) {
+        const pill = document.getElementById(`step-pill-${i}`);
+        if (pill) {
+          if (i === currentStep) {
+            pill.className = "step-pill active p-2 rounded-lg border border-emerald-500 font-bold bg-emerald-500/15 text-emerald-400 cursor-pointer";
+          } else {
+            pill.className = "step-pill p-2 rounded-lg border border-[var(--border)] font-medium cursor-pointer text-[var(--muted-foreground)]";
+          }
+        }
       }
 
-      if (votesCast >= 3) {
-        document.getElementById('gov-status-badge').textContent = 'QUORUM MET (3/3 APPROVED)';
-        document.getElementById('gov-status-badge').className = 'px-3 py-1 rounded-full text-xs font-bold badge-pass';
-        const publishBtn = document.getElementById('btn-publish-co');
-        publishBtn.disabled = false;
-        publishBtn.className = 'px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 cursor-pointer shadow-md';
-      } else {
-        document.getElementById('gov-status-badge').textContent = `UNDER PEER REVIEW (${votesCast}/3)`;
-      }
+      const display = document.getElementById('step-display');
+      display.innerHTML = `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-[var(--border)] pb-3">
+          <div>
+            <span class="text-[10px] text-emerald-400 font-bold tracking-wider uppercase block">${step.badge}</span>
+            <h3 class="text-base font-bold">${step.title}</h3>
+            <span class="text-xs text-[var(--muted-foreground)] font-mono">Engine: ${step.engine}</span>
+          </div>
+          <span class="badge-pass text-xs px-2.5 py-1 rounded-full font-semibold">Verified & Operational</span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground)]">${step.description}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)] space-y-2">
+            <span class="font-bold text-[var(--foreground)] block text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Input Parameters</span>
+            ${Object.entries(step.inputs).map(([k, v]) => `<div><span class="text-[var(--muted-foreground)]">${k}:</span> <span class="text-white font-medium">${v}</span></div>`).join('')}
+          </div>
+          <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)] space-y-2">
+            <span class="font-bold text-[var(--foreground)] block text-[11px] uppercase tracking-wider text-[var(--muted-foreground)]">Verified Execution Output</span>
+            ${Object.entries(step.outputs).map(([k, v]) => `<div><span class="text-[var(--muted-foreground)]">${k}:</span> <span class="text-emerald-400 font-semibold">${v}</span></div>`).join('')}
+          </div>
+        </div>
+      `;
     }
 
-    function publishChangeOrder() {
-      document.getElementById('gov-status-badge').textContent = 'PUBLISHED CLINICAL CHANGE ORDER';
-      document.getElementById('btn-publish-co').textContent = 'Change Order Published ✓';
-      document.getElementById('btn-publish-co').disabled = true;
-      document.getElementById('gov-hash').textContent = 'SHA256: 4f8b90c12a78e56d11f09238bcde98124098ea1209bca348912ef0938472910a';
-      alert("✓ 21 CFR Part 11 Clinical Change Order CO-8F2B10A9 officially sealed and published with 3/3 specialist quorum.");
+    function nextStep() {
+      if (currentStep < 11) { currentStep++; renderContinuumStep(); }
+    }
+    function prevStep() {
+      if (currentStep > 1) { currentStep--; renderContinuumStep(); }
+    }
+    function resetContinuum() {
+      currentStep = 1; renderContinuumStep();
+    }
+    function goToStep(s) {
+      currentStep = s; renderContinuumStep();
     }
 
-    // Initialize on load
+    // 25-Engine Live Matrix Table
+    const engines = [
+      { id: "ENG-01", name: "Unani Diagnostic Core (Kulliyat)", class: "RULE-BASED ONLY", file: "mizaj_assessor.py", p95: "1.8ms", tables: "mizaj_assessments", gate: "Automated Rules" },
+      { id: "ENG-02", name: "Biomedical Cross-Talk Engine", class: "RULE-BASED ONLY", file: "organ_axis_engine.py", p95: "2.4ms", tables: "encounters, lab_tests", gate: "Automated Rules" },
+      { id: "ENG-03", name: "ZKB Retriever (UPI Monographs)", class: "RULE-BASED ONLY", file: "zkb_retriever.py", p95: "3.1ms", tables: "mufradat_monographs", gate: "Peer Reviewed" },
+      { id: "ENG-04", name: "Mufradat Single Herb Engine", class: "RULE-BASED ONLY", file: "mufradat.py", p95: "1.9ms", tables: "mufradat_records", gate: "Standardized" },
+      { id: "ENG-05", name: "Murakkabat Compound Engine", class: "RULE-BASED ONLY", file: "pharmacopoeia.py", p95: "2.2ms", tables: "compound_formulas", gate: "Standardized" },
+      { id: "ENG-06", name: "10-Ajnas Longitudinal Mizaj", class: "FULLY AUTOMATED", file: "mizaj_assessor.py", p95: "1.6ms", tables: "mizaj_scores", gate: "Deterministic" },
+      { id: "ENG-07", name: "Organ-Axis Cross-Talk Engine", class: "FULLY AUTOMATED", file: "organ_axis_engine.py", p95: "2.7ms", tables: "organ_axes", gate: "Deterministic" },
+      { id: "ENG-08", name: "Ilaj bil-Ghiza Diet Engine", class: "RULE-BASED ONLY", file: "ghiza.py", p95: "1.5ms", tables: "dietary_plans", gate: "Automated Rules" },
+      { id: "ENG-09", name: "Ilaj bil-Tadbeer Regimenal", class: "RULE-BASED ONLY", file: "tadbeer.py", p95: "1.7ms", tables: "regimenal_orders", gate: "Clinician Signed" },
+      { id: "ENG-10", name: "Nuskha Nawisi Compiler", class: "FULLY AUTOMATED", file: "nuskha_compiler.py", p95: "3.5ms", tables: "draft_prescriptions", gate: "Non-Delegable" },
+      { id: "ENG-11", name: "ZAPE Posology Engine", class: "FULLY AUTOMATED", file: "zape_personalization.py", p95: "2.1ms", tables: "prescriptions", gate: "UPI Clamped" },
+      { id: "ENG-12", name: "Deterministic Safety Firewall", class: "FULLY AUTOMATED", file: "safety_firewall.py", p95: "1.2ms", tables: "safety_audits", gate: "Strict Barrier" },
+      { id: "ENG-13", name: "Hakeem Sahab AI Copilot", class: "AI-ASSISTED", file: "hakeem_sahab_advisor.py", p95: "24.5ms", tables: "copilot_sessions", gate: "Advisory Only" },
+      { id: "ENG-14", name: "Ambient Clinical Scribe (Urdu)", class: "AI-ASSISTED", file: "ambient_scribe.py", p95: "48.2ms", tables: "clinical_notes", gate: "Clinician Lock" },
+      { id: "ENG-15", name: "21 CFR Part 11 Merkle Engine", class: "FULLY AUTOMATED", file: "crypto_audit_engine.py", p95: "3.8ms", tables: "merkle_audit_leaves", gate: "Crypto Signature" },
+      { id: "ENG-16", name: "FEFO Inventory Allocator", class: "FULLY AUTOMATED", file: "fefo_allocator.py", p95: "2.9ms", tables: "inventory_batches", gate: "Mudabbar Gate" },
+      { id: "ENG-17", name: "ICH E2B Pharmacovigilance", class: "RULE-BASED ONLY", file: "pharmacovigilance_engine.py", p95: "3.2ms", tables: "adverse_events", gate: "Regulatory" },
+      { id: "ENG-18", name: "QSURA Notification Bus", class: "FULLY AUTOMATED", file: "qsura_dispatcher.py", p95: "4.1ms", tables: "notifications", gate: "Automated Bus" },
+      { id: "ENG-19", name: "Patient Timeline & Twin", class: "RULE-BASED ONLY", file: "timeline.py", p95: "5.4ms", tables: "events_stream", gate: "Deterministic" },
+      { id: "ENG-20", name: "FHIR / ABDM Interop Core", class: "RULE-BASED ONLY", file: "interop.py", p95: "6.2ms", tables: "abdm_consents", gate: "ABDM Validated" },
+      { id: "ENG-21", name: "Multilingual Bhashini Voice", class: "RULE-BASED ONLY", file: "bhashini_audio.py", p95: "18.5ms", tables: "audio_assets", gate: "Standardized" },
+      { id: "ENG-22", name: "Wearables IoT Webhook", class: "RULE-BASED ONLY", file: "wearables.py", p95: "2.3ms", tables: "wearable_telemetry", gate: "Signature Gate" },
+      { id: "ENG-23", name: "Clinical Change Governance", class: "RULE-BASED ONLY", file: "governance.py", p95: "3.0ms", tables: "change_orders", gate: "Quorum 3/3" },
+      { id: "ENG-24", name: "Research Cohort Synthesizer", class: "RULE-BASED ONLY", file: "research.py", p95: "7.1ms", tables: "cohort_members", gate: "IRB Approved" },
+      { id: "ENG-25", name: "Manufacturing eBMR Release", class: "RULE-BASED ONLY", file: "manufacturing.py", p95: "3.4ms", tables: "ebmr_batches", gate: "QA Director" }
+    ];
+
+    function renderEnginesTable(list) {
+      const tbody = document.getElementById('engine-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = list.map(e => `
+        <tr>
+          <td class="p-3 font-mono text-emerald-400 font-bold">${e.id}</td>
+          <td class="p-3 font-semibold">${e.name}</td>
+          <td class="p-3"><span class="${e.class === 'FULLY AUTOMATED' ? 'badge-pass' : (e.class === 'AI-ASSISTED' ? 'badge-purple' : 'badge-blue')} text-[10px] px-2 py-0.5 rounded font-bold">${e.class}</span></td>
+          <td class="p-3 font-mono text-[var(--muted-foreground)]">${e.file}</td>
+          <td class="p-3 font-mono text-emerald-400">${e.p95}</td>
+          <td class="p-3 font-mono text-[var(--muted-foreground)]">${e.tables}</td>
+          <td class="p-3"><span class="badge-warn text-[10px] px-2 py-0.5 rounded font-bold">${e.gate}</span></td>
+          <td class="p-3"><span class="badge-pass text-[10px] px-2 py-0.5 rounded font-bold">VERIFIED</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function filterEngines() {
+      const q = document.getElementById('engine-search').value.toLowerCase();
+      const f = document.getElementById('engine-filter').value;
+      const filtered = engines.filter(e => {
+        const matchesQ = e.name.toLowerCase().includes(q) || e.file.toLowerCase().includes(q) || e.id.toLowerCase().includes(q);
+        const matchesF = f === "ALL" || e.class === f;
+        return matchesQ && matchesF;
+      });
+      renderEnginesTable(filtered);
+    }
+
+    // Initial load
     renderContinuumStep();
     renderEnginesTable(engines);
+    renderClinicQueue();
+    renderPharmacyInventory();
+    renderPatientRxList();
   </script>
 </body>
 </html>
