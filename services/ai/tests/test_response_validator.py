@@ -34,3 +34,20 @@ def test_parse_sections_extracts_content_under_each_header():
 def test_parse_sections_returns_all_thirteen_when_well_formed():
     sections = parse_sections(DEFAULT_WELL_FORMED_RESPONSE)
     assert set(sections.keys()) == set(REQUIRED_SECTIONS)
+
+
+def test_response_validator_rejects_missing_statutory_disclaimer():
+    """AIR-01: Response with blank or non-compliant review section triggers STATUTORY_DISCLAIMER_INVALID."""
+    corrupted = DEFAULT_WELL_FORMED_RESPONSE.replace(
+        "Yes — this is advisory only and has not been reviewed by a qualified practitioner.",
+        "Proceed with dispensing immediately without doctor review."
+    )
+    missing = validate_response_structure(corrupted)
+    assert "STATUTORY_DISCLAIMER_INVALID" in missing
+
+
+def test_response_validator_rejects_missing_section():
+    """AIR-01: Missing differential considerations header is rejected."""
+    corrupted = DEFAULT_WELL_FORMED_RESPONSE.replace("DIFFERENTIAL CONSIDERATIONS\n", "")
+    missing = validate_response_structure(corrupted)
+    assert "DIFFERENTIAL CONSIDERATIONS" in missing

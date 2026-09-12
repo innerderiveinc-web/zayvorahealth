@@ -390,6 +390,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: zayvora-ai
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "zayvora-ai-role"
+        vault.hashicorp.com/agent-inject-secret-ai-secrets.json: "secret/data/zayvora/ai"
     spec:
       containers:
         - name: ai

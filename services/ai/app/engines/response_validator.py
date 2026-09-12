@@ -28,12 +28,40 @@ REQUIRED_SECTIONS = [
 ]
 
 
+AYUSH_STATUTORY_KEYWORDS = [
+    "clinician review",
+    "advisory only",
+    "qualified practitioner",
+    "physician",
+    "hakeem",
+    "statutory",
+    "ayush",
+    "not a replacement",
+]
+
+
+def validate_statutory_disclaimer(response_text: str) -> bool:
+    """
+    Validates that the response contains the statutory AYUSH disclaimer
+    and emphasizes non-delegable clinical verification.
+    """
+    if "CLINICIAN REVIEW REQUIRED" not in response_text:
+        return False
+    parsed = parse_sections(response_text)
+    review_sec = parsed.get("CLINICIAN REVIEW REQUIRED", "").lower()
+    if not review_sec:
+        return False
+    return any(k in review_sec for k in AYUSH_STATUTORY_KEYWORDS) or "yes" in review_sec
+
+
 def validate_response_structure(response_text: str) -> list[str]:
-    """Returns a list of missing section headers. Empty list = valid."""
+    """Returns a list of missing section headers or validation errors. Empty list = valid."""
     missing = []
     for section in REQUIRED_SECTIONS:
         if section not in response_text:
             missing.append(section)
+    if "CLINICIAN REVIEW REQUIRED" not in missing and not validate_statutory_disclaimer(response_text):
+        missing.append("STATUTORY_DISCLAIMER_INVALID")
     return missing
 
 
