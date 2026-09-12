@@ -111,6 +111,7 @@ def main():
         ("AI Evaluation Lab & Security Guardrails", "services/ai", "services/ai/tests/test_evaluation_and_red_team.py"),
         ("AI Multimodal Lab Extractor & Physical Signs", "services/ai", "services/ai/tests/test_multimodal_extractor.py"),
         ("Gateway Reverse Proxy & Rate Limiting", "services/gateway", "services/gateway/tests/test_gateway.py"),
+        ("Infrastructure Helm Chart & Kubernetes Packaging", ".", "tests/test_helm_chart.py"),
     ]
 
     

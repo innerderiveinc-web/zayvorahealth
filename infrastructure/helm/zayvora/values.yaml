@@ -1,0 +1,123 @@
+global:
+  environment: production
+  imageRegistry: ghcr.io/zayvora-health
+  imagePullPolicy: IfNotPresent
+
+namespace: zayvora-production
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+  hosts:
+    - host: app.zayvora.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: zayvora-gateway
+          port: 8000
+  tls:
+    - secretName: zayvora-tls-cert
+      hosts:
+        - app.zayvora.com
+
+services:
+  gateway:
+    replicas: 4
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-gateway
+      tag: v2.0.0
+    port: 8000
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+  identity:
+    replicas: 3
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-identity
+      tag: v2.0.0
+    port: 8005
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+  clinical:
+    replicas: 4
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-clinical
+      tag: v2.0.0
+    port: 8001
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 4Gi
+  knowledge:
+    replicas: 3
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-knowledge
+      tag: v2.0.0
+    port: 8002
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 4Gi
+  therapeutic:
+    replicas: 4
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-therapeutic
+      tag: v2.0.0
+    port: 8003
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 4Gi
+  ai:
+    replicas: 4
+    image:
+      repository: ghcr.io/zayvora-health/zayvora-ai
+      tag: v2.0.0
+    port: 8004
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 4000m
+        memory: 6Gi
+    vaultAgent:
+      enabled: true
+      role: zayvora-ai-role
+      secretPath: secret/data/zayvora/ai
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+
+config:
+  logLevel: INFO
+  enableOtelTracing: "true"
+  otelCollectorEndpoint: "http://otel-collector.monitoring.svc.cluster.local:4317"
+  corsAllowedOrigins: "https://app.zayvora.com,https://portal.zayvora.com,https://clinic.zayvora.com"

@@ -1,0 +1,19 @@
+{{- range $serviceName, $serviceConfig := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-{{ $serviceName }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: zayvora-{{ $serviceName }}
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-{{ $serviceName }}
+  ports:
+    - port: {{ $serviceConfig.port }}
+      targetPort: {{ $serviceConfig.port }}
+      name: http
+{{- end }}

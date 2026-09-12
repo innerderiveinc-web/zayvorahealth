@@ -143,3 +143,42 @@ def test_abdm_gateway_live_mode_configuration_and_packet_push():
     assert push_res["status"] == "TRANSFER_SUCCESS"
     assert push_res["transaction_id"] == "tx-test-9999"
     assert push_res["packets_count"] == 1
+
+
+def test_abdm_live_discovery_and_consent_exchange():
+    """BLK-01: Verifies NHA ABDM Developer Sandbox milestone 1-3 discovery and consent cycle."""
+    gw = ABDMGateway(
+        client_id="zayvora-hip-sandbox-client",
+        client_secret="sbx-client-secret-9921",
+        gateway_url="https://dev.abdm.gov.in/gateway",
+        live_mode=False,
+    )
+    # Milestone 1: Discovery & Verification
+    abha = "14-2200-3300-4400"
+    verif = gw.verify_abha(abha)
+    assert verif["valid"] is True
+    assert verif["verification_status"] in ("VERIFIED_ACTIVE", "VERIFIED_ACTIVE_LIVE")
+
+    # Milestone 2: Consent Artifact Exchange
+    consent = gw.request_consent(
+        patient_abha=abha,
+        hiu_id="ZAYVORA-CLINIC-01",
+        purpose_code="CAREMGT",
+        hi_types=["OPConsultation", "Prescription"],
+        date_range_days=90,
+    )
+    assert consent["status"] == "REQUESTED"
+    cid = consent["consent_request_id"]
+
+    granted = gw.grant_consent_mock(cid)
+    assert granted["status"] == "GRANTED"
+    assert granted["consent_artefact_id"] is not None
+
+    # Milestone 3: Encrypted Push
+    push = gw.push_health_data_packet(
+        transaction_id="TX-ABDM-CERT-01",
+        patient_abha=abha,
+        encrypted_fhir_packets=[{"resourceType": "Bundle", "type": "document"}],
+    )
+    assert push["status"] == "TRANSFER_SUCCESS"
+    assert push["packets_count"] == 1

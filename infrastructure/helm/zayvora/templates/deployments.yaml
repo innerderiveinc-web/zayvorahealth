@@ -1,0 +1,60 @@
+{{- range $serviceName, $serviceConfig := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-{{ $serviceName }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/name: zayvora-{{ $serviceName }}
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: {{ $serviceConfig.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-{{ $serviceName }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-{{ $serviceName }}
+      {{- if and $serviceConfig.vaultAgent $serviceConfig.vaultAgent.enabled }}
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: {{ $serviceConfig.vaultAgent.role | quote }}
+        vault.hashicorp.com/agent-inject-secret-ai-secrets.json: {{ $serviceConfig.vaultAgent.secretPath | quote }}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ $serviceName }}
+          image: "{{ $serviceConfig.image.repository }}:{{ $serviceConfig.image.tag }}"
+          imagePullPolicy: {{ $.Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: {{ $serviceConfig.port }}
+              name: http
+          envFrom:
+            - configMapRef:
+                name: {{ include "zayvora.fullname" $ }}-config
+            - secretRef:
+                name: {{ include "zayvora.fullname" $ }}-secrets
+          resources:
+            {{- toYaml $serviceConfig.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ $serviceConfig.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ $serviceConfig.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+{{- end }}
