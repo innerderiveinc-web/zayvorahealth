@@ -7,6 +7,8 @@ from app.core.pharmacopoeia import (
     get_schedule_e1_poisons,
     get_upi_mufradat,
     match_schedule_e1_substance,
+    get_mufrad_by_wfo_id,
+    get_compound_analytical_specs,
 )
 
 
@@ -117,3 +119,28 @@ def test_nfum_compound_formulations_registry():
     itrifal = get_compound_by_name("Itrifal Kishneezi")
     assert itrifal is not None
     assert itrifal["schedule_e1_warning"] is False
+
+
+def test_wfo_taxonomy_harmonization_and_analytical_specs():
+    # 1. Verify WFO ID lookup
+    suranjan = get_mufrad_by_wfo_id("wfo-0000613248")
+    assert suranjan is not None
+    assert suranjan["name"] == "Suranjan Talkh"
+    assert suranjan["family"] == "Colchicaceae"
+    assert suranjan["powo_id"].startswith("urn:lsid:ipni.org")
+
+    asgandh = get_mufrad_by_wfo_id("wfo-0001031317")
+    assert asgandh is not None
+    assert asgandh["name"] == "Asgandh"
+    assert asgandh["family"] == "Solanaceae"
+
+    # 2. Verify Murakkabat analytical release specifications
+    specs = get_compound_analytical_specs("Majun Suranjan")
+    assert specs is not None
+    assert "heavy_metals_ppm" in specs
+    assert specs["heavy_metals_ppm"]["lead_max"] <= 10.0
+    assert specs["heavy_metals_ppm"]["arsenic_max"] <= 3.0
+    assert specs["total_ash_max_pct"] <= 10.0
+    assert "microbial_limits" in specs
+    assert specs["microbial_limits"]["e_coli"] == "absent"
+

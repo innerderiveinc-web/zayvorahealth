@@ -744,3 +744,123 @@ def get_compound_by_name(name: str) -> dict[str, Any] | None:
         if target in comp["name"].lower() or comp["name"].lower() in target:
             return comp
     return None
+
+
+WFO_POWO_TAXONOMY_MAP: dict[str, dict[str, str]] = {
+    "upi-suranjan-talkh": {
+        "wfo_id": "wfo-0000613248",
+        "powo_id": "urn:lsid:ipni.org:names:533162-1",
+        "family": "Colchicaceae",
+        "accepted_name": "Colchicum luteum Baker",
+    },
+    "upi-kuchla": {
+        "wfo_id": "wfo-0000494488",
+        "powo_id": "urn:lsid:ipni.org:names:547285-1",
+        "family": "Loganiaceae",
+        "accepted_name": "Strychnos nux-vomica L.",
+    },
+    "upi-asgandh": {
+        "wfo_id": "wfo-0001031317",
+        "powo_id": "urn:lsid:ipni.org:names:821360-1",
+        "family": "Solanaceae",
+        "accepted_name": "Withania somnifera (L.) Dunal",
+    },
+    "upi-zanjabeel": {
+        "wfo_id": "wfo-0000499632",
+        "powo_id": "urn:lsid:ipni.org:names:798411-1",
+        "family": "Zingiberaceae",
+        "accepted_name": "Zingiber officinale Roscoe",
+    },
+    "upi-filfil-siyah": {
+        "wfo_id": "wfo-0000486022",
+        "powo_id": "urn:lsid:ipni.org:names:682498-1",
+        "family": "Piperaceae",
+        "accepted_name": "Piper nigrum L.",
+    },
+    "upi-asal-us-soos": {
+        "wfo_id": "wfo-0000204781",
+        "powo_id": "urn:lsid:ipni.org:names:496929-1",
+        "family": "Fabaceae",
+        "accepted_name": "Glycyrrhiza glabra L.",
+    },
+    "upi-sana-makki": {
+        "wfo_id": "wfo-0000192837",
+        "powo_id": "urn:lsid:ipni.org:names:484672-1",
+        "family": "Fabaceae",
+        "accepted_name": "Senna alexandrina Mill.",
+    },
+    "upi-ustukhuddus": {
+        "wfo_id": "wfo-0000224192",
+        "powo_id": "urn:lsid:ipni.org:names:449082-1",
+        "family": "Lamiaceae",
+        "accepted_name": "Lavandula stoechas L.",
+    },
+    "upi-haleela-zard": {
+        "wfo_id": "wfo-0000321589",
+        "powo_id": "urn:lsid:ipni.org:names:171092-1",
+        "family": "Combretaceae",
+        "accepted_name": "Terminalia chebula Retz.",
+    },
+    "upi-kishneez": {
+        "wfo_id": "wfo-0000620831",
+        "powo_id": "urn:lsid:ipni.org:names:840742-1",
+        "family": "Apiaceae",
+        "accepted_name": "Coriandrum sativum L.",
+    },
+    "upi-bhang": {
+        "wfo_id": "wfo-0000584441",
+        "powo_id": "urn:lsid:ipni.org:names:306087-2",
+        "family": "Cannabaceae",
+        "accepted_name": "Cannabis sativa L.",
+    },
+    "upi-bhilawa": {
+        "wfo_id": "wfo-0000713401",
+        "powo_id": "urn:lsid:ipni.org:names:70685-1",
+        "family": "Anacardiaceae",
+        "accepted_name": "Semecarpus anacardium L.f.",
+    },
+}
+
+DEFAULT_ANALYTICAL_SPECS: dict[str, Any] = {
+    "heavy_metals_ppm": {"lead_max": 10.0, "arsenic_max": 3.0, "cadmium_max": 0.3, "mercury_max": 1.0},
+    "total_ash_max_pct": 8.0,
+    "acid_insoluble_ash_max_pct": 2.0,
+    "water_soluble_extractive_min_pct": 18.0,
+    "alcohol_soluble_extractive_min_pct": 12.0,
+    "microbial_limits": {"total_aerobic_count_max": 10000, "yeast_mold_max": 100, "e_coli": "absent", "salmonella": "absent"},
+    "qc_specification_standard": "Unani Pharmacopoeia of India (UPI) / WHO Guidelines for Quality Control of Herbal Materials",
+}
+
+# Auto-enrich registries with WFO taxonomy and analytical release specs
+for item in UPI_MUFRADAT_REGISTRY:
+    tax = WFO_POWO_TAXONOMY_MAP.get(item["id"])
+    if tax:
+        item["wfo_id"] = tax["wfo_id"]
+        item["powo_id"] = tax["powo_id"]
+        item["family"] = tax["family"]
+    else:
+        item["wfo_id"] = ""
+        item["powo_id"] = ""
+        item["family"] = ""
+
+for comp in NFUM_COMPOUND_REGISTRY:
+    if "analytical_release_specs" not in comp:
+        comp["analytical_release_specs"] = dict(DEFAULT_ANALYTICAL_SPECS)
+
+
+def get_mufrad_by_wfo_id(wfo_id: str) -> dict[str, Any] | None:
+    """Looks up a single drug by World Flora Online (WFO) identifier."""
+    target = wfo_id.strip().lower()
+    for item in UPI_MUFRADAT_REGISTRY:
+        if item.get("wfo_id", "").lower() == target:
+            return item
+    return None
+
+
+def get_compound_analytical_specs(name_or_id: str) -> dict[str, Any] | None:
+    """Returns analytical quality control and release specifications for a Murakkab formulation."""
+    comp = get_compound_by_name(name_or_id)
+    if comp:
+        return comp.get("analytical_release_specs")
+    return None
+
