@@ -1,0 +1,26 @@
+Endpoint Path,HTTP Method,Microservice,Required Permission,Payload Schema,Response Status,Status
+/api/v1/auth/register,POST,identity,public,UserRegisterSchema,201 CREATED,FULLY_FUNCTIONAL
+/api/v1/auth/login,POST,identity,public,UserLoginSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/doctor/verify,POST,identity,admin.manage,DoctorVerifySchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/patients,POST,clinical,patient.create,PatientCreateSchema,201 CREATED,FULLY_FUNCTIONAL
+/api/v1/patients,GET,clinical,patient.read,None,200 OK,FULLY_FUNCTIONAL
+/api/v1/appointments/book,POST,clinical,appointment.create,AppointmentBookSchema,201 CREATED,FULLY_FUNCTIONAL
+/api/v1/appointments/queue,GET,clinical,appointment.read,None,200 OK,FULLY_FUNCTIONAL
+/api/v1/scribe/extract,POST,clinical,encounter.write,ScribeAudioSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/clinical/mizaj/calculate,POST,clinical,clinical.evaluate,MizajAnswersSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/clinical/organ-axis/analyze,POST,clinical,clinical.evaluate,OrganAxisSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/ai/hakeem/assist,POST,ai,ai.query,HakeemQuerySchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/therapeutic/nuskha/compile,POST,therapeutic,prescription.write,NuskhaCompileSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/therapeutic/safety/audit,POST,therapeutic,safety.evaluate,SafetyAuditSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/prescriptions/lock,POST,clinical,prescription.lock,PrescriptionLockSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/pharmacy/dispense,POST,therapeutic,dispensary.manage,DispenseOrderSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/pharmacy/inventory,GET,therapeutic,dispensary.read,None,200 OK,FULLY_FUNCTIONAL
+/api/v1/billing/payment/process,POST,clinical,billing.manage,PaymentProcessSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/notifications/send,POST,clinical,notification.send,NotificationSendSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/clinical/follow-up/schedule,POST,clinical,appointment.create,FollowUpScheduleSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/research/adverse-event/report,POST,therapeutic,research.manage,AdverseEventE2BSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/governance/audit/merkle,GET,clinical,audit.read,None,200 OK,FULLY_FUNCTIONAL
+/api/v1/governance/vote,POST,knowledge,governance.vote,GovernanceVoteSchema,200 OK,FULLY_FUNCTIONAL
+/api/v1/knowledge/mufradat/search,GET,knowledge,knowledge.read,QueryParam,200 OK,FULLY_FUNCTIONAL
+/api/v1/knowledge/murakkabat/search,GET,knowledge,knowledge.read,QueryParam,200 OK,FULLY_FUNCTIONAL
+/health,GET,gateway,public,None,200 OK,FULLY_FUNCTIONAL

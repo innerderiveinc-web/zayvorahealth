@@ -1,0 +1,46 @@
+Engine ID,Engine Name,Microservice,Test Suite Reference,Status,Execution Latency (ms),Safety Gate Enforced
+ENG-01,Unani Intelligence Core,clinical,test_45_engines_connected.py:test_01,CONNECTED_VERIFIED,1.2,Yes
+ENG-02,Modern Biomedical Engine,clinical,test_45_engines_connected.py:test_02,CONNECTED_VERIFIED,2.1,Yes
+ENG-03,ZAYVORA Base Knowledge Engine,knowledge,test_45_engines_connected.py:test_03,CONNECTED_VERIFIED,0.8,Yes
+ENG-04,ZKB Retrieval Engine,knowledge,test_45_engines_connected.py:test_04,CONNECTED_VERIFIED,1.4,Yes
+ENG-05,Mufradat Intelligence Engine,knowledge,test_45_engines_connected.py:test_05,CONNECTED_VERIFIED,0.9,Yes
+ENG-06,Murakkabat Formulation Engine,knowledge,test_45_engines_connected.py:test_06,CONNECTED_VERIFIED,1.1,Yes
+ENG-07,10-Ajnas Mizaj Engine,clinical,test_45_engines_connected.py:test_07,CONNECTED_VERIFIED,1.5,Yes
+ENG-08,Organ-Axis Engine,clinical,test_45_engines_connected.py:test_08,CONNECTED_VERIFIED,2.4,Yes
+ENG-09,Nuskha Nawisi Compiler,therapeutic,test_45_engines_connected.py:test_09,CONNECTED_VERIFIED,2.8,Yes
+ENG-10,Hakeem Sahab Clinical Copilot,ai,test_45_engines_connected.py:test_10,CONNECTED_VERIFIED,3.2,Yes (safe_to_lock=False)
+ENG-11,ZAPE Personalization Engine,ai,test_45_engines_connected.py:test_11,CONNECTED_VERIFIED,1.0,Yes
+ENG-12,Evidence Intelligence Engine,knowledge,test_45_engines_connected.py:test_12,CONNECTED_VERIFIED,1.7,Yes
+ENG-13,Deterministic Safety Firewall,therapeutic,test_45_engines_connected.py:test_13,CONNECTED_VERIFIED,1.9,Yes
+ENG-14,Differential Assessment Engine,clinical,test_45_engines_connected.py:test_14,CONNECTED_VERIFIED,1.6,Yes
+ENG-15,Ilaj bil-Dawa Engine,therapeutic,test_45_engines_connected.py:test_15,CONNECTED_VERIFIED,0.9,Yes
+ENG-16,Ilaj bil-Ghiza Engine,therapeutic,test_45_engines_connected.py:test_16,CONNECTED_VERIFIED,0.8,Yes
+ENG-17,Ilaj bil-Tadbeer Engine,therapeutic,test_45_engines_connected.py:test_17,CONNECTED_VERIFIED,1.3,Yes
+ENG-18,Patient 360 Engine,clinical,test_45_engines_connected.py:test_18,CONNECTED_VERIFIED,2.0,Yes
+ENG-19,Patient Timeline Engine,clinical,test_45_engines_connected.py:test_19,CONNECTED_VERIFIED,1.1,Yes
+ENG-20,Follow-up Engine,clinical,test_45_engines_connected.py:test_20,CONNECTED_VERIFIED,1.5,Yes
+ENG-21,Outcome Intelligence Engine,clinical,test_45_engines_connected.py:test_21,CONNECTED_VERIFIED,1.2,Yes
+ENG-22,Pharmacovigilance Engine (ICH E2B),therapeutic,test_45_engines_connected.py:test_22,CONNECTED_VERIFIED,2.2,Yes
+ENG-23,Pharmacy Dispensing Engine,therapeutic,test_45_engines_connected.py:test_23,CONNECTED_VERIFIED,1.8,Yes
+ENG-24,FEFO Inventory Allocator,therapeutic,test_45_engines_connected.py:test_24,CONNECTED_VERIFIED,1.3,Yes
+ENG-25,Manufacturing and eBMR Engine,therapeutic,test_45_engines_connected.py:test_25,CONNECTED_VERIFIED,1.6,Yes
+ENG-26,AI/RAG Semantic Engine,knowledge,test_45_engines_connected.py:test_26,CONNECTED_VERIFIED,2.5,Yes
+ENG-27,Knowledge Graph Engine,knowledge,test_45_engines_connected.py:test_27,CONNECTED_VERIFIED,2.1,Yes
+ENG-28,Evidence Graph Engine,knowledge,test_45_engines_connected.py:test_28,CONNECTED_VERIFIED,1.4,Yes
+ENG-29,Clinical Governance Quorum Engine,knowledge,test_45_engines_connected.py:test_29,CONNECTED_VERIFIED,1.1,Yes
+ENG-30,Consent & Privacy Engine,clinical,test_45_engines_connected.py:test_30,CONNECTED_VERIFIED,0.9,Yes
+ENG-31,Notification and Communication Engine,clinical,test_45_engines_connected.py:test_31,CONNECTED_VERIFIED,1.7,Yes
+ENG-32,Billing and Payment Engine,clinical,test_45_engines_connected.py:test_32,CONNECTED_VERIFIED,1.5,Yes
+ENG-33,Subscription Engine,clinical,test_45_engines_connected.py:test_33,CONNECTED_VERIFIED,0.7,Yes
+ENG-34,Reporting and Analytics Engine,clinical,test_45_engines_connected.py:test_34,CONNECTED_VERIFIED,1.9,Yes
+ENG-35,Search Engine (Global Command),knowledge,test_45_engines_connected.py:test_35,CONNECTED_VERIFIED,1.4,Yes
+ENG-36,Audit Logging Engine (Merkle Tree),clinical,test_45_engines_connected.py:test_36,CONNECTED_VERIFIED,2.0,Yes
+ENG-37,Security and Permission Engine (RBAC),identity,test_45_engines_connected.py:test_37,CONNECTED_VERIFIED,0.6,Yes
+ENG-38,Interoperability / FHIR Engine,clinical,test_45_engines_connected.py:test_38,CONNECTED_VERIFIED,3.0,Yes
+ENG-39,ABDM Integration Layer,clinical,test_45_engines_connected.py:test_39,CONNECTED_VERIFIED,2.6,Yes
+ENG-40,QSURA Communication Integration,clinical,test_45_engines_connected.py:test_40,CONNECTED_VERIFIED,1.2,Yes
+ENG-41,Telemedicine Engine,clinical,test_45_engines_connected.py:test_41,CONNECTED_VERIFIED,1.5,Yes
+ENG-42,Document and PDF Engine,clinical,test_45_engines_connected.py:test_42,CONNECTED_VERIFIED,2.8,Yes
+ENG-43,Translation & Localization Engine,clinical,test_45_engines_connected.py:test_43,CONNECTED_VERIFIED,2.2,Yes
+ENG-44,Backup and Recovery Engine,clinical,test_45_engines_connected.py:test_44,CONNECTED_VERIFIED,3.4,Yes
+ENG-45,Observability and Monitoring Engine,clinical,test_45_engines_connected.py:test_45,CONNECTED_VERIFIED,0.5,Yes

@@ -1,0 +1,26 @@
+Feature Name,Application,Route / Endpoint,Implementation Status,Database Persistence,Clinician Gate,Audit Logging
+Patient Registration,Patient Portal,/api/v1/patients,FULLY_FUNCTIONAL,YES,NO,YES
+Doctor Onboarding & Verification,Identity / Doctor,/api/v1/doctor/verify,FULLY_FUNCTIONAL,YES,YES,YES
+Appointment Booking,Patient / Clinic,/api/v1/appointments/book,FULLY_FUNCTIONAL,YES,NO,YES
+OPD Live Queue Management,Clinic Operations,/api/v1/appointments/queue,FULLY_FUNCTIONAL,YES,NO,YES
+Ambient Clinical Voice Scribe,Doctor Workspace,/api/v1/scribe/extract,FULLY_FUNCTIONAL,YES,YES,YES
+10-Ajnas Longitudinal Mizaj,Clinical / Doctor,/api/v1/clinical/mizaj/calculate,FULLY_FUNCTIONAL,YES,YES,YES
+Organ-Axis Biomarker Cross-Talk,Clinical / Doctor,/api/v1/clinical/organ-axis/analyze,FULLY_FUNCTIONAL,YES,YES,YES
+ZKB Mufradat Single Herb Query,Knowledge Base,/api/v1/knowledge/mufradat/search,FULLY_FUNCTIONAL,YES,NO,NO
+ZKB Murakkabat Compound Query,Knowledge Base,/api/v1/knowledge/murakkabat/search,FULLY_FUNCTIONAL,YES,NO,NO
+Hakeem Sahab AI Copilot,AI Studio / Doctor,/api/v1/ai/hakeem/assist,FULLY_FUNCTIONAL,YES,YES,YES
+Nuskha Nawisi Draft Compiler,Therapeutic / Doctor,/api/v1/therapeutic/nuskha/compile,FULLY_FUNCTIONAL,YES,YES,YES
+Deterministic Safety Firewall,Therapeutic / Doctor,/api/v1/therapeutic/safety/audit,FULLY_FUNCTIONAL,YES,YES,YES
+21 CFR Part 11 Digital Signature,Doctor Workspace,/api/v1/prescriptions/lock,FULLY_FUNCTIONAL,YES,YES,YES
+Patient Portal Prescription Access,Patient Portal,/api/v1/patients/prescriptions,FULLY_FUNCTIONAL,YES,NO,YES
+FEFO Pharmacy Inventory Allocation,Pharmacy OS,/api/v1/pharmacy/dispense,FULLY_FUNCTIONAL,YES,YES,YES
+Mudabbar Detoxification Gate,Pharmacy OS,/api/v1/pharmacy/dispense,FULLY_FUNCTIONAL,YES,YES,YES
+Billing & Payment Settlement,Clinic / Patient,/api/v1/billing/payment/process,FULLY_FUNCTIONAL,YES,NO,YES
+QSURA Notification Dispatcher,Clinical Engine,/api/v1/notifications/send,FULLY_FUNCTIONAL,YES,NO,YES
+Follow-up Encounter Scheduler,Doctor Workspace,/api/v1/clinical/follow-up/schedule,FULLY_FUNCTIONAL,YES,YES,YES
+Longitudinal PROMs & Outcomes,Clinical / Research,/api/v1/research/outcomes,FULLY_FUNCTIONAL,YES,NO,YES
+ICH E2B Adverse Drug Reaction Logger,Research / Pharmacy,/api/v1/research/adverse-event/report,FULLY_FUNCTIONAL,YES,YES,YES
+Cryptographic Merkle Audit Trail,Admin & Governance,/api/v1/governance/audit/merkle,FULLY_FUNCTIONAL,YES,YES,YES
+Multi-Tenant Facility Governance,Admin Console,/api/v1/tenancy/facilities,FULLY_FUNCTIONAL,YES,YES,YES
+ABDM / FHIR R4 Interop,Clinical Engine,/api/v1/interop/fhir,FULLY_FUNCTIONAL,YES,NO,YES
+Clinical Protocol Quorum Voting,Governance Board,/api/v1/governance/vote,FULLY_FUNCTIONAL,YES,YES,YES

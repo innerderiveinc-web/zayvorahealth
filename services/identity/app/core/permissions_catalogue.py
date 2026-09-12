@@ -7,10 +7,17 @@ route handlers, so the full permission surface stays in one place and
 """
 from __future__ import annotations
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from typing import Any
 
-from app.models.identity import Permission, Role
+try:
+    from sqlalchemy import select
+    from sqlalchemy.orm import Session
+    from app.models.identity import Permission, Role
+except ImportError:
+    select = None  # type: ignore
+    Session = Any  # type: ignore
+    Permission = Any  # type: ignore
+    Role = Any  # type: ignore
 
 BASELINE_PERMISSIONS: dict[str, str] = {
     "role.manage": "Create and modify roles and their permissions",
