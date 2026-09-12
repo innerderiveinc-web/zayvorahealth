@@ -35,7 +35,9 @@ export default function App() {
         {currentScreen === "home" && <HomeScreen onNavigate={(s) => setCurrentScreen(s)} />}
         {currentScreen === "prescriptions" && <PrescriptionsScreen onBack={() => setCurrentScreen("home")} />}
         {currentScreen === "lifestyle" && <LifestyleTrackerScreen onBack={() => setCurrentScreen("home")} />}
-        {currentScreen === "appointments" && <AppointmentsScreen onBack={() => setCurrentScreen("home")} />}
+        {currentScreen === "appointments" && (
+          <AppointmentsScreen onBack={() => setCurrentScreen("home")} onNavigate={(s) => setCurrentScreen(s)} />
+        )}
         {currentScreen === "teleconsult" && <TeleConsultRoom onEndCall={() => setCurrentScreen("home")} />}
         {currentScreen === "clinician" && <ClinicianCompanionScreen onBack={() => setCurrentScreen("home")} />}
       </View>

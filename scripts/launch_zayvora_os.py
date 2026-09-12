@@ -857,7 +857,9 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
             samples = driver.acquire_waveform_stream(duration_seconds=2.0)
             result = driver.analyze_pulse(patient_id="PAT-774901", samples=samples)
             from dataclasses import asdict
-            self._send_json(asdict(result))
+            res_dict = asdict(result)
+            res_dict["samples_count"] = len(samples)
+            self._send_json(res_dict)
         except Exception as e:
             self._send_json({"error": str(e), "status": "SIMULATED_NABZ_STREAM", "heart_rate_bpm": 74})
 
@@ -930,7 +932,7 @@ def run_server(host: str = "0.0.0.0", port: int = 8080):
     print(" 🚀 ZAYVORA HEALTH OS™ — PRODUCTION SYSTEM DAEMON ONLINE")
     print("=" * 80)
     print(f" Brand:          ZAYVORA Health OS — Clinician-Supervised Unani Intelligence")
-    print(f" Version:        v4.2.0-LTS (Production Grade)")
+    print(f" Version:        v5.0-Enterprise (Production Grade)")
     print(f" Web Cockpit:    http://localhost:{port}")
     print(f" Health Check:   http://localhost:{port}/health")
     print(f" Definition:     25/25 Milestones Verified (0 Open P0/P1 Risks)")

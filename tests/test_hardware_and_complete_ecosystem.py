@@ -357,6 +357,77 @@ class TestClinicalHardwareAndEcosystem(unittest.TestCase):
             self.assertIn("CIE-Lab", pcontent)
             self.assertIn("Dispensary Cold-Chain IoT", pcontent)
 
+    # -------------------------------------------------------------------------
+    # PART 9: RUNTIME DAEMON HARDWARE REST HANDLERS EXECUTION
+    # -------------------------------------------------------------------------
+    def test_09_runtime_daemon_hardware_endpoints_execution(self):
+        """Validates in-memory execution of all 5 hardware REST endpoints in ZayvoraOSHandler."""
+        import io
+        from scripts.launch_zayvora_os import ZayvoraOSHandler, PlatformDatabase
+
+        class MockServer:
+            pass
+
+        def make_handler(path: str, method: str = "GET", body: str = None) -> ZayvoraOSHandler:
+            h = ZayvoraOSHandler.__new__(ZayvoraOSHandler)
+            h.client_address = ("127.0.0.1", 12345)
+            h.path = path
+            h.command = method
+            h.headers = {"Content-Length": str(len(body))} if body else {}
+            h.rfile = io.BytesIO(body.encode() if body else b"")
+            h.wfile = io.BytesIO()
+            h.server = MockServer()
+            h.server.db = PlatformDatabase()
+            h.requestline = f"{method} {path} HTTP/1.1"
+            h.request_version = "HTTP/1.1"
+            return h
+
+        # 1. Nabz Stream Endpoint
+        h_nabz = make_handler("/api/v1/hardware/nabz/stream?duration=1.0")
+        h_nabz.do_GET()
+        res_nabz = h_nabz.wfile.getvalue().decode()
+        self.assertIn("200 OK", res_nabz)
+        self.assertIn("samples_count", res_nabz)
+        self.assertIn("heart_rate_bpm", res_nabz)
+
+        # 2. Wearables BLE Sync Endpoint
+        h_ble = make_handler("/api/v1/hardware/wearables/ble/sync")
+        h_ble.do_GET()
+        res_ble = h_ble.wfile.getvalue().decode()
+        self.assertIn("200 OK", res_ble)
+        self.assertIn("quwwat_hayawaniyyah_index", res_ble)
+
+        # 3. Dispensary Cold-Chain Endpoint
+        h_cc = make_handler("/api/v1/hardware/dispensary/cold-chain")
+        h_cc.do_GET()
+        res_cc = h_cc.wfile.getvalue().decode()
+        self.assertIn("200 OK", res_cc)
+        self.assertIn("temperature_celsius", res_cc)
+        self.assertIn("is_temperature_compliant", res_cc)
+
+        # 4. Tongue Multispectral POST Endpoint
+        h_tongue = make_handler(
+            "/api/v1/hardware/tongue/analyze",
+            method="POST",
+            body=json.dumps({"patient_id": "PAT-774901", "clinical_notes": "yellow saburra, dry"})
+        )
+        h_tongue.do_POST()
+        res_tongue = h_tongue.wfile.getvalue().decode()
+        self.assertIn("200 OK", res_tongue)
+        self.assertIn("coating_color", res_tongue)
+
+        # 5. Botanical QC Spectrometer POST Endpoint
+        h_botanical = make_handler(
+            "/api/v1/hardware/botanical/qc-scan",
+            method="POST",
+            body=json.dumps({"botanical_name": "Withania somnifera", "lot_number": "BMR-2026-MVP-09"})
+        )
+        h_botanical.do_POST()
+        res_botanical = h_botanical.wfile.getvalue().decode()
+        self.assertIn("200 OK", res_botanical)
+        self.assertIn("qc_disposition", res_botanical)
+        self.assertIn("certificate_of_analysis_hash", res_botanical)
+
 
 if __name__ == "__main__":
     unittest.main()

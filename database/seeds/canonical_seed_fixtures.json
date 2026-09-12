@@ -4,7 +4,7 @@
     "name": "ZAYVORA Prime Clinic (New Delhi)",
     "slug": "zayvora-prime-delhi",
     "is_active": true,
-    "created_at": "2026-09-12T07:22:28.684456+00:00"
+    "created_at": "2026-09-12T19:57:38.803326+00:00"
   },
   "roles": [
     {
@@ -123,7 +123,7 @@
       "encounter_type": "consultation",
       "chief_complaint": "Fatigue, bilateral calf heaviness, postprandial sluggishness, and dry throat.",
       "status": "closed",
-      "started_at": "2026-09-07T07:22:28.684456+00:00"
+      "started_at": "2026-09-07T19:57:38.803326+00:00"
     }
   ],
   "prescriptions": [
@@ -147,19 +147,19 @@
       "medication_name": "Qurs Ziabetus Khas",
       "batch_code": "BATCH-ZIA-2026-A",
       "quantity_on_hand": 1500,
-      "expiration_date": "2027-09-12T07:22:28.684456+00:00"
+      "expiration_date": "2027-09-12T19:57:38.803326+00:00"
     },
     {
       "medication_name": "Khamira Gaozaban Ambari",
       "batch_code": "BATCH-GAO-2026-B",
       "quantity_on_hand": 400,
-      "expiration_date": "2027-03-11T07:22:28.684456+00:00"
+      "expiration_date": "2027-03-11T19:57:38.803326+00:00"
     },
     {
       "medication_name": "Hab-e-Suranjan Talkh (Mudabbar)",
       "batch_code": "BATCH-SUR-2026-M",
       "quantity_on_hand": 800,
-      "expiration_date": "2027-05-10T07:22:28.684456+00:00"
+      "expiration_date": "2027-05-10T19:57:38.803326+00:00"
     }
   ]
 }
