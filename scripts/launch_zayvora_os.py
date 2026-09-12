@@ -164,7 +164,7 @@ DB = PlatformDatabase()
 class ZayvoraOSHandler(BaseHTTPRequestHandler):
     """HTTP request handler for ZAYVORA Health OS Web Cockpit & Core APIs."""
 
-    server_version = "ZAYVORA-HealthOS/4.2.0-LTS"
+    server_version = "ZAYVORA-HealthOS/5.0.0-Enterprise"
 
     def do_OPTIONS(self):
         self.send_response(HTTPStatus.NO_CONTENT)

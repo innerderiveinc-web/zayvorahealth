@@ -7,11 +7,11 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
-      --background: #090d16;
-      --card: #111827;
-      --border: #1f2937;
-      --primary: #059669;
-      --primary-hover: #10b981;
+      --background: #0a0f1d;
+      --card: #1e293b;
+      --border: #334155;
+      --primary: #0d9488;
+      --primary-hover: #14b8a6;
       --primary-light: rgba(5, 150, 105, 0.15);
       --foreground: #f9fafb;
       --muted: #9ca3af;
@@ -77,7 +77,7 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="font-bold tracking-tight text-lg text-white">ZAYVORA Health OS™</span>
-            <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold badge-emerald">Clinical v4.2</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold badge-emerald">Enterprise Clinical OS v5.0</span>
           </div>
           <p class="text-xs text-[var(--muted)]">National Institute of Integrative Medicine • Central Clinical Facility</p>
         </div>
@@ -577,22 +577,47 @@
               </div>
             </div>
 
-            <!-- Queue & Daily Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-              <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2">
-                <span class="text-[var(--muted)] font-medium block">Waiting in Queue</span>
-                <span class="text-2xl font-bold text-white">1 Patient</span>
-                <p class="text-[11px] text-emerald-400">Next: Hamza Farooqi (Room 204)</p>
+            <!-- 8 Executive Overview Widgets -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Today's Appts</span>
+                <span class="text-lg font-bold text-white font-mono">14</span>
+                <p class="text-[10px] text-emerald-400">3 Done</p>
               </div>
-              <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2">
-                <span class="text-[var(--muted)] font-medium block">Total Appointments Today</span>
-                <span class="text-2xl font-bold text-white">4 Scheduled</span>
-                <p class="text-[11px] text-[var(--muted)]">2 Completed • 1 In-Waiting • 1 Afternoon</p>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Waiting Queue</span>
+                <span class="text-lg font-bold text-amber-400 font-mono">3</span>
+                <p class="text-[10px] text-amber-400">Next: T-105</p>
               </div>
-              <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2">
-                <span class="text-[var(--muted)] font-medium block">Prescriptions Awaiting Review</span>
-                <span class="text-2xl font-bold text-amber-400">1 Draft</span>
-                <p class="text-[11px] text-[var(--muted)]">Requires 21 CFR Part 11 Clinician Signature</p>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Active Consult</span>
+                <span class="text-lg font-bold text-emerald-400 font-mono">T-104</span>
+                <p class="text-[10px] text-white truncate">H. Farooqi</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Pending Notes</span>
+                <span class="text-lg font-bold text-blue-400 font-mono">2</span>
+                <p class="text-[10px] text-[var(--muted)]">Drafted</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Draft Rx</span>
+                <span class="text-lg font-bold text-rose-400 font-mono">1</span>
+                <p class="text-[10px] text-rose-400">Awaiting Sign</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Follow-ups</span>
+                <span class="text-lg font-bold text-purple-400 font-mono">4</span>
+                <p class="text-[10px] text-purple-400">This Week</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Safety Alerts</span>
+                <span class="text-lg font-bold text-amber-400 font-mono">1</span>
+                <p class="text-[10px] text-amber-400">Mudabbar Gate</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
+                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Recent Vitals</span>
+                <span class="text-lg font-bold text-emerald-400 font-mono">Norm</span>
+                <p class="text-[10px] text-emerald-400">124/82</p>
               </div>
             </div>
 

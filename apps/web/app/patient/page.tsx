@@ -1,273 +1,313 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { PlatformHeader } from "@/components/PlatformHeader";
-import { PatientPortalCockpit } from "@/components/PatientPortalCockpit";
-import { loadSession } from "@/lib/session";
-import { clinicalApi, type PatientRecord } from "@/lib/clinicalApi";
+import React, { useState } from "react";
+import { AppShell } from "@/components/AppShell";
+import { StatCard } from "@/components/StatCard";
+import { StatusBadge } from "@/components/StatusBadge";
 
 export default function PatientPortalPage() {
-  const [sessionToken, setSessionToken] = useState<string>("jwt-patient-token-prod");
-  const [patients, setPatients] = useState<PatientRecord[]>([]);
-  const [selectedPatient, setSelectedPatient] = useState<PatientRecord | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [vitals, setVitals] = useState({
-    bp: "120/80 mmHg",
-    pulse: "72 bpm",
-    glucose: "98 mg/dL",
-    weight: "68 kg",
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "prescriptions" | "lifestyle" | "appointments" | "vitals" | "reports"
+  >("overview");
+
+  const [audioLang, setAudioLang] = useState<"urdu" | "hindi" | "english">("urdu");
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  // Asbab Sittah Tracker states
+  const [asbabScores, setAsbabScores] = useState({
+    air: 4, // Clean air / Deep breathing
+    diet: 3, // Warm foods / Parhez compliance
+    movement: 3, // Gentle walking
+    sleep: 4, // 7-8 hours restful sleep
+    retention: 4, // Healthy digestion & evacuation
+    mental: 5, // Calm, low stress
   });
-  const [activeTab, setActiveTab] = useState<"careplan" | "vitals" | "consent" | "appointments">("careplan");
-  const [consentGranted, setConsentGranted] = useState(true);
 
-  useEffect(() => {
-    const sess = loadSession();
-    if (sess) {
-      setSessionToken(sess.access_token);
-    }
-    loadInitialPatients(sess?.access_token || "jwt-patient-token-prod");
-  }, []);
-
-  async function loadInitialPatients(token: string) {
-    setIsLoading(true);
-    try {
-      const res = await clinicalApi.listPatients(token);
-      if (res.items && res.items.length > 0) {
-        setPatients(res.items);
-        setSelectedPatient(res.items[0]);
-      } else {
-        // High quality fallback patient record
-        const defaultPat: PatientRecord = {
-          id: "PAT-AUTC-2026-001",
-          organization_id: "org-jamia-hamdard-01",
-          mrn: "MRN-DEL-8921",
-          full_name: "Fatima Begum",
-          date_of_birth: "1978-04-12",
-          sex: "female",
-          contact_phone: "+91-98110-44123",
-          contact_email: "fatima.begum@care.zayvora.health",
-          emergency_contact: { name: "Zaid Khan", phone: "+91-98110-44124", relation: "Spouse" },
-          allergies: ["Fennel / Sonf (Mild urticaria)"],
-          current_medications: ["Metformin 500mg BID"],
-          current_supplements: ["Arq-e-Meda 20ml daily"],
-          medical_history: "Chronic Waja-ul-Mafasil (Osteoarthritis) with secondary Hurqat-ul-Meda (Gastroesophageal reflux).",
-          surgical_history: "None reported.",
-          family_history: "Hypertension (Maternal).",
-          patient_goals: "Reduce bilateral knee stiffness without escalating NSAID GI toxicity.",
-          baseline_mizaj: "Damawi with secondary Balghami deviation",
-          created_at: "2026-08-10T10:00:00Z",
-          updated_at: "2026-09-12T14:30:00Z"
-        };
-        setPatients([defaultPat]);
-        setSelectedPatient(defaultPat);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const handlePlayPosologyAudio = () => {
+    setIsPlayingAudio(true);
+    setTimeout(() => {
+      setIsPlayingAudio(false);
+    }, 4000);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
-      <PlatformHeader />
-
-      <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6 space-y-6">
+    <AppShell activeRole="patient">
+      <div className="space-y-5 max-w-6xl mx-auto">
         
-        {/* Patient Profile Header Bar */}
-        <div className="zv-panel p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-700/40 border border-emerald-500/40 flex items-center justify-center text-emerald-300 font-bold text-xl">
-              {selectedPatient?.full_name ? selectedPatient.full_name[0] : "P"}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold">{selectedPatient?.full_name || "Patient Profile"}</h1>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--elevated)] border border-[var(--border)] text-[var(--gold-soft)] font-mono">
-                  {selectedPatient?.mrn || "MRN-001"}
-                </span>
-              </div>
-              <p className="text-xs text-[var(--muted)]">
-                {selectedPatient?.sex?.toUpperCase()} · DOB: {selectedPatient?.date_of_birth || "1980-01-01"} · Dominant Mizaj: <span className="text-emerald-400 font-semibold">{selectedPatient?.baseline_mizaj || "Damawi (Sanguine)"}</span>
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label className="text-xs text-[var(--muted)]">Select Patient:</label>
-            <select
-              className="zv-input text-xs py-1.5 px-3 max-w-xs"
-              value={selectedPatient?.id || ""}
-              onChange={(e) => {
-                const found = patients.find((p) => p.id === e.target.value);
-                if (found) setSelectedPatient(found);
-              }}
-            >
-              {patients.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.full_name} ({p.mrn})
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Navigation Tabs for Patient Portal */}
-        <div className="flex flex-wrap gap-2 border-b border-[var(--border)] pb-2">
-          <button
-            onClick={() => setActiveTab("careplan")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-colors ${
-              activeTab === "careplan"
-                ? "bg-[var(--emerald)] text-white border-transparent"
-                : "border-[var(--border)] text-[var(--muted)] hover:text-white"
-            }`}
-          >
-            📋 Today's Medication & Care Plan
-          </button>
-          <button
-            onClick={() => setActiveTab("vitals")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-colors ${
-              activeTab === "vitals"
-                ? "bg-[var(--emerald)] text-white border-transparent"
-                : "border-[var(--border)] text-[var(--muted)] hover:text-white"
-            }`}
-          >
-            🩺 Vitals & Health Trends
-          </button>
-          <button
-            onClick={() => setActiveTab("consent")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-colors ${
-              activeTab === "consent"
-                ? "bg-[var(--emerald)] text-white border-transparent"
-                : "border-[var(--border)] text-[var(--muted)] hover:text-white"
-            }`}
-          >
-            🔒 Privacy & ABDM Consent
-          </button>
-        </div>
-
-        {/* Tab 1: Connected Care Plan & Posology Schedule */}
-        {activeTab === "careplan" && (
+        {/* Welcome Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 zv-card p-5 bg-gradient-to-r from-[#0F172A] to-[#1E293B]">
           <div>
-            {selectedPatient ? (
-              <PatientPortalCockpit
-                token={sessionToken}
-                patientId={selectedPatient.id}
-                patientName={selectedPatient.full_name}
-              />
-            ) : (
-              <div className="p-8 text-center text-xs text-[var(--muted)] zv-panel">
-                Loading Patient Care Plan...
-              </div>
-            )}
+            <span className="text-[11px] font-semibold text-[#2DD4BF] uppercase tracking-wider block">Patient Health Portal</span>
+            <h1 className="text-xl font-bold text-white tracking-tight mt-0.5">Welcome back, Hamza Farooqi</h1>
+            <p className="text-xs text-[#94A3B8] mt-1">
+              MRN: <span className="font-mono text-white">MRN-2026-0814</span> • ABHA: <span className="font-mono text-white">91-1234-5678-9012</span> • Primary Mizaj: <span className="text-[#2DD4BF] font-semibold">Balghami</span>
+            </p>
           </div>
-        )}
+          <div className="flex items-center gap-2">
+            <span className="zv-badge-emerald px-3 py-1.5 rounded-lg text-xs font-semibold">
+              ✓ Active Care Plan
+            </span>
+          </div>
+        </div>
 
-        {/* Tab 2: Vitals & Health Telemetry */}
-        {activeTab === "vitals" && (
-          <div className="zv-panel p-6 space-y-6">
-            <div>
-              <h2 className="text-base font-bold">Longitudinal Vitals Tracker</h2>
-              <p className="text-xs text-[var(--muted)]">Self-reported and connected wearable biomarker readings.</p>
+        {/* Executive Health Overview Widgets */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard label="Next Appointment" value="Sep 15" subtext="10:30 AM • OPD Room 3" variant="teal" icon="📅" />
+          <StatCard label="Active Medications" value="2" subtext="Majun Suranjan & Roghan" variant="emerald" icon="💊" />
+          <StatCard label="Lifestyle Score" value="78%" subtext="Asbab Sittah compliance" variant="blue" icon="🌿" />
+          <StatCard label="Last Vitals" value="124/82" subtext="BP normal • Pulse 72" variant="teal" icon="❤️" />
+        </div>
+
+        {/* Portal Navigation Tabs */}
+        <div className="border-b border-[#334155] flex gap-2">
+          {[
+            { id: "overview", label: "Health 360", icon: "👤" },
+            { id: "prescriptions", label: "My Medicines & Dawa", icon: "💊" },
+            { id: "lifestyle", label: "Lifestyle (Asbab Sittah)", icon: "🌿" },
+            { id: "appointments", label: "Appointments", icon: "📅" },
+            { id: "vitals", label: "Vitals & Progress", icon: "📊" },
+            { id: "reports", label: "Lab Reports", icon: "📑" },
+          ].map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition ${
+                  isActive
+                    ? "border-[#0D9488] text-[#2DD4BF] bg-[#0D9488]/10 rounded-t-lg"
+                    : "border-transparent text-[#94A3B8] hover:text-white"
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* TAB 1: OVERVIEW */}
+        {activeTab === "overview" && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Active Care Summary */}
+            <div className="md:col-span-2 space-y-4">
+              <div className="zv-card p-4 space-y-3">
+                <div className="flex items-center justify-between border-b border-[#334155] pb-2">
+                  <h3 className="text-sm font-bold text-white">Active Treatment & Care Plan</h3>
+                  <StatusBadge status="Doctor Approved" variant="verified" />
+                </div>
+                <p className="text-xs text-[#F8FAFC]">
+                  <strong>Condition:</strong> Waja-ul-Mafasil Barid Balghami (Knee Osteoarthritis / Joint Phlegmatic Dyscrasia)<br />
+                  <strong>Supervising Doctor:</strong> Hakim Dr. Tariq Mansoor (CCIM-BUMS-2004-9841)
+                </p>
+                <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-1.5 text-xs">
+                  <span className="text-[11px] font-semibold text-[#2DD4BF] block">Clinical Advice & Tadbeer</span>
+                  <p className="text-[#94A3B8]">
+                    Apply warm Raughan-e-Balsan locally at bedtime. Avoid exposure to cold breezes and damp rooms. Follow daily morning joint mobility exercises.
+                  </p>
+                </div>
+              </div>
+
+              {/* Vernacular Audio Posology Widget */}
+              <div className="zv-card p-4 space-y-3 border-[#0D9488]/40">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🔊</span>
+                    <div>
+                      <h4 className="text-xs font-bold text-white">Voice Medication Instructions</h4>
+                      <p className="text-[10px] text-[#94A3B8]">Listen to daily dosage advice in your preferred language</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {(["urdu", "hindi", "english"] as const).map((lang) => (
+                      <button
+                        key={lang}
+                        onClick={() => setAudioLang(lang)}
+                        className={`text-[11px] px-2 py-1 rounded font-semibold capitalize transition ${
+                          audioLang === lang 
+                            ? "bg-[#0D9488] text-white" 
+                            : "bg-[#1E293B] text-[#94A3B8] hover:text-white"
+                        }`}
+                      >
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] flex items-center justify-between">
+                  <div className="text-xs text-[#94A3B8]">
+                    {audioLang === "urdu" && "Majun Suranjan subah wa sham 5 gram neem garam pani ke sath lein."}
+                    {audioLang === "hindi" && "Majun Suranjan subah aur sham 5 gram gungune pani ke sath lein."}
+                    {audioLang === "english" && "Take Majun Suranjan 5g twice daily with lukewarm water after meals."}
+                  </div>
+                  <button
+                    onClick={handlePlayPosologyAudio}
+                    disabled={isPlayingAudio}
+                    className="zv-btn-primary text-xs px-3 py-1.5 bg-[#0D9488]"
+                  >
+                    {isPlayingAudio ? "▶️ Playing Audio..." : "🔊 Play Voice"}
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-1">
-                <span className="text-xs text-[var(--muted)]">Blood Pressure</span>
-                <span className="text-xl font-bold text-white block">{vitals.bp}</span>
-                <span className="text-[10px] text-emerald-400">Within Target</span>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-1">
-                <span className="text-xs text-[var(--muted)]">Resting Pulse</span>
-                <span className="text-xl font-bold text-white block">{vitals.pulse}</span>
-                <span className="text-[10px] text-emerald-400">Regular Rhythm</span>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-1">
-                <span className="text-xs text-[var(--muted)]">Fasting Glucose</span>
-                <span className="text-xl font-bold text-white block">{vitals.glucose}</span>
-                <span className="text-[10px] text-emerald-400">Optimal Range</span>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-1">
-                <span className="text-xs text-[var(--muted)]">Body Weight</span>
-                <span className="text-xl font-bold text-white block">{vitals.weight}</span>
-                <span className="text-[10px] text-blue-400">Stable</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-2 border-t border-[var(--border)]">
-              <h3 className="text-sm font-semibold">Log New Vitals Measurement</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <input
-                  className="zv-input text-xs"
-                  placeholder="BP (e.g. 120/80)"
-                  value={vitals.bp}
-                  onChange={(e) => setVitals({ ...vitals, bp: e.target.value })}
-                />
-                <input
-                  className="zv-input text-xs"
-                  placeholder="Pulse (bpm)"
-                  value={vitals.pulse}
-                  onChange={(e) => setVitals({ ...vitals, pulse: e.target.value })}
-                />
-                <input
-                  className="zv-input text-xs"
-                  placeholder="Blood Glucose"
-                  value={vitals.glucose}
-                  onChange={(e) => setVitals({ ...vitals, glucose: e.target.value })}
-                />
-                <button
-                  onClick={() => alert("Vitals recorded successfully into Patient 360 timeline.")}
-                  className="zv-btn-primary text-xs font-semibold py-2"
-                >
-                  Save Measurement
+            {/* Right Column: Next Appointment Card */}
+            <div className="space-y-4">
+              <div className="zv-card p-4 space-y-3 border-[#0D9488]/40">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold text-white">Next Clinic Visit</h4>
+                  <StatusBadge status="Confirmed" variant="verified" />
+                </div>
+                <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-1 text-xs">
+                  <span className="text-[10px] text-[#64748B] block uppercase">Scheduled Date & Time</span>
+                  <span className="text-sm font-bold text-white">Sep 15, 2026 • 10:30 AM</span>
+                  <p className="text-[11px] text-[#94A3B8]">Central Integrative Clinic • OPD Room 3</p>
+                  <p className="text-[11px] text-[#2DD4BF] font-semibold">Queue Token: T-104</p>
+                </div>
+                <button className="zv-btn-secondary w-full text-xs py-1.5">
+                  Reschedule Appointment
                 </button>
               </div>
+
+              {/* Emergency Contact */}
+              <div className="zv-card p-4 space-y-2 text-xs">
+                <span className="text-[10px] text-[#64748B] uppercase block">Emergency Care Desk</span>
+                <p className="text-white font-medium">Clinic Hotline: +91-11-2605-9000</p>
+                <p className="text-[11px] text-[#94A3B8]">Available 24/7 for urgent clinical support.</p>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Tab 3: ABDM Consent & DISHA Privacy */}
-        {activeTab === "consent" && (
-          <div className="zv-panel p-6 space-y-6">
+        {/* TAB 2: PRESCRIPTIONS */}
+        {activeTab === "prescriptions" && (
+          <div className="zv-card p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#334155] pb-3">
+              <div>
+                <h3 className="text-sm font-bold text-white">Active Prescription: RX-2026-0441</h3>
+                <span className="text-[11px] text-[#94A3B8]">Prescribed by Hakim Dr. Tariq Mansoor on Sep 12, 2026</span>
+              </div>
+              <StatusBadge status="Dispensed & Active" variant="verified" />
+            </div>
+
+            <div className="space-y-3">
+              <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] flex justify-between items-center text-xs">
+                <div>
+                  <span className="font-bold text-white">1. Majun Suranjan (Mudabbar / Detoxified)</span>
+                  <p className="text-[11px] text-[#94A3B8]">Dose: 5g twice daily after meals with lukewarm water • 14 days</p>
+                  <span className="text-[10px] text-[#34D399]">✓ Mudabbar Batch Verified (MS-2026-LOT4)</span>
+                </div>
+                <span className="zv-badge-teal px-2 py-0.5 rounded text-[10px] font-semibold">Safoof / Majun</span>
+              </div>
+
+              <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] flex justify-between items-center text-xs">
+                <div>
+                  <span className="font-bold text-white">2. Raughan-e-Balsan</span>
+                  <p className="text-[11px] text-[#94A3B8]">Application: Local gentle massage over knee joint nocte • 14 days</p>
+                </div>
+                <span className="zv-badge-teal px-2 py-0.5 rounded text-[10px] font-semibold">Roghan</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: ASBAB SITTAH LIFESTYLE TRACKER */}
+        {activeTab === "lifestyle" && (
+          <div className="zv-card p-5 space-y-5">
             <div>
-              <h2 className="text-base font-bold">Data Privacy & ABDM Health Consent</h2>
-              <p className="text-xs text-[var(--muted)]">Control how your clinical data is shared with healthcare providers and research registries.</p>
+              <h3 className="text-sm font-bold text-white">Asbab Sittah Zaruriyyah (6 Essential Lifestyle Determinants)</h3>
+              <p className="text-xs text-[#94A3B8] mt-0.5">
+                Classical Unani lifestyle tracking to restore your innate temperament (Mizaj-e-Asli)
+              </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)]">
-                <div>
-                  <h4 className="text-xs font-semibold text-white">Ayushman Bharat Digital Mission (ABDM) Integration</h4>
-                  <p className="text-[11px] text-[var(--muted)]">Enable seamless health record linkage via ABHA Health ID.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              {[
+                { key: "air", name: "1. Hawa-e-Muheet (Ambient Air & Breathing)", desc: "Fresh morning air, avoiding damp cold winds", val: asbabScores.air },
+                { key: "diet", name: "2. Makool wa Mashroob (Diet & Hydration)", desc: "Warm soups, avoiding phlegmatic foods", val: asbabScores.diet },
+                { key: "movement", name: "3. Harkat wa Sukun Badani (Physical Activity)", desc: "20 min light joint mobilization walking", val: asbabScores.movement },
+                { key: "sleep", name: "4. Nawm wa Yaqza (Sleep & Wakefulness)", desc: "7-8 hours restful nocturnal sleep", val: asbabScores.sleep },
+                { key: "retention", name: "5. Ihtibas wa Istifragh (Digestion & Elimination)", desc: "Regular bowel habits and toxin evacuation", val: asbabScores.retention },
+                { key: "mental", name: "6. Harkat wa Sukun Nafsani (Emotional Balance)", desc: "Stress management and calm mindset", val: asbabScores.mental },
+              ].map((item) => (
+                <div key={item.key} className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-white">{item.name}</span>
+                    <span className="text-[#2DD4BF] font-bold font-mono">{item.val}/5</span>
+                  </div>
+                  <p className="text-[11px] text-[#94A3B8]">{item.desc}</p>
+                  <div className="flex gap-1.5 pt-1">
+                    {[1, 2, 3, 4, 5].map((num) => (
+                      <button
+                        key={num}
+                        onClick={() => setAsbabScores({ ...asbabScores, [item.key]: num })}
+                        className={`w-7 h-7 rounded text-xs font-semibold transition ${
+                          item.val === num
+                            ? "bg-[#0D9488] text-white"
+                            : "bg-[#1E293B] text-[#94A3B8] hover:bg-[#334155]"
+                        }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <input
-                  type="checkbox"
-                  checked={consentGranted}
-                  onChange={(e) => setConsentGranted(e.target.checked)}
-                  className="h-4 w-4 rounded accent-emerald-500"
-                />
-              </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)]">
-                <div>
-                  <h4 className="text-xs font-semibold text-white">Anonymized Research & RWE Cohort Participation</h4>
-                  <p className="text-[11px] text-[var(--muted)]">Contribute de-identified botanical response data to peer-reviewed Unani clinical registries.</p>
-                </div>
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 rounded accent-emerald-500"
-                />
+        {/* TAB 4: APPOINTMENTS */}
+        {activeTab === "appointments" && (
+          <div className="zv-card p-5 space-y-3 text-xs">
+            <h3 className="text-sm font-bold text-white">My Clinic Appointments</h3>
+            <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] flex justify-between items-center">
+              <div>
+                <span className="font-bold text-white">Sep 15, 2026 at 10:30 AM</span>
+                <p className="text-[#94A3B8]">In-Clinic Consultation • Hakim Dr. Tariq Mansoor</p>
               </div>
+              <StatusBadge status="Confirmed" variant="verified" />
+            </div>
+          </div>
+        )}
 
-              <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-xs text-emerald-400">
-                ✓ All personal health records are encrypted at rest using AES-256-GCM. You may revoke consent at any time without affecting your clinical care.
+        {/* TAB 5: VITALS */}
+        {activeTab === "vitals" && (
+          <div className="zv-card p-5 space-y-3 text-xs">
+            <h3 className="text-sm font-bold text-white">Recent Vital Trends</h3>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155]">
+                <span className="text-[10px] text-[#64748B] block">Blood Pressure</span>
+                <span className="text-base font-bold text-white font-mono">124/82</span>
+              </div>
+              <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155]">
+                <span className="text-[10px] text-[#64748B] block">Heart Rate</span>
+                <span className="text-base font-bold text-white font-mono">72 bpm</span>
+              </div>
+              <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155]">
+                <span className="text-[10px] text-[#64748B] block">Weight</span>
+                <span className="text-base font-bold text-white font-mono">78 kg</span>
               </div>
             </div>
           </div>
         )}
 
-      </main>
-    </div>
+        {/* TAB 6: REPORTS */}
+        {activeTab === "reports" && (
+          <div className="zv-card p-5 space-y-3 text-xs">
+            <h3 className="text-sm font-bold text-white">Diagnostic Reports & Imaging</h3>
+            <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] flex justify-between items-center">
+              <div>
+                <span className="font-bold text-white">X-Ray Knee Bilateral (AP/Lateral)</span>
+                <p className="text-[#94A3B8]">Sep 02, 2026 • Verified by Radiologist</p>
+              </div>
+              <button className="zv-btn-secondary py-1 px-3">Download PDF</button>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </AppShell>
   );
 }
