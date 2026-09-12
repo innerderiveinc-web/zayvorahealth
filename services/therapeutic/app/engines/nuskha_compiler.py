@@ -109,12 +109,77 @@ CLASSICAL_CORRECTIVES_AND_SUBSTITUTES: dict[str, dict[str, Any]] = {
     },
 }
 
+# Classical Badal Potency Equivalence Ratios (Makhzan-ul-Adwiya & Kitab al-Kulliyat)
+# Specifies multiplier applied to original dose when substituting an ingredient
+BADAL_POTENCY_RATIOS: dict[str, dict[str, float]] = {
+    "suranjan talkh": {
+        "suranjan shireen": 2.0,  # Suranjan Shireen is milder; requires 2x dose
+        "bozidana": 2.5,
+    },
+    "kuchla": {
+        "jadwar khatai": 1.5,
+        "asgandh": 10.0,
+    },
+    "bhilawa": {
+        "balela": 2.0,
+        "kundur": 1.5,
+    },
+    "zanjabeel": {
+        "darfulful": 1.0,
+        "peepal": 1.2,
+    },
+    "filfil siyah": {
+        "zanjabeel": 2.0,
+        "peepal": 1.0,
+    },
+    "asal-us-soos": {
+        "katheera": 1.0,
+        "samagh-e-arabi": 1.2,
+    },
+    "sana makki": {
+        "turbud safed": 0.5,  # Turbud is stronger purgative; requires half dose
+    },
+    "ustukhuddus": {
+        "aftimoon": 1.0,
+    },
+}
+
 
 def _extract_base_name(name: str) -> str:
     cleaned = name.lower()
     for drop in ["mudabbar", "shodhit", "purified", "powder", "extract", "arq", "joshanda"]:
         cleaned = cleaned.replace(drop, "")
     return cleaned.strip()
+
+
+def substitute_badal_with_posology(
+    original_ingredient_name: str,
+    original_dose_mg: float,
+    badal_name: str,
+    patient_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Substitutes an original ingredient with its Badal, computing the potency-adjusted posology
+    per classical Unani principles (Makhzan-ul-Adwiya).
+    """
+    orig_key = _extract_base_name(original_ingredient_name)
+    badal_key = _extract_base_name(badal_name)
+
+    ratios = BADAL_POTENCY_RATIOS.get(orig_key, {})
+    ratio = ratios.get(badal_key, 1.0)
+    adjusted_dose = original_dose_mg * ratio
+
+    posology = calculate_adjusted_dose(adjusted_dose, patient_context or {})
+
+    return {
+        "original_ingredient": original_ingredient_name,
+        "original_dose_mg": original_dose_mg,
+        "badal_substitute": badal_name,
+        "potency_ratio": ratio,
+        "calculated_badal_dose_mg": posology["calculated_mg"],
+        "posology_adjustments": posology["adjustment_reasons"],
+        "classical_rationale": f"Potency conversion factor of {ratio}x applied per Makhzan-ul-Adwiya standards.",
+    }
 
 
 def calculate_adjusted_dose(
@@ -229,10 +294,22 @@ def compile_nuskha(
 
             # Substitute suggestion for safety awareness
             if matched_profile.get("badal"):
+                first_badal = matched_profile["badal"].split(",")[0].strip()
+                badal_posology = substitute_badal_with_posology(
+                    original_ingredient_name=raw_name,
+                    original_dose_mg=float(dose_mg),
+                    badal_name=first_badal,
+                    patient_context=patient_context,
+                )
                 substitute_suggestions.append({
                     "for_ingredient": raw_name,
                     "classical_badal": matched_profile["badal"],
-                    "reason": f"Classical substitute if '{raw_name}' is contraindicated in patient profile.",
+                    "recommended_badal": first_badal,
+                    "potency_ratio": badal_posology["potency_ratio"],
+                    "calculated_badal_dose_mg": badal_posology["calculated_badal_dose_mg"],
+                    "potency_adjusted_dose_mg": badal_posology["calculated_badal_dose_mg"],
+                    "posology_adjustments": badal_posology["posology_adjustments"],
+                    "reason": f"Classical substitute if '{raw_name}' is contraindicated in patient profile ({badal_posology['classical_rationale']}).",
                 })
 
         compiled_ing = {

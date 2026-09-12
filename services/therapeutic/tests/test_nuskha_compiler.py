@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from app.engines.nuskha_compiler import calculate_adjusted_dose, compile_nuskha
+from app.engines.nuskha_compiler import (
+    calculate_adjusted_dose,
+    compile_nuskha,
+    substitute_badal_with_posology,
+)
 
 
 def _base_patient(**overrides):
@@ -99,3 +103,42 @@ def test_renal_clearance_dose_attenuation():
     posology = calculate_adjusted_dose(1000.0, _base_patient(comorbidities=["Chronic kidney disease"]))
     assert posology["calculated_mg"] == 500.0
     assert any("Renal" in r for r in posology["adjustment_reasons"])
+
+
+def test_substitute_badal_with_posology_potency_ratio():
+    """Verify Suranjan Talkh -> Suranjan Shireen applies 2.0x potency multiplier."""
+    res = substitute_badal_with_posology(
+        original_ingredient_name="Suranjan Talkh Mudabbar",
+        original_dose_mg=250.0,
+        badal_name="Suranjan Shireen",
+        patient_context=_base_patient(),
+    )
+    assert res["potency_ratio"] == 2.0
+    assert res["calculated_badal_dose_mg"] == 500.0
+    assert "Potency conversion factor of 2.0x" in res["classical_rationale"]
+
+    # Turbud Safed is stronger purgative than Sana Makki, so ratio is 0.5x
+    res2 = substitute_badal_with_posology(
+        original_ingredient_name="Sana Makki",
+        original_dose_mg=1000.0,
+        badal_name="Turbud Safed",
+        patient_context=_base_patient(),
+    )
+    assert res2["potency_ratio"] == 0.5
+    assert res2["calculated_badal_dose_mg"] == 500.0
+
+
+def test_compile_nuskha_includes_badal_potency_ratio():
+    """Verify compile_nuskha generates substitute suggestions with potency ratios."""
+    result = compile_nuskha(
+        target_organ_axes=["mafasil"],
+        therapeutic_objective="Gout relief",
+        ingredients=[{"name": "Suranjan Talkh Mudabbar", "is_mudabbar": True, "dose_mg": 200.0}],
+        patient_context=_base_patient(),
+    )
+    assert len(result["substitute_suggestions"]) >= 1
+    sug = result["substitute_suggestions"][0]
+    assert "potency_ratio" in sug
+    assert "potency_adjusted_dose_mg" in sug
+    assert sug["potency_ratio"] == 2.0
+    assert sug["potency_adjusted_dose_mg"] == 400.0

@@ -256,3 +256,61 @@ def test_cryptographic_audit_ledger_merkle_anchoring():
     anchor2.signature_seal = original_seal
     assert ledger.verify_anchor_integrity() is True
 
+
+def test_websocket_audio_stream_transcription_pipeline():
+    """CW-01: Verifies real-time streaming audio message processing and entity extraction pipeline."""
+    import base64
+    from app.routers.scribe import process_websocket_stream_message, SOAP_NOTES_STORE
+
+    audio_bytes = bytes([0, 10, 20, 30] * 128)
+    audio_b64 = base64.b64encode(audio_bytes).decode("ascii")
+
+    session_id = "WS-TEST-SESSION-01"
+    buffer: list[str] = []
+
+    # Stream Chunk 1
+    resp1 = process_websocket_stream_message(
+        data={
+            "type": "audio_chunk",
+            "audio_base64": audio_b64,
+            "partial_transcript": "Patient complains of ghutnon me dard",
+        },
+        session_id=session_id,
+        buffer_text=buffer,
+    )
+    assert resp1["type"] == "transcript_update"
+    assert resp1["safe_to_lock"] is False
+    assert resp1["metadata"]["bytes_received"] == len(audio_bytes)
+    assert any(e["unani_pathology"] == "Waja-ul-Mafasil" for e in resp1["extracted_unani_entities"])
+
+    # Stream Chunk 2
+    resp2 = process_websocket_stream_message(
+        data={
+            "type": "audio_chunk",
+            "audio_base64": audio_b64,
+            "partial_transcript": "and sinay me jalan with severe acidity.",
+        },
+        session_id=session_id,
+        buffer_text=buffer,
+    )
+    assert resp2["type"] == "transcript_update"
+    entities = [e["unani_pathology"] for e in resp2["extracted_unani_entities"]]
+    assert "Waja-ul-Mafasil" in entities
+    assert any("Hurqat-ul-Meda" in ent for ent in entities)
+
+    # Finalize Session
+    resp_fin = process_websocket_stream_message(
+        data={
+            "type": "finalize_session",
+            "patient_id": "PAT-STREAM-777",
+        },
+        session_id=session_id,
+        buffer_text=buffer,
+    )
+    assert resp_fin["type"] == "session_finalized"
+    note = resp_fin["soap_note"]
+    assert note["safe_to_lock"] is False
+    assert note["status"] == "DRAFT_PENDING_CLINICIAN_REVIEW"
+    assert note["patient_id"] == "PAT-STREAM-777"
+    assert note["note_id"] in SOAP_NOTES_STORE
+
