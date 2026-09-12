@@ -91,7 +91,7 @@ def dispense_prescription(
             InventoryBatch.organization_id == uuid.UUID(user.organization_id),
             InventoryBatch.medication_name.ilike(payload.medication_name),
             InventoryBatch.qc_release_status == "released",
-        ).order_by(InventoryBatch.expiry_date.asc())
+        ).order_by(InventoryBatch.expiry_date.asc()).with_for_update()
     ).scalars().all()
 
     if not batches:

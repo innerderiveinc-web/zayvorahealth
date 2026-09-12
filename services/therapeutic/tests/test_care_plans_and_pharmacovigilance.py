@@ -186,6 +186,70 @@ class TestCarePlansAndPharmacovigilance(unittest.TestCase):
         self.assertIsNotNone(shifa)
         self.assertTrue(shifa["schedule_e1_warning"])
 
+    def test_pharmacovigilance_exports_valid_e2b_xml(self):
+        """PV-01: Verifies ICH E2B(R3) XML generation, patient de-identification,
+        and MedDRA term translation for adverse reaction export."""
+        from app.pharmacovigilance.e2b_exporter import export_ich_e2b_r3_xml, map_reaction_to_meddra
+
+        report = {
+            "suspected_agent": "Kuchla Mudabbar",
+            "adverse_reaction_description": "Epigastric burning sensation, sinay me jalan, and muscle twitching",
+            "latency_hours": 3.0,
+            "dechallenge_performed": True,
+            "dechallenge_outcome": "improved",
+            "rechallenge_performed": False,
+            "rechallenge_outcome": "not_applicable",
+            "concomitant_drugs": ["Zanjabeel 500mg"],
+            "alternative_etiologies_considered": [],
+            "is_schedule_e1_substance": True,
+            "verified_mudabbar_protocol_followed": True,
+        }
+        eval_result = evaluate_who_umc_causality(report)
+        xml_out = export_ich_e2b_r3_xml(report, eval_result)
+
+        # XML Structure Validation
+        self.assertTrue(xml_out.startswith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+        self.assertIn("<ichicsr lang=\"en\">", xml_out)
+        self.assertIn("<safetyreport>", xml_out)
+        self.assertIn("<primarysourcereaction>", xml_out)
+
+        # Privacy / HIPAA De-identification Check
+        self.assertIn("<patientinitials>[REDACTED]</patientinitials>", xml_out)
+
+        # MedDRA Coding Check
+        self.assertIn("<reactionmeddraversionllt>27.0</reactionmeddraversionllt>", xml_out)
+        self.assertIn("<reactionmeddrallt>", xml_out)
+
+        # Concomitant Medication Check
+        self.assertIn("<drugcharacterization>2</drugcharacterization>", xml_out)
+        self.assertIn("<medicinalproduct>Zanjabeel 500mg</medicinalproduct>", xml_out)
+
+        # WHO-UMC Causality and Mudabbar Audit Inclusion
+        self.assertIn("WHO-UMC Causality:", xml_out)
+        self.assertIn(eval_result["causality_category"], xml_out)
+
+    def test_pharmacovigilance_exports_cioms_format(self):
+        """PV-01: Verifies CIOMS Form I standardized dictionary export."""
+        from app.pharmacovigilance.e2b_exporter import export_cioms_i_format
+
+        report = {
+            "suspected_agent": "Suranjan Talkh",
+            "adverse_reaction_description": "Gastrointestinal burning and diarrhea",
+            "latency_hours": 1.0,
+            "patient_age": 45,
+            "patient_sex": "F",
+            "is_schedule_e1_substance": True,
+            "verified_mudabbar_protocol_followed": False,
+        }
+        eval_result = evaluate_who_umc_causality(report)
+        cioms = export_cioms_i_format(report, eval_result)
+
+        self.assertEqual(cioms["form_type"], "CIOMS_FORM_I")
+        self.assertEqual(cioms["patient"]["initials"], "[REDACTED]")
+        self.assertEqual(cioms["suspected_drug"]["name"], "Suranjan Talkh")
+        self.assertTrue(cioms["suspected_drug"]["is_schedule_e1"])
+        self.assertFalse(cioms["suspected_drug"]["mudabbar_protocol_verified"])
+
 
 if __name__ == "__main__":
     unittest.main()

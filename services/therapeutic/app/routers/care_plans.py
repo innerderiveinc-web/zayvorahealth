@@ -3,7 +3,15 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+try:
+    from fastapi import APIRouter, Depends, HTTPException
+    from fastapi.responses import PlainTextResponse
+except ImportError:
+    APIRouter = object
+    Depends = object
+    HTTPException = Exception
+    PlainTextResponse = object
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -163,3 +171,30 @@ def evaluate_pharmacovigilance_endpoint(
     """
     result = evaluate_who_umc_causality(payload.model_dump())
     return result
+
+
+@router.post("/pharmacovigilance/export-e2b", response_class=PlainTextResponse)
+def export_pharmacovigilance_e2b_endpoint(
+    payload: ADRReportCreate,
+    user: CurrentUser = Depends(get_current_user),
+):
+    """Exports suspected Adverse Drug Reaction (ADR) evaluation to ICH E2B(R3)
+    standardized XML format for national and WHO-UMC pharmacovigilance submission.
+    """
+    from app.pharmacovigilance.e2b_exporter import export_ich_e2b_r3_xml
+    evaluation = evaluate_who_umc_causality(payload.model_dump())
+    xml_data = export_ich_e2b_r3_xml(payload.model_dump(), evaluation)
+    if PlainTextResponse is not object:
+        return PlainTextResponse(content=xml_data, media_type="application/xml")
+    return xml_data
+
+
+@router.post("/pharmacovigilance/export-cioms")
+def export_pharmacovigilance_cioms_endpoint(
+    payload: ADRReportCreate,
+    user: CurrentUser = Depends(get_current_user),
+):
+    """Exports suspected Adverse Drug Reaction (ADR) evaluation to CIOMS Form I format."""
+    from app.pharmacovigilance.e2b_exporter import export_cioms_i_format
+    evaluation = evaluate_who_umc_causality(payload.model_dump())
+    return export_cioms_i_format(payload.model_dump(), evaluation)
