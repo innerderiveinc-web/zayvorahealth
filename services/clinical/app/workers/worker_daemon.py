@@ -329,3 +329,19 @@ class WorkerDaemon:
 
 def get_worker_daemon() -> WorkerDaemon:
     return WorkerDaemon(GLOBAL_TASK_QUEUE)
+
+
+def main():
+    import time
+    print("ZAYVORA Health™ Background Task Worker Daemon started.")
+    daemon = get_worker_daemon()
+    try:
+        while True:
+            processed = daemon.process_all(max_iterations=10)
+            time.sleep(1.0 if processed == 0 else 0.1)
+    except KeyboardInterrupt:
+        print("Worker daemon stopped gracefully.")
+
+
+if __name__ == "__main__":
+    main()
