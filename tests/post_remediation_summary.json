@@ -1,9 +1,9 @@
 {
-  "started_at": "2026-09-12 12:46:00 UTC",
+  "started_at": "2026-09-12 13:13:34 UTC",
   "categories": {
     "1. Unit Tests": {
       "status": "PASSED",
-      "passed": 246,
+      "passed": 258,
       "failed": 0,
       "details": [
         "Suite Clinical Crypto & PHI Encryption: 6 passed",
@@ -17,6 +17,8 @@
         "Suite Clinical Wearables & Predictive Relapse: 8 passed",
         "Suite Clinical Patient Portal & Disaster Recovery: 6 passed",
         "Suite Clinical Tasks & ABDM Worker Pipelines: 6 passed",
+        "Suite Clinical Payment Gateway & Webhooks: 5 passed",
+        "Suite Clinical Cron Scheduler & Scheduled Scanners: 4 passed",
         "Suite Therapeutic Safety Firewall Baseline: 13 passed",
         "Suite Therapeutic Schedule E(1) & Drug Interactions: 16 passed",
         "Suite Therapeutic Nuskha Compiler & Posology: 9 passed",
@@ -24,6 +26,7 @@
         "Suite Therapeutic Care Plans & Pharmacovigilance: 8 passed",
         "Suite Therapeutic Dispensary & FEFO Engine: 5 passed",
         "Suite Therapeutic Manufacturing OS & eBMR: 5 passed",
+        "Suite Therapeutic Courier Logistics & Tracking: 3 passed",
         "Suite Knowledge Pharmacopoeia Registry & Mudabbar: 5 passed",
         "Suite Knowledge Graph & Multi-Hop Traversal: 7 passed",
         "Suite Knowledge Mufradat Taxonomy: 5 passed",
@@ -138,20 +141,20 @@
       "passed": 7,
       "failed": 0,
       "details": [
-        "AES-256-GCM Envelope Crypto: 0.002 ms/op (459787 ops/sec): PASS",
+        "AES-256-GCM Envelope Crypto: 0.002 ms/op (465152 ops/sec): PASS",
         "10-Ajnas Mizaj Scoring Engine: 0.002 ms/assessment: PASS",
         "Organ-Axis Biomarker Bridge Engine: 0.013 ms/analysis: PASS",
         "Safety Firewall 30+ Interaction Matrix: 0.049 ms/eval: PASS",
-        "Gateway Rate Limiter Throughput: 0.0030 ms/req (338190 req/sec): PASS",
-        "Wearables Normalization & Autonomic Mapping: 0.010 ms/sample: PASS",
-        "Bhashini Multilingual TTS & PCM Synthesis: 38.244 ms/prompt: PASS"
+        "Gateway Rate Limiter Throughput: 0.0030 ms/req (333701 req/sec): PASS",
+        "Wearables Normalization & Autonomic Mapping: 0.011 ms/sample: PASS",
+        "Bhashini Multilingual TTS & PCM Synthesis: 39.372 ms/prompt: PASS"
       ]
     }
   },
   "benchmarks": {
     "phi_crypto": {
       "avg_ms": 0.002,
-      "ops_sec": 459787
+      "ops_sec": 465152
     },
     "mizaj_engine": {
       "avg_ms": 0.002
@@ -166,12 +169,12 @@
       "avg_ms": 0.003
     },
     "wearable_engine": {
-      "avg_ms": 0.01
+      "avg_ms": 0.011
     },
     "bhashini_tts": {
-      "avg_ms": 38.244
+      "avg_ms": 39.372
     }
   },
   "issues_evaluated": {},
-  "total_duration_seconds": 2.56
+  "total_duration_seconds": 2.6
 }

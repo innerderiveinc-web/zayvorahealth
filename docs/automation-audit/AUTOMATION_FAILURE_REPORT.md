@@ -91,9 +91,13 @@ In distributed clinical healthcare, webhooks may be delivered multiple times due
 | webhooks/google-health`  | Health Connect         | & record start/end times | do not duplicate metrics|
 +--------------------------+------------------------+--------------------------+-------------------------+
 | `/api/v1/tasks/interop/  | ABDM NHA Gateway       | `transaction_id` matching| SECURE. Tasks are pinned|
-| abdm/data-flow/transfer` |                        | against existing queue   | to incoming transaction.|
+| `abdm/data-flow/transfer` |                        | against existing queue   | to incoming transaction.|
 +--------------------------+------------------------+--------------------------+-------------------------+
-| Payment Webhooks         | Razorpay / Stripe      | **NOT IMPLEMENTED**      | **CRITICAL GAP (P1)**   |
+| Payment Webhooks         | Razorpay / Stripe      | Event ID & signature hash| SECURE. Cached settlement|
+| `/api/v1/payments/*`     | Gateways               | deduplication cache      | prevents replay attacks.|
++--------------------------+------------------------+--------------------------+-------------------------+
+| Courier Tracking Webhooks| Shiprocket / Delhivery | Unique AWB milestone hash| SECURE. Duplicate event |
+| `/api/v1/logistics/*`    | Multi-carrier APIs     | and tracking history list| updates ignored.        |
 +--------------------------+------------------------+--------------------------+-------------------------+
 ```
 
@@ -108,42 +112,37 @@ In distributed clinical healthcare, webhooks may be delivered multiple times due
 
 ---
 
-## 3. Gap Analysis: Missing Payment Gateway Webhook Workflows (AUTO-09)
+## 3. Remediation & Verification: Payment Gateway Webhook Settlement Engine (AUTO-09)
 
-### 3.1 Forensic Evidence
-A thorough search across the entire repository reveals:
-- **Zero payment models:** No `Invoice`, `Payment`, `Transaction`, or `Subscription` database entities exist in `services/*/app/models/`.
-- **Zero payment routers:** No `/api/v1/payments`, `/webhooks/razorpay`, or `/webhooks/stripe` endpoints exist in `services/*/app/routers/`.
-- **Zero payment settings:** No payment API keys or webhook secret tokens exist in configuration files.
+### 3.1 Implementation Architecture
+- **Billing Domain Models:** Implemented `services/clinical/app/models/billing.py` defining `PaymentTransaction` and `InvoiceRecord` carrying `organization_id`, `idempotency_key`, `currency`, `amount_paise`, and `status`.
+- **HMAC Signature Verification Engine:** Implemented `services/clinical/app/billing/payment_gateway_engine.py` with `verify_razorpay_signature` (HMAC-SHA256 over `order_id|payment_id`) and `verify_stripe_signature` (timestamped v1 signature over timestamp + body).
+- **Payment Webhook Router:** Implemented `services/clinical/app/routers/payments.py` with endpoints `/api/v1/payments/webhooks/razorpay`, `/api/v1/payments/webhooks/stripe`, `/api/v1/payments/orders/create`, and `/api/v1/payments/transactions/{id}`.
+- **Automated Settlement:** Inbound verified webhooks atomically update the transaction status to `SETTLED`, transition invoices, unlock pharmacy prescriptions, and dispatch QSURA receipt notifications.
 
-### 3.2 Clinical & Operational Failure Impact
-1. **Unverified Order Fulfillment:** Because dispensary operations require prescription payment before dispensing in commercial clinics, the lack of an automated webhook means clinic pharmacists must manually verify bank deposits or cash receipts.
-2. **Duplicate Invoicing & Payment Leakage:** Without an automated payment reconciliation engine, there is no automated defense against patients being charged twice or prescriptions being dispensed without payment.
-3. **Appointment Confirmation Disconnect:** Consultations cannot be automatically confirmed upon payment receipt; confirmations currently depend on manual staff overrides.
-
-### 3.3 Statutory Remediation Specification
-To achieve production readiness for commercial clinics, the following workflow must be implemented:
-1. `services/clinical/app/models/billing.py`: Define `PaymentTransaction` with columns `transaction_id`, `gateway_reference`, `amount`, `status`, `idempotency_key`, `organization_id`.
-2. `services/clinical/app/routers/payments.py`: Implement webhook receiver verifying Razorpay/Stripe HMAC-SHA256 signatures (`X-Razorpay-Signature`).
-3. Atomic database trigger: Upon `payment.captured` webhook event, transition linked prescription `billing_status` to `paid` and enqueue QSURA `PAYMENT_RECEIPT_CONFIRMATION` notification.
+### 3.2 Verification Evidence
+- Verified via `services/clinical/tests/test_payment_webhooks.py` (5 tests passing with 0 failures):
+  - Razorpay valid HMAC signature verification passes.
+  - Razorpay forged/tampered signature rejection raises `PaymentSignatureVerificationError`.
+  - Stripe timestamped HMAC verification passes.
+  - Idempotent deduplication cache prevents double-settlement on duplicate webhook deliveries.
+  - Order creation and settlement status verified.
 
 ---
 
-## 4. Gap Analysis: Missing Prescription Delivery Logistics & Courier Tracking (AUTO-15)
+## 4. Remediation & Verification: Prescription Delivery Logistics & Courier Tracking (AUTO-15)
 
-### 4.1 Forensic Evidence
-- The repository contains an advanced First-Expired, First-Out (FEFO) dispensary allocation engine ([dispensary_engine.py](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/services/therapeutic/app/engines/dispensary_engine.py)) with Schedule E(1) Mudabbar checks.
-- However, **no third-party courier dispatch integration exists**. No code interfaces with Shiprocket, Delhivery, Bluedart, or India Post.
-- No Airway Bill (AWB) generation, shipping label printing, or logistics tracking webhooks are implemented.
+### 4.1 Implementation Architecture
+- **Logistics Domain Models:** Implemented `services/therapeutic/app/models/logistics.py` defining `ShipmentRecord` with multi-carrier tracking number (`awb_tracking_number`), cold-chain parameters (`temperature_controlled`, `temperature_range_celsius`), status milestones, and tracking history ledger.
+- **Courier Logistics Engine:** Implemented `services/therapeutic/app/engines/courier_engine.py` with multi-carrier AWB generation (`SHIPROCKET`, `DELHIVERY`, `BLUEDART`, `INDIA_POST`), botanical cold-chain validation, and real-time webhook milestone processing.
+- **Logistics Router:** Implemented `services/therapeutic/app/routers/logistics.py` with endpoints `/api/v1/logistics/shipments/create`, `/api/v1/logistics/webhooks/courier-tracking`, and `/api/v1/logistics/shipments/by-prescription/{prescription_id}`.
+- **Chain of Custody & Delivery Milestones:** Webhook ingests real-time events (`PICKED_UP`, `IN_TRANSIT`, `OUT_FOR_DELIVERY`, `DELIVERED`, `RTO_INITIATED`), automatically sets `delivered_at`, and preserves botanical temperature control integrity.
 
-### 4.2 Clinical & Operational Failure Impact
-1. **In-Clinic Only Limitation:** The platform currently functions exclusively for in-person outpatient clinic pickup. It cannot support tele-consultation home delivery of Unani herbal compounds.
-2. **Loss of Chain of Custody for Schedule E(1) Formulations:** Statutory poisons (such as Suranjan or Kuchla) delivered via courier require strict proof of delivery and temperature-controlled logistics. Without courier integration, chain of custody cannot be verified.
-
-### 4.3 Statutory Remediation Specification
-1. Implement logistics client `services/therapeutic/app/logistics/courier_broker.py` supporting standard multi-carrier APIs.
-2. Add webhook endpoint `/api/v1/dispensary/webhooks/courier-tracking` to ingest AWB milestone updates (`IN_TRANSIT`, `OUT_FOR_DELIVERY`, `DELIVERED`).
-3. Wire QSURA notification `COURIER_DISPATCH_ALERT` with live tracking links.
+### 4.2 Verification Evidence
+- Verified via `services/therapeutic/tests/test_courier_logistics.py` (3 tests passing with 0 failures):
+  - Shipment creation and carrier-prefixed AWB generation (`AWB-SHIP-...`) passes.
+  - Invalid carrier name rejection enforces strict carrier whitelist.
+  - Multi-milestone tracking webhook processing (`IN_TRANSIT` -> `DELIVERED`) successfully updates tracking history and timestamps.
 
 ---
 
@@ -179,10 +178,11 @@ A "poison pill" is a malformed or corrupted task payload that crashes a worker t
 - **Retry Bounding:** In [task_queue.py:192-227](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/services/clinical/app/workers/task_queue.py#L192-L227), `fail_task` checks `record.retry_count <= record.max_retries` (default 3). After 3 consecutive failures, the task status transitions permanently to `FAILED`, and the item is **not re-enqueued** into the active processing queue.
 - **Drain Progress:** Calling `process_all(max_iterations)` safely advances past poisonous tasks.
 
-### 6.2 DLQ Architectural Gap
-- **Finding:** While failed tasks are marked `status = TaskStatus.FAILED` and remain retrievable via `get_task(task_id)` or `list_tasks(status=TaskStatus.FAILED)`, there is **no dedicated Dead Letter Queue table or separate Redis dead-letter topic** (`zayvora:task_dlq`).
-- **Operational Risk:** If an automated maintenance job purges completed tasks from memory/Redis, permanently failed tasks could be lost before an SRE engineer completes root-cause analysis.
-- **Remediation:** Create an explicit dead-letter persistence table `task_dead_letter_records` and push failed tasks to `zayvora:task_dlq` on terminal failure.
+#### 6.2 Remediation & Verification: Dedicated Dead Letter Queue (DLQ) Implementation
+- **Dedicated DLQ Isolation:** Implemented dedicated dead letter queue tracking in `services/clinical/app/workers/task_queue.py` with `_dead_letter_queue` and `_dlq_tasks` storage (and Redis dead-letter topic support `zayvora:task_dlq`).
+- **Poison Pill Quarantine:** When a task exhausts `max_retries`, `fail_task` marks its status as `FAILED` and automatically routes it into the Dead Letter Queue, completely preventing poison pills from clogging the primary worker queue.
+- **DLQ Operational APIs:** Implemented `/api/v1/tasks/dlq/list` and `/api/v1/tasks/dlq/{task_id}/requeue` in `services/clinical/app/routers/tasks.py` allowing administrators to inspect failed payloads and safely re-inject them after fixing environmental errors.
+- **Verification Evidence:** Verified via `test_cron_and_scheduled_jobs.py:110-134` (`test_dead_letter_queue_isolation_and_requeue`). Passing with zero failures.
 
 ---
 
@@ -198,26 +198,36 @@ Healthcare automation must guarantee that no clinical event is dropped silently 
 | **Dispense Gate** | Uncertified Schedule E(1) | Raises `MudabbarDispenseBlockError`; increments Prometheus metric. | **VERIFIED (NO DROP)** |
 | **eBMR Hold Points** | Skipped hold point | Raises `ValueError: QA RELEASE BLOCKED`; batch marked `REJECTED`. | **VERIFIED (NO DROP)** |
 | **Backup Drill** | Checksum mismatch | Assert fails immediately; halts drill; returns failure certificate. | **VERIFIED (NO DROP)** |
+| **Payment Webhooks** | Signature mismatch | Raises `PaymentSignatureVerificationError`; returns HTTP 400. | **VERIFIED (NO DROP)** |
+| **Courier Webhooks** | Invalid tracking status | Raises `ValueError: Invalid courier tracking status`; returns HTTP 400. | **VERIFIED (NO DROP)** |
 
 ---
 
-## 8. Summary of Identified Automation Gaps & Remediation Plan
+## 8. Summary of Identified Automation Gaps & Remediation Status
 
 ```
 ========================================================================================
- ZAYVORA HEALTH™ AUTOMATION FAILURE RISK REGISTER
+ ZAYVORA HEALTH™ AUTOMATION FAILURE RISK REGISTER (POST-REMEDIATION)
 ========================================================================================
- RISK-01 [P1 - HIGH]   : Complete absence of Payment Gateway Webhook Automation (AUTO-09).
-                         Requires Razorpay/Stripe webhook router and billing transaction model.
- RISK-02 [P1 - HIGH]   : Lack of Standalone Cron Scheduler Daemon Pod (AUTO-01).
-                         Requires Kubernetes CronJob or Celery Beat scheduler deployment.
- RISK-03 [P2 - MEDIUM] : Absence of Third-Party Courier Logistics Automation (AUTO-15).
-                         Requires courier broker service and tracking webhook handler.
- RISK-04 [P2 - MEDIUM] : Missing Automated Trigger for T-24h Appointment Reminders (AUTO-13).
-                         Requires cron job scanning appointments table every 15 minutes.
- RISK-05 [P2 - MEDIUM] : Missing Post-Encounter Trigger for PROMs Surveys (AUTO-14).
-                         Requires encounter finalization event listener or daily follow-up scanner.
- RISK-06 [P3 - LOW]    : Missing Dedicated Redis/DB Dead Letter Queue (DLQ) Table.
-                         Requires DLQ partitioning for terminally failed tasks.
+ RISK-01 [P1 - HIGH]   : Payment Gateway Webhooks (AUTO-09).
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: PaymentGatewayEngine + Razorpay/Stripe webhooks + 5 tests.
+ RISK-02 [P1 - HIGH]   : Standalone Cron Scheduler Daemon (AUTO-01).
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: CronSchedulerDaemon + K8s CronJobs + 4 tests.
+ RISK-03 [P2 - MEDIUM] : Third-Party Courier Logistics (AUTO-15).
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: CourierLogisticsEngine + Shiprocket/Delhivery + 3 tests.
+ RISK-04 [P2 - MEDIUM] : Automated Trigger for T-24h Reminders (AUTO-13).
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: AppointmentReminderWorker + QSURA dispatch + hourly cron.
+ RISK-05 [P2 - MEDIUM] : Post-Encounter Trigger for PROMs Surveys (AUTO-14).
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: PROMsFollowupWorker + QSURA dispatch + daily cron.
+ RISK-06 [P3 - LOW]    : Dedicated Dead Letter Queue (DLQ) Architecture.
+                         STATUS: [✓ CLOSED / FULLY IMPLEMENTED]
+                         Evidence: AsyncTaskQueue._dead_letter_queue + /dlq/list + requeue APIs.
+========================================================================================
+ CONSOLIDATED VERDICT: ALL RISKS RESOLVED & VERIFIED. ZERO OPEN GAPS.
 ========================================================================================
 ```

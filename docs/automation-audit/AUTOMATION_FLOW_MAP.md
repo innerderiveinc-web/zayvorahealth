@@ -387,3 +387,109 @@ flowchart TD
     
     O --> P["Emit 21 CFR Part 11 Rollback Audit Certificate"]
 ```
+
+---
+
+## 9. Inbound Payment Gateway Webhook Settlement Flow (AUTO-09)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Gateway as Payment Provider (Razorpay / Stripe)
+    participant Router as Payments Router (/api/v1/payments/webhooks/*)
+    participant Engine as PaymentGatewayEngine
+    participant Cache as Idempotency Cache / DB
+    participant DB as PostgreSQL Database
+    participant QSURA as QSURA Patient Notification
+
+    Gateway->>Router: POST /webhooks/{provider} with HMAC Signature
+    Router->>Engine: process_webhook(provider, payload, signature)
+    
+    rect rgb(240, 240, 255)
+        Note over Engine: Cryptographic Signature Verification
+        Engine->>Engine: Compute HMAC-SHA256(payload, secret)
+        alt Signature Mismatch
+            Engine-->>Router: 400 Bad Request (PaymentSignatureVerificationError)
+            Router-->>Gateway: 400 Bad Request (Rejected)
+        end
+    end
+
+    rect rgb(240, 255, 240)
+        Note over Engine, Cache: Idempotency Protection
+        Engine->>Cache: Check event_id / payment_id
+        alt Already Processed
+            Cache-->>Engine: Cached Settlement Record
+            Engine-->>Router: 200 OK (ALREADY_PROCESSED)
+            Router-->>Gateway: 200 OK (Duplicate Acknowledged)
+        end
+    end
+
+    Engine->>DB: Update PaymentTransaction & InvoiceRecord status -> SETTLED
+    Engine->>DB: Unlock Pharmacy Prescription / Confirm Appointment
+    Engine->>QSURA: Dispatch Payment Receipt & Consultation Confirmation
+    Engine-->>Router: 200 OK (status=PROCESSED, transaction_id)
+    Router-->>Gateway: 200 OK
+```
+
+---
+
+## 10. Periodic System Cron Daemon & Scheduled Scanners Architecture (AUTO-01, AUTO-13, AUTO-14)
+
+```mermaid
+flowchart TD
+    A["System Timer / Kubernetes CronJob"] --> B["CronSchedulerDaemon"]
+    
+    subgraph "Scheduled Scanners"
+        B --> C["Hourly Appointment Reminder Scanner<br/>(lookahead_hours = 24.5h)"]
+        B --> D["Daily PROMs Follow-up Scanner<br/>(target_days = 7, 14)"]
+        B --> E["Nightly HIPAA Audit Purge<br/>(retention = 7 years)"]
+        B --> F["Weekly Automated DR Drill<br/>(sandbox restore)"]
+    end
+    
+    C --> G["Query Scheduled Appointments<br/>(T-24h & T-2h windows)"]
+    G --> H{"Patient Contact Available?"}
+    H -- "Yes" --> I["Dispatch APPOINTMENT_CONFIRMATION<br/>via QSURA WhatsApp/SMS"]
+    H -- "No" --> J["Log to Clinical Worklist"]
+    
+    D --> K["Query Completed Encounters<br/>(Day +7 & Day +14)"]
+    K --> L["Dispatch PROMS_OUTCOME_SURVEY<br/>with Secure Survey Token"]
+    
+    I --> M["Persist Audit Record in QSURA Dispatch Ledger"]
+    L --> M
+    E --> N["Immutable Audit Ledger Archive"]
+    F --> O["DR Verification Report (RTO/RPO Metrics)"]
+```
+
+---
+
+## 11. Prescription Delivery Logistics & Courier Tracking Flow (AUTO-15)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Pharmacy as Dispensary Pharmacist
+    participant LogisticsRouter as Logistics Router (/api/v1/logistics)
+    participant CourierEngine as CourierLogisticsEngine
+    participant CarrierAPI as 3PL Carrier (Shiprocket / Delhivery / Bluedart)
+    participant DB as Courier Shipments Table
+    participant Patient as Patient Portal & QSURA
+
+    Pharmacy->>LogisticsRouter: POST /shipments/create (prescription_id, pincode, cold_chain)
+    LogisticsRouter->>CourierEngine: create_shipment(...)
+    CourierEngine->>CourierEngine: Validate botanical temperature requirements
+    CourierEngine->>CourierEngine: Generate carrier-prefixed AWB (e.g. AWB-SHIP-...)
+    CourierEngine->>DB: Persist ShipmentRecord (status=MANIFESTED)
+    CourierEngine-->>LogisticsRouter: Shipment Record with AWB
+    LogisticsRouter-->>Pharmacy: 200 OK (AWB, Manifest Label)
+
+    Note over CarrierAPI, LogisticsRouter: Real-Time Milestone Tracking Webhook
+    CarrierAPI->>LogisticsRouter: POST /webhooks/courier-tracking (awb, status, location)
+    LogisticsRouter->>CourierEngine: process_tracking_webhook(...)
+    CourierEngine->>DB: Append milestone to tracking_history (IN_TRANSIT / DELIVERED)
+    alt Delivered Status
+        CourierEngine->>DB: Set delivered_at timestamp
+        CourierEngine->>Patient: Send delivery notification with unboxing instructions
+    end
+    CourierEngine-->>LogisticsRouter: 200 OK (PROCESSED)
+    LogisticsRouter-->>CarrierAPI: 200 OK
+```

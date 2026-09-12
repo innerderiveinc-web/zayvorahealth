@@ -105,6 +105,41 @@ def drain_tasks_endpoint(
     }
 
 
+@router.get("/dlq/list")
+def list_dlq_tasks_endpoint(
+    limit: int = Query(default=50, ge=1, le=200),
+    user: CurrentUser = Depends(require_permission("system.admin")),
+):
+    """Lists dead-letter queue (DLQ) poison pill and permanently failed tasks."""
+    failed_tasks = GLOBAL_TASK_QUEUE.list_dlq_tasks(
+        organization_id=user.organization_id,
+        limit=limit,
+    )
+    return {
+        "dlq_total": len(failed_tasks),
+        "tasks": [t.to_dict() for t in failed_tasks],
+    }
+
+
+@router.post("/dlq/{task_id}/requeue")
+def requeue_dlq_task_endpoint(
+    task_id: str,
+    user: CurrentUser = Depends(require_permission("system.admin")),
+):
+    """Requeues a terminally failed task from the DLQ into the active processing queue."""
+    requeued = GLOBAL_TASK_QUEUE.requeue_dlq_task(task_id)
+    if not requeued:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Task '{task_id}' not found in Dead Letter Queue or is not in FAILED state.",
+        )
+    return {
+        "status": "REQUEUED",
+        "task_id": requeued.task_id,
+        "new_status": requeued.status.value,
+    }
+
+
 # -----------------------------------------------------------------------------
 # Interoperability Background Workflows (ABDM Milestone 3 & FHIR Batch Import)
 # -----------------------------------------------------------------------------

@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import Settings, get_settings
 from app.core.database import init_db
-from app.routers import care_plans, dispensary, ghiza, nuskha, tadbeer
+from app.routers import care_plans, dispensary, ghiza, logistics, nuskha, tadbeer
 
 
 
@@ -40,6 +40,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(ghiza.router)
     app.include_router(care_plans.router)
     app.include_router(dispensary.router)
+    app.include_router(logistics.router)
 
 
     @app.get("/api/health")

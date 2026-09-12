@@ -1,0 +1,92 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zayvora-cron-appointment-reminders
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: zayvora-cron-appointment-reminders
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: zayvora-cron-appointment-reminders
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cron-worker
+              image: "{{ (index .Values.services "clinical").image.repository }}:{{ (index .Values.services "clinical").image.tag }}"
+              command: ["python3", "-c", "from app.workers.cron_scheduler import get_cron_scheduler; get_cron_scheduler().execute_job('appointment_reminders_scan')"]
+              envFrom:
+                - configMapRef:
+                    name: {{ include "zayvora.fullname" . }}-config
+                - secretRef:
+                    name: {{ include "zayvora.fullname" . }}-secrets
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zayvora-cron-proms-followup
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: zayvora-cron-proms-followup
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  schedule: "0 9 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: zayvora-cron-proms-followup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cron-worker
+              image: "{{ (index .Values.services "clinical").image.repository }}:{{ (index .Values.services "clinical").image.tag }}"
+              command: ["python3", "-c", "from app.workers.cron_scheduler import get_cron_scheduler; get_cron_scheduler().execute_job('proms_followup_scan')"]
+              envFrom:
+                - configMapRef:
+                    name: {{ include "zayvora.fullname" . }}-config
+                - secretRef:
+                    name: {{ include "zayvora.fullname" . }}-secrets
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zayvora-cron-hipaa-audit
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: zayvora-cron-hipaa-audit
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: zayvora-cron-hipaa-audit
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cron-worker
+              image: "{{ (index .Values.services "clinical").image.repository }}:{{ (index .Values.services "clinical").image.tag }}"
+              command: ["python3", "-c", "from app.workers.cron_scheduler import get_cron_scheduler; get_cron_scheduler().execute_job('nightly_hipaa_retention_audit')"]
+              envFrom:
+                - configMapRef:
+                    name: {{ include "zayvora.fullname" . }}-config
+                - secretRef:
+                    name: {{ include "zayvora.fullname" . }}-secrets

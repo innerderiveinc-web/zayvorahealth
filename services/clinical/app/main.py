@@ -10,6 +10,7 @@ from app.core.database import init_db
 from app.routers import (
     appointments,
     clinical_notes,
+    cron,
     digital_twin,
     dr,
     encounters,
@@ -18,6 +19,7 @@ from app.routers import (
     mizaj,
     patient_portal,
     patients,
+    payments,
     predictive,
     prescriptions,
     qsura,
@@ -77,6 +79,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(patient_portal.router)
     app.include_router(dr.router)
     app.include_router(tasks.router)
+    app.include_router(payments.router)
+    app.include_router(cron.router)
 
     @app.get("/metrics", response_class=PlainTextResponse)
     def prometheus_metrics():

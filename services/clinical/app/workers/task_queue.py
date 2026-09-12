@@ -67,6 +67,8 @@ class AsyncTaskQueue:
         self._redis = None
         self._lock = threading.Lock()
         self._memory_queue: queue.Queue[str] = queue.Queue()
+        self._dead_letter_queue: queue.Queue[str] = queue.Queue()
+        self._dlq_tasks: dict[str, TaskRecord] = {}
         self._tasks: dict[str, TaskRecord] = {}
 
         if redis_url:
@@ -217,11 +219,60 @@ class AsyncTaskQueue:
             if self._redis is not None:
                 try:
                     self._redis.set(f"zayvora:task:{task_id}", json.dumps(record.to_dict()))
+                    self._redis.lpush("zayvora:task_dlq", task_id)
                     return record
                 except Exception:
                     pass
             with self._lock:
                 self._tasks[task_id] = record
+                self._dlq_tasks[task_id] = record
+                self._dead_letter_queue.put(task_id)
+
+        return record
+
+    def list_dlq_tasks(
+        self,
+        organization_id: str | None = None,
+        limit: int = 50,
+    ) -> list[TaskRecord]:
+        """Lists poison pill and terminally failed tasks preserved in DLQ."""
+        results = []
+        with self._lock:
+            all_records = list(self._dlq_tasks.values())
+
+        for r in all_records:
+            if organization_id and r.organization_id != organization_id:
+                continue
+            results.append(r)
+            if len(results) >= limit:
+                break
+        return results
+
+    def requeue_dlq_task(self, task_id: str) -> TaskRecord | None:
+        """Resets retry counter and re-enqueues a task from DLQ into active queue."""
+        record = self.get_task(task_id)
+        if not record or record.status != TaskStatus.FAILED:
+            return None
+
+        record.status = TaskStatus.PENDING
+        record.retry_count = 0
+        record.error = None
+        record.completed_at = None
+
+        if self._redis is not None:
+            try:
+                self._redis.set(f"zayvora:task:{task_id}", json.dumps(record.to_dict()))
+                self._redis.lpush("zayvora:task_queue", task_id)
+                self._redis.lrem("zayvora:task_dlq", 0, task_id)
+                return record
+            except Exception:
+                pass
+
+        with self._lock:
+            self._tasks[task_id] = record
+            if task_id in self._dlq_tasks:
+                del self._dlq_tasks[task_id]
+            self._memory_queue.put(task_id)
 
         return record
 
