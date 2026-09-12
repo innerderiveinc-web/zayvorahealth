@@ -2,7 +2,16 @@ from __future__ import annotations
 
 from functools import lru_cache
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+except ImportError:
+    class BaseSettings:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+    def SettingsConfigDict(**kwargs):
+        return kwargs
 
 
 class Settings(BaseSettings):

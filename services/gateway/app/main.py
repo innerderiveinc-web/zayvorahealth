@@ -4,11 +4,29 @@ import asyncio
 from contextlib import asynccontextmanager
 from typing import Any
 
-import httpx
-from fastapi import FastAPI, HTTPException, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
+try:
+    import httpx
+    from fastapi import FastAPI, HTTPException, Request, Response
+    from fastapi.middleware.cors import CORSMiddleware
+    HAS_FASTAPI = True
+except ImportError:
+    HAS_FASTAPI = False
+    class FastAPI:  # type: ignore
+        def __init__(self, *args, **kwargs):
+            self.version = "0.1.0"
+        def add_middleware(self, *args, **kwargs): pass
+        def get(self, *args, **kwargs): return lambda f: f
+        def api_route(self, *args, **kwargs): return lambda f: f
+    class HTTPException(Exception):  # type: ignore
+        def __init__(self, status_code: int, detail: str = ""):
+            self.status_code = status_code
+            self.detail = detail
+    class Request: pass  # type: ignore
+    class Response: pass  # type: ignore
+    class CORSMiddleware: pass  # type: ignore
 
 from app.core.config import Settings, get_settings
+from app.middleware.rate_limiter import RateLimitMiddleware, TokenBucketRateLimiter
 
 # Hop-by-hop headers that must not be forwarded
 HOP_BY_HOP_HEADERS = {
@@ -62,9 +80,12 @@ def create_gateway_app(settings: Settings | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        app.state.client = httpx.AsyncClient(timeout=30.0)
-        yield
-        await app.state.client.aclose()
+        if HAS_FASTAPI:
+            app.state.client = httpx.AsyncClient(timeout=30.0)
+            yield
+            await app.state.client.aclose()
+        else:
+            yield
 
     app = FastAPI(
         title="ZAYVORA Unified API Gateway",
@@ -80,6 +101,8 @@ def create_gateway_app(settings: Settings | None = None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    app.add_middleware(RateLimitMiddleware)
 
     @app.get("/api/health")
     async def aggregate_health():

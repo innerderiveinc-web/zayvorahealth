@@ -110,6 +110,7 @@ def main():
         ("AI Runtime Fallback & ZAPE Personalization", "services/ai", "services/ai/tests/test_ai_runtime_and_zape.py"),
         ("AI Evaluation Lab & Security Guardrails", "services/ai", "services/ai/tests/test_evaluation_and_red_team.py"),
         ("AI Multimodal Lab Extractor & Physical Signs", "services/ai", "services/ai/tests/test_multimodal_extractor.py"),
+        ("Gateway Reverse Proxy & Rate Limiting", "services/gateway", "services/gateway/tests/test_gateway.py"),
     ]
 
     

@@ -19,7 +19,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, ForeignKey, JSON, String, Text, Boolean
+from sqlalchemy import DateTime, ForeignKey, JSON, String, Text, Boolean, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -43,6 +43,9 @@ class Patient(Base):
     """
 
     __tablename__ = "patients"
+    __table_args__ = (
+        Index("idx_patients_org_mrn", "organization_id", "mrn"),
+    )
 
     id: Mapped[uuid.UUID] = _uuid_pk()
     organization_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
@@ -75,6 +78,9 @@ class Encounter(Base):
     diagnoses/investigations all attach to an encounter."""
 
     __tablename__ = "encounters"
+    __table_args__ = (
+        Index("idx_encounters_org_patient_status", "organization_id", "patient_id", "status"),
+    )
 
     id: Mapped[uuid.UUID] = _uuid_pk()
     organization_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
@@ -114,6 +120,9 @@ class Prescription(Base):
     stopped is itself clinical history."""
 
     __tablename__ = "prescriptions"
+    __table_args__ = (
+        Index("idx_prescriptions_org_patient_status", "organization_id", "patient_id", "status"),
+    )
 
     id: Mapped[uuid.UUID] = _uuid_pk()
     organization_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
