@@ -5,6 +5,7 @@ import { PrescriptionsScreen } from "./src/screens/PrescriptionsScreen";
 import { LifestyleTrackerScreen } from "./src/screens/LifestyleTrackerScreen";
 import { AppointmentsScreen } from "./src/screens/AppointmentsScreen";
 import { ClinicianCompanionScreen } from "./src/screens/ClinicianCompanionScreen";
+import { TeleConsultRoom } from "./src/screens/TeleConsultRoom";
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<string>("home");
@@ -35,6 +36,7 @@ export default function App() {
         {currentScreen === "prescriptions" && <PrescriptionsScreen onBack={() => setCurrentScreen("home")} />}
         {currentScreen === "lifestyle" && <LifestyleTrackerScreen onBack={() => setCurrentScreen("home")} />}
         {currentScreen === "appointments" && <AppointmentsScreen onBack={() => setCurrentScreen("home")} />}
+        {currentScreen === "teleconsult" && <TeleConsultRoom onEndCall={() => setCurrentScreen("home")} />}
         {currentScreen === "clinician" && <ClinicianCompanionScreen onBack={() => setCurrentScreen("home")} />}
       </View>
 

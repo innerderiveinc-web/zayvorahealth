@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { PrescriptionItem, Language } from "../types";
+import { AudioPosologyPlayer } from "../components/AudioPosologyPlayer";
 
 export const PrescriptionsScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [selectedLang, setSelectedLang] = useState<Language>("ur");
@@ -83,20 +84,11 @@ export const PrescriptionsScreen: React.FC<{ onBack: () => void }> = ({ onBack }
           <Text style={styles.durationText}><strong>Duration:</strong> {rx.duration}</Text>
 
           {/* Audio Player Widget */}
-          <View style={styles.audioBox}>
-            <View style={styles.audioMeta}>
-              <Text style={styles.audioLangTitle}>
-                {selectedLang === "ur" ? "صوتی ہدایات (Urdu Audio Posology)" : selectedLang === "hi" ? "ऑडियो निर्देश (Hindi Audio Posology)" : "Spoken Guidance (English)"}
-              </Text>
-              <Text style={styles.audioTranscript}>"{rx.audioPosologyText[selectedLang]}"</Text>
-            </View>
-            <TouchableOpacity
-              style={[styles.playBtn, playingId === rx.id && styles.playBtnActive]}
-              onPress={() => setPlayingId(playingId === rx.id ? null : rx.id)}
-            >
-              <Text style={styles.playBtnText}>{playingId === rx.id ? "⏸ Playing..." : "▶ Play Voice"}</Text>
-            </TouchableOpacity>
-          </View>
+          <AudioPosologyPlayer
+            prescriptionTitle={rx.formulation}
+            transcripts={rx.audioPosologyText}
+            durationSeconds={18}
+          />
 
           {/* Order Refill Button */}
           <TouchableOpacity style={styles.refillBtn}>

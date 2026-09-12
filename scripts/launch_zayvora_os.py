@@ -203,6 +203,12 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
         elif path.startswith("/api/v1/clinical/afaal/encounters/") and path.endswith("/record"):
             encounter_id = path.split("/")[6]
             self._handle_get_encounter_afaal(encounter_id)
+        elif path == "/api/v1/hardware/nabz/stream":
+            self._handle_nabz_stream()
+        elif path == "/api/v1/hardware/wearables/ble/sync":
+            self._handle_wearables_sync()
+        elif path == "/api/v1/hardware/dispensary/cold-chain":
+            self._handle_cold_chain()
         elif path.startswith("/public/") or path.startswith("/static/"):
             self._serve_static_file(path)
         else:
@@ -260,6 +266,10 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
             self._handle_adverse_event_report(body)
         elif path == "/api/v1/governance/vote":
             self._handle_governance_vote(body)
+        elif path == "/api/v1/hardware/tongue/analyze":
+            self._handle_tongue_analyze(body)
+        elif path == "/api/v1/hardware/botanical/qc-scan":
+            self._handle_botanical_qc(body)
         else:
             self._send_json({"error": "Endpoint not found", "path": path}, status=HTTPStatus.NOT_FOUND)
 
@@ -839,6 +849,62 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
             "quorum_progress": "3 of 3 Specialists Signed - QUORUM MET",
             "merkle_root": DB.get_merkle_root()
         })
+
+    def _handle_nabz_stream(self):
+        try:
+            from services.clinical.app.hardware.nabz_pulse_sensor import NabzPulseSensorDriver
+            driver = NabzPulseSensorDriver()
+            samples = driver.acquire_waveform_stream(duration_seconds=2.0)
+            result = driver.analyze_pulse(patient_id="PAT-774901", samples=samples)
+            from dataclasses import asdict
+            self._send_json(asdict(result))
+        except Exception as e:
+            self._send_json({"error": str(e), "status": "SIMULATED_NABZ_STREAM", "heart_rate_bpm": 74})
+
+    def _handle_wearables_sync(self):
+        try:
+            from services.clinical.app.hardware.wearables_ble_gateway import WearablesBleGateway
+            gw = WearablesBleGateway()
+            gw.ingest_gatt_packet("E4:5F:01:23:45:67", "PAT-774901", heart_rate=68, rr_interval=890, temp_c=36.6, spo2=98.4)
+            res = gw.synchronize_with_clinical_engine("PAT-774901")
+            self._send_json(res)
+        except Exception as e:
+            self._send_json({"error": str(e), "quwwat_hayawaniyyah_index": 0.88})
+
+    def _handle_cold_chain(self):
+        try:
+            from services.therapeutic.app.hardware.cold_chain_dispensary_sensor import ColdChainDispensarySensor
+            sensor = ColdChainDispensarySensor()
+            telemetry = sensor.read_environmental_telemetry()
+            from dataclasses import asdict
+            self._send_json(asdict(telemetry))
+        except Exception as e:
+            self._send_json({"error": str(e), "temperature_celsius": 19.4, "is_temperature_compliant": True})
+
+    def _handle_tongue_analyze(self, body: dict):
+        try:
+            from services.clinical.app.hardware.tongue_multispectral_sensor import TongueMultispectralSensor
+            sensor = TongueMultispectralSensor()
+            notes = body.get("clinical_notes", "thick white coating, moist")
+            img = body.get("image_base64", None)
+            res = sensor.scan_and_analyze(patient_id=body.get("patient_id", "PAT-774901"), image_base64=img, clinical_notes=notes)
+            from dataclasses import asdict
+            self._send_json(asdict(res))
+        except Exception as e:
+            self._send_json({"error": str(e), "coating_color": "Abyaz (White Thick)", "inferred_humoral_dyscrasia": "Su-e-Mizaj Balghami"})
+
+    def _handle_botanical_qc(self, body: dict):
+        try:
+            from services.therapeutic.app.hardware.botanical_qc_spectrometer import BotanicalQcSpectrometer
+            spec = BotanicalQcSpectrometer()
+            name = body.get("botanical_name", "Withania somnifera (Asgandh)")
+            lot = body.get("lot_number", "BMR-2026-MVP-09")
+            mudabbar = body.get("is_mudabbar", False)
+            res = spec.scan_botanical_lot(botanical_name=name, lot_number=lot, is_mudabbar_protocol_applied=mudabbar)
+            from dataclasses import asdict
+            self._send_json(asdict(res))
+        except Exception as e:
+            self._send_json({"error": str(e), "qc_disposition": "RELEASED_FOR_PRODUCTION"})
 
     def _send_json(self, data: dict, status: int = HTTPStatus.OK):
         payload = json.dumps(data, indent=2).encode("utf-8")

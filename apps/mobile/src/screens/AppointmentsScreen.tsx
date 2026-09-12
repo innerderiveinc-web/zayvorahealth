@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 
-export const AppointmentsScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+export const AppointmentsScreen: React.FC<{ onBack: () => void; onNavigate?: (screen: string) => void }> = ({ onBack, onNavigate }) => {
   const [selectedSlot, setSelectedSlot] = useState<string>("Tomorrow 10:30 AM");
   const [booked, setBooked] = useState(false);
 
@@ -56,6 +56,11 @@ export const AppointmentsScreen: React.FC<{ onBack: () => void }> = ({ onBack })
           <Text style={styles.successSub}>
             Appointment booked for {selectedSlot}. Telemedicine room link sent to your verified mobile number.
           </Text>
+          {onNavigate && (
+            <TouchableOpacity style={styles.joinBtn} onPress={() => onNavigate("teleconsult")}>
+              <Text style={styles.joinBtnText}>📹 Join Encrypted Video Room Now</Text>
+            </TouchableOpacity>
+          )}
         </View>
       ) : (
         <TouchableOpacity style={styles.bookBtn} onPress={() => setBooked(true)}>
@@ -94,5 +99,7 @@ const styles = StyleSheet.create({
   bookBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "bold" },
   successBox: { backgroundColor: "rgba(13, 148, 136, 0.2)", borderWidth: 1, borderColor: "#0D9488", borderRadius: 12, padding: 16, alignItems: "center", marginBottom: 24 },
   successTitle: { color: "#2DD4BF", fontSize: 16, fontWeight: "bold" },
-  successSub: { color: "#CBD5E1", fontSize: 12, textAlign: "center", marginTop: 6, lineHeight: 18 }
+  successSub: { color: "#CBD5E1", fontSize: 12, textAlign: "center", marginTop: 6, lineHeight: 18 },
+  joinBtn: { marginTop: 12, backgroundColor: "#0D9488", paddingVertical: 10, paddingHorizontal: 16, borderRadius: 10, alignItems: "center" },
+  joinBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "bold" },
 });

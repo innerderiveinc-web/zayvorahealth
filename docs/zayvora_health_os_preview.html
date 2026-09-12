@@ -99,6 +99,7 @@
             <option value="website">🌐 Public Website (25 Canonical Pages)</option>
             <option value="herbals">🌿 ZAYVORA Herbals (10 Formulations Store & Cart)</option>
             <option value="mobile">📱 ZAYVORA Mobile App (React Native / Expo Simulator)</option>
+            <option value="hardware">🔬 Clinical Hardware & IoT Lab (Nabz, Lisan, Cold-Chain)</option>
           </select>
         </div>
 
@@ -319,6 +320,13 @@
         { id: 'audio_posology', label: '🔊 Vernacular Voice Guidance' },
         { id: 'asbab_sittah', label: '🌿 Asbab-e-Sittah 6 Essentials' },
         { id: 'companion', label: '🩺 Doctor Mobile Triage' }
+      ],
+      hardware: [
+        { id: 'nabz', label: '🩺 10-Ajnas Nabz (Pulse) Sensor' },
+        { id: 'lisan', label: '👅 Multispectral Lisan Camera' },
+        { id: 'wearables', label: '⌚ Wearables BLE Stream' },
+        { id: 'nir', label: '🧪 NIR Botanical QC Scanner' },
+        { id: 'coldchain', label: '🌡️ Dispensary Cold-Chain IoT' }
       ]
     };
 
@@ -401,6 +409,8 @@
         renderHerbalsApp(main);
       } else if (state.role === 'mobile') {
         renderMobileApp(main);
+      } else if (state.role === 'hardware') {
+        renderHardwareApp(main);
       }
     }
 
@@ -2401,6 +2411,217 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
                 <li>• <strong>Clinician Point-of-Care Triage:</strong> Immediate review and 21 CFR Part 11 cryptographic lock sign-off from mobile devices.</li>
                 <li>• <strong>Encrypted WebRTC Tele-OPD:</strong> Video encounters connected to the unified EHR ledger.</li>
               </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+
+    // =========================================================================
+    // CLINICAL HARDWARE & IOT LAB WORKSPACE
+    // =========================================================================
+    let simulatedPulseRate = 72;
+    let coldChainTemp = 19.4;
+
+    function triggerNabzPulseTest() {
+      simulatedPulseRate = Math.floor(68 + Math.random() * 16);
+      showNotification(`Nabz PPG Sensor calibrated. Heart Rate: ${simulatedPulseRate} BPM (Sampling: 100Hz)`);
+      renderHardwareApp(document.getElementById('workspace-container'));
+    }
+
+    function triggerColdChainTest() {
+      coldChainTemp = Math.round((18.5 + Math.random() * 2.5) * 10) / 10;
+      showNotification(`Dispensary Environmental Node refreshed: ${coldChainTemp}°C / 48.4% RH (OPTIMAL)`);
+      renderHardwareApp(document.getElementById('workspace-container'));
+    }
+
+    function renderHardwareApp(container) {
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">ZAYVORA Health OS™ v5.0 Hardware Ecosystem</span>
+                <h2 class="text-2xl font-bold text-white mt-1">Clinical Hardware, IoT & Sensory Instrumentation Lab</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">Direct digital signal processing integrating classical Unani diagnostics with clinical sensors.</p>
+              </div>
+              <div class="flex gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/40">● 5 Connected Hardware Nodes</span>
+                <span class="px-3 py-1.5 rounded-xl bg-cyan-500/20 text-cyan-300 text-xs font-semibold border border-cyan-500/40">Sampling Rate: 100Hz</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hardware Device Matrix (4 Grid) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- 1. Nabz (Pulse) Sensor -->
+            <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-2xl">🩺</span>
+                  <div>
+                    <h3 class="font-bold text-white text-base">Arterial PPG & 10-Ajnas Nabz Sensor</h3>
+                    <span class="text-[10px] text-cyan-400 font-mono">Driver: NabzPulseSensorDriver (v3.8.4)</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold animate-pulse">STREAMING</span>
+              </div>
+
+              <!-- Animated Arterial Waveform SVG -->
+              <div class="bg-[#0A0F1D] p-3 rounded-xl border border-slate-800 relative overflow-hidden">
+                <span class="text-[10px] text-slate-400 font-mono block mb-1">RADIAL ARTERY PLETHYSMOGRAM (100Hz):</span>
+                <svg viewBox="0 0 500 80" class="w-full h-20">
+                  <path d="M 0 55 Q 30 50, 60 55 T 100 55 Q 115 10, 130 50 T 145 42 Q 160 52, 180 55 T 230 55 Q 245 10, 260 50 T 275 42 Q 290 52, 310 55 T 360 55 Q 375 10, 390 50 T 405 42 Q 420 52, 440 55 T 500 55" fill="none" stroke="#2DD4BF" stroke-width="2.5" />
+                </svg>
+                <div class="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+                  <span>Heart Rate: <strong class="text-white font-bold">${simulatedPulseRate} BPM</strong></span>
+                  <span>PWV: <strong class="text-white">6.8 m/s</strong></span>
+                  <span>AIx: <strong class="text-white">34.2%</strong></span>
+                  <span>LF/HF: <strong class="text-white">1.24</strong></span>
+                </div>
+              </div>
+
+              <!-- 10 Classical Dimensions Table -->
+              <div class="space-y-1.5 text-[11px] bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                <span class="text-xs font-bold text-cyan-400 block mb-1">10-Ajnas Classical Classification:</span>
+                <div class="grid grid-cols-2 gap-2 text-slate-300">
+                  <div>• <strong>Miqdar (Volume):</strong> <span class="text-white">Azeem (Large)</span></div>
+                  <div>• <strong>Qar' (Strength):</strong> <span class="text-emerald-400">Qawi (Forceful)</span></div>
+                  <div>• <strong>Sur'at (Speed):</strong> <span class="text-white">Sari' (Fast Rise)</span></div>
+                  <div>• <strong>Tawatur (Interval):</strong> <span class="text-white">Mutawatir (Frequent)</span></div>
+                  <div>• <strong>Imtila (Fullness):</strong> <span class="text-emerald-400">Mumtali (Full)</span></div>
+                  <div>• <strong>Malmas (Elasticity):</strong> <span class="text-white">Salb (Firm)</span></div>
+                </div>
+                <div class="mt-2 pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                  Inferred Mizaj: <strong class="text-cyan-300">Su-e-Mizaj Damawi Haar Ratab (Plethoric Heat)</strong>
+                </div>
+              </div>
+
+              <button onclick="triggerNabzPulseTest()" class="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition">
+                ⚡ Recalibrate & Capture Pulse Waveform
+              </button>
+            </div>
+
+            <!-- 2. Multispectral Lisan (Tongue) Camera -->
+            <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-2xl">👅</span>
+                  <div>
+                    <h3 class="font-bold text-white text-base">Multispectral Lisan (Tongue) Station</h3>
+                    <span class="text-[10px] text-cyan-400 font-mono">Driver: TongueMultispectralSensor (600 DPI)</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">READY</span>
+              </div>
+
+              <!-- Colorimetry & Somatotopic Zones -->
+              <div class="bg-[#0A0F1D] p-3 rounded-xl border border-slate-800 space-y-2">
+                <span class="text-[10px] text-slate-400 font-mono block">CIE-Lab COLORIMETRIC DECOMPOSITION:</span>
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full bg-slate-200 border border-slate-400 inline-block"></span>
+                    <span class="text-white font-bold">Abyaz (White Thick Coating)</span>
+                  </div>
+                  <span class="text-slate-400 font-mono text-[11px]">L*: 84.1 | a*: -2.5 | b*: 14.8</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-400 h-full w-[76%]"></div>
+                </div>
+              </div>
+
+              <!-- 3-Zone Organ Mapping -->
+              <div class="space-y-1.5 text-[11px] bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                <span class="text-xs font-bold text-cyan-400 block mb-1">3-Zone Classical Organ Mapping:</span>
+                <div class="space-y-1 text-slate-300">
+                  <div>• <strong>Tip (Tarfe Lisan):</strong> Qalb & Riya (Heart/Lungs) — Normal pink tone</div>
+                  <div>• <strong>Center / Dorsum:</strong> Mida & Kabid (Stomach/Liver) — <span class="text-yellow-300 font-semibold">Thick white phlegmatic mucus</span></div>
+                  <div>• <strong>Root / Base:</strong> Kulyah & Masana (Kidneys/Bladder) — Mild lymphatic stasis</div>
+                </div>
+                <div class="mt-2 pt-2 border-t border-slate-800 text-slate-400">
+                  Inference: <strong class="text-cyan-300">Su-e-Mizaj Balghami Barid Ratab (Munzij indicated)</strong>
+                </div>
+              </div>
+
+              <button onclick="showNotification('Tongue Multispectral Camera triggered snapshot. Analyzed 4,096 pixels.')" class="w-full py-2 bg-[var(--background)] hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-[var(--border)] transition">
+                📸 Capture Clinical Tongue Spectrum
+              </button>
+            </div>
+
+            <!-- 3. Wearables BLE Stream Gateway -->
+            <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-2xl">⌚</span>
+                  <div>
+                    <h3 class="font-bold text-white text-base">Wearables BLE Gateway</h3>
+                    <span class="text-[10px] text-cyan-400 font-mono">Service: GATT 0x180D / 0x1809 / 0x1822</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">PAIRED</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                  <span class="text-[10px] text-slate-400 font-bold uppercase">Quwwat Hayawaniyyah</span>
+                  <div class="text-2xl font-extrabold text-cyan-400 mt-1">0.88 / 1.0</div>
+                  <span class="text-[9px] text-emerald-400 font-semibold">Autonomic Tone High</span>
+                </div>
+                <div class="bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                  <span class="text-[10px] text-slate-400 font-bold uppercase">Sleep (Nawm-Yaqzah)</span>
+                  <div class="text-2xl font-extrabold text-white mt-1">7.8 hrs</div>
+                  <span class="text-[9px] text-emerald-400 font-semibold">Deep Restorative</span>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-slate-300 bg-[#0F172A] p-3 rounded-xl border border-slate-800 space-y-1">
+                <div class="flex justify-between"><span>HRV RMSSD:</span><strong class="text-white">48.2 ms</strong></div>
+                <div class="flex justify-between"><span>Blood Oxygen (SpO2):</span><strong class="text-emerald-400">98.4%</strong></div>
+                <div class="flex justify-between"><span>Circadian Skin Temp:</span><strong class="text-white">36.6°C (Ghariziyyah Stable)</strong></div>
+              </div>
+
+              <button onclick="showNotification('BLE Gateway synchronized 12 continuous health packets to EHR.')" class="w-full py-2 bg-[var(--background)] hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-[var(--border)] transition">
+                🔄 Sync Wearable Packets to Patient Ledger
+              </button>
+            </div>
+
+            <!-- 4. Dispensary Cold-Chain Environmental IoT -->
+            <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-2xl">🌡️</span>
+                  <div>
+                    <h3 class="font-bold text-white text-base">Dispensary Cold-Chain IoT Node</h3>
+                    <span class="text-[10px] text-cyan-400 font-mono">Location: Central Vault & FEFO Shelf #3</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">COMPLIANT</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                  <span class="text-[10px] text-slate-400 font-bold uppercase">Temperature</span>
+                  <div class="text-2xl font-extrabold text-cyan-300 mt-1">${coldChainTemp}°C</div>
+                  <span class="text-[9px] text-emerald-400 font-semibold">Spec: 15°C - 25°C</span>
+                </div>
+                <div class="bg-[#0F172A] p-3 rounded-xl border border-slate-800">
+                  <span class="text-[10px] text-slate-400 font-bold uppercase">Relative Humidity</span>
+                  <div class="text-2xl font-extrabold text-white mt-1">48.2%</div>
+                  <span class="text-[9px] text-emerald-400 font-semibold">Spec: &lt; 60% RH</span>
+                </div>
+              </div>
+
+              <div class="text-[11px] text-slate-300 bg-[#0F172A] p-3 rounded-xl border border-slate-800 space-y-1">
+                <div class="flex justify-between"><span>Dew Point:</span><strong class="text-white">9.1°C</strong></div>
+                <div class="flex justify-between"><span>Thermal Excursions (24h):</span><strong class="text-emerald-400">0 Events (Zero Spoilage)</strong></div>
+                <div class="flex justify-between"><span>Arqiyat Volatile Integrity:</span><strong class="text-emerald-400">Preserved (100%)</strong></div>
+              </div>
+
+              <button onclick="triggerColdChainTest()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+                ⚡ Poll Environmental Sensor Readings
+              </button>
             </div>
           </div>
         </div>

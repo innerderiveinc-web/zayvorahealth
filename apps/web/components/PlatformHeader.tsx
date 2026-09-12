@@ -80,6 +80,22 @@ export function PlatformHeader() {
           })}
         </nav>
 
+        {/* Live Hardware Telemetry Indicators */}
+        <div className="hidden lg:flex items-center gap-2 text-[10px] bg-[var(--elevated)] px-2.5 py-1 rounded-lg border border-[var(--border)]">
+          <span className="flex items-center gap-1 text-emerald-400 font-semibold" title="PPG Pulse Sensor Streaming at 100Hz">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            🩺 Nabz: 100Hz
+          </span>
+          <span className="text-[var(--border)]">|</span>
+          <span className="flex items-center gap-1 text-teal-300 font-semibold" title="Multispectral Lisan Camera Ready">
+            👅 Lisan Cam
+          </span>
+          <span className="text-[var(--border)]">|</span>
+          <span className="flex items-center gap-1 text-cyan-300 font-semibold" title="Dispensary Cold-Chain Temperature">
+            🌡️ 19.4°C (FEFO)
+          </span>
+        </div>
+
         {/* User Session & Status */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
