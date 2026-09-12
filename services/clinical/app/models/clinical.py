@@ -167,3 +167,49 @@ class MizajAssessment(Base):
     answers_json: Mapped[dict] = mapped_column(JSON, default=dict)
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class WearableSampleRecord(Base):
+    """Time-series physiological record from continuous health wearables.
+    Normalizes biometric samples for Quwwat-e-Hayawaniyyah and Asbab-e-Sittah monitoring.
+    """
+
+    __tablename__ = "wearable_samples"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    patient_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    sample_id: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
+    timestamp_utc: Mapped[str] = mapped_column(String(40), nullable=False)
+    source_device: Mapped[str] = mapped_column(String(100), default="Wearable")
+    hrv_rmssd_ms: Mapped[float] = mapped_column(nullable=False, default=45.0)
+    hrv_sdnn_ms: Mapped[float] = mapped_column(nullable=False, default=50.0)
+    resting_heart_rate_bpm: Mapped[int] = mapped_column(nullable=False, default=70)
+    sleep_hours_total: Mapped[float] = mapped_column(nullable=False, default=7.0)
+    deep_sleep_hours: Mapped[float] = mapped_column(nullable=False, default=1.5)
+    rem_sleep_hours: Mapped[float] = mapped_column(nullable=False, default=1.8)
+    spo2_average_pct: Mapped[float] = mapped_column(nullable=False, default=98.0)
+    spo2_lowest_pct: Mapped[float] = mapped_column(nullable=False, default=95.0)
+    respiratory_rate_bpm: Mapped[float] = mapped_column(nullable=False, default=15.0)
+    daily_steps: Mapped[int] = mapped_column(nullable=False, default=6000)
+    active_energy_kcal: Mapped[float] = mapped_column(nullable=False, default=350.0)
+
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class QSURADispatchRecord(Base):
+    """Immutable audit record of external communications dispatched via QSURA broker.
+    Supports Meta WhatsApp Business API, TRAI DLT SMS, Email, and Webhook transports.
+    """
+
+    __tablename__ = "qsura_dispatch_logs"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    message_id: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
+    organization_id: Mapped[str] = mapped_column(String(64), nullable=True, index=True)
+    channel: Mapped[str] = mapped_column(String(20), nullable=False)
+    recipient: Mapped[str] = mapped_column(String(100), nullable=False)
+    message_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    rendered_content: Mapped[str] = mapped_column(Text, nullable=False)
+    delivery_status: Mapped[str] = mapped_column(String(20), nullable=False, default="DELIVERED")
+    dispatched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    regulatory_compliance: Mapped[str] = mapped_column(String(100), default="DISHA / HIPAA / TRAI DLT Compliant")

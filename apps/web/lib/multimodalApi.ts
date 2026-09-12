@@ -103,8 +103,10 @@ export const multimodalApi = {
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      // Robust client fallback with deterministic Unani synthesis
-      return clientSimulateLabExtraction(payload.text || "", payload.patient_age || 45, payload.patient_gender || "M");
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return clientSimulateLabExtraction(payload.text || "", payload.patient_age || 45, payload.patient_gender || "M");
+      }
+      throw err;
     }
   },
 
@@ -122,7 +124,10 @@ export const multimodalApi = {
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      return clientSimulatePhysicalSigns(payload.tongue_notes, payload.skin_notes);
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return clientSimulatePhysicalSigns(payload.tongue_notes, payload.skin_notes);
+      }
+      throw err;
     }
   },
 };

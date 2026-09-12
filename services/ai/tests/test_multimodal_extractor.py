@@ -99,7 +99,46 @@ class TestMultimodalLabExtractor(unittest.TestCase):
         self.assertIn("Su-i-Mizaj Safrawi Haar Yabis (Hepatobiliary Heat)", result.humoral_synthesis.pathological_entities)
 
 
+    def test_document_stream_extraction(self):
+        """Verify parsing of base64 encoded document stream with embedded lab analytes."""
+        import base64
+        pdf_stub = (
+            b"%PDF-1.4\n1 0 obj\n<< /Length 120 >>\nstream\n"
+            b"BT\n/F1 12 Tf\n(Fasting Blood Glucose: 142 mg/dL) Tj\n(Serum Creatinine: 1.4 mg/dL) Tj\nET\n"
+            b"endstream\nendobj\n%%EOF"
+        )
+        b64_doc = base64.b64encode(pdf_stub).decode("ascii")
+        result = LabReportExtractor.extract_from_document(
+            document_base64=b64_doc,
+            filename="clinical_lab_report.pdf",
+            patient_age=48,
+            patient_gender="M",
+        )
+        self.assertFalse(result.safe_to_lock)
+        self.assertEqual(result.metadata.get("source_filename"), "clinical_lab_report.pdf")
+        self.assertEqual(result.metadata.get("document_parsing_mode"), "PDF_STREAM_OCR")
+        extracted_codes = {a.loinc_code for a in result.analytes}
+        self.assertIn("1558-6", extracted_codes)
+        self.assertIn("2160-0", extracted_codes)
+
+
 class TestMultimodalPhysicalSignsAnalyzer(unittest.TestCase):
+    def test_image_semiotics_computer_vision(self):
+        """Verify computer-vision colorimetric semiotic analysis on clinical images."""
+        import base64
+        # Simulated high-luminance pale/white tongue image bytes
+        white_sample = bytes([210] * 512)
+        b64_img = base64.b64encode(white_sample).decode("ascii")
+        res = PhysicalSignsAnalyzer.analyze_physical_signs(
+            image_base64=b64_img,
+            image_modality="tongue",
+        )
+        self.assertFalse(res.safe_to_lock)
+        self.assertIsNotNone(res.tongue_finding)
+        self.assertIn("White Thick", res.tongue_finding.coating_color)
+        self.assertIn("Balgham", res.tongue_finding.humoral_inference)
+        self.assertIn("Image CV", res.tongue_finding.coating_color)
+
     def test_tongue_signs_semiotic_mapping(self):
         """Verify tongue inspection signs are correctly classified into Unani humors."""
         # Yellow dry coat

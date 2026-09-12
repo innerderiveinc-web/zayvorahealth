@@ -104,3 +104,36 @@ def test_qsura_missing_required_params():
                 # Missing practitioner_name, appointment_time, clinic_name
             },
         )
+
+
+def test_qsura_database_persistence_and_live_transport():
+    class MockDbSession:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, record):
+            self.added.append(record)
+
+        def commit(self):
+            self.committed = True
+
+    mock_db = MockDbSession()
+    broker = QSURACommunicationBroker(db_session=mock_db)
+    res = broker.send_notification(
+        channel="whatsapp",
+        recipient="+919876543210",
+        message_type="APPOINTMENT_CONFIRMATION",
+        parameters={
+            "patient_name": "Sultana",
+            "practitioner_name": "Dr. Tariq",
+            "appointment_time": "2026-09-20 11:00 AM",
+            "clinic_name": "ZAYVORA Apex",
+        },
+        organization_id="org-apex-01",
+    )
+    assert res["delivery_status"] in ("DELIVERED", "QUEUED_RETRY")
+    assert len(mock_db.added) == 1
+    assert mock_db.committed is True
+    assert mock_db.added[0].recipient == "+919876543210"
+    assert mock_db.added[0].organization_id == "org-apex-01"

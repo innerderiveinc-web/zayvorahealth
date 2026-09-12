@@ -120,3 +120,26 @@ def test_abdm_gateway_consent_flow():
     granted = gw.grant_consent_mock(cid)
     assert granted["status"] == "GRANTED"
     assert "consent_artefact_id" in granted
+
+
+def test_abdm_gateway_live_mode_configuration_and_packet_push():
+    """Verify live mode configuration and Milestone 3 encrypted packet push."""
+    gw_live = ABDMGateway(
+        client_id="zayvora-hip-test",
+        client_secret="test-secret-key",
+        gateway_url="https://dev.abdm.gov.in/gateway",
+        live_mode=False,  # Headless test assertion
+    )
+    assert gw_live.client_id == "zayvora-hip-test"
+    assert gw_live.gateway_url == "https://dev.abdm.gov.in/gateway"
+    assert gw_live.live_mode is False
+
+    # Test Milestone 3 packet push
+    push_res = gw_live.push_health_data_packet(
+        transaction_id="tx-test-9999",
+        patient_abha="91-1234-5678-9012",
+        encrypted_fhir_packets=[{"cipher_data": "ZV-AES-GCM-TEST"}],
+    )
+    assert push_res["status"] == "TRANSFER_SUCCESS"
+    assert push_res["transaction_id"] == "tx-test-9999"
+    assert push_res["packets_count"] == 1

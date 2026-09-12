@@ -65,8 +65,31 @@ MESSAGE_TEMPLATES: dict[str, dict[str, Any]] = {
 }
 
 
+import json
+import logging
+import os
+import urllib.request
+import urllib.error
+
+logger = logging.getLogger(__name__)
+
+
+from dataclasses import dataclass
+
+@dataclass
+class QSURADispatchRecordData:
+    message_id: str
+    organization_id: Any
+    channel: str
+    recipient: str
+    message_type: str
+    rendered_content: str
+    delivery_status: str
+
+
 class QSURACommunicationBroker:
-    def __init__(self):
+    def __init__(self, db_session: Any = None):
+        self.db_session = db_session
         self.dispatched_logs: list[dict[str, Any]] = []
 
     def send_notification(
@@ -77,6 +100,8 @@ class QSURACommunicationBroker:
         message_type: str,
         parameters: dict[str, Any],
         patient_consent_verified: bool = True,
+        organization_id: str | None = None,
+        db_session: Any = None,
     ) -> dict[str, Any]:
         """Dispatches a compliant clinical notification via the requested channel."""
         if not patient_consent_verified:
@@ -106,16 +131,105 @@ class QSURACommunicationBroker:
             # Mask potential phone numbers or sensitive medical details
             rendered_text = re.sub(r"\b\d{10,12}\b", lambda m: m.group(0)[:2] + "******" + m.group(0)[-2:], rendered_text)
 
+        msg_id = f"MSG-{uuid.uuid4()}"
+        delivery_status = "DELIVERED"
+
+        # Live external transport if configured
+        whatsapp_token = os.getenv("WHATSAPP_API_TOKEN")
+        whatsapp_phone_id = os.getenv("WHATSAPP_PHONE_NUMBER_ID")
+        if channel_clean == "whatsapp" and whatsapp_token and whatsapp_phone_id:
+            try:
+                url = f"https://graph.facebook.com/v19.0/{whatsapp_phone_id}/messages"
+                payload = json.dumps({
+                    "messaging_product": "whatsapp",
+                    "recipient_type": "individual",
+                    "to": recipient.replace("+", "").replace(" ", "").replace("-", ""),
+                    "type": "text",
+                    "text": {"preview_url": False, "body": rendered_text},
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=payload,
+                    headers={
+                        "Authorization": f"Bearer {whatsapp_token}",
+                        "Content-Type": "application/json",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    if resp.status in (200, 201):
+                        delivery_status = "DELIVERED"
+            except Exception as e:
+                logger.warning("WhatsApp Cloud API dispatch failed, falling back to queued simulation: %s", e)
+                delivery_status = "QUEUED_RETRY"
+
+        sms_url = os.getenv("SMS_GATEWAY_URL")
+        sms_key = os.getenv("SMS_API_KEY")
+        if channel_clean == "sms" and sms_url and sms_key:
+            try:
+                payload = json.dumps({
+                    "to": recipient,
+                    "message": rendered_text,
+                    "dlt_template_id": message_type,
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    sms_url,
+                    data=payload,
+                    headers={
+                        "Authorization": f"Bearer {sms_key}",
+                        "Content-Type": "application/json",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    if resp.status in (200, 201):
+                        delivery_status = "DELIVERED"
+            except Exception as e:
+                logger.warning("SMS Gateway dispatch failed, falling back to queued simulation: %s", e)
+                delivery_status = "QUEUED_RETRY"
+
         dispatch_record = {
-            "message_id": f"MSG-{uuid.uuid4()}",
+            "message_id": msg_id,
             "channel": channel_clean,
             "recipient": recipient,
             "message_type": message_type,
             "rendered_content": rendered_text,
-            "delivery_status": "DELIVERED",
+            "delivery_status": delivery_status,
             "dispatched_at": datetime.utcnow().isoformat(),
             "regulatory_compliance": "DISHA / HIPAA / TRAI DLT Compliant",
         }
 
         self.dispatched_logs.append(dispatch_record)
+
+        # Database persistence if session is provided
+        active_session = db_session or self.db_session
+        if active_session is not None:
+            try:
+                try:
+                    from app.models.clinical import QSURADispatchRecord
+                    record = QSURADispatchRecord(
+                        message_id=msg_id,
+                        organization_id=organization_id,
+                        channel=channel_clean,
+                        recipient=recipient,
+                        message_type=message_type,
+                        rendered_content=rendered_text,
+                        delivery_status=delivery_status,
+                    )
+                except Exception:
+                    record = QSURADispatchRecordData(
+                        message_id=msg_id,
+                        organization_id=organization_id,
+                        channel=channel_clean,
+                        recipient=recipient,
+                        message_type=message_type,
+                        rendered_content=rendered_text,
+                        delivery_status=delivery_status,
+                    )
+                active_session.add(record)
+                if hasattr(active_session, "commit"):
+                    active_session.commit()
+            except Exception as e:
+                logger.warning("Database persistence of QSURA dispatch record failed: %s", e)
+
         return dispatch_record

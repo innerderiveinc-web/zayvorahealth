@@ -63,7 +63,10 @@ export const boardApi = {
     try {
       return await request<GovernanceProposal[]>("/api/v1/knowledge/governance/proposals", token);
     } catch (err) {
-      return getFallbackProposals();
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return getFallbackProposals();
+      }
+      throw err;
     }
   },
 
@@ -88,17 +91,20 @@ export const boardApi = {
         }
       );
     } catch (err) {
-      const proposals = getFallbackProposals();
-      const p = proposals.find((x) => x.proposal_id === proposalId) || proposals[0];
-      p.attestations.push({
-        ...payload,
-        timestamp_utc: new Date().toISOString(),
-      });
-      if (p.attestations.length >= 2) {
-        p.quorum_reached = true;
-        p.status = "QUORUM_ATTESTED";
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        const proposals = getFallbackProposals();
+        const p = proposals.find((x) => x.proposal_id === proposalId) || proposals[0];
+        p.attestations.push({
+          ...payload,
+          timestamp_utc: new Date().toISOString(),
+        });
+        if (p.attestations.length >= 2) {
+          p.quorum_reached = true;
+          p.status = "QUORUM_ATTESTED";
+        }
+        return p;
       }
-      return p;
+      throw err;
     }
   },
 
@@ -110,16 +116,19 @@ export const boardApi = {
         { method: "POST" }
       );
     } catch (err) {
-      return {
-        order_id: "CCO-" + Math.floor(100000 + Math.random() * 900000),
-        proposal_id: proposalId,
-        target_entity: "Suranjan Talkh (Colchicum autumnale) UPI Monograph v3.2",
-        change_type: "POSOLOGY_CEILING",
-        published_by: "SENIOR_TABEEB_BOARD",
-        published_at_utc: new Date().toISOString(),
-        cryptographic_seal_sha256: "8e2f019b7c25e83dae98f041235cb92d6e479a0b12f71889c25f190e234a5d89",
-        attesting_signatories: ["Hakim Prof. M. Tariq Qureshi, MD", "Dr. Aisha Al-Mansoor, MD, PhD"],
-      };
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return {
+          order_id: "CCO-" + Math.floor(100000 + Math.random() * 900000),
+          proposal_id: proposalId,
+          target_entity: "Suranjan Talkh (Colchicum autumnale) UPI Monograph v3.2",
+          change_type: "POSOLOGY_CEILING",
+          published_by: "SENIOR_TABEEB_BOARD",
+          published_at_utc: new Date().toISOString(),
+          cryptographic_seal_sha256: "8e2f019b7c25e83dae98f041235cb92d6e479a0b12f71889c25f190e234a5d89",
+          attesting_signatories: ["Hakim Prof. M. Tariq Qureshi, MD", "Dr. Aisha Al-Mansoor, MD, PhD"],
+        };
+      }
+      throw err;
     }
   },
 
@@ -127,7 +136,10 @@ export const boardApi = {
     try {
       return await request<ClinicalChangeOrder[]>("/api/v1/knowledge/governance/change-orders", token);
     } catch (err) {
-      return getFallbackChangeOrders();
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return getFallbackChangeOrders();
+      }
+      throw err;
     }
   },
 };

@@ -46,7 +46,7 @@ services:
 
   identity:
     build:
-      context: ./services/identity
+      context: ../services/identity
     environment:
       ZAYVORA_IDENTITY_ENVIRONMENT: development
       ZAYVORA_IDENTITY_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
@@ -62,7 +62,7 @@ services:
 
   clinical:
     build:
-      context: ./services/clinical
+      context: ../services/clinical
     environment:
       ZAYVORA_CLINICAL_ENVIRONMENT: development
       ZAYVORA_CLINICAL_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
@@ -78,7 +78,7 @@ services:
 
   clinical-worker:
     build:
-      context: ./services/clinical
+      context: ../services/clinical
     command: ["python", "-m", "app.workers.worker_daemon"]
     environment:
       ZAYVORA_CLINICAL_ENVIRONMENT: development
@@ -92,7 +92,7 @@ services:
 
   knowledge:
     build:
-      context: ./services/knowledge
+      context: ../services/knowledge
     environment:
       ZAYVORA_KNOWLEDGE_ENVIRONMENT: development
       ZAYVORA_KNOWLEDGE_NEO4J_URI: bolt://neo4j:7687
@@ -107,7 +107,7 @@ services:
 
   therapeutic:
     build:
-      context: ./services/therapeutic
+      context: ../services/therapeutic
     environment:
       ZAYVORA_THERAPEUTIC_ENVIRONMENT: development
       ZAYVORA_THERAPEUTIC_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
@@ -121,7 +121,7 @@ services:
 
   ai:
     build:
-      context: ./services/ai
+      context: ../services/ai
     environment:
       ZAYVORA_AI_ENVIRONMENT: development
       ZAYVORA_AI_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
@@ -145,7 +145,7 @@ services:
 
   gateway:
     build:
-      context: ./services/gateway
+      context: ../services/gateway
     environment:
       ZAYVORA_GATEWAY_ENVIRONMENT: development
       ZAYVORA_GATEWAY_PORT: 8000
@@ -166,7 +166,7 @@ services:
 
   web:
     build:
-      context: ./apps/web
+      context: ../apps/web
     environment:
       NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
       NEXT_PUBLIC_IDENTITY_API_URL: http://localhost:8001

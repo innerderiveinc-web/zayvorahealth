@@ -3,11 +3,13 @@ ZAYVORA HEALTH™ — Wearables & Continuous Health Router
 Provides endpoints for continuous physiological data ingestion and 7-day autonomic summaries.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
 import uuid
 from datetime import datetime, timezone
+from sqlalchemy.orm import Session
+from ..core.database import get_db
 from ..wearables.wearable_engine import (
     WearableSample,
     WearableIngestionEngine,
@@ -34,7 +36,7 @@ class IngestSampleRequest(BaseModel):
 
 
 @router.post("/ingest", summary="Ingest time-series wearable sample block")
-async def ingest_wearable_sample(payload: IngestSampleRequest):
+async def ingest_wearable_sample(payload: IngestSampleRequest, db: Session = Depends(get_db)):
     sample = WearableSample(
         sample_id=f"W-SMP-{uuid.uuid4().hex[:8].upper()}",
         patient_id=payload.patient_id,
@@ -53,7 +55,7 @@ async def ingest_wearable_sample(payload: IngestSampleRequest):
         active_energy_kcal=payload.active_energy_kcal or 350.0,
     )
 
-    summary = WearableIngestionEngine.ingest_sample(sample)
+    summary = WearableIngestionEngine.ingest_sample(sample, db=db)
     return {
         "sample_id": sample.sample_id,
         "patient_id": sample.patient_id,
@@ -74,8 +76,8 @@ async def ingest_wearable_sample(payload: IngestSampleRequest):
 
 
 @router.get("/patient/{patient_id}/summary", summary="Get 7-day rolling physiological baseline and anomalies")
-async def get_patient_wearable_summary(patient_id: str):
-    summary = WearableIngestionEngine.compute_summary(patient_id)
+async def get_patient_wearable_summary(patient_id: str, db: Session = Depends(get_db)):
+    summary = WearableIngestionEngine.compute_summary(patient_id, db=db)
     return {
         "patient_id": summary.patient_id,
         "samples_count": summary.samples_count,

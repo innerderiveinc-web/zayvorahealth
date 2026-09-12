@@ -184,3 +184,22 @@ def test_part11_signature_envelope_and_verification():
     tampered_doc["medicines"] = [{"name": "Sharbat Bazoori", "qty": "5000ml"}]
     is_tampered_valid = Part11SignatureAuthority.verify_signature_envelope(envelope, tampered_doc)
     assert is_tampered_valid is False
+
+
+def test_ambient_scribe_audio_streaming_and_synthesis():
+    import base64
+    audio_sample = bytes([0, 12, 45, 120] * 256)
+    b64_chunk = base64.b64encode(audio_sample).decode("ascii")
+
+    soap = AmbientScribeEngine.process_audio_stream_and_synthesize(
+        patient_id="PAT-9912",
+        audio_chunks_base64=[b64_chunk, b64_chunk],
+        simulated_transcript="Marez ko ghutnon me dard aur khansi ki takleef hai.",
+    )
+
+    assert soap.safe_to_lock is False
+    assert soap.status == "DRAFT_PENDING_CLINICIAN_REVIEW"
+    assert "audio_stream_metadata" in soap.objective
+    assert soap.objective["audio_stream_metadata"]["chunks_processed"] == 2
+    assert soap.objective["audio_stream_metadata"]["total_bytes"] == len(audio_sample) * 2
+    assert "Waja-ul-Mafasil" in soap.subjective["chief_complaints"]

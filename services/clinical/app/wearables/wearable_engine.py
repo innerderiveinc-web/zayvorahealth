@@ -45,6 +45,25 @@ class WearableSummary:
     clinical_advisory: str = "Physiological reserves within expected homeostatic range."
 
 
+@dataclass
+class WearableSampleRecordData:
+    patient_id: str
+    sample_id: str
+    timestamp_utc: str
+    source_device: str
+    hrv_rmssd_ms: float
+    hrv_sdnn_ms: float
+    resting_heart_rate_bpm: int
+    sleep_hours_total: float
+    deep_sleep_hours: float
+    rem_sleep_hours: float
+    spo2_average_pct: float
+    spo2_lowest_pct: float
+    respiratory_rate_bpm: float
+    daily_steps: int
+    active_energy_kcal: float
+
+
 # In-memory storage for continuous wearable streams
 WEARABLES_STORE: Dict[str, List[WearableSample]] = {}
 
@@ -53,19 +72,109 @@ class WearableIngestionEngine:
     """Ingestion, normalization, and autonomic Unani mapping for continuous wearable streams."""
 
     @classmethod
-    def ingest_sample(cls, sample: WearableSample) -> WearableSummary:
+    def ingest_sample(cls, sample: WearableSample, db: Optional[Any] = None) -> WearableSummary:
         if sample.patient_id not in WEARABLES_STORE:
             WEARABLES_STORE[sample.patient_id] = []
         WEARABLES_STORE[sample.patient_id].append(sample)
-        return cls.compute_summary(sample.patient_id)
+
+        # Persist to relational database when DB session is active
+        if db is not None:
+            try:
+                try:
+                    from ..models.clinical import WearableSampleRecord
+                    record = WearableSampleRecord(
+                        patient_id=sample.patient_id,
+                        sample_id=sample.sample_id,
+                        timestamp_utc=sample.timestamp_utc,
+                        source_device=sample.source_device,
+                        hrv_rmssd_ms=sample.hrv_rmssd_ms,
+                        hrv_sdnn_ms=sample.hrv_sdnn_ms,
+                        resting_heart_rate_bpm=sample.resting_heart_rate_bpm,
+                        sleep_hours_total=sample.sleep_hours_total,
+                        deep_sleep_hours=sample.deep_sleep_hours,
+                        rem_sleep_hours=sample.rem_sleep_hours,
+                        spo2_average_pct=sample.spo2_average_pct,
+                        spo2_lowest_pct=sample.spo2_lowest_pct,
+                        respiratory_rate_bpm=sample.respiratory_rate_bpm,
+                        daily_steps=sample.daily_steps,
+                        active_energy_kcal=sample.active_energy_kcal,
+                    )
+                except Exception:
+                    record = WearableSampleRecordData(
+                        patient_id=sample.patient_id,
+                        sample_id=sample.sample_id,
+                        timestamp_utc=sample.timestamp_utc,
+                        source_device=sample.source_device,
+                        hrv_rmssd_ms=sample.hrv_rmssd_ms,
+                        hrv_sdnn_ms=sample.hrv_sdnn_ms,
+                        resting_heart_rate_bpm=sample.resting_heart_rate_bpm,
+                        sleep_hours_total=sample.sleep_hours_total,
+                        deep_sleep_hours=sample.deep_sleep_hours,
+                        rem_sleep_hours=sample.rem_sleep_hours,
+                        spo2_average_pct=sample.spo2_average_pct,
+                        spo2_lowest_pct=sample.spo2_lowest_pct,
+                        respiratory_rate_bpm=sample.respiratory_rate_bpm,
+                        daily_steps=sample.daily_steps,
+                        active_energy_kcal=sample.active_energy_kcal,
+                    )
+                db.add(record)
+                db.commit()
+            except Exception:
+                try:
+                    db.rollback()
+                except Exception:
+                    pass
+
+        return cls.compute_summary(sample.patient_id, db=db)
 
     @classmethod
-    def get_patient_samples(cls, patient_id: str) -> List[WearableSample]:
-        return WEARABLES_STORE.get(patient_id, [])
-
-    @classmethod
-    def compute_summary(cls, patient_id: str) -> WearableSummary:
+    def get_patient_samples(cls, patient_id: str, db: Optional[Any] = None) -> List[WearableSample]:
         samples = WEARABLES_STORE.get(patient_id, [])
+        if not samples and db is not None:
+            cls.compute_summary(patient_id, db=db)
+            return WEARABLES_STORE.get(patient_id, [])
+        return samples
+
+    @classmethod
+    def compute_summary(cls, patient_id: str, db: Optional[Any] = None) -> WearableSummary:
+        samples = WEARABLES_STORE.get(patient_id, [])
+        if not samples and db is not None:
+            try:
+                from ..models.clinical import WearableSampleRecord
+                from sqlalchemy import select
+                stmt = (
+                    select(WearableSampleRecord)
+                    .where(WearableSampleRecord.patient_id == patient_id)
+                    .order_by(WearableSampleRecord.created_at.desc())
+                    .limit(14)
+                )
+                db_records = db.execute(stmt).scalars().all()
+                if db_records:
+                    loaded = [
+                        WearableSample(
+                            sample_id=r.sample_id,
+                            patient_id=r.patient_id,
+                            timestamp_utc=r.timestamp_utc,
+                            source_device=r.source_device,
+                            hrv_rmssd_ms=r.hrv_rmssd_ms,
+                            hrv_sdnn_ms=r.hrv_sdnn_ms,
+                            resting_heart_rate_bpm=r.resting_heart_rate_bpm,
+                            sleep_hours_total=r.sleep_hours_total,
+                            deep_sleep_hours=r.deep_sleep_hours,
+                            rem_sleep_hours=r.rem_sleep_hours,
+                            spo2_average_pct=r.spo2_average_pct,
+                            spo2_lowest_pct=r.spo2_lowest_pct,
+                            respiratory_rate_bpm=r.respiratory_rate_bpm,
+                            daily_steps=r.daily_steps,
+                            active_energy_kcal=r.active_energy_kcal,
+                        )
+                        for r in reversed(db_records)
+                    ]
+                    WEARABLES_STORE[patient_id] = loaded
+                    samples = loaded
+            except Exception:
+                pass
+
         if not samples:
             return WearableSummary(
                 patient_id=patient_id,

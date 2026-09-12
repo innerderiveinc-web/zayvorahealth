@@ -154,3 +154,54 @@ def test_telemetry_metrics_and_prometheus_export():
     assert "zayvora_http_requests_total" in prom_text
     assert "zayvora_safety_firewall_blocks_total" in prom_text
     assert "zayvora_predictive_alerts_total" in prom_text
+
+
+def test_wearables_database_persistence():
+    """Verify that WearableIngestionEngine persists samples when a database session is provided."""
+    class MockDbSession:
+        def __init__(self):
+            self.added = []
+            self.committed = False
+
+        def add(self, obj):
+            self.added.append(obj)
+
+        def commit(self):
+            self.committed = True
+
+        def rollback(self):
+            pass
+
+    mock_db = MockDbSession()
+    patient_id = "PAT-DB-WEARABLE-001"
+    sample = WearableSample(
+        sample_id="W-DB-01",
+        patient_id=patient_id,
+        timestamp_utc="2026-09-12T10:00:00Z",
+        source_device="Apple Watch Ultra 2",
+        hrv_rmssd_ms=52.0,
+        hrv_sdnn_ms=58.0,
+        resting_heart_rate_bpm=66,
+        sleep_hours_total=7.8,
+        deep_sleep_hours=2.1,
+        rem_sleep_hours=1.9,
+        spo2_average_pct=99.0,
+        spo2_lowest_pct=96.0,
+        respiratory_rate_bpm=14.0,
+        daily_steps=9200,
+        active_energy_kcal=480.0,
+    )
+
+    summary = WearableIngestionEngine.ingest_sample(sample, db=mock_db)
+    assert summary.patient_id == patient_id
+    assert summary.samples_count >= 1
+
+    # Verify directly from mock database session
+    assert mock_db.committed is True
+    assert len(mock_db.added) == 1
+    row = mock_db.added[0]
+    assert row.sample_id == "W-DB-01"
+    assert row.patient_id == patient_id
+    assert row.source_device == "Apple Watch Ultra 2"
+    assert row.hrv_rmssd_ms == 52.0
+    assert row.daily_steps == 9200

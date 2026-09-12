@@ -64,7 +64,10 @@ export const portalApi = {
     try {
       return await request<TodaySchedule>(`/api/v1/patient-portal/${patientId}/today`, token);
     } catch (err) {
-      return getFallbackTodaySchedule(patientId);
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return getFallbackTodaySchedule(patientId);
+      }
+      throw err;
     }
   },
 
@@ -89,7 +92,10 @@ export const portalApi = {
         }
       );
     } catch (err) {
-      return { recorded: true, compliance_pct: 92.5 };
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return { recorded: true, compliance_pct: 92.5 };
+      }
+      throw err;
     }
   },
 
@@ -97,7 +103,10 @@ export const portalApi = {
     try {
       return await request<PortalMessage[]>(`/api/v1/patient-portal/${patientId}/messages`, token);
     } catch (err) {
-      return getFallbackMessages(patientId);
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return getFallbackMessages(patientId);
+      }
+      throw err;
     }
   },
 
@@ -115,18 +124,21 @@ export const portalApi = {
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      const isEmergency =
-        payload.message_body.toLowerCase().includes("chest pain") ||
-        payload.message_body.toLowerCase().includes("severe");
-      return {
-        message_id: "msg-" + Date.now(),
-        patient_id: payload.patient_id,
-        sender_type: payload.sender_type,
-        timestamp_utc: new Date().toISOString(),
-        message_body: payload.message_body,
-        triage_status: isEmergency ? "EMERGENCY_REDIRECT" : "ROUTINE",
-        requires_immediate_action: isEmergency,
-      };
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        const isEmergency =
+          payload.message_body.toLowerCase().includes("chest pain") ||
+          payload.message_body.toLowerCase().includes("severe");
+        return {
+          message_id: "msg-" + Date.now(),
+          patient_id: payload.patient_id,
+          sender_type: payload.sender_type,
+          timestamp_utc: new Date().toISOString(),
+          message_body: payload.message_body,
+          triage_status: isEmergency ? "EMERGENCY_REDIRECT" : "ROUTINE",
+          requires_immediate_action: isEmergency,
+        };
+      }
+      throw err;
     }
   },
 };

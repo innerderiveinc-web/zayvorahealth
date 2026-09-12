@@ -78,8 +78,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Offline fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`Task enqueue failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
 
     return {
@@ -98,8 +103,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`Get task failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
     return null;
   },
@@ -114,8 +124,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Offline fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`List tasks failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
 
     return {
@@ -235,8 +250,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`Drain worker failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
     return { processed_tasks: 1, remaining_in_queue: 0 };
   },
@@ -261,8 +281,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`ABDM data flow request failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
 
     return {
@@ -301,8 +326,13 @@ export const taskApi = {
       if (res.ok) {
         return await res.json();
       }
-    } catch {
-      // Fallback
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw new Error(`ABDM data packet transfer failed: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE !== "true") {
+        throw err;
+      }
     }
 
     return {
