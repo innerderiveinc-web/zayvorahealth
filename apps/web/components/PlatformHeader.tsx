@@ -22,6 +22,8 @@ export function PlatformHeader() {
 
   const workspaces = [
     { label: "Public", href: "/", icon: "🌐" },
+    { label: "Website (25p)", href: "/website", icon: "🏛️" },
+    { label: "Herbals Store", href: "/website/herbals", icon: "🌿" },
     { label: "Patient", href: "/patient", icon: "👤" },
     { label: "Doctor", href: "/doctor", icon: "🩺" },
     { label: "Clinic", href: "/clinic", icon: "🏥" },
@@ -53,7 +55,7 @@ export function PlatformHeader() {
             </div>
           </Link>
           <span className="hidden sm:inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-            v4.2-LTS
+            v5.0-Enterprise
           </span>
         </div>
 

@@ -88,12 +88,17 @@
         <div class="flex items-center gap-2 bg-[var(--background)] px-3 py-1.5 rounded-xl border border-[var(--border)]">
           <span class="text-xs text-[var(--muted)] font-medium">Logged in as:</span>
           <select id="role-selector" onchange="switchRole(this.value)" class="bg-transparent text-xs font-semibold text-emerald-400 focus:outline-none cursor-pointer">
-            <option value="patient">Hamza Farooqi (Patient)</option>
-            <option value="doctor" selected>Hakim Dr. Tariq Mansoor (Doctor / Senior Tabeeb)</option>
-            <option value="clinic">Sana Khan (Clinic Receptionist / Admin)</option>
-            <option value="pharmacy">Zainab Ali (Clinical Pharmacist)</option>
-            <option value="research">Dr. K. Saxena (Clinical Researcher)</option>
-            <option value="admin">Platform Administrator (System Admin & IT)</option>
+            <option value="doctor" selected>🩺 Hakim Dr. Tariq Mansoor (Doctor / Senior Tabeeb)</option>
+            <option value="patient">👤 Hamza Farooqi (Patient Health 360)</option>
+            <option value="clinic">🏥 Sana Khan (Clinic Receptionist & OPD)</option>
+            <option value="pharmacy">💊 Zainab Ali (Clinical Pharmacist & FEFO)</option>
+            <option value="manufacturing">🏭 Dr. Arshad Qureshi (Manufacturing QA/QC & BMR)</option>
+            <option value="research">🔬 Dr. K. Saxena (Clinical Researcher & RWE)</option>
+            <option value="enterprise">🏢 Hakeem Abdul Majeed (Enterprise Owner / Chairman)</option>
+            <option value="admin">🛡️ Platform Administrator (System Admin & IT)</option>
+            <option value="website">🌐 Public Website (25 Canonical Pages)</option>
+            <option value="herbals">🌿 ZAYVORA Herbals (10 Formulations Store & Cart)</option>
+            <option value="mobile">📱 ZAYVORA Mobile App (React Native / Expo Simulator)</option>
           </select>
         </div>
 
@@ -282,6 +287,38 @@
         { id: 'audit', label: '🔒 Merkle Audit Ledger' },
         { id: 'safety', label: '🛡️ Safety Firewall Rules' },
         { id: 'engines', label: '🧬 System Health & Engines' }
+      ],
+      enterprise: [
+        { id: 'overview', label: '🏢 Enterprise Overview' },
+        { id: 'facilities', label: '🏥 Multi-Facility Network' },
+        { id: 'financials', label: '📈 Financials & Revenue' },
+        { id: 'governance', label: '⚖️ 3-Specialist Governance' },
+        { id: 'expansion', label: '🌐 Global Matab Franchising' }
+      ],
+      manufacturing: [
+        { id: 'batches', label: '🏭 Active Batch Records (BMR)' },
+        { id: 'testing', label: '🧪 QC Chromatography & HPTLC' },
+        { id: 'mudabbar', label: '🛡️ Schedule E(1) Detox Protocols' },
+        { id: 'coa', label: '📜 Release Certificates (COA)' }
+      ],
+      website: [
+        { id: 'home', label: '🌐 Public Home' },
+        { id: 'pages25', label: '📑 25 Canonical Pages Directory' },
+        { id: 'philosophy', label: '🌿 Clinical Philosophy' },
+        { id: 'care_journey', label: '🗺️ 12-Step Care Journey' },
+        { id: 'knowledge', label: '📚 Knowledge Centre' }
+      ],
+      herbals: [
+        { id: 'catalog', label: '🌿 10-Formulation Portfolio' },
+        { id: 'cart', label: '🛒 Live Cart & Checkout' },
+        { id: 'monographs', label: '📖 Clinical Monographs' },
+        { id: 'fefo', label: '📦 Dispensary Batch FEFO' }
+      ],
+      mobile: [
+        { id: 'simulator', label: '📱 Mobile Simulator' },
+        { id: 'audio_posology', label: '🔊 Vernacular Voice Guidance' },
+        { id: 'asbab_sittah', label: '🌿 Asbab-e-Sittah 6 Essentials' },
+        { id: 'companion', label: '🩺 Doctor Mobile Triage' }
       ]
     };
 
@@ -354,6 +391,16 @@
         renderResearchApp(main);
       } else if (state.role === 'admin') {
         renderAdminApp(main);
+      } else if (state.role === 'enterprise') {
+        renderEnterpriseApp(main);
+      } else if (state.role === 'manufacturing') {
+        renderManufacturingApp(main);
+      } else if (state.role === 'website') {
+        renderWebsiteApp(main);
+      } else if (state.role === 'herbals') {
+        renderHerbalsApp(main);
+      } else if (state.role === 'mobile') {
+        renderMobileApp(main);
       }
     }
 
@@ -786,7 +833,10 @@
                     </div>
                     <div class="p-2.5 bg-[#0F172A] rounded-lg border border-[#334155]">
                       <span class="font-bold text-white block">Kitab al-Kulliyat (Ibn Rushd / Averroes) — Maqala 5</span>
-                      <span>Fasl fi Usool-e-Ilaj: Prescribes 4-stage sequential Afaal (*Tanqiya* $ightarrow$ *Tahleel* $ightarrow$ *Taqwiyaat* $ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
+                      <span>Fasl fi Usool-e-Ilaj: Prescribes 4-stage sequential Afaal (*Tanqiya* $
+ightarrow$ *Tahleel* $
+ightarrow$ *Taqwiyaat* $
+ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
                     </div>
                   </div>
                 </div>
@@ -1756,6 +1806,607 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
     // Initialize Application
     renderNavigation();
     renderWorkspace();
+
+    // =========================================================================
+    // ENTERPRISE OWNER WORKSPACE
+    // =========================================================================
+    function renderEnterpriseApp(container) {
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-emerald-900/30 to-teal-900/30 border border-emerald-500/30 rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">ZAYVORA Health OS™ v5.0</span>
+                <h2 class="text-2xl font-bold text-white mt-1">Enterprise Multi-Facility Operations</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">Governing 14 Integrative Hospitals & Matabs across 4 National Clusters.</p>
+              </div>
+              <div class="flex gap-2">
+                <span class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/40">✓ All 14 Facilities HIPAA / DISHA Compliant</span>
+                <span class="px-3 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/40">ABHA M2/M3 Connected</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enterprise KPI Matrix -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)]">
+              <span class="text-xs text-[var(--muted)]">Consolidated Active Patients</span>
+              <div class="text-2xl font-bold text-white mt-1">42,850</div>
+              <span class="text-[10px] text-emerald-400 font-semibold">↑ +14.2% MoM</span>
+            </div>
+            <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)]">
+              <span class="text-xs text-[var(--muted)]">Monthly Clinical Encounters</span>
+              <div class="text-2xl font-bold text-white mt-1">11,240</div>
+              <span class="text-[10px] text-emerald-400 font-semibold">98.4% 21 CFR Compliant</span>
+            </div>
+            <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)]">
+              <span class="text-xs text-[var(--muted)]">Dispensary Herbals Revenue</span>
+              <div class="text-2xl font-bold text-white mt-1">₹1.84 Cr</div>
+              <span class="text-[10px] text-emerald-400 font-semibold">FEFO Zero Expiry</span>
+            </div>
+            <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)]">
+              <span class="text-xs text-[var(--muted)]">Clinical RWE Concordance</span>
+              <div class="text-2xl font-bold text-emerald-400 mt-1">94.8%</div>
+              <span class="text-[10px] text-[var(--muted)]">45 Connected Engines</span>
+            </div>
+          </div>
+
+          <!-- Multi-facility Roster -->
+          <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+            <h3 class="font-bold text-sm text-white">Facility Operational Status</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs text-left">
+                <thead class="text-[var(--muted)] border-b border-[var(--border)]">
+                  <tr>
+                    <th class="pb-2">Facility Name</th>
+                    <th class="pb-2">Type</th>
+                    <th class="pb-2">Location</th>
+                    <th class="pb-2">Active OPD</th>
+                    <th class="pb-2">Licensed Physicians</th>
+                    <th class="pb-2">Dispensary Mudabbar</th>
+                    <th class="pb-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border)] text-[var(--foreground)]">
+                  <tr>
+                    <td class="py-3 font-semibold text-white">National Institute of Integrative Medicine</td>
+                    <td class="py-3">Tertiary Academic Hospital</td>
+                    <td class="py-3">New Delhi</td>
+                    <td class="py-3">128 / day</td>
+                    <td class="py-3">24 Senior Tabeebs</td>
+                    <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">FEFO ACTIVE</span></td>
+                    <td class="py-3"><span class="text-emerald-400 font-bold">● Operational</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-white">Jamia Hamdard AUTC Central Clinic</td>
+                    <td class="py-3">Integrative Specialty OPD</td>
+                    <td class="py-3">New Delhi</td>
+                    <td class="py-3">84 / day</td>
+                    <td class="py-3">16 Physicians</td>
+                    <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">FEFO ACTIVE</span></td>
+                    <td class="py-3"><span class="text-emerald-400 font-bold">● Operational</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-white">ZAYVORA Matab & Daycare Center</td>
+                    <td class="py-3">Regimenal Therapy Matab</td>
+                    <td class="py-3">Hyderabad</td>
+                    <td class="py-3">62 / day</td>
+                    <td class="py-3">9 Physicians</td>
+                    <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">FEFO ACTIVE</span></td>
+                    <td class="py-3"><span class="text-emerald-400 font-bold">● Operational</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-white">ZAYVORA Integrative Wellness Center</td>
+                    <td class="py-3">Preventive Hifz-e-Sehat Clinic</td>
+                    <td class="py-3">Bengaluru</td>
+                    <td class="py-3">45 / day</td>
+                    <td class="py-3">6 Physicians</td>
+                    <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">FEFO ACTIVE</span></td>
+                    <td class="py-3"><span class="text-emerald-400 font-bold">● Operational</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // MANUFACTURING & QA/QC WORKSPACE
+    // =========================================================================
+    function renderManufacturingApp(container) {
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-amber-900/30 to-slate-900/30 border border-amber-500/30 rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">GMP / WHO-GMP & Schedule T Facility</span>
+                <h2 class="text-2xl font-bold text-white mt-1">ZAYVORA Botanical Manufacturing & QA/QC</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">Batch Manufacturing Records (BMR), Mudabbar Detoxification & Heavy Metal Spectrometry.</p>
+              </div>
+              <span class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs font-semibold border border-amber-500/40">Schedule E(1) Verification Locked</span>
+            </div>
+          </div>
+
+          <!-- Batch Release Queue -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white">Batch: BMR-2026-MVP-09</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">RELEASED</span>
+              </div>
+              <p class="text-xs text-white font-semibold">ManiVital Pro (Commercial Granules)</p>
+              <div class="text-[11px] text-[var(--muted)] space-y-1">
+                <div>Quantity: 1,500 units (150g)</div>
+                <div>Chromatography (Withanolides): 2.8% (Spec: &gt; 2.5%)</div>
+                <div>Heavy Metals (Pb/Cd/As/Hg): &lt; 0.05 ppm (Passed)</div>
+                <div>Microbial Burden: 0 CFU/g (Sterile)</div>
+              </div>
+              <button onclick="showNotification('COA Downloaded for BMR-2026-MVP-09')" class="w-full py-2 bg-[var(--background)] hover:bg-slate-700 text-xs text-white font-bold rounded-lg border border-[var(--border)]">Download Signed COA</button>
+            </div>
+
+            <div class="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white">Batch: BMR-2026-MUD-04</span>
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-bold">DETOX TESTING</span>
+              </div>
+              <p class="text-xs text-white font-semibold">Azaraqi Mudabbar (Strychnos nux-vomica)</p>
+              <div class="text-[11px] text-[var(--muted)] space-y-1">
+                <div>Protocol: Cow milk boiling (72 hrs) + water wash</div>
+                <div>Residual Strychnine / Brucine: 1.15% (Safety range: 1.0 - 1.25%)</div>
+                <div>Quality Officer: Dr. A. Qureshi</div>
+                <div>Pharmacopoeia: UPI Vol. IV</div>
+              </div>
+              <button onclick="showNotification('Mudabbar Protocol Signed & Verified')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-xs text-white font-bold rounded-lg">Approve Detox Stage</button>
+            </div>
+
+            <div class="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white">Batch: BMR-2026-MET-03</span>
+                <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 text-[10px] font-bold">IN BLENDING</span>
+              </div>
+              <p class="text-xs text-white font-semibold">MetaboCore Elite Capsules</p>
+              <div class="text-[11px] text-[var(--muted)] space-y-1">
+                <div>Quantity: 3,000 bottles (60 caps)</div>
+                <div>Gymnemic Acid Titration: 25.4%</div>
+                <div>Moisture Content: 3.2% (Passed)</div>
+                <div>FEFO Expiry Allocated: 2028-09-30</div>
+              </div>
+              <button onclick="showNotification('Batch In-Process Sample Queued for Lab')" class="w-full py-2 bg-[var(--background)] hover:bg-slate-700 text-xs text-white font-bold rounded-lg border border-[var(--border)]">Send to Spectrometry</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // PUBLIC WEBSITE SHOWCASE (25 CANONICAL PAGES)
+    // =========================================================================
+    function renderWebsiteApp(container) {
+      const publicPages = [
+        { path: "/website", title: "Public Home", desc: "Hero, 6 Care Areas, 10 Formulations, Philosophy, 12-Step Care Loop" },
+        { path: "/website/about", title: "About ZAYVORA", desc: "Foundational vision, leadership, and integrative mission" },
+        { path: "/website/philosophy", title: "Clinical Philosophy", desc: "Mizaj, Afaal Cascade, Organ-Axis, and Scientific Modernity" },
+        { path: "/website/services", title: "Clinical Services", desc: "Tele-consult, OPD, Regimenal Ilaj bil-Tadbeer, and In-Clinic Matab" },
+        { path: "/website/conditions", title: "Conditions We Treat", desc: "Metabolic, Joint (Mafasil), Liver-Gut, Fertility, and Neuro" },
+        { path: "/website/care-journey", title: "12-Step Care Journey", desc: "From KNOW & ASSESS through 21 CFR Lock and Follow-up" },
+        { path: "/website/programs", title: "Specialty Programs", desc: "Metabolic Reset, Fertility Rejuvenation, Hepatic Harmony" },
+        { path: "/website/matab", title: "ZAYVORA Matab", desc: "Classical clinic experience with pulse diagnosis (Nabz) and cupping (Hijama)" },
+        { path: "/website/clinics", title: "Clinic Network", desc: "Multi-facility locations in Delhi, Hyderabad, Bengaluru, Srinagar" },
+        { path: "/website/doctors", title: "Clinicians & Faculty", desc: "Board-certified Senior Tabeebs and integrative MDs" },
+        { path: "/website/book", title: "Book Consultation", desc: "Direct appointment scheduler for tele-video or physical OPD" },
+        { path: "/website/modern-unani", title: "Modern Unani Paradigm", desc: "Decodifying ancient Greco-Arab clinical wisdom with modern biomedical data" },
+        { path: "/website/knowledge-centre", title: "Knowledge Centre", desc: "Articles on Mizaj, Asbab-e-Sittah, and Botanical Monographs" },
+        { path: "/website/herbals", title: "ZAYVORA Herbals Store", desc: "10-formulation portfolio e-commerce catalog with cart & checkout" },
+        { path: "/website/portfolio", title: "Formulations Portfolio", desc: "Clinical rationale, ingredients, and evidence tier breakdown" },
+        { path: "/website/product", title: "Product Detail Monograph", desc: "Comprehensive botanical monograph with posology, anupan, and studies" },
+        { path: "/website/cart", title: "Shopping Cart & Checkout", desc: "Direct ordering with dispensary FEFO temperature-controlled fulfillment" },
+        { path: "/website/research", title: "Research & Evidence", desc: "Observational RWE registries, academic concordance, clinical trials" },
+        { path: "/website/blog", title: "Integrative Health Blog", desc: "Clinical essays, seasonal dietary regimens, and patient case reports" },
+        { path: "/website/faqs", title: "Patient FAQs", desc: "Answers on Unani medicine, consulting, dosage safety, and ABHA linkage" },
+        { path: "/website/careers", title: "Careers & Fellowships", desc: "Positions for Tabeebs, clinical researchers, and full-stack health engineers" },
+        { path: "/website/contact", title: "Contact & Concierge", desc: "Patient helpline, facility directory, and clinic inquiries" },
+        { path: "/website/partner", title: "Partner With Us", desc: "Hospital networks, medical colleges, and research institutes" },
+        { path: "/website/privacy", title: "Privacy Policy", desc: "HIPAA, DISHA, DPDP compliant data protection and ABHA consent" },
+        { path: "/website/terms", title: "Terms of Service", desc: "Clinical telemedicine terms, clinician discretion, and governance" },
+        { path: "/website/shipping-refunds", title: "Shipping & Refunds", desc: "Dispensary courier, FEFO handling, and refund procedures" }
+      ];
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-[var(--card)] p-6 rounded-2xl border border-[var(--border)]">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">ZAYVORA Public Web Ecosystem</span>
+                <h2 class="text-2xl font-bold text-white mt-1">25 Canonical Public Pages Showcase</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">Built with Next.js App Router, Tailwind CSS, and PublicWebsiteShell under <code class="text-emerald-400">apps/web/app/website/</code>.</p>
+              </div>
+              <a href="/website" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition">
+                Open Public Website (New Tab) ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- 25 Pages Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${publicPages.map(p => `
+              <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)] hover:border-emerald-500/50 transition-colors flex flex-col justify-between">
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-white text-sm">${p.title}</span>
+                    <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${p.path}</span>
+                  </div>
+                  <p class="text-xs text-[var(--muted)] mt-1.5 leading-relaxed">${p.desc}</p>
+                </div>
+                <div class="mt-3 pt-2 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
+                  <span class="text-emerald-400 font-semibold">✓ Generated & Routing</span>
+                  <a href="${p.path}" class="text-white hover:text-emerald-400 font-bold">View Page →</a>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // ZAYVORA HERBALS 10-PRODUCT PORTFOLIO & CART WORKSPACE
+    // =========================================================================
+    const herbalsProducts = [
+      { id: "manivital-pro", name: "ManiVital Pro", category: "Fertility & Vitality", price: 1450, desc: "Male reproductive vitality formulation with Withania somnifera and Mucuna pruriens.", dosage: "5g twice daily with lukewarm milk", indications: "Seminal viscosity, reproductive vitality, oligospermia." },
+      { id: "ovasync", name: "OvaSync", category: "Fertility & Vitality", price: 1380, desc: "Ovarian reserve and follicular rhythm balancer with standardized Asparagus racemosus.", dosage: "5g twice daily with milk", indications: "PCOS, anovulatory cycles, luteal support." },
+      { id: "qurs-taqwiyat-mani", name: "Qurs-e-Taqwiyat-e-Mani", category: "Fertility & Vitality", price: 890, desc: "Classical seminal viscosity and reproductive tone formula with Salep and Amber.", dosage: "2 tablets twice daily", indications: "Dhat syndrome, nocturnal emission, asthenospermia." },
+      { id: "metabocore-elite", name: "MetaboCore Elite", category: "Metabolic", price: 1250, desc: "Metabolic syndrome and glycemic regulator featuring Gymnema and Berberis aristata.", dosage: "1 capsule before meals", indications: "Insulin resistance, HbA1c elevation, lipid dyscrasia." },
+      { id: "thyromet-axis", name: "ThyroMet Axis", category: "Metabolic", price: 1320, desc: "Thyroid-metabolic optimization compound with purified Commiphora mukul (Guggulu).", dosage: "1 tablet morning and night", indications: "Subclinical hypothyroidism, sluggish metabolic rate." },
+      { id: "liverprime-core", name: "LiverPrime Core", category: "Liver & Gut", price: 1150, desc: "Hepatoprotective and bile flow regulator backed by Picrorhiza kurroa and Cichorium.", dosage: "10ml syrup twice daily", indications: "Non-alcoholic fatty liver, sluggish digestion, jaundice." },
+      { id: "neurocalmx", name: "NeuroCalmX", category: "Calm & Sleep", price: 1200, desc: "GABAergic calm and mental resilience confection with Bacopa monnieri and Shankhpushpi.", dosage: "5g bedtime with warm milk", indications: "Chronic anxiety, insomnia, mental fatigue." },
+      { id: "nightone-x", name: "NightOne X", category: "Calm & Sleep", price: 1320, desc: "Circadian deep sleep restorer with Valeriana wallichii and Nardostachys jatamansi.", dosage: "1 capsule 30 mins before sleep", indications: "Circadian disruption, restless sleep, non-REM deficiency." },
+      { id: "sleep-stress-harmonizer", name: "Sleep Stress Harmonizer", category: "Calm & Sleep", price: 1180, desc: "Nocturnal cortisol balancing formula for restorative rest.", dosage: "1 teaspoon steeped in warm water", indications: "High nocturnal cortisol, wakefulness at 3 AM." },
+      { id: "men-daily", name: "Men Daily", category: "Daily / Men", price: 950, desc: "Daily micronutrient and adaptogenic vitality tonic for active men.", dosage: "1 tablet after breakfast", indications: "General debility, micronutrient replenishment, physical stamina." }
+    ];
+
+    let herbalsCart = [];
+
+    function addToHerbalsCart(id) {
+      const prod = herbalsProducts.find(p => p.id === id);
+      if (prod) {
+        herbalsCart.push(prod);
+        showNotification(`Added ${prod.name} to Cart! Total items: ${herbalsCart.length}`);
+        renderHerbalsApp(document.getElementById('workspace-container'));
+      }
+    }
+
+    function clearHerbalsCart() {
+      herbalsCart = [];
+      showNotification('Cart cleared.');
+      renderHerbalsApp(document.getElementById('workspace-container'));
+    }
+
+    function checkoutHerbalsCart() {
+      if (herbalsCart.length === 0) {
+        showNotification('Your cart is empty. Please add products first.', 'error');
+        return;
+      }
+      showNotification(`Order Confirmed! ${herbalsCart.length} items queued for FEFO Dispensary Dispatch.`);
+      herbalsCart = [];
+      renderHerbalsApp(document.getElementById('workspace-container'));
+    }
+
+    function renderHerbalsApp(container) {
+      const totalAmount = herbalsCart.reduce((sum, item) => sum + item.price, 0);
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-teal-900/30 to-emerald-900/30 border border-teal-500/30 rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">ZAYVORA Herbals™ Direct Store</span>
+                <h2 class="text-2xl font-bold text-white mt-1">10 Clinical Botanical Formulations</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">GMP-certified, heavy-metal tested, standardized botanicals delivered with FEFO batch transparency.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1.5 rounded-xl bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/40">
+                  🛒 Cart (${herbalsCart.length} items — ₹${totalAmount.toLocaleString('en-IN')})
+                </span>
+                ${herbalsCart.length > 0 ? `
+                  <button onclick="checkoutHerbalsCart()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md">
+                    Checkout Now →
+                  </button>
+                  <button onclick="clearHerbalsCart()" class="px-2.5 py-1.5 bg-rose-500/20 text-rose-300 text-xs rounded-xl border border-rose-500/30">
+                    Clear
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Catalog Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            ${herbalsProducts.map(p => `
+              <div class="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-5 flex flex-col justify-between hover:border-teal-500/50 transition">
+                <div>
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold text-teal-400 uppercase tracking-wider bg-teal-500/10 px-2.5 py-0.5 rounded-full border border-teal-500/20">${p.category}</span>
+                    <span class="text-base font-extrabold text-white">₹${p.price.toLocaleString('en-IN')}</span>
+                  </div>
+                  <h3 class="font-bold text-white text-base mt-2">${p.name}</h3>
+                  <p class="text-xs text-[var(--muted)] mt-1 leading-relaxed">${p.desc}</p>
+                  
+                  <div class="mt-3 p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[11px] space-y-1">
+                    <div><strong class="text-teal-400">Dosage:</strong> <span class="text-slate-300">${p.dosage}</span></div>
+                    <div><strong class="text-slate-400">Indications:</strong> <span class="text-slate-300">${p.indications}</span></div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-[var(--border)] flex items-center justify-between">
+                  <a href="/website/product?id=${p.id}" class="text-xs font-semibold text-teal-400 hover:underline">
+                    View Monograph →
+                  </a>
+                  <button onclick="addToHerbalsCart('${p.id}')" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow">
+                    + Add to Cart
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // CROSS-PLATFORM MOBILE APP SIMULATOR
+    // =========================================================================
+    let mobileActiveScreen = 'home';
+    let audioPosologyLang = 'ur';
+    let isPlayingAudio = false;
+
+    function setMobileScreen(screen) {
+      mobileActiveScreen = screen;
+      renderMobileApp(document.getElementById('workspace-container'));
+    }
+
+    function setAudioLanguage(lang) {
+      audioPosologyLang = lang;
+      renderMobileApp(document.getElementById('workspace-container'));
+    }
+
+    function toggleAudioPlayback() {
+      isPlayingAudio = !isPlayingAudio;
+      showNotification(isPlayingAudio ? 'Playing Vernacular Audio Posology...' : 'Audio paused.');
+      renderMobileApp(document.getElementById('workspace-container'));
+    }
+
+    function renderMobileApp(container) {
+      const audioTexts = {
+        ur: "ایک چمچ صبح اور شام کھانے کے بعد نیم گرم دودھ کے ساتھ لیں۔ ٹھنڈے مشروبات اور کھٹی چیزوں سے پرہیز کریں۔",
+        hi: "एक चम्मच सुबह और शाम खाना खाने के बाद गुनगुने दूध के साथ लें। ठंडी चीजों और खट्टी चीजों से परहेज करें।",
+        en: "Take one teaspoon twice daily after breakfast and dinner with lukewarm milk. Avoid cold drinks."
+      };
+
+      container.innerHTML = `
+        <div class="flex flex-col lg:flex-row gap-8 items-center justify-center py-4">
+          <!-- Mobile Device Frame -->
+          <div class="w-[360px] h-[720px] bg-[#0A0F1D] border-4 border-slate-700 rounded-[40px] shadow-2xl overflow-hidden flex flex-col relative">
+            
+            <!-- Mobile Notch / Top Status -->
+            <div class="bg-[#0F172A] px-5 py-3 flex items-center justify-between border-b border-slate-800 text-[11px]">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs">Z</div>
+                <span class="font-bold text-white text-xs">ZAYVORA Mobile</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">Mesh Live</span>
+            </div>
+
+            <!-- Mobile Screen Body -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+              ${mobileActiveScreen === 'home' ? `
+                <div class="bg-[#1E293B] p-4 rounded-2xl border border-slate-700 space-y-2">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="text-[10px] text-emerald-400 font-bold uppercase">Welcome</span>
+                      <h4 class="text-lg font-bold text-white">Mohammad Tariq</h4>
+                      <p class="text-[10px] text-slate-400">MRN: ZAY-2026-8819 • Age: 44</p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">Balghami</span>
+                  </div>
+                  <div class="mt-2 bg-[#0F172A] p-2.5 rounded-xl border border-slate-800 text-[10px]">
+                    <span class="text-slate-400 block font-bold">PRIMARY ORGAN-AXIS:</span>
+                    <span class="text-white font-semibold">Kabid-Mida (Hepato-Gastric)</span>
+                  </div>
+                </div>
+
+                <!-- 4 Quick Actions -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <button onclick="setMobileScreen('rx')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                    <span class="text-lg block">💊</span>
+                    <span class="text-xs font-bold text-white block mt-1">E-Prescription</span>
+                    <span class="text-[9px] text-slate-400">Audio Posology</span>
+                  </button>
+                  <button onclick="setMobileScreen('lifestyle')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                    <span class="text-lg block">🌿</span>
+                    <span class="text-xs font-bold text-white block mt-1">Asbab-e-Sittah</span>
+                    <span class="text-[9px] text-slate-400">6 Life Essentials</span>
+                  </button>
+                  <button onclick="setMobileScreen('consult')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                    <span class="text-lg block">🩺</span>
+                    <span class="text-xs font-bold text-white block mt-1">Book Consult</span>
+                    <span class="text-[9px] text-slate-400">Tele-Video OPD</span>
+                  </button>
+                  <button onclick="setMobileScreen('doctor')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                    <span class="text-lg block">🛡️</span>
+                    <span class="text-xs font-bold text-white block mt-1">Doctor Companion</span>
+                    <span class="text-[9px] text-slate-400">Point of Care</span>
+                  </button>
+                </div>
+
+                <!-- Active Afaal Regimen -->
+                <div class="bg-[#0F172A] p-3.5 rounded-xl border border-slate-800 text-[11px] space-y-1.5">
+                  <div class="flex justify-between items-center">
+                    <span class="text-emerald-400 font-bold uppercase text-[10px]">Afaal Stage 1: Tanqiya</span>
+                    <span class="text-amber-400 text-[10px] font-semibold">Day 9 of 14</span>
+                  </div>
+                  <p class="text-slate-300 leading-snug">Munzij-e-Balgham administered with Arq-e-Badiyan. Follow strict fasting schedule.</p>
+                </div>
+
+                <!-- Voice Alert -->
+                <button onclick="setMobileScreen('rx')" class="w-full bg-emerald-500/15 border border-emerald-500/40 rounded-xl p-3 flex items-center gap-3 text-left">
+                  <span class="text-2xl">🔊</span>
+                  <div>
+                    <span class="text-xs font-bold text-emerald-400 block">Sunein Apni Dawa Ki Khorak</span>
+                    <span class="text-[10px] text-slate-300">Spoken posology in Urdu, Hindi & English</span>
+                  </div>
+                </button>
+              ` : mobileActiveScreen === 'rx' ? `
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <button onclick="setMobileScreen('home')" class="text-xs text-emerald-400 font-bold">← Back</button>
+                    <span class="text-xs font-bold text-white">Active Prescriptions</span>
+                  </div>
+
+                  <!-- Language Toggle -->
+                  <div class="bg-[#1E293B] p-2.5 rounded-xl border border-slate-700 space-y-1.5">
+                    <span class="text-[10px] text-slate-400 block font-semibold">Vernacular Voice Language:</span>
+                    <div class="grid grid-cols-3 gap-1">
+                      <button onclick="setAudioLanguage('ur')" class="py-1 rounded text-[10px] font-bold ${audioPosologyLang === 'ur' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300'}">اردو (Urdu)</button>
+                      <button onclick="setAudioLanguage('hi')" class="py-1 rounded text-[10px] font-bold ${audioPosologyLang === 'hi' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300'}">हिन्दी (Hindi)</button>
+                      <button onclick="setAudioLanguage('en')" class="py-1 rounded text-[10px] font-bold ${audioPosologyLang === 'en' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300'}">English</button>
+                    </div>
+                  </div>
+
+                  <!-- Rx Card -->
+                  <div class="bg-[#1E293B] p-3.5 rounded-xl border border-slate-700 space-y-2 text-[11px]">
+                    <div class="flex justify-between items-center">
+                      <span class="font-bold text-white text-xs">ManiVital Pro Formula</span>
+                      <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">21 CFR Signed</span>
+                    </div>
+                    <div class="text-slate-300">Posology: 5g twice daily with lukewarm milk</div>
+                    <div class="text-slate-400">Duration: 30 Days • Vehicle: Lukewarm milk</div>
+
+                    <div class="bg-[#0F172A] p-2.5 rounded-lg border border-slate-800 space-y-1.5">
+                      <span class="text-emerald-400 font-bold text-[10px] block">🔊 Spoken Guidance (${audioPosologyLang.toUpperCase()}):</span>
+                      <p class="text-slate-200 italic leading-snug">"${audioTexts[audioPosologyLang]}"</p>
+                      <button onclick="toggleAudioPlayback()" class="w-full mt-1 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]">
+                        ${isPlayingAudio ? '⏸ Stop Audio' : '▶ Play Spoken Voice'}
+                      </button>
+                    </div>
+
+                    <button onclick="showNotification('Dispensary Refill Requested')" class="w-full py-1.5 border border-emerald-500/50 text-emerald-400 rounded-lg text-[10px] font-bold hover:bg-emerald-500/10">
+                      Request Dispensary FEFO Refill
+                    </button>
+                  </div>
+                </div>
+              ` : mobileActiveScreen === 'lifestyle' ? `
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <button onclick="setMobileScreen('home')" class="text-xs text-emerald-400 font-bold">← Back</button>
+                    <span class="text-xs font-bold text-white">Asbab-e-Sittah (6 Essentials)</span>
+                  </div>
+
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 space-y-1 text-[11px]">
+                    <span class="font-bold text-emerald-400 block">1. Hawa (Ambient Air)</span>
+                    <span class="text-slate-300">Fresh morning ventilation (Active: 45 min walk)</span>
+                  </div>
+
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 space-y-1 text-[11px]">
+                    <span class="font-bold text-emerald-400 block">2. Makul wa Mashrub (Food & Drink)</span>
+                    <span class="text-slate-300">Ghiza Barid Balghami compliant (Avoided curd & ice)</span>
+                  </div>
+
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 space-y-1 text-[11px]">
+                    <span class="font-bold text-emerald-400 block">3. Harakat wa Sukun (Movement)</span>
+                    <span class="text-slate-300">40 mins moderate Riyazat logged</span>
+                  </div>
+
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 space-y-1 text-[11px]">
+                    <span class="font-bold text-emerald-400 block">4. Nawm wa Yaqzah (Sleep)</span>
+                    <span class="text-slate-300">7.5 hours continuous restorative sleep</span>
+                  </div>
+
+                  <button onclick="showNotification('Asbab-e-Sittah Log Updated in Patient Record')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl">
+                    ✓ Save Today's Adherence
+                  </button>
+                </div>
+              ` : mobileActiveScreen === 'consult' ? `
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <button onclick="setMobileScreen('home')" class="text-xs text-emerald-400 font-bold">← Back</button>
+                    <span class="text-xs font-bold text-white">Integrative Tele-OPD</span>
+                  </div>
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-[11px] space-y-1">
+                    <span class="text-white font-bold block">Hakim Dr. Tariq Mansoor</span>
+                    <span class="text-emerald-400">Senior Tabeeb • Jamia Hamdard</span>
+                    <span class="text-slate-400 block">Slot: Tomorrow 10:30 AM (Tele-Video)</span>
+                  </div>
+                  <button onclick="showNotification('Consultation Confirmed! Room link sent.')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl">
+                    Confirm Video Room Appointment
+                  </button>
+                </div>
+              ` : `
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <button onclick="setMobileScreen('home')" class="text-xs text-emerald-400 font-bold">← Back</button>
+                    <span class="text-xs font-bold text-white">Doctor Mobile Triage</span>
+                  </div>
+                  <div class="bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl text-[10px] text-amber-300">
+                    <strong>21 CFR Sign-off Barrier:</strong> AI generated suggestions require your cryptographic PIN.
+                  </div>
+                  <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-[11px] space-y-2">
+                    <span class="font-bold text-white block">Mohammad Tariq (MRN-8819)</span>
+                    <span class="text-slate-300 block">Proposed Nuskha: Tanqiya + ManiVital Pro</span>
+                    <button onclick="showNotification('Prescription Cryptographically Locked & Signed')" class="w-full py-1.5 bg-emerald-600 text-white font-bold text-[10px] rounded-lg">
+                      🔒 Sign & Lock Prescription
+                    </button>
+                  </div>
+                </div>
+              `}
+            </div>
+
+            <!-- Mobile Bottom Tab Bar -->
+            <div class="bg-[#0F172A] border-t border-slate-800 flex items-center justify-around py-2">
+              <button onclick="setMobileScreen('home')" class="flex flex-col items-center ${mobileActiveScreen === 'home' ? 'text-emerald-400' : 'text-slate-500'}">
+                <span class="text-sm">🏠</span>
+                <span class="text-[9px] font-bold">Home</span>
+              </button>
+              <button onclick="setMobileScreen('rx')" class="flex flex-col items-center ${mobileActiveScreen === 'rx' ? 'text-emerald-400' : 'text-slate-500'}">
+                <span class="text-sm">💊</span>
+                <span class="text-[9px] font-bold">Dawa</span>
+              </button>
+              <button onclick="setMobileScreen('lifestyle')" class="flex flex-col items-center ${mobileActiveScreen === 'lifestyle' ? 'text-emerald-400' : 'text-slate-500'}">
+                <span class="text-sm">🌿</span>
+                <span class="text-[9px] font-bold">Lifestyle</span>
+              </button>
+              <button onclick="setMobileScreen('consult')" class="flex flex-col items-center ${mobileActiveScreen === 'consult' ? 'text-emerald-400' : 'text-slate-500'}">
+                <span class="text-sm">🩺</span>
+                <span class="text-[9px] font-bold">Consult</span>
+              </button>
+              <button onclick="setMobileScreen('doctor')" class="flex flex-col items-center ${mobileActiveScreen === 'doctor' ? 'text-emerald-400' : 'text-slate-500'}">
+                <span class="text-sm">🛡️</span>
+                <span class="text-[9px] font-bold">Doctor</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile App Feature Guide Card -->
+          <div class="max-w-md space-y-4">
+            <div class="bg-[var(--card)] p-6 rounded-2xl border border-[var(--border)] space-y-3">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">React Native & Expo Architecture</span>
+              <h3 class="text-xl font-bold text-white">Cross-Platform Companion App</h3>
+              <p class="text-xs text-[var(--muted)] leading-relaxed">
+                The mobile companion in <code class="text-emerald-400">apps/mobile/</code> empowers both patients and clinicians at the point-of-care.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-300">
+                <li>• <strong>Vernacular Audio Posology:</strong> Native audio playback in Urdu, Hindi, and English so patients never misdose complex Unani preparations or vehicles (anupan).</li>
+                <li>• <strong>Asbab-e-Sittah Logging:</strong> Daily adherence tracking for the 6 foundational Unani life factors.</li>
+                <li>• <strong>Clinician Point-of-Care Triage:</strong> Immediate review and 21 CFR Part 11 cryptographic lock sign-off from mobile devices.</li>
+                <li>• <strong>Encrypted WebRTC Tele-OPD:</strong> Video encounters connected to the unified EHR ledger.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
   </script>
 </body>
 </html>

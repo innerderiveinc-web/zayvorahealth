@@ -10,7 +10,11 @@ export type UserRole =
   | "clinic"
   | "pharmacy"
   | "research"
-  | "admin";
+  | "admin"
+  | "manufacturing"
+  | "enterprise"
+  | "website"
+  | "herbals";
 
 interface RoleConfig {
   id: UserRole;
@@ -100,6 +104,58 @@ const ROLES: Record<UserRole, RoleConfig> = {
       { label: "Safety Firewall Rules", href: "/admin?tab=firewall", icon: "⚙️" },
     ],
   },
+  manufacturing: {
+    id: "manufacturing",
+    label: "Manufacturing & eBMR",
+    userName: "Dr. A. R. Qureshi",
+    title: "GMP Plant Quality Director",
+    defaultPath: "/manufacturing",
+    allowedNav: [
+      { label: "eBMR Batches", href: "/manufacturing", icon: "🏭" },
+      { label: "CoA Verification", href: "/manufacturing?tab=coa", icon: "🔬" },
+      { label: "Mudabbar Detox Logs", href: "/manufacturing?tab=mudabbar", icon: "🛡️" },
+      { label: "Packaging & QA Release", href: "/manufacturing?tab=qa", icon: "📦" },
+    ],
+  },
+  enterprise: {
+    id: "enterprise",
+    label: "Enterprise Owner & SaaS",
+    userName: "Enterprise Executive",
+    title: "Health System Network Lead",
+    defaultPath: "/admin",
+    allowedNav: [
+      { label: "Multi-Facility Network", href: "/admin", icon: "🏥" },
+      { label: "Tenancy & Quotas", href: "/admin?tab=tenancy", icon: "🌐" },
+      { label: "Merkle Audit Ledger", href: "/admin?tab=merkle", icon: "🔒" },
+      { label: "Subscription & Billing", href: "/clinic?tab=billing", icon: "💳" },
+    ],
+  },
+  website: {
+    id: "website",
+    label: "Public Website & Brand",
+    userName: "Public Guest",
+    title: "ZAYVORA Health Brand Portal",
+    defaultPath: "/website",
+    allowedNav: [
+      { label: "Public Home", href: "/website", icon: "🌐" },
+      { label: "Clinical Philosophy", href: "/website/philosophy", icon: "🌿" },
+      { label: "Care Areas & Matab", href: "/website/matab", icon: "🏥" },
+      { label: "Book Consultation", href: "/website/book", icon: "📅" },
+    ],
+  },
+  herbals: {
+    id: "herbals",
+    label: "ZAYVORA Herbals & Store",
+    userName: "Store Customer",
+    title: "Classical & Proprietary Formulations",
+    defaultPath: "/website/herbals",
+    allowedNav: [
+      { label: "Herbals Portfolio", href: "/website/herbals", icon: "🛍️" },
+      { label: "Fertility Category", href: "/website/herbals?cat=fertility", icon: "👶" },
+      { label: "Metabolic Category", href: "/website/herbals?cat=metabolic", icon: "⚡" },
+      { label: "Cart & Checkout", href: "/website/cart", icon: "🛒" },
+    ],
+  },
 };
 
 interface AppShellProps {
@@ -126,6 +182,9 @@ export function AppShell({
     else if (pathname.startsWith("/pharmacy")) setRole("pharmacy");
     else if (pathname.startsWith("/research")) setRole("research");
     else if (pathname.startsWith("/admin")) setRole("admin");
+    else if (pathname.startsWith("/manufacturing")) setRole("manufacturing");
+    else if (pathname.startsWith("/website/herbals") || pathname.startsWith("/website/cart")) setRole("herbals");
+    else if (pathname.startsWith("/website")) setRole("website");
   }, [pathname]);
 
   const currentRoleConfig = ROLES[role] || ROLES.doctor;

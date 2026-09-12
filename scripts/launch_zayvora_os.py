@@ -178,7 +178,7 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        if path in ["/", "/index.html", "/app", "/cockpit", "/patient", "/doctor", "/clinic", "/pharmacy", "/research", "/manufacturing", "/admin", "/knowledge", "/ai"]:
+        if path in ["/", "/index.html", "/app", "/cockpit", "/patient", "/doctor", "/clinic", "/pharmacy", "/research", "/manufacturing", "/admin", "/enterprise", "/website", "/herbals", "/mobile", "/knowledge", "/ai"]:
             self._serve_web_cockpit()
         elif path in ["/health", "/api/health", "/health/live"]:
             self._serve_health(status_code=HTTPStatus.OK)
