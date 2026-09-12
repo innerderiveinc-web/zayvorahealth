@@ -51,6 +51,39 @@ class Neo4jGraphRepository:
         except Exception:
             return self._driver.session()
 
+    def ensure_schema_indexes_and_constraints(self) -> dict[str, list[str]]:
+        """Creates Neo4j 5 unique constraints and composite query performance indexes."""
+        statements = {
+            self.knowledge_db: [
+                "CREATE CONSTRAINT cstr_mufrad_id IF NOT EXISTS FOR (m:Mufrad) REQUIRE m.id IS UNIQUE",
+                "CREATE INDEX idx_mufrad_name IF NOT EXISTS FOR (m:Mufrad) ON (m.name)",
+                "CREATE INDEX idx_mufrad_botanical IF NOT EXISTS FOR (m:Mufrad) ON (m.botanicalName)",
+                "CREATE CONSTRAINT cstr_mizaj_temp IF NOT EXISTS FOR (mz:Mizaj) REQUIRE mz.temperament IS UNIQUE",
+                "CREATE CONSTRAINT cstr_axis_code IF NOT EXISTS FOR (ax:OrganAxis) REQUIRE ax.code IS UNIQUE",
+                "CREATE INDEX idx_organ_axis_code_name IF NOT EXISTS FOR (ax:OrganAxis) ON (ax.code, ax.name)",
+            ],
+            self.formula_db: [
+                "CREATE CONSTRAINT cstr_murakkab_id IF NOT EXISTS FOR (c:Murakkab) REQUIRE c.id IS UNIQUE",
+                "CREATE INDEX idx_murakkab_name IF NOT EXISTS FOR (c:Murakkab) ON (c.name)",
+                "CREATE INDEX idx_murakkab_category IF NOT EXISTS FOR (c:Murakkab) ON (c.category)",
+            ],
+            self.patient_db: [
+                "CREATE CONSTRAINT cstr_patient_node_id IF NOT EXISTS FOR (p:Patient) REQUIRE p.id IS UNIQUE",
+                "CREATE INDEX idx_patient_org_id IF NOT EXISTS FOR (p:Patient) ON (p.organization_id)",
+            ],
+        }
+        applied = {}
+        for db, stmts in statements.items():
+            applied[db] = []
+            with self._get_session(db) as session:
+                for stmt in stmts:
+                    try:
+                        session.run(stmt)
+                        applied[db].append(stmt)
+                    except Exception:
+                        pass
+        return applied
+
     def seed_organ_axes(self, axes: list[dict]) -> None:
         query = """
         MERGE (ax:OrganAxis {code: $code})

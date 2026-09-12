@@ -86,6 +86,56 @@ CANONICAL_ORGAN_AXES: dict[str, dict[str, Any]] = {
     },
 }
 
+AXIS_BIOMARKER_MAP: dict[str, list[dict[str, str]]] = {
+    "dimagh-asab": [
+        {"biomarker": "Serum BDNF", "clinical_utility": "Neuroplasticity and neuronal resilience"},
+        {"biomarker": "Morning Cortisol", "clinical_utility": "HPA axis arousal and psychological stress"},
+        {"biomarker": "Plasma Homocysteine", "clinical_utility": "Cerebrovascular and neurodegenerative risk"},
+    ],
+    "qalb": [
+        {"biomarker": "hs-CRP (High-Sensitivity C-Reactive Protein)", "clinical_utility": "Endothelial and microvascular inflammation"},
+        {"biomarker": "Lipid Profile (LDL-C / HDL-C / TG)", "clinical_utility": "Vascular humor stagnation and atherogenesis"},
+        {"biomarker": "NT-proBNP", "clinical_utility": "Ventricular wall stress and myocardial workload"},
+    ],
+    "kabid-tihal": [
+        {"biomarker": "ALT / SGPT & AST / SGOT", "clinical_utility": "Hepatocellular integrity and Hazm-e-Kabidi efficiency"},
+        {"biomarker": "Serum Bilirubin (Total & Direct)", "clinical_utility": "Biliary excretion and Safra clearance"},
+        {"biomarker": "Serum Albumin", "clinical_utility": "Hepatic synthetic capacity (Quwwat-e-Mughayyira)"},
+    ],
+    "kulliya-masana": [
+        {"biomarker": "Serum Creatinine & eGFR", "clinical_utility": "Glomerular filtration rate and Tanqiya-e-Kulwi"},
+        {"biomarker": "Blood Urea Nitrogen (BUN)", "clinical_utility": "Nitrogenous waste excretion and catabolic balance"},
+        {"biomarker": "Serum Uric Acid", "clinical_utility": "Purine metabolism and nephrolithiasis propensity"},
+    ],
+    "meda-amaa": [
+        {"biomarker": "Fecal Calprotectin", "clinical_utility": "Intestinal mucosal barrier inflammation"},
+        {"biomarker": "Serum Pepsinogen I/II Ratio", "clinical_utility": "Gastric acid output and mucosal concoction efficiency"},
+        {"biomarker": "Zonulin", "clinical_utility": "Intestinal epithelial tight junction permeability"},
+    ],
+    "tanaffus": [
+        {"biomarker": "Fractional Exhaled Nitric Oxide (FeNO)", "clinical_utility": "Eosinophilic airway inflammation"},
+        {"biomarker": "Absolute Eosinophil Count (AEC)", "clinical_utility": "Allergic and humoral pulmonary hyperreactivity"},
+        {"biomarker": "Serum Total IgE", "clinical_utility": "Atopic sensitization and airway hyperresponsiveness"},
+    ],
+    "mafasil-asab": [
+        {"biomarker": "Serum Uric Acid", "clinical_utility": "Niqris (gouty arthritis) crystal deposition risk"},
+        {"biomarker": "Erythrocyte Sedimentation Rate (ESR)", "clinical_utility": "Systemic musculoskeletal inflammatory activity"},
+        {"biomarker": "Anti-CCP / RF", "clinical_utility": "Autoimmune articular damage differentiation"},
+    ],
+    "jinsi-tawallud": [
+        {"biomarker": "Serum Total & Free Testosterone", "clinical_utility": "Gonadal vitality and anabolic vigor (Quwwat-e-Bah)"},
+        {"biomarker": "Estradiol & Progesterone", "clinical_utility": "Endometrial cycle rhythm and reproductive humoral balance"},
+    ],
+    "jild-ashar": [
+        {"biomarker": "Serum Ferritin & Zinc", "clinical_utility": "Follicular and dermal nutritional matrix"},
+        {"biomarker": "Serum Total IgE", "clinical_utility": "Allergic eczema and cutis reactivity"},
+    ],
+    "mizaj-am": [
+        {"biomarker": "Fasting Plasma Glucose & HbA1c", "clinical_utility": "Systemic metabolic heat and glycemic homeostasis"},
+        {"biomarker": "Complete Blood Count (CBC)", "clinical_utility": "Hematopoietic vitality and humoral cellular balance"},
+    ],
+}
+
 REFLEX_ARCS: list[dict[str, Any]] = [
     {
         "id": "gastro-cephalic",
@@ -324,6 +374,24 @@ def analyze_dawr_e_marad(
     }
 
 
+def map_axis_biomarkers(primary_axis_id: str, secondary_axis_id: str | None = None) -> dict[str, Any]:
+    """Maps canonical laboratory biomarkers to primary and secondary reflex organ axes."""
+    primary_markers = AXIS_BIOMARKER_MAP.get(primary_axis_id, AXIS_BIOMARKER_MAP["mizaj-am"])
+    secondary_markers = AXIS_BIOMARKER_MAP.get(secondary_axis_id, []) if secondary_axis_id else []
+
+    cross_talk_indicators = []
+    if secondary_axis_id:
+        cross_talk_indicators.append(
+            f"Cross-axis correlation indicated: correlate primary {primary_axis_id} markers with reflex {secondary_axis_id} biomarkers."
+        )
+
+    return {
+        "primary_axis_biomarkers": primary_markers,
+        "reflex_axis_biomarkers": secondary_markers,
+        "cross_talk_indicators": cross_talk_indicators,
+    }
+
+
 def run_complete_organ_axis_analysis(
     complaint: str,
     associated_symptoms: list[str] | None = None,
@@ -334,12 +402,18 @@ def run_complete_organ_axis_analysis(
 ) -> dict[str, Any]:
     """Master orchestrator generating full Unani pathophysiological assessment."""
     axis_analysis = deduce_organ_axes_and_reflexes(complaint, associated_symptoms)
-    asbab = deduce_asbab_e_arbaa(complaint, temperament_context, axis_analysis["primary_axis"]["id"])
+    primary_id = axis_analysis["primary_axis"]["id"]
+    secondary_id = axis_analysis["secondary_axis"]["id"] if axis_analysis.get("secondary_axis") else None
+
+    asbab = deduce_asbab_e_arbaa(complaint, temperament_context, primary_id)
     dawr = analyze_dawr_e_marad(duration_days, symptom_acuity, inflammatory_signs)
+    biomarkers = map_axis_biomarkers(primary_id, secondary_id)
 
     return {
         "complaint": complaint,
         "organ_axes": axis_analysis,
         "asbab_e_arbaa": asbab,
         "dawr_e_marad": dawr,
+        "biomarker_cross_talk": biomarkers,
     }
+

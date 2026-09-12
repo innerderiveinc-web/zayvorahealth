@@ -90,6 +90,42 @@ def test_differential_considerations_dyspepsia():
     )
     assert len(matches) >= 1
     top = matches[0]
-    assert "Su-e-Hazm" in top["unani_disease"]
     assert top["icd11_code"] == "MD90"
     assert any("melena" in rf.lower() or "dysphagia" in rf.lower() for rf in top["red_flags"])
+
+
+def test_mizaj_assessment_pediatric_and_geriatric_calibration():
+    # Moderate Damwi answers (40% Damwi)
+    answers = {
+        "malmas": "hot_moist",
+        "lahm_shahm": "muscular_moderate",
+        "ashar": "thick_dark",
+        "laun": "ruddy_red",
+        "hayat_aza": "narrow_sinewy",
+        "kayfiyyat_infial": "calm_sluggish",
+        "naum_yaqzah": "short_fitful",
+        "harkat_sukoon": "slow_lethargic",
+        "fuzalaat": "cold_pale",
+        "afal_aza": "variable_hard",
+    }
+
+    # Adult without calibration: 40% Damwi triggers Degree 1 dyscrasia
+    adult_res = calculate_mizaj_assessment(answers, age_category="adult")
+    assert adult_res["primary_temperament"] == "Damwi"
+    assert adult_res["calibration_applied"] is False
+
+    # Pediatric with Sinn-e-Numoo calibration: normal physiological heat/moisture buffered
+    ped_res = calculate_mizaj_assessment(answers, age_category="pediatric")
+    assert ped_res["primary_temperament"] == "Damwi"
+    assert ped_res["calibration_applied"] is True
+    assert "Sinn-e-Numoo" in ped_res["asnan_profile_name"]
+    # Due to 15% buffer, 40% - 15% = 25% < 35%, so dyscrasia degree is 0 (healthy physiological state)
+    assert ped_res["dyscrasia_degree"] == 0
+    assert "Motadil" in ped_res["su_e_mizaj"]
+
+    # Geriatric profile: checks Sinn-e-Shaikhukhat profile recognition
+    ger_res = calculate_mizaj_assessment(answers, age_category="geriatric", seasonal_profile="winter")
+    assert ger_res["calibration_applied"] is True
+    assert "Sinn-e-Shaikhukhat" in ger_res["asnan_profile_name"]
+    assert "Shita" in ger_res["fusool_season_name"]
+

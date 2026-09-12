@@ -136,7 +136,22 @@ class TestOrganAxisAndEvidence(unittest.TestCase):
         grade_vl = calculate_grade_certainty("E5", risk_of_bias=2, indirectness=1)
         self.assertEqual(grade_vl["grade_certainty"], "VERY_LOW")
 
+    def test_biomarker_cross_talk_mapping(self):
+        """Tests that full organ-axis analysis outputs laboratory biomarker cross-talk."""
+        res = run_complete_organ_axis_analysis(
+            complaint="Severe headache after food with nausea and acid reflux",
+            associated_symptoms=["bloating", "epigastric burning"],
+        )
+        self.assertIn("biomarker_cross_talk", res)
+        cross_talk = res["biomarker_cross_talk"]
+        self.assertIn("primary_axis_biomarkers", cross_talk)
+        self.assertIn("reflex_axis_biomarkers", cross_talk)
+        self.assertTrue(len(cross_talk["primary_axis_biomarkers"]) > 0)
+        self.assertTrue(len(cross_talk["cross_talk_indicators"]) > 0)
+        self.assertIn("meda-amaa", cross_talk["cross_talk_indicators"][0])
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

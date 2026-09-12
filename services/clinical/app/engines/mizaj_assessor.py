@@ -96,8 +96,27 @@ AJNAS_MAP = {
 }
 
 
-def calculate_mizaj_assessment(answers: dict[str, str]) -> dict[str, Any]:
-    """Computes quantitative Mizaj breakdown and dyscrasia classification."""
+ASNAN_COHORTS = {
+    "pediatric": "Sinn-e-Numoo (Childhood / Growth Phase — Hot & Moist Baseline)",
+    "youth": "Sinn-e-Shabab (Youth / Young Adult — Hot & Dry Baseline)",
+    "adult": "Sinn-e-Kuhoolat (Mature Adult — Balanced Transition)",
+    "geriatric": "Sinn-e-Shaikhukhat (Elderly / Decline of Innate Heat — Cold & Dry Baseline)",
+}
+
+FUSOOL_SEASONS = {
+    "spring": "Rabi (Hot & Moist / Har Ratab)",
+    "summer": "Saif (Hot & Dry / Har Yabis)",
+    "autumn": "Khareef (Cold & Dry / Barid Yabis)",
+    "winter": "Shita (Cold & Moist / Barid Ratab)",
+}
+
+
+def calculate_mizaj_assessment(
+    answers: dict[str, str],
+    age_category: str = "adult",
+    seasonal_profile: str = "spring",
+) -> dict[str, Any]:
+    """Computes quantitative Mizaj breakdown and dyscrasia classification with age & seasonal calibration."""
     scores = {"Damwi": 0, "Safrawi": 0, "Balghami": 0, "Saudawi": 0}
     answered_count = 0
 
@@ -117,6 +136,11 @@ def calculate_mizaj_assessment(answers: dict[str, str]) -> dict[str, Any]:
             "dyscrasia_degree": 0,
             "raw_scores": scores,
             "answered_count": 0,
+            "age_category": age_category,
+            "seasonal_profile": seasonal_profile,
+            "asnan_profile_name": ASNAN_COHORTS.get(age_category, age_category),
+            "fusool_season_name": FUSOOL_SEASONS.get(seasonal_profile, seasonal_profile),
+            "calibration_applied": False,
         }
 
     # Percentages
@@ -134,14 +158,53 @@ def calculate_mizaj_assessment(answers: dict[str, str]) -> dict[str, Any]:
     highest_score = sorted_humors[0][1]
     pct = percentages[primary]
 
+    # Physiological threshold adjustment per classical Unani age & seasonal doctrine (Kitab al-Kulliyat)
+    # Pediatric growth phase naturally has high heat & moisture (Damwi buffer)
+    # Geriatric phase naturally has decline of innate heat (Saudawi buffer)
+    threshold_offset = 0.0
+    calibration_notes = []
+    if age_category == "pediatric":
+        if primary == "Damwi":
+            threshold_offset += 15.0
+            calibration_notes.append("Pediatric growth phase (Sinn-e-Numoo) elevation of Damwi baseline is physiological.")
+        else:
+            calibration_notes.append("Pediatric cohort evaluation applied per Sinn-e-Numoo baseline.")
+    elif age_category == "geriatric":
+        if primary in ("Saudawi", "Balghami"):
+            threshold_offset += 12.0
+            calibration_notes.append("Geriatric senescence (Sinn-e-Shaikhukhat) shift towards coldness/dryness is physiological.")
+        else:
+            calibration_notes.append("Geriatric cohort evaluation applied per Sinn-e-Shaikhukhat baseline.")
+
+    if seasonal_profile == "summer":
+        if primary == "Safrawi":
+            threshold_offset += 5.0
+            calibration_notes.append("Summer season (Saif) transient ambient heat elevation normalized.")
+        else:
+            calibration_notes.append("Summer seasonal context evaluated.")
+    elif seasonal_profile == "winter":
+        if primary == "Balghami":
+            threshold_offset += 5.0
+            calibration_notes.append("Winter season (Shita) transient ambient coldness normalized.")
+        else:
+            calibration_notes.append("Winter seasonal context evaluated.")
+    elif seasonal_profile == "autumn":
+        if primary == "Saudawi":
+            threshold_offset += 5.0
+            calibration_notes.append("Autumn season (Khareef) transient ambient dryness normalized.")
+        else:
+            calibration_notes.append("Autumn seasonal context evaluated.")
+
+    adjusted_pct = max(0.0, pct - threshold_offset)
+
     dyscrasia_degree = 0
     su_e_mizaj = "None (Motadil / Balanced)"
 
-    if pct >= 65.0:
+    if adjusted_pct >= 65.0:
         dyscrasia_degree = 3
-    elif pct >= 45.0:
+    elif adjusted_pct >= 45.0:
         dyscrasia_degree = 2
-    elif pct >= 35.0:
+    elif adjusted_pct >= 35.0:
         dyscrasia_degree = 1
 
     if dyscrasia_degree > 0:
@@ -161,4 +224,10 @@ def calculate_mizaj_assessment(answers: dict[str, str]) -> dict[str, Any]:
         "dyscrasia_degree": dyscrasia_degree,
         "raw_scores": scores,
         "answered_count": answered_count,
+        "age_category": age_category,
+        "seasonal_profile": seasonal_profile,
+        "asnan_profile_name": ASNAN_COHORTS.get(age_category, age_category),
+        "fusool_season_name": FUSOOL_SEASONS.get(seasonal_profile, seasonal_profile),
+        "calibration_applied": len(calibration_notes) > 0,
+        "calibration_notes": calibration_notes,
     }
