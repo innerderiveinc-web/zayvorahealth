@@ -44,7 +44,13 @@ HOP_BY_HOP_HEADERS = {
 
 
 def _resolve_target_service(path: str, settings: Settings) -> str | None:
-    if path.startswith("/.well-known/") or path.startswith("/api/v1/auth") or path.startswith("/api/v1/organizations") or path.startswith("/api/v1/roles"):
+    if (
+        path.startswith("/.well-known/")
+        or path.startswith("/api/v1/auth")
+        or path.startswith("/api/v1/organizations")
+        or path.startswith("/api/v1/roles")
+        or path.startswith("/api/v1/tenancy")
+    ):
         return settings.identity_service_url
     if (
         path.startswith("/api/v1/patients")
@@ -53,6 +59,21 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
         or path.startswith("/api/v1/prescriptions")
         or path.startswith("/api/v1/appointments")
         or path.startswith("/api/v1/diagnostics")
+        or path.startswith("/api/v1/mizaj")
+        or path.startswith("/api/v1/timeline")
+        or path.startswith("/api/v1/digital-twin")
+        or path.startswith("/api/v1/tasks")
+        or path.startswith("/api/v1/scribe")
+        or path.startswith("/api/v1/patient-portal")
+        or path.startswith("/api/v1/payments")
+        or path.startswith("/api/v1/research")
+        or path.startswith("/api/v1/governance")
+        or path.startswith("/api/v1/wearables")
+        or path.startswith("/api/v1/predictive")
+        or path.startswith("/api/v1/dr")
+        or path.startswith("/api/v1/cron")
+        or path.startswith("/api/v1/interop")
+        or path.startswith("/api/v1/qsura")
     ):
         return settings.clinical_service_url
     if (
@@ -61,6 +82,8 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
         or path.startswith("/api/v1/pharmacopoeia")
         or path.startswith("/api/v1/evidence")
         or path.startswith("/api/v1/graph")
+        or path.startswith("/api/v1/board")
+        or path.startswith("/api/v1/search")
     ):
         return settings.knowledge_service_url
     if (
@@ -68,9 +91,18 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
         or path.startswith("/api/v1/tadbeer-plans")
         or path.startswith("/api/v1/ghiza-plans")
         or path.startswith("/api/v1/care-plans")
+        or path.startswith("/api/v1/dispensary")
+        or path.startswith("/api/v1/logistics")
+        or path.startswith("/api/v1/manufacturing")
     ):
         return settings.therapeutic_service_url
-    if path.startswith("/api/v1/hakeem"):
+    if (
+        path.startswith("/api/v1/hakeem")
+        or path.startswith("/api/v1/multimodal")
+        or path.startswith("/api/v1/evaluation")
+        or path.startswith("/api/v1/security")
+        or path.startswith("/api/v1/zape")
+    ):
         return settings.ai_service_url
     return None
 

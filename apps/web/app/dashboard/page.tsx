@@ -24,6 +24,7 @@ import { GovernanceBoardCockpit } from "@/components/GovernanceBoardCockpit";
 import { PatientPortalCockpit } from "@/components/PatientPortalCockpit";
 import { TaskPipelineCockpit } from "@/components/TaskPipelineCockpit";
 import { GlobalCommandPalette } from "@/components/GlobalCommandPalette";
+import { PlatformHeader } from "@/components/PlatformHeader";
 
 type ActiveTab =
   | "timeline"
@@ -262,6 +263,7 @@ export default function ClinicDeskDashboard() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0b0f0d] text-[#ece8dd]">
+      <PlatformHeader />
       {/* Screen Reader Live Region (WCAG 2.1 AA) */}
       <div
         id="zv-a11y-announcer"

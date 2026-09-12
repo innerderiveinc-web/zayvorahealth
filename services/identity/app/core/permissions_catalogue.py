@@ -48,6 +48,13 @@ BASELINE_PERMISSIONS: dict[str, str] = {
     "hakeem.consult": "Request a Hakeem Sahab AI consultation (advisory only — never auto-prescribes; every response requires clinician review)",
     "safety_firewall.override": "Override a Safety Firewall hold (logged, requires clinical justification)",
     "audit_log.read": "View the organization's audit log",
+    "dispensary.manage": "Manage pharmaceutical inventory, FEFO batch allocation, and dispense medications",
+    "logistics.manage": "Manage purchasing, suppliers, cold-chain tracking, and courier shipments",
+    "research.manage": "Manage clinical research studies, trial cohorts, and RWE data extraction",
+    "manufacturing.manage": "Manage electronic batch manufacturing records (eBMR) and QA/QC release",
+    "governance.vote": "Participate in 3/3 Clinical Governance Board quorum reviews and CCO approval",
+    "patient_portal.access": "Access patient personal health records, care plans, and consent management",
+    "billing.manage": "Manage invoices, payments, fee schedules, subscriptions, and refunds",
 }
 
 # The role automatically granted to whoever creates a new organization.
