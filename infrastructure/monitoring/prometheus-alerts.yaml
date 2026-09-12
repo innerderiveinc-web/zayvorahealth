@@ -1,0 +1,79 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: zayvora-clinical-production-alerts
+  namespace: zayvora-production
+  labels:
+    role: alert-rules
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  groups:
+    - name: zayvora_critical_clinical_safety
+      rules:
+        - alert: ZayvoraScheduleE1MudabbarViolation
+          expr: increase(zayvora_mudabbar_dispense_violations_total[1m]) > 0
+          for: 0m
+          labels:
+            severity: critical
+            category: statutory_safety
+            regulation: DrugsAndCosmeticsAct_ScheduleE1
+          annotations:
+            summary: "CRITICAL: Unpurified Schedule E(1) Mudabbar Dispense Attempt Detected"
+            description: "An unpurified Schedule E(1) batch (e.g. Kuchla, Suranjan, Bhilawa) was blocked from dispensary allocation. Immediate audit required."
+            action_sop: "docs/zayvora-audit/PRODUCTION_SOP_MANUAL.md#sop-03"
+
+        - alert: ZayvoraAutonomousPrescriptionAttempt
+          expr: increase(zayvora_autonomous_prescription_attempts_total[1m]) > 0
+          for: 0m
+          labels:
+            severity: critical
+            category: clinical_governance
+            standard: NonDelegableHumanPrescribing
+          annotations:
+            summary: "CRITICAL: Autonomous Prescription Finalization Blocked"
+            description: "An AI Copilot or automated process attempted to transition prescription status to 'active' without human clinician registration verification."
+            action_sop: "docs/zayvora-audit/PRODUCTION_SOP_MANUAL.md#sop-03"
+
+        - alert: ZayvoraTenantIsolationBreachAttempt
+          expr: increase(zayvora_rls_cross_tenant_access_denied_total[1m]) > 0
+          for: 0m
+          labels:
+            severity: critical
+            category: security_privacy
+            standard: HIPAA_DISHA_RLS
+          annotations:
+            summary: "CRITICAL: Cross-Tenant Row-Level Security Violation Detected"
+            description: "A database query attempted to access patient or encounter records outside its active organization context (app.current_org_id)."
+            action_sop: "docs/zayvora-audit/PRODUCTION_SOP_MANUAL.md#sop-02"
+
+    - name: zayvora_service_availability_and_health
+      rules:
+        - alert: ZayvoraServicePodDown
+          expr: up{job=~"zayvora-.*"} == 0
+          for: 1m
+          labels:
+            severity: critical
+            category: availability
+          annotations:
+            summary: "Service Pod Unreachable: {{ $labels.job }}"
+            description: "Kubernetes liveness probe failed for service pod {{ $labels.pod }}. Pod is failing health checks."
+
+        - alert: ZayvoraHighRateLimiterRejections
+          expr: rate(zayvora_gateway_rate_limit_exceeded_total[5m]) > 50
+          for: 2m
+          labels:
+            severity: warning
+            category: security_ddos
+          annotations:
+            summary: "High Gateway Rate Limiting Activity (Potential DDoS or Scraping)"
+            description: "Rate limiter is rejecting more than 50 requests/sec across unauthenticated IP ranges."
+
+        - alert: ZayvoraAILatencyHigh
+          expr: histogram_quantile(0.95, rate(zayvora_ai_inference_duration_seconds_bucket[5m])) > 3.0
+          for: 3m
+          labels:
+            severity: warning
+            category: ai_performance
+          annotations:
+            summary: "AI Copilot Response Latency p95 > 3s"
+            description: "Primary AI model inference latency exceeds 3.0s SLA. Provider failover router may be triggered."
