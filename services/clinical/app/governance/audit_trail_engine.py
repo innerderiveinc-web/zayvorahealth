@@ -42,6 +42,19 @@ class Part11SignatureEnvelope:
 
 
 @dataclass
+class AuditAnchor:
+    anchor_id: str
+    timestamp_utc: str
+    from_block_index: int
+    to_block_index: int
+    total_blocks_anchored: int
+    merkle_root: str
+    previous_anchor_hash: str
+    anchor_hash: str
+    signature_seal: str
+
+
+@dataclass
 class AuditVerificationResult:
     is_valid: bool
     total_blocks: int
@@ -52,10 +65,12 @@ class AuditVerificationResult:
 
 
 class CryptographicAuditLedger:
-    """In-memory cryptographic audit trail with SHA-256 hash chaining."""
+    """In-memory cryptographic audit trail with SHA-256 hash chaining and Merkle root anchoring."""
 
     def __init__(self):
         self.chain: List[AuditBlock] = []
+        self.anchors: List[AuditAnchor] = []
+        self.last_anchored_index: int = -1
         self._initialize_genesis_block()
 
     def _initialize_genesis_block(self):
@@ -230,6 +245,87 @@ class CryptographicAuditLedger:
 
     def get_blocks_for_resource(self, resource_id: str) -> List[AuditBlock]:
         return [b for b in self.chain if b.resource_id == resource_id]
+
+    @staticmethod
+    def _compute_merkle_root(hashes: List[str]) -> str:
+        if not hashes:
+            return hashlib.sha256(b"EMPTY_MERKLE_ROOT").hexdigest()
+        level = list(hashes)
+        while len(level) > 1:
+            next_level = []
+            for i in range(0, len(level), 2):
+                left = level[i]
+                right = level[i + 1] if i + 1 < len(level) else left
+                combined = hashlib.sha256((left + right).encode("utf-8")).hexdigest()
+                next_level.append(combined)
+            level = next_level
+        return level[0]
+
+    def generate_merkle_anchor(self) -> AuditAnchor:
+        """Calculates and signs a certified Merkle root anchor of the ledger blocks."""
+        if not self.chain:
+            raise ValueError("Cannot anchor an empty ledger.")
+
+        start_idx = self.last_anchored_index + 1
+        end_idx = len(self.chain) - 1
+        if start_idx > end_idx:
+            start_idx = end_idx
+
+        blocks_to_anchor = self.chain[start_idx : end_idx + 1]
+        block_hashes = [b.block_hash for b in blocks_to_anchor]
+        merkle_root = self._compute_merkle_root(block_hashes)
+
+        prev_anchor_hash = self.anchors[-1].anchor_hash if self.anchors else ("0" * 64)
+        now_utc = datetime.now(timezone.utc).isoformat()
+        anchor_id = f"ANC-{hashlib.sha256(f'{start_idx}:{end_idx}:{merkle_root}:{now_utc}'.encode()).hexdigest()[:12].upper()}"
+
+        raw_payload = f"{anchor_id}:{start_idx}:{end_idx}:{merkle_root}:{prev_anchor_hash}:{now_utc}"
+        anchor_hash = hashlib.sha256(raw_payload.encode("utf-8")).hexdigest()
+
+        seal = hmac.new(
+            SIGNING_SECRET_KEY.encode("utf-8"),
+            raw_payload.encode("utf-8"),
+            hashlib.sha256,
+        ).hexdigest()
+
+        anchor = AuditAnchor(
+            anchor_id=anchor_id,
+            timestamp_utc=now_utc,
+            from_block_index=start_idx,
+            to_block_index=end_idx,
+            total_blocks_anchored=len(blocks_to_anchor),
+            merkle_root=merkle_root,
+            previous_anchor_hash=prev_anchor_hash,
+            anchor_hash=anchor_hash,
+            signature_seal=seal,
+        )
+        self.anchors.append(anchor)
+        self.last_anchored_index = end_idx
+        return anchor
+
+    def get_anchors(self) -> List[AuditAnchor]:
+        return list(self.anchors)
+
+    def verify_anchor_integrity(self) -> bool:
+        if not self.anchors:
+            return True
+        prev_hash = "0" * 64
+        for anc in self.anchors:
+            if anc.previous_anchor_hash != prev_hash:
+                return False
+            raw_payload = f"{anc.anchor_id}:{anc.from_block_index}:{anc.to_block_index}:{anc.merkle_root}:{anc.previous_anchor_hash}:{anc.timestamp_utc}"
+            recomputed_hash = hashlib.sha256(raw_payload.encode("utf-8")).hexdigest()
+            if recomputed_hash != anc.anchor_hash:
+                return False
+            expected_seal = hmac.new(
+                SIGNING_SECRET_KEY.encode("utf-8"),
+                raw_payload.encode("utf-8"),
+                hashlib.sha256,
+            ).hexdigest()
+            if not hmac.compare_digest(anc.signature_seal, expected_seal):
+                return False
+            prev_hash = anc.anchor_hash
+        return True
 
 
 class Part11SignatureAuthority:

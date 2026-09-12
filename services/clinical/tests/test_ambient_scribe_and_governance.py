@@ -203,3 +203,56 @@ def test_ambient_scribe_audio_streaming_and_synthesis():
     assert soap.objective["audio_stream_metadata"]["chunks_processed"] == 2
     assert soap.objective["audio_stream_metadata"]["total_bytes"] == len(audio_sample) * 2
     assert "Waja-ul-Mafasil" in soap.subjective["chief_complaints"]
+
+
+def test_cryptographic_audit_ledger_merkle_anchoring():
+    ledger = CryptographicAuditLedger()
+    # Add blocks
+    for i in range(5):
+        ledger.record_event(
+            actor_id=f"ACTOR-{i}",
+            actor_role="CLINICIAN",
+            action=f"ACTION_{i}",
+            resource_type="Prescription",
+            resource_id=f"RX-{i}",
+            event_payload={"idx": i, "status": "active"},
+        )
+
+    # Generate first Merkle anchor
+    anchor1 = ledger.generate_merkle_anchor()
+    assert anchor1.anchor_id.startswith("ANC-")
+    assert anchor1.from_block_index == 0
+    assert anchor1.to_block_index == 5
+    assert anchor1.total_blocks_anchored == 6  # Genesis (0) + 5 events
+    assert anchor1.previous_anchor_hash == "0" * 64
+    assert len(anchor1.merkle_root) == 64
+    assert len(anchor1.signature_seal) == 64
+
+    # Add more blocks and anchor again
+    for i in range(5, 8):
+        ledger.record_event(
+            actor_id=f"ACTOR-{i}",
+            actor_role="PHARMACIST",
+            action=f"ACTION_{i}",
+            resource_type="Dispensary",
+            resource_id=f"DISP-{i}",
+            event_payload={"idx": i},
+        )
+    anchor2 = ledger.generate_merkle_anchor()
+    assert anchor2.from_block_index == 6
+    assert anchor2.to_block_index == 8
+    assert anchor2.total_blocks_anchored == 3
+    assert anchor2.previous_anchor_hash == anchor1.anchor_hash
+
+    # Verify anchor chain integrity
+    assert ledger.verify_anchor_integrity() is True
+    anchors = ledger.get_anchors()
+    assert len(anchors) == 2
+
+    # Verify tamper detection on anchor chain
+    original_seal = anchor2.signature_seal
+    anchor2.signature_seal = "0" * 64
+    assert ledger.verify_anchor_integrity() is False
+    anchor2.signature_seal = original_seal
+    assert ledger.verify_anchor_integrity() is True
+

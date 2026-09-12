@@ -154,6 +154,8 @@ def approve_nuskha_draft(
 
     draft.status = "approved"
     draft.reviewed_by_user_id = user.user_id
+    if payload.clinician_registration_number:
+        draft.clinician_registration_number = payload.clinician_registration_number
     draft.reviewed_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(draft)

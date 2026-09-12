@@ -96,6 +96,52 @@ async def get_resource_audit_history(resource_id: str):
     ]
 
 
+@router.post("/audit/anchors/generate", summary="Generate certified Merkle root anchor snapshot")
+async def generate_audit_anchor():
+    anchor = GLOBAL_AUDIT_LEDGER.generate_merkle_anchor()
+    return {
+        "anchor_id": anchor.anchor_id,
+        "timestamp_utc": anchor.timestamp_utc,
+        "from_block_index": anchor.from_block_index,
+        "to_block_index": anchor.to_block_index,
+        "total_blocks_anchored": anchor.total_blocks_anchored,
+        "merkle_root": anchor.merkle_root,
+        "previous_anchor_hash": anchor.previous_anchor_hash,
+        "anchor_hash": anchor.anchor_hash,
+        "signature_seal": anchor.signature_seal,
+    }
+
+
+@router.get("/audit/anchors", summary="List all cryptographic Merkle root anchors")
+async def get_audit_anchors():
+    anchors = GLOBAL_AUDIT_LEDGER.get_anchors()
+    return [
+        {
+            "anchor_id": a.anchor_id,
+            "timestamp_utc": a.timestamp_utc,
+            "from_block_index": a.from_block_index,
+            "to_block_index": a.to_block_index,
+            "total_blocks_anchored": a.total_blocks_anchored,
+            "merkle_root": a.merkle_root,
+            "previous_anchor_hash": a.previous_anchor_hash,
+            "anchor_hash": a.anchor_hash,
+            "signature_seal": a.signature_seal,
+        }
+        for a in anchors
+    ]
+
+
+@router.get("/audit/anchors/verify", summary="Verify cryptographic integrity of all Merkle root anchors")
+async def verify_audit_anchors():
+    is_valid = GLOBAL_AUDIT_LEDGER.verify_anchor_integrity()
+    return {
+        "anchors_valid": is_valid,
+        "total_anchors": len(GLOBAL_AUDIT_LEDGER.get_anchors()),
+        "status": "VALID_ANCHOR_CHAIN" if is_valid else "TAMPERED_ANCHOR_CHAIN",
+    }
+
+
+
 @router.post("/signatures/sign", summary="Generate 21 CFR Part 11 compliant digital signature envelope")
 async def create_part11_signature(payload: CreateSignatureRequest):
     envelope = Part11SignatureAuthority.create_signature_envelope(

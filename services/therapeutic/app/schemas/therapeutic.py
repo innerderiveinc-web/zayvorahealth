@@ -56,6 +56,7 @@ class NuskhaDraftCreate(BaseModel):
 
 class NuskhaApprove(BaseModel):
     safety_override_justification: str = Field(default="", max_length=2000)
+    clinician_registration_number: str = Field(default="", max_length=100)
 
 
 class NuskhaReject(BaseModel):
@@ -84,6 +85,7 @@ class NuskhaDraftOut(BaseModel):
     safety_reasons: list[str]
     status: str
     reviewed_by_user_id: str | None
+    clinician_registration_number: str = ""
     reviewed_at: datetime | None
     rejection_reason: str
     safety_override_justification: str

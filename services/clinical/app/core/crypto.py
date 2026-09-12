@@ -79,3 +79,83 @@ def decrypt_phi(ciphertext: Optional[str], key_secret: str) -> Optional[str]:
             return ciphertext
 
     return ciphertext
+
+
+def wrap_phi_key(dek: bytes, kek_secret: str) -> str:
+    """
+    Wraps (encrypts) a 256-bit Data Encryption Key (DEK) using a Key Encryption Key (KEK).
+    Returns base64 wrapped key string.
+    """
+    if not kek_secret:
+        raise ValueError("KEK secret cannot be empty.")
+
+    if not HAS_CRYPTOGRAPHY:
+        encoded = base64.b64encode(dek).decode("ascii")
+        return f"wrap:dev:{encoded}"
+
+    kek = _derive_key(kek_secret)
+    aesgcm = AESGCM(kek)
+    nonce = os.urandom(12)
+    ciphertext = aesgcm.encrypt(nonce, dek, b"ZAYVORA_DEK_WRAP")
+    payload = nonce + ciphertext
+    return f"wrap:v1:{base64.b64encode(payload).decode('ascii')}"
+
+
+def unwrap_phi_key(wrapped_dek: str, kek_secret: str) -> bytes:
+    """
+    Unwraps (decrypts) a wrapped Data Encryption Key (DEK) using a Key Encryption Key (KEK).
+    """
+    if not wrapped_dek or not kek_secret:
+        raise ValueError("Wrapped DEK and KEK secret must be provided.")
+
+    parts = wrapped_dek.split(":", 2)
+    if len(parts) < 3 or parts[0] != "wrap":
+        raise ValueError("Invalid wrapped key format.")
+
+    version = parts[1]
+    raw_b64 = parts[2]
+
+    if version == "dev":
+        return base64.b64decode(raw_b64.encode("ascii"))
+
+    if version == "v1":
+        if not HAS_CRYPTOGRAPHY:
+            raise RuntimeError("cryptography library required to unwrap v1 keys.")
+        payload = base64.b64decode(raw_b64.encode("ascii"))
+        nonce = payload[:12]
+        ct = payload[12:]
+        kek = _derive_key(kek_secret)
+        aesgcm = AESGCM(kek)
+        return aesgcm.decrypt(nonce, ct, b"ZAYVORA_DEK_WRAP")
+
+    raise ValueError(f"Unsupported key wrap version: {version}")
+
+
+def encrypt_patient_phi(patient_data: dict, dek_secret: str, sensitive_fields: Optional[list[str]] = None) -> dict:
+    """
+    Encrypts sensitive demographic and clinical fields in a patient record dict.
+    Default sensitive fields: contact_phone, contact_email, medical_history, surgical_history.
+    """
+    if sensitive_fields is None:
+        sensitive_fields = ["contact_phone", "contact_email", "medical_history", "surgical_history"]
+
+    result = dict(patient_data)
+    for field in sensitive_fields:
+        if field in result and result[field]:
+            result[field] = encrypt_phi(result[field], dek_secret)
+    return result
+
+
+def decrypt_patient_phi(patient_data: dict, dek_secret: str, sensitive_fields: Optional[list[str]] = None) -> dict:
+    """
+    Decrypts sensitive demographic and clinical fields in an encrypted patient record dict.
+    """
+    if sensitive_fields is None:
+        sensitive_fields = ["contact_phone", "contact_email", "medical_history", "surgical_history"]
+
+    result = dict(patient_data)
+    for field in sensitive_fields:
+        if field in result and result[field]:
+            result[field] = decrypt_phi(result[field], dek_secret)
+    return result
+

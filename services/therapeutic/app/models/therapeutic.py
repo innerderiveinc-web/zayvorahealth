@@ -18,7 +18,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, JSON, String, Text, Boolean, Integer, Float
+from sqlalchemy import DateTime, JSON, String, Text, Boolean, Integer, Float, CheckConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -37,6 +37,16 @@ def _now() -> datetime:
 
 class NuskhaDraft(Base):
     __tablename__ = "nuskha_drafts"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('draft', 'approved', 'rejected')",
+            name="chk_nuskha_draft_status",
+        ),
+        CheckConstraint(
+            "(status != 'approved') OR (status = 'approved' AND reviewed_by_user_id IS NOT NULL)",
+            name="chk_nuskha_approved_reviewer",
+        ),
+    )
 
     id: Mapped[uuid.UUID] = _uuid_pk()
     organization_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
@@ -67,6 +77,7 @@ class NuskhaDraft(Base):
 
     status: Mapped[str] = mapped_column(String(20), default="draft")  # draft | approved | rejected
     reviewed_by_user_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    clinician_registration_number: Mapped[str] = mapped_column(String(100), default="")
     reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     rejection_reason: Mapped[str] = mapped_column(Text, default="")
     safety_override_justification: Mapped[str] = mapped_column(Text, default="")
@@ -182,6 +193,12 @@ class InventoryBatch(Base):
     Tracks physical batches, FEFO expiry dates, and mandatory Mudabbar certificates.
     """
     __tablename__ = "inventory_batches"
+    __table_args__ = (
+        CheckConstraint(
+            "(is_schedule_e1 = FALSE) OR (is_schedule_e1 = TRUE AND mudabbar_certified = TRUE AND mudabbar_certificate_number IS NOT NULL)",
+            name="chk_schedule_e1_mudabbar",
+        ),
+    )
 
     id: Mapped[uuid.UUID] = _uuid_pk()
     organization_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
