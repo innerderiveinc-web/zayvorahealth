@@ -111,6 +111,7 @@ TEST_SUITES = [
     ("Phase 7 Production Readiness Gate (13 Gates)", ".", "tests/test_production_readiness_gate.py"),
     ("Clinical Pilot Multi-Center Concordance & DSMB", ".", "tests/test_clinical_pilot_concordance.py"),
     ("Phase 9 Statutory Regulatory Dossier & Traceability", ".", "tests/test_regulatory_dossier.py"),
+    ("Phase 10 Staging Cluster Deployment Orchestrator", ".", "tests/test_staging_deployment_orchestrator.py"),
 ]
 
 def main():

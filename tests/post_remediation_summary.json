@@ -1,9 +1,9 @@
 {
-  "started_at": "2026-09-12 12:35:17 UTC",
+  "started_at": "2026-09-12 12:37:41 UTC",
   "categories": {
     "1. Unit Tests": {
       "status": "PASSED",
-      "passed": 241,
+      "passed": 246,
       "failed": 0,
       "details": [
         "Suite Clinical Crypto & PHI Encryption: 6 passed",
@@ -38,7 +38,8 @@
         "Suite Infrastructure Helm Chart & Kubernetes Packaging: 3 passed",
         "Suite Phase 7 Production Readiness Gate (13 Gates): 13 passed",
         "Suite Clinical Pilot Multi-Center Concordance & DSMB: 5 passed",
-        "Suite Phase 9 Statutory Regulatory Dossier & Traceability: 5 passed"
+        "Suite Phase 9 Statutory Regulatory Dossier & Traceability: 5 passed",
+        "Suite Phase 10 Staging Cluster Deployment Orchestrator: 5 passed"
       ]
     },
     "2. Integration Tests": {
@@ -137,20 +138,20 @@
       "passed": 7,
       "failed": 0,
       "details": [
-        "AES-256-GCM Envelope Crypto: 0.002 ms/op (462570 ops/sec): PASS",
+        "AES-256-GCM Envelope Crypto: 0.002 ms/op (462053 ops/sec): PASS",
         "10-Ajnas Mizaj Scoring Engine: 0.002 ms/assessment: PASS",
         "Organ-Axis Biomarker Bridge Engine: 0.013 ms/analysis: PASS",
-        "Safety Firewall 30+ Interaction Matrix: 0.050 ms/eval: PASS",
-        "Gateway Rate Limiter Throughput: 0.0029 ms/req (339163 req/sec): PASS",
+        "Safety Firewall 30+ Interaction Matrix: 0.054 ms/eval: PASS",
+        "Gateway Rate Limiter Throughput: 0.0032 ms/req (311922 req/sec): PASS",
         "Wearables Normalization & Autonomic Mapping: 0.011 ms/sample: PASS",
-        "Bhashini Multilingual TTS & PCM Synthesis: 39.893 ms/prompt: PASS"
+        "Bhashini Multilingual TTS & PCM Synthesis: 39.868 ms/prompt: PASS"
       ]
     }
   },
   "benchmarks": {
     "phi_crypto": {
       "avg_ms": 0.002,
-      "ops_sec": 462570
+      "ops_sec": 462053
     },
     "mizaj_engine": {
       "avg_ms": 0.002
@@ -159,18 +160,18 @@
       "avg_ms": 0.013
     },
     "safety_firewall": {
-      "avg_ms": 0.05
+      "avg_ms": 0.054
     },
     "rate_limiter": {
-      "avg_ms": 0.0029
+      "avg_ms": 0.0032
     },
     "wearable_engine": {
       "avg_ms": 0.011
     },
     "bhashini_tts": {
-      "avg_ms": 39.893
+      "avg_ms": 39.868
     }
   },
   "issues_evaluated": {},
-  "total_duration_seconds": 2.61
+  "total_duration_seconds": 2.63
 }
