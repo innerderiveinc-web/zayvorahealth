@@ -1,0 +1,166 @@
+{
+  "version": "2.0.0",
+  "source": "Unani Pharmacopoeia of India (UPI) Vols I-VI / Ministry of AYUSH",
+  "monographs": [
+    {
+      "upi_code": "UPI-M-001",
+      "canonical_name": "Asgandh",
+      "latin_binomial": "Withania somnifera (L.) Dunal",
+      "urdu_name": "اسگندھ",
+      "part_used": "Dried roots",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 1
+      },
+      "afal": [
+        "Muqawwi-e-Aam (General Tonic)",
+        "Muqawwi-e-Bah (Aphrodisiac)",
+        "Musakkin-e-Asab (Nervine Sedative)",
+        "Muhallil-e-Awram (Anti-inflammatory)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 3.0,
+        "max": 6.0
+      },
+      "organ_axes": ["Neuro-Psychiatric", "Musculoskeletal"],
+      "muzir": "May cause headache or excess warmth in hot temperaments (Mizaj Haar).",
+      "musleh": "Kateera (Astragalus gummifer) and Shakar (Raw cane sugar)",
+      "badal": "Bahman Safaid (Centaurea behen)",
+      "is_schedule_e1": false
+    },
+    {
+      "upi_code": "UPI-M-002",
+      "canonical_name": "Suranjan Talkh",
+      "latin_binomial": "Colchicum autumnale L.",
+      "urdu_name": "سورنجان تلخ",
+      "part_used": "Dried corms",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 3
+      },
+      "afal": [
+        "Mufattih-e-Sudad (Deobstruent)",
+        "Mus-hil-e-Balgham wa Sauda (Phlegm & Melancholy Purgative)",
+        "Daf-e-Niqras (Anti-gout / Podagra specific)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 0.125,
+        "max": 0.25
+      },
+      "organ_axes": ["Musculoskeletal", "Renal"],
+      "muzir": "Corrosive to gastric and intestinal lining; nephrotoxic without Shodhan.",
+      "musleh": "Kateera, Zafaran, Roghan-e-Badam",
+      "badal": "Suranjan Shireen (Colchicum luteum)",
+      "is_schedule_e1": true
+    },
+    {
+      "upi_code": "UPI-M-003",
+      "canonical_name": "Babchi",
+      "latin_binomial": "Psoralea corylifolia L.",
+      "urdu_name": "بابچی",
+      "part_used": "Dried seeds",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 2
+      },
+      "afal": [
+        "Mukhrij-e-Balgham (Expectorant)",
+        "Muharrik-e-Jild (Cutaneous Stimulant)",
+        "Daf-e-Bars (Anti-vitiligo specific / Melanocyte activator)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 1.0,
+        "max": 3.0
+      },
+      "organ_axes": ["Dermatological", "Systemic"],
+      "muzir": "May cause cutaneous blistering or hyperpigmentation if solar exposure is unmonitored.",
+      "musleh": "Ghee, fresh cow milk, and Sharbat Banafsha",
+      "badal": "Chaksu (Cassia absus)",
+      "is_schedule_e1": false
+    },
+    {
+      "upi_code": "UPI-M-004",
+      "canonical_name": "Ustukhuddus",
+      "latin_binomial": "Lavandula stoechas L.",
+      "urdu_name": "استخودوس",
+      "part_used": "Dried inflorescence / flowers",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 1
+      },
+      "afal": [
+        "Munaqqi-e-Dimagh (Cerebral Purifier / Broom of Brain)",
+        "Muqawwi-e-Asab (Nervine Tonic)",
+        "Daf-e-Sudda (Deobstruent)",
+        "Musakkin (Sedative)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 4.0,
+        "max": 7.0
+      },
+      "organ_axes": ["Neuro-Psychiatric", "Cardiovascular"],
+      "muzir": "Excess use may cause nausea or thirst in Safrawi temperaments.",
+      "musleh": "Sikanjabeen (Oxymel) or Arq-e-Gulab",
+      "badal": "Farasiyoon (Marrubium vulgare)",
+      "is_schedule_e1": false
+    },
+    {
+      "upi_code": "UPI-M-005",
+      "canonical_name": "Filfil Siyah",
+      "latin_binomial": "Piper nigrum L.",
+      "urdu_name": "فلفل سیاه",
+      "part_used": "Dried berries",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 3
+      },
+      "afal": [
+        "Hazim (Digestive / Carminative)",
+        "Jali (Detergent / Resolvent)",
+        "Muqawwi-e-Meda (Stomachic)",
+        "Muharrik-e-Ishtaha (Appetite Stimulant)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 0.5,
+        "max": 1.5
+      },
+      "organ_axes": ["Gastrointestinal", "Hepatometabolic"],
+      "muzir": "Causes excess Hararat and mucosal irritation in Safrawi / bilious patients.",
+      "musleh": "Roghan-e-Banafsha or Sandal Safaid",
+      "badal": "Zanjabeel (Zingiber officinale)",
+      "is_schedule_e1": false
+    },
+    {
+      "upi_code": "UPI-M-006",
+      "canonical_name": "Gaozaban",
+      "latin_binomial": "Borago officinalis L. / Onosma bracteatum",
+      "urdu_name": "گاؤزبان",
+      "part_used": "Dried leaves & flowers",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Ratab",
+        "degree": 1
+      },
+      "afal": [
+        "Mufarreh-e-Qalb (Cardiac Elixir / Exhilarant)",
+        "Muqawwi-e-Dimagh (Brain Tonic)",
+        "Munaffis-e-Balgham (Expectorant)",
+        "Musakkin-e-Khafaqan (Anti-palpitation)"
+      ],
+      "standard_adult_posology_grams": {
+        "min": 5.0,
+        "max": 10.0
+      },
+      "organ_axes": ["Cardiovascular", "Respiratory", "Neuro-Psychiatric"],
+      "muzir": "Mildly heating in chronic hepatic inflammation.",
+      "musleh": "Sandal Safaid and Arq-e-Gulab",
+      "badal": "Badranjboya (Melissa officinalis)",
+      "is_schedule_e1": false
+    }
+  ]
+}

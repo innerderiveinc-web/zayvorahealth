@@ -1,0 +1,185 @@
+{
+  "version": "2.0.0",
+  "regulatory_framework": "Drugs and Cosmetics Act 1940 (India) - Schedule E(1)",
+  "compliance_level": "STATUTORY_MANDATORY",
+  "invariants": {
+    "shodhan_required": true,
+    "statutory_ceiling_strict": true,
+    "safe_to_lock_default": false
+  },
+  "substances": [
+    {
+      "identifier": "SCH-E1-001",
+      "canonical_name": "Suranjan Talkh",
+      "latin_binomial": "Colchicum autumnale L.",
+      "arabic_name": "سورنجان مر",
+      "common_english": "Bitter Colchicum / Meadow Saffron",
+      "part_used": "Corms / Seeds",
+      "primary_toxin": "Colchicine (Alkaloid)",
+      "toxicology": "Antimitotic spindle poison, tubulointerstitial renal nephritis, severe hemorrhagic gastroenteritis in overdose.",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 3
+      },
+      "mandatory_mudabbar_protocol": "Soaking sliced corms in cow's milk (Sheer-e-Gao) for 7 days with daily milk change, followed by solar drying or gentle roasting.",
+      "daily_statutory_posology_ceiling_mg": 250.0,
+      "contraindications": [
+        "Pregnancy (Category X teratogen)",
+        "Renal failure (eGFR < 30 mL/min)",
+        "Active inflammatory bowel disease / Ulcerative colitis"
+      ],
+      "musleh_correctives": [
+        "Kateera (Astragalus gummifer)",
+        "Zafaran (Crocus sativus)",
+        "Roghan-e-Badam (Almond oil)"
+      ],
+      "badal_substitute": "Suranjan Shireen (Colchicum luteum Baker)"
+    },
+    {
+      "identifier": "SCH-E1-002",
+      "canonical_name": "Azaraqi (Kuchla)",
+      "latin_binomial": "Strychnos nux-vomica L.",
+      "arabic_name": "جوز القيء / اذاراقی",
+      "common_english": "Nux-vomica / Poison Nut",
+      "part_used": "Mature dried seeds",
+      "primary_toxin": "Strychnine & Brucine (Indole alkaloids)",
+      "toxicology": "Competitive glycine receptor antagonist causing violent tetanic convulsions, respiratory paralysis, hyperreflexia.",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 4
+      },
+      "mandatory_mudabbar_protocol": "Steeping in cow's urine (Aab-e-Gao) or Kanji for 7 days, peeling off outer cuticle (Pust-e-Bairuni), removing embryonic cotyledon (Fals-e-Mani), boiling in milk, and frying in Roghan-e-Zard (Ghee).",
+      "daily_statutory_posology_ceiling_mg": 65.0,
+      "contraindications": [
+        "Epilepsy / Convulsive disorders",
+        "Hypertension Stage 2+",
+        "Cardiac arrhythmias",
+        "Pregnancy & Lactation"
+      ],
+      "musleh_correctives": [
+        "Doodh (Cow milk)",
+        "Roghan-e-Zard (Cow Ghee)",
+        "Shakar (Raw cane sugar)"
+      ],
+      "badal_substitute": "Jundbedastar (Castoreum)"
+    },
+    {
+      "identifier": "SCH-E1-003",
+      "canonical_name": "Bish (Meetha Telia)",
+      "latin_binomial": "Aconitum ferox Wall. / Aconitum chasmanthum",
+      "arabic_name": "بيش / قرن الغزال",
+      "common_english": "Indian Aconite / Monkshood",
+      "part_used": "Dried tuberous roots",
+      "primary_toxin": "Aconitine & Pseudoaconitine (Diterpene alkaloids)",
+      "toxicology": "Voltage-gated sodium channel activator causing refractory ventricular tachycardia, sensory paresthesia, curariform paralysis.",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 4
+      },
+      "mandatory_mudabbar_protocol": "Dolayantra boiling in cow's milk for 3 hours or soaking in cow's urine for 7 days until inner core turns soft and dark, followed by washing and sun-drying.",
+      "daily_statutory_posology_ceiling_mg": 16.0,
+      "contraindications": [
+        "Cardiovascular diseases / Heart failure",
+        "Pregnancy & Lactation",
+        "Children under 12 years",
+        "Hypotension"
+      ],
+      "musleh_correctives": [
+        "Sheer-e-Gao (Cow milk)",
+        "Roghan-e-Balsan (Commiphora gileadensis oil)",
+        "Marwareed (Purified pearl powder)"
+      ],
+      "badal_substitute": "Jadwar (Delphinium denudatum)"
+    },
+    {
+      "identifier": "SCH-E1-004",
+      "canonical_name": "Bhilawa",
+      "latin_binomial": "Semecarpus anacardium L.f.",
+      "arabic_name": "حب القلب / بلاذر",
+      "common_english": "Marking Nut",
+      "part_used": "Dried ripe fruit pericarps",
+      "primary_toxin": "Bhilawanol & Urushiol (Anacardic acids)",
+      "toxicology": "Severe contact dermatitis, chemical blistering, corrosive nephrotoxicity, mucous membrane ulceration.",
+      "mizaj": {
+        "primary": "Haar",
+        "secondary": "Yabis",
+        "degree": 4
+      },
+      "mandatory_mudabbar_protocol": "Decapitating thalami, slitting pericarps, rubbing inside brick powder (Ishtak-e-Kham) in a jute bag to absorb dark pericarp resin, then washing with warm water and boiling in cow milk.",
+      "daily_statutory_posology_ceiling_mg": 250.0,
+      "contraindications": [
+        "Active gastritis & Peptic ulcer disease",
+        "Dermatitis & Eczema",
+        "Summer heat plethora (Mizaj Haar Safrawi)",
+        "Pregnancy"
+      ],
+      "musleh_correctives": [
+        "Maghz-e-Akhrot (Walnut kernel)",
+        "Nariyal (Coconut flesh)",
+        "Ghee & Fresh milk"
+      ],
+      "badal_substitute": "Baladur purified extract"
+    },
+    {
+      "identifier": "SCH-E1-005",
+      "canonical_name": "Afeem",
+      "latin_binomial": "Papaver somniferum L.",
+      "arabic_name": "خشخاش أسود / أفيون",
+      "common_english": "Opium",
+      "part_used": "Latex from incised unripe capsules",
+      "primary_toxin": "Morphine, Codeine, Thebaine (Opioid alkaloids)",
+      "toxicology": "Mu-opioid receptor agonist causing central respiratory depression, profound sedation, physical habituation, bowel paralytic ileus.",
+      "mizaj": {
+        "primary": "Barid",
+        "secondary": "Yabis",
+        "degree": 4
+      },
+      "mandatory_mudabbar_protocol": "Dissolving in Arq-e-Gulab (Rose water) or cow milk, filtering through triple-layered muslin cloth, then gently desiccating over water bath to soft extract consistency.",
+      "daily_statutory_posology_ceiling_mg": 65.0,
+      "contraindications": [
+        "Respiratory failure & Severe asthma",
+        "Head trauma / Increased intracranial pressure",
+        "Paralytic ileus",
+        "Addiction history"
+      ],
+      "musleh_correctives": [
+        "Jundbedastar",
+        "Zafaran (Crocus sativus)",
+        "Qaranfal (Syzygium aromaticum)"
+      ],
+      "badal_substitute": "Bazr-ul-Banj (Hyoscyamus niger)"
+    },
+    {
+      "identifier": "SCH-E1-006",
+      "canonical_name": "Dhatura",
+      "latin_binomial": "Datura metel L. / Datura stramonium",
+      "arabic_name": "جوز ماثل / تاتورة",
+      "common_english": "Thorn Apple / Datura",
+      "part_used": "Dried seeds & leaves",
+      "primary_toxin": "Scopolamine, Hyoscyamine, Atropine (Tropane alkaloids)",
+      "toxicology": "Competitive muscarinic acetylcholine receptor blockade: central delirium, hyperthermia, mydriasis, tachycardia, urinary retention.",
+      "mizaj": {
+        "primary": "Barid",
+        "secondary": "Yabis",
+        "degree": 4
+      },
+      "mandatory_mudabbar_protocol": "Soaking seeds in cow's milk for 12 hours, washing with warm water, boiling in Dolayantra with decoction of Triphala, then light frying in ghee.",
+      "daily_statutory_posology_ceiling_mg": 65.0,
+      "contraindications": [
+        "Narrow-angle glaucoma",
+        "Benign prostatic hyperplasia (urinary retention)",
+        "Tachyarrhythmias",
+        "Pregnancy"
+      ],
+      "musleh_correctives": [
+        "Filfil Siyah (Piper nigrum)",
+        "Sheer-e-Khurma (Dates in milk)",
+        "Sirka (Vinegar)"
+      ],
+      "badal_substitute": "Ajwain Khurasani (Hyoscyamus albus)"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+name: ZAYVORA Health™ Enterprise CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "release/*" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  verify-and-test:
+    name: Master Clinical & Regulatory Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Base Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r services/clinical/requirements.txt || true
+          pip install -r services/therapeutic/requirements.txt || true
+          pip install -r services/knowledge/requirements.txt || true
+          pip install -r services/ai/requirements.txt || true
+          pip install -r services/identity/requirements.txt || true
+
+      - name: Syntax & Compilation Integrity Audit
+        run: |
+          python3 -m compileall services apps database knowledge pharmacopoeia protocols policies prompts -q
+
+      - name: Execute Master Test Runner (180+ Enterprise Tests)
+        run: |
+          python3 tests/run_all_tests.py
+
+      - name: Verify Clinical Invariants & Statutory Firewalls
+        run: |
+          echo "Verifying mandatory safe_to_lock = False enforcement..."
+          python3 -c "
+          from services.clinical.app.workers.task_queue import TaskRecord, TaskStatus
+          rec = TaskRecord(task_id='chk-01', task_type='test', organization_id='org-01', payload={})
+          assert rec.safe_to_lock is False, 'FATAL: TaskRecord must default safe_to_lock to False'
+          "
+          echo "Verifying Schedule E(1) Statutory Poisons Register..."
+          test -f pharmacopoeia/schedule_e1_statutory_register.json
+          test -f knowledge/organ_axis_pathways.json
+          test -f knowledge/asbab_sittah_guidelines.json
+          test -f infrastructure/k8s/zayvora-production-manifests.yaml
+          echo "All enterprise integrity checks passed."
+
+  lint-and-format:
+    name: Code Hygiene & Schema Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Canonical Repositories
+        run: |
+          python3 -c "
+          import json, glob
+          for p in glob.glob('pharmacopoeia/*.json') + glob.glob('knowledge/*.json'):
+              with open(p) as f:
+                  json.load(f)
+              print(f'Valid JSON: {p}')
+          "

@@ -1,0 +1,174 @@
+version: "3.9"
+
+# ZAYVORA Platform — Phase 0 local dev stack.
+# Neo4j is wired up now (per Master Build Prompt v4.0 §52) but not yet used
+# by any service — it comes online in Phase 2 (Knowledge Core) when the
+# Pharmacopoeia/Mufradat/Evidence graph is built. Included here so the
+# infra shape matches the target architecture from day one.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: zayvora
+      POSTGRES_PASSWORD: zayvora
+      POSTGRES_DB: zayvora
+    ports:
+      - "5432:5432"
+    volumes:
+      - zayvora_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zayvora"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  neo4j:
+    image: neo4j:5-community
+    environment:
+      NEO4J_AUTH: neo4j/zayvora_dev_password
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"  # browser UI
+      - "7687:7687"  # bolt protocol
+    volumes:
+      - zayvora_neo4j_data:/data
+
+  identity:
+    build:
+      context: ./services/identity
+    environment:
+      ZAYVORA_IDENTITY_ENVIRONMENT: development
+      ZAYVORA_IDENTITY_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
+      ZAYVORA_IDENTITY_CORS_ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  clinical:
+    build:
+      context: ./services/clinical
+    environment:
+      ZAYVORA_CLINICAL_ENVIRONMENT: development
+      ZAYVORA_CLINICAL_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
+      ZAYVORA_CLINICAL_CORS_ALLOWED_ORIGINS: http://localhost:3000
+      # ZAYVORA_CLINICAL_JWT_SECRET must match ZAYVORA_IDENTITY_JWT_SECRET
+      # in any environment where either is actually set (production). Left
+      # unset here — both services share the same dev-only fallback secret
+      # locally, which is how the identity->clinical cross-service auth
+      # integration test in this repo was verified to work.
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  knowledge:
+    build:
+      context: ./services/knowledge
+    environment:
+      ZAYVORA_KNOWLEDGE_ENVIRONMENT: development
+      ZAYVORA_KNOWLEDGE_NEO4J_URI: bolt://neo4j:7687
+      ZAYVORA_KNOWLEDGE_NEO4J_USER: neo4j
+      ZAYVORA_KNOWLEDGE_NEO4J_PASSWORD: zayvora_dev_password
+      ZAYVORA_KNOWLEDGE_CORS_ALLOWED_ORIGINS: http://localhost:3000
+      # Same shared-secret note as the clinical service above.
+    ports:
+      - "8003:8000"
+    depends_on:
+      - neo4j
+
+  therapeutic:
+    build:
+      context: ./services/therapeutic
+    environment:
+      ZAYVORA_THERAPEUTIC_ENVIRONMENT: development
+      ZAYVORA_THERAPEUTIC_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
+      ZAYVORA_THERAPEUTIC_CORS_ALLOWED_ORIGINS: http://localhost:3000
+      # Same shared-secret note as the clinical/knowledge services above.
+    ports:
+      - "8004:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ai:
+    build:
+      context: ./services/ai
+    environment:
+      ZAYVORA_AI_ENVIRONMENT: development
+      ZAYVORA_AI_DATABASE_URL: postgresql+psycopg://zayvora:zayvora@postgres:5432/zayvora
+      ZAYVORA_AI_CORS_ALLOWED_ORIGINS: http://localhost:3000
+      ZAYVORA_AI_CLINICAL_SERVICE_URL: http://clinical:8000
+      ZAYVORA_AI_KNOWLEDGE_SERVICE_URL: http://knowledge:8000
+      # ZAYVORA_AI_ANTHROPIC_API_KEY: set this to your own key — required
+      # for Hakeem Sahab to actually call the LLM. Without it, requests to
+      # /api/v1/hakeem/consult will fail at the Anthropic client, not
+      # silently return a fake response — see docs/PHASE4-AI-CORE.md.
+      ZAYVORA_AI_ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "8005:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      clinical:
+        condition: service_started
+      knowledge:
+        condition: service_started
+
+  gateway:
+    build:
+      context: ./services/gateway
+    environment:
+      ZAYVORA_GATEWAY_ENVIRONMENT: development
+      ZAYVORA_GATEWAY_PORT: 8000
+      ZAYVORA_GATEWAY_IDENTITY_URL: http://identity:8000
+      ZAYVORA_GATEWAY_CLINICAL_URL: http://clinical:8000
+      ZAYVORA_GATEWAY_KNOWLEDGE_URL: http://knowledge:8000
+      ZAYVORA_GATEWAY_THERAPEUTIC_URL: http://therapeutic:8000
+      ZAYVORA_GATEWAY_AI_URL: http://ai:8000
+      ZAYVORA_GATEWAY_CORS_ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - identity
+      - clinical
+      - knowledge
+      - therapeutic
+      - ai
+
+  web:
+    build:
+      context: ./apps/web
+    environment:
+      NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
+      NEXT_PUBLIC_IDENTITY_API_URL: http://localhost:8001
+      NEXT_PUBLIC_CLINICAL_API_URL: http://localhost:8002
+      NEXT_PUBLIC_KNOWLEDGE_API_URL: http://localhost:8003
+      NEXT_PUBLIC_THERAPEUTIC_API_URL: http://localhost:8004
+      NEXT_PUBLIC_AI_API_URL: http://localhost:8005
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+      - identity
+      - clinical
+      - knowledge
+      - therapeutic
+      - ai
+
+volumes:
+  zayvora_postgres_data:
+  zayvora_neo4j_data:

@@ -1,0 +1,594 @@
+# ==============================================================================
+# ZAYVORA HEALTH™ — Enterprise Kubernetes Production Deployment Manifests
+# Master Build Prompt v4.0 Phase 30 (Horizon 4 & Infrastructure Tier)
+# Target Standards: High-Availability, Zero-Downtime, Zero-Trust mTLS, 2030-2035 HA
+# ==============================================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zayvora-production
+  labels:
+    app.kubernetes.io/part-of: zayvora-health
+    environment: production
+    pod-security.kubernetes.io/enforce: restricted
+
+---
+# ------------------------------------------------------------------------------
+# 1. Production ConfigMap
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zayvora-production-config
+  namespace: zayvora-production
+data:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"
+  ENABLE_OTEL_TRACING: "true"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.monitoring.svc.cluster.local:4317"
+  GATEWAY_SERVICE_URL: "http://zayvora-gateway.zayvora-production.svc.cluster.local:8000"
+  IDENTITY_SERVICE_URL: "http://zayvora-identity.zayvora-production.svc.cluster.local:8005"
+  CLINICAL_SERVICE_URL: "http://zayvora-clinical.zayvora-production.svc.cluster.local:8001"
+  KNOWLEDGE_SERVICE_URL: "http://zayvora-knowledge.zayvora-production.svc.cluster.local:8002"
+  THERAPEUTIC_SERVICE_URL: "http://zayvora-therapeutic.zayvora-production.svc.cluster.local:8003"
+  AI_SERVICE_URL: "http://zayvora-ai.zayvora-production.svc.cluster.local:8004"
+  CORS_ALLOWED_ORIGINS: "https://app.zayvora.com,https://portal.zayvora.com,https://clinic.zayvora.com"
+
+---
+# ------------------------------------------------------------------------------
+# 2. Production Secret Template (Encrypted at rest via AWS KMS / HashiCorp Vault)
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: zayvora-production-secrets
+  namespace: zayvora-production
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql+psycopg://zayvora_prod_user:VaultManagedSecret_K8s2035@postgres-cluster.database.svc.cluster.local:5432/zayvora_clinical_prod"
+  REDIS_URL: "rediss://:VaultManagedRedisToken@redis-cluster.database.svc.cluster.local:6379/0"
+  NEO4J_URI: "neo4j+s://neo4j-cluster.database.svc.cluster.local:7687"
+  NEO4J_USER: "neo4j"
+  NEO4J_PASSWORD: "VaultManagedNeo4jPassword"
+  JWT_PUBLIC_KEY_PEM: "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvZayvoraProductionKey...\n-----END PUBLIC KEY-----"
+  JWT_PRIVATE_KEY_PEM: "-----BEGIN RSA PRIVATE KEY-----\nVaultManagedRS256PrivateKey...\n-----END RSA PRIVATE KEY-----"
+  ANTHROPIC_API_KEY: "sk-ant-prod-vault-managed-key"
+  OPENAI_API_KEY: "sk-proj-prod-vault-managed-key"
+
+---
+# ------------------------------------------------------------------------------
+# 3. ZAYVORA Identity Service (Authentication, RBAC, Tenancy)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-identity
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-identity
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-identity
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-identity
+    spec:
+      containers:
+        - name: identity
+          image: ghcr.io/zayvora-health/zayvora-identity:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-identity
+  namespace: zayvora-production
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-identity
+  ports:
+    - port: 8005
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 4. ZAYVORA Clinical Service (EMR, Patient 360, Digital Twin, Part 11)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-clinical
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-clinical
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-clinical
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-clinical
+    spec:
+      containers:
+        - name: clinical
+          image: ghcr.io/zayvora-health/zayvora-clinical:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-clinical
+  namespace: zayvora-production
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-clinical
+  ports:
+    - port: 8001
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 5. ZAYVORA Knowledge Service (Four-Graph, UPI/NFUM, Hybrid RAG, Board)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-knowledge
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-knowledge
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-knowledge
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-knowledge
+    spec:
+      containers:
+        - name: knowledge
+          image: ghcr.io/zayvora-health/zayvora-knowledge:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "3Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-knowledge
+  namespace: zayvora-production
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-knowledge
+  ports:
+    - port: 8002
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 6. ZAYVORA Therapeutic Service (Safety Firewall, Schedule E(1), FEFO, eBMR)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-therapeutic
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-therapeutic
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-therapeutic
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-therapeutic
+    spec:
+      containers:
+        - name: therapeutic
+          image: ghcr.io/zayvora-health/zayvora-therapeutic:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-therapeutic
+  namespace: zayvora-production
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-therapeutic
+  ports:
+    - port: 8003
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 7. ZAYVORA AI Service (Hakeem Sahab, ZAPE, Multimodal Extractor, Security Lab)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-ai
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-ai
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-ai
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-ai
+    spec:
+      containers:
+        - name: ai
+          image: ghcr.io/zayvora-health/zayvora-ai:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "2Gi"
+            limits:
+              cpu: "4000m"
+              memory: "6Gi"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-ai
+  namespace: zayvora-production
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zayvora-ai
+  ports:
+    - port: 8004
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 8. ZAYVORA Gateway (Unified Edge Proxy, Health Aggregator, Rate Limiter)
+# ------------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zayvora-gateway
+  namespace: zayvora-production
+  labels:
+    app.kubernetes.io/name: zayvora-gateway
+    app.kubernetes.io/part-of: zayvora-health
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zayvora-gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zayvora-gateway
+    spec:
+      containers:
+        - name: gateway
+          image: ghcr.io/zayvora-health/zayvora-gateway:v2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: zayvora-production-config
+            - secretRef:
+                name: zayvora-production-secrets
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zayvora-gateway
+  namespace: zayvora-production
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: zayvora-gateway
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+
+---
+# ------------------------------------------------------------------------------
+# 9. Horizontal Pod Autoscaling (HPA v2) Policies
+# ------------------------------------------------------------------------------
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: zayvora-ai-hpa
+  namespace: zayvora-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: zayvora-ai
+  minReplicas: 4
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: zayvora-clinical-hpa
+  namespace: zayvora-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: zayvora-clinical
+  minReplicas: 4
+  maxReplicas: 16
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+
+---
+# ------------------------------------------------------------------------------
+# 10. Zero-Trust Network Policy (Service Mesh Pod-to-Pod Isolation)
+# ------------------------------------------------------------------------------
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: zayvora-production
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-to-services
+  namespace: zayvora-production
+spec:
+  podSelector:
+    matchExpressions:
+      - {key: app.kubernetes.io/name, operator: In, values: [zayvora-identity, zayvora-clinical, zayvora-knowledge, zayvora-therapeutic, zayvora-ai]}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: zayvora-gateway
+      ports:
+        - protocol: TCP
+          port: 8000

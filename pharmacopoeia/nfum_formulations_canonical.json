@@ -1,0 +1,108 @@
+{
+  "version": "2.0.0",
+  "source": "National Formulary of Unani Medicine (NFUM) Part I-VI / Ministry of AYUSH",
+  "compounds": [
+    {
+      "nfum_code": "NFUM-C-001",
+      "canonical_name": "Majun Suranjan",
+      "urdu_name": "معجون سورنجان",
+      "form": "Majun (Electuary / Semisolid Paste)",
+      "primary_indication": "Waja-ul-Mafasil (Polyarthritis), Niqras (Gout / Podagra), Irq-un-Nasa (Sciatica)",
+      "posology": {
+        "adult_dose": "5 to 10 grams",
+        "frequency": "Twice daily",
+        "anupan_vehicle": "Aab-e-Badiyan (Fennel hydrosol) 50 mL or lukewarm water"
+      },
+      "juz_e_azam": "Suranjan Talkh (Colchicum autumnale Mudabbar)",
+      "ingredients": [
+        {"name": "Suranjan Talkh Mudabbar", "proportion_parts": 10},
+        {"name": "Zanjabeel (Zingiber officinale)", "proportion_parts": 5},
+        {"name": "Filfil Siyah (Piper nigrum)", "proportion_parts": 3},
+        {"name": "Turbud Safaid (Operculina turpethum)", "proportion_parts": 5},
+        {"name": "Sheer-e-Khisht (Manna)", "proportion_parts": 5},
+        {"name": "Shahad / Qand Safaid (Honey/Sugar base)", "proportion_parts": 60}
+      ],
+      "cautions": [
+        "Contains Schedule E(1) Suranjan Talkh; must be verified Mudabbar.",
+        "Dose reduction by 50% required in renal impairment (eGFR < 60 mL/min).",
+        "Contraindicated in pregnancy."
+      ],
+      "is_schedule_e1_containing": true
+    },
+    {
+      "nfum_code": "NFUM-C-002",
+      "canonical_name": "Jawarish Kamuni",
+      "urdu_name": "جوارش کمونی",
+      "form": "Jawarish (Digestive Confection)",
+      "primary_indication": "Zuf-e-Hazm (Dyspepsia), Nafakh-e-Shikam (Flatulence), Su-i-Mizaj Barid Meda (Cold Gastric Dyspepsia)",
+      "posology": {
+        "adult_dose": "5 to 7 grams",
+        "frequency": "After principal meals",
+        "anupan_vehicle": "Lukewarm water or Arq-e-Badiyan"
+      },
+      "juz_e_azam": "Zeera Siyah (Carum carvi / Cuminum cyminum)",
+      "ingredients": [
+        {"name": "Zeera Siyah Mudabbar (Soaked in vinegar)", "proportion_parts": 10},
+        {"name": "Filfil Siyah (Piper nigrum)", "proportion_parts": 4},
+        {"name": "Zanjabeel (Zingiber officinale)", "proportion_parts": 4},
+        {"name": "Bura-e-Armani (Armenian bole)", "proportion_parts": 2},
+        {"name": "Shahad (Pure honey)", "proportion_parts": 50}
+      ],
+      "cautions": [
+        "Caution in patients with active peptic ulceration due to pungent carminatives."
+      ],
+      "is_schedule_e1_containing": false
+    },
+    {
+      "nfum_code": "NFUM-C-003",
+      "canonical_name": "Itrifal Ustukhuddus",
+      "urdu_name": "اطریفل استخودوس",
+      "form": "Itrifal (Triphala-Based Confection)",
+      "primary_indication": "Suda-e-Muzmin (Chronic Migraine / Cephalea), Nazla Haar wa Barid (Catarrh), Tanqiya-e-Dimagh (Cerebral Humoral Cleansing)",
+      "posology": {
+        "adult_dose": "5 to 10 grams",
+        "frequency": "At bedtime",
+        "anupan_vehicle": "100 mL warm water or warm milk"
+      },
+      "juz_e_azam": "Ustukhuddus (Lavandula stoechas)",
+      "ingredients": [
+        {"name": "Ustukhuddus", "proportion_parts": 8},
+        {"name": "Post-e-Halela Zard (Terminalia chebula)", "proportion_parts": 6},
+        {"name": "Post-e-Halela Kabli (Terminalia chebula ripe)", "proportion_parts": 6},
+        {"name": "Post-e-Balela (Terminalia bellirica)", "proportion_parts": 6},
+        {"name": "Amla (Phyllanthus emblica)", "proportion_parts": 6},
+        {"name": "Roghan-e-Badam (Almond oil for charbagh)", "proportion_parts": 2},
+        {"name": "Qand Safaid (Sugar base)", "proportion_parts": 60}
+      ],
+      "cautions": [
+        "Mild laxative action; adjust dose if excessive stool frequency occurs."
+      ],
+      "is_schedule_e1_containing": false
+    },
+    {
+      "nfum_code": "NFUM-C-004",
+      "canonical_name": "Sharbat Buzuri Motadil",
+      "urdu_name": "شربت بزوری معتدل",
+      "form": "Sharbat (Medicinal Syrup)",
+      "primary_indication": "Hararat-e-Kabid (Hepatic heat), Ishtibak-e-Baul (Dysuria), Yarqan (Jaundice), Tanqiya-e-Kulyah (Renal flush)",
+      "posology": {
+        "adult_dose": "20 to 40 mL",
+        "frequency": "Twice daily",
+        "anupan_vehicle": "Diluted in 100 to 150 mL cold or lukewarm water"
+      },
+      "juz_e_azam": "Bekh-e-Kasni (Cichorium intybus root) & Tukhm-e-Kasni",
+      "ingredients": [
+        {"name": "Bekh-e-Kasni (Cichorium intybus root)", "proportion_parts": 5},
+        {"name": "Tukhm-e-Kasni (Cichorium intybus seed)", "proportion_parts": 5},
+        {"name": "Tukhm-e-Kheeyar (Cucumis sativus seed)", "proportion_parts": 5},
+        {"name": "Tukhm-e-Kharbuza (Cucumis melo seed)", "proportion_parts": 5},
+        {"name": "Bekh-e-Badiyan (Foeniculum vulgare root)", "proportion_parts": 5},
+        {"name": "Qand Safaid (Cane sugar)", "proportion_parts": 70}
+      ],
+      "cautions": [
+        "High glycemic index; substitute with sugar-free decoction in diabetic patients (Zia-e-Baitus Shakari)."
+      ],
+      "is_schedule_e1_containing": false
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0f0d;
+  --panel: #121712;
+  --elevated: #171d17;
+  --emerald: #1f6f54;
+  --emerald-bright: #2ea87f;
+  --gold: #c9a24b;
+  --gold-soft: #e3c884;
+  --text: #ece8dd;
+  --muted: #8a9490;
+  --border: #24302a;
+  --danger: #c0533f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--text);
+}
+
+body {
+  background: radial-gradient(circle at 20% -10%, #142019 0%, var(--background) 55%);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.zv-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.zv-input {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+  width: 100%;
+  font-size: 14px;
+}
+.zv-input:focus {
+  outline: none;
+  border-color: var(--emerald-bright);
+}
+
+.zv-btn-primary {
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-bright));
+  color: #06120c;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.zv-btn-primary:disabled {
+  opacity: 0.6;
+}
+
+.zv-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.zv-brand-title {
+  font-family: Georgia, serif;
+  letter-spacing: 3px;
+  color: var(--gold-soft);
+}
+
+.zv-error {
+  color: var(--danger);
+  font-size: 13px;
+}

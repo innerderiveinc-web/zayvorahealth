@@ -1,0 +1,115 @@
+{
+  "version": "2.0.0",
+  "framework": "Canonical Asbab-e-Sittah Zarooriyyah (The Six Essential Requisites of Life)",
+  "classical_precept": "Equilibrium of health (Sihhat) is maintained when the six essential external factors are aligned with an individual's innate temperament (Mizaj-e-Asli). Deviation precipitates qualitative or quantitative humoral dyscrasia (Su-e-Mizaj).",
+  "authorities": [
+    "Ibn Sina (Al-Qanun fi al-Tibb)",
+    "Abu Bakr Muhammad ibn Zakariya al-Razi (Kitab al-Hawi)",
+    "Ali Ibn Rabban al-Tabari (Firdaus al-Hikmat)",
+    "Ismail Jurjani (Zakhira-e-Khwarizmshahi)"
+  ],
+  "factors": [
+    {
+      "factor_id": "ASBAB-01",
+      "canonical_name": "Hawa-e-Muheet",
+      "english_name": "Ambient Air & Atmospheric Environment",
+      "physiological_action": "Provides essential coolness (Tanfeeth) to the innate heat (Hararat-e-Ghariziyyah), purifies the vital spirit (Rooh-e-Hayawani), and expels fuliginous metabolic vapors (Dukhan).",
+      "seasonal_considerations": {
+        "spring_rabee": "Moderate; activates accumulated winter humors; moderate venesection (Fasd) or cleansing indicated if plethoric.",
+        "summer_saif": "Hot & Dry; depletes moisture and innate heat; requires cool, moist environments and hydration.",
+        "autumn_khareef": "Cold & Dry; produces morbid melancholic humors; requires humidifying regimens.",
+        "winter_shita": "Cold & Moist; thickens phlegm; necessitates warming spices and moderate physical exertion."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Well-ventilated, moderately cool, low-humidity spaces. Avoid stifling heat.",
+        "safrawi": "Cool, shaded, adequately humidified ambient air. Avoid direct solar radiation.",
+        "balghami": "Warm, dry, well-sunlit environments. Avoid damp basements and chilling drafts.",
+        "saudawi": "Warm, moderately humid rooms with natural airflow. Avoid arid, windy atmospheres."
+      }
+    },
+    {
+      "factor_id": "ASBAB-02",
+      "canonical_name": "Makool-o-Mashroob",
+      "english_name": "Food & Drink (Dietetics & Nutrition)",
+      "physiological_action": "Substrates for metabolic transformation through four stages of digestion: Gastric (Hazm-e-Meda), Hepatic (Hazm-e-Kabid), Vascular (Hazm-e-Urooq), and Cellular (Hazm-e-Uzw).",
+      "dietary_classes": {
+        "ghiza_e_lateef": "Light, easily digestible nourishment producing subtle, clear humors (e.g., barley water, pomegranate broth, tender chicken soup).",
+        "ghiza_e_kaseef": "Dense, heavy nourishment producing substantial, viscous humors (e.g., beef, lentils, aged cheese, heavy tubers).",
+        "ghiza_e_muatadil": "Balanced staple nourishment maintaining humoral equilibrium (e.g., whole wheat, zucchini, bottle gourd, sweet apples)."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Hypocaloric, cooling foods: Cucumbers, pomegranates, barley water, leafy greens. Reduce red meat and saturated fats.",
+        "safrawi": "Cooling and hydrating foods: Isabgol, melons, coriander, curd, tamarind drink. Restrict chilies, garlic, and fried dishes.",
+        "balghami": "Warming and drying foods: Fenugreek, cumin, ginger, black pepper, mutton soup. Strictly restrict dairy, cold sweets, and excess water.",
+        "saudawi": "Warm and moistening foods: Almond milk, mutton broth, figs, raisins, olive oil. Strictly avoid dry lentils, cabbage, and stale food."
+      }
+    },
+    {
+      "factor_id": "ASBAB-03",
+      "canonical_name": "Harkat-o-Sukoon Badani",
+      "english_name": "Physical Movement & Rest (Exercise & Ergonomics)",
+      "physiological_action": "Ignites innate heat (Hararat-e-Ghariziyyah), accelerates perspiration, enhances tissue perfusion, and facilitates elimination of metabolic waste (Fuzlaat).",
+      "intensity_guidelines": {
+        "riyazat_e_muatadilah": "Moderate exercise until skin turns flushed, breath slightly quickens, and light perspiration appears. Discontinue before exhaustion.",
+        "riyazat_e_shadeedah": "Excessive vigorous movement; consumes innate moisture (Rutoobat-e-Ghariziyyah) and causes premature senescence.",
+        "sukoon_e_mufrit": "Sedentary inertia; causes accumulation of raw humor (Khilt-e-Kham) and metabolic sluggishness."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Regular aerobic exercise (brisk walking, swimming) to consume metabolic plethora.",
+        "safrawi": "Gentle, non-heating movement (stretching, evening walks, calming yoga). Avoid midday workouts.",
+        "balghami": "Vigorous, stimulating exercise in warm environments to burn cold-moist phlegmatic buildup.",
+        "saudawi": "Mild, rhythmically restorative movement. Avoid exhausting endurance routines."
+      }
+    },
+    {
+      "factor_id": "ASBAB-04",
+      "canonical_name": "Harkat-o-Sukoon Nafsani",
+      "english_name": "Psychic Movement & Mental States (Emotional Balance)",
+      "physiological_action": "Sudden emotional changes cause movement of the vital spirit (Rooh): outward expansion in anger (Ghadab) and joy (Farah), or inward retreat in fear (Khauf) and grief (Huzn).",
+      "psychosomatic_pathways": {
+        "ghadab": "Extreme anger rapidly disperses Rooh outwards, heating the temperament to acute bile formation.",
+        "huzn": "Deep chronic grief retreats Rooh into the cardiac core, chilling the body and producing combusted black bile (Sauda).",
+        "surur_e_muatadil": "Moderate joy and tranquility strengthens cardiac faculty (Quwwat-e-Qalbiyyah) and sustains homeostasis."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Stress de-escalation, meditation, avoiding over-stimulating social agitation.",
+        "safrawi": "Cooling aromatherapy (Rose, Sandalwood, Camphor), breathwork, emotional pacification.",
+        "balghami": "Stimulating mental puzzles, social engagement, uplifting environments, avoiding lethargy.",
+        "saudawi": "Compassionate psychotherapy, gentle companionship, serene music, natural green landscapes."
+      }
+    },
+    {
+      "factor_id": "ASBAB-05",
+      "canonical_name": "Naum-o-Yaqzah",
+      "english_name": "Sleep & Wakefulness (Chronobiology)",
+      "physiological_action": "Sleep directs the innate heat inward to perfect digestion and cell repair. Prolonged wakefulness disperses heat, drying tissues and provoking neuro-cognitive strain.",
+      "circadian_recommendations": {
+        "optimal_duration": "6 to 8 hours nocturnal sleep tailored to personal constitution.",
+        "posture": "Begin lying on the right side for 15 minutes to settle gastric contents toward the pylorus, then turn to the left to facilitate hepatic warmth over the stomach.",
+        "daytime_nap_qailulah": "Permissible for 20-30 minutes before midday meal in summer; contraindicated in cold-moist seasons."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Standard 7-8 hours restful sleep. Avoid sleeping immediately post heavy dinners.",
+        "safrawi": "Requires restorative 7.5-8.5 hours to replenish moisture lost to bilious dry heat.",
+        "balghami": "Limit sleep to 6-7 hours. Avoid daytime slumber to prevent phlegm excess.",
+        "saudawi": "Prioritize deep sleep 8 hours with unhurried bedtime wind-down to counter melancholy dryness."
+      }
+    },
+    {
+      "factor_id": "ASBAB-06",
+      "canonical_name": "Ehtibas-o-Istifragh",
+      "english_name": "Retention & Evacuation (Detoxification & Homeostasis)",
+      "physiological_action": "Retention preserves essential vital fluids (semen, moisture, digestive secretions). Evacuation eliminates toxic waste products (sweat, urine, feces, menses, sputum).",
+      "pathological_deviations": {
+        "ehtibas_e_maddi": "Morbid retention (constipation, oliguria, amenorrhea) poisoning internal organ axes.",
+        "istifragh_e_mufrit": "Excessive depletion (profuse diarrhea, emesis, hemorrhage) collapsing innate vigor."
+      },
+      "temperamental_prescriptions": {
+        "damawi": "Ensure daily bowel elimination; seasonal mild venesection or cupping (Hijama) if blood pressure elevates.",
+        "safrawi": "Hydration to promote clear diuresis and gentle biliary elimination using mild laxatives (Mullayin).",
+        "balghami": "Diaphoretic steaming (Hammam), expectoration clearance, and gentle lymphatic drainage.",
+        "saudawi": "Avoid obstinate constipation via psyllium seed husk, almond oil, and warm mineral water."
+      }
+    }
+  ]
+}
