@@ -299,33 +299,115 @@ export function HakeemReviewDrawer({
                   </div>
                 )}
 
-              {/* 13 Structured Sections */}
-              <div className="space-y-3">
-                {SECTION_ORDER.map((secName) => {
-                  const content =
-                    selectedConsultation.parsed_sections?.[secName] ||
-                    (selectedConsultation.raw_response?.includes(secName)
-                      ? "Present in unstructured report."
-                      : null);
+              {/* 5 Distinct Clinical Decision-Support Layers */}
+              <div className="space-y-4">
+                
+                {/* LAYER A: VERIFIED SOURCE-BACKED INFORMATION */}
+                <div className="zv-card p-4 border-[#0D9488]/40 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#334155] pb-1.5">
+                    <span className="font-mono text-xs font-bold text-[#2DD4BF] uppercase flex items-center gap-1.5">
+                      📖 Layer A: Verified Source-Backed Information
+                    </span>
+                    <span className="zv-badge-teal text-[10px] px-2 py-0.5 rounded font-bold">UPI Monograph Backed</span>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    {["EVIDENCE", "UNANI PERSPECTIVE", "BIOMEDICAL PERSPECTIVE", "SAFETY"].map((sec) => {
+                      const text = selectedConsultation.parsed_sections?.[sec];
+                      if (!text) return null;
+                      return (
+                        <div key={sec} className="p-2.5 rounded bg-[#0A0F1D] border border-[#334155]">
+                          <span className="font-mono text-[10px] font-bold text-[#94A3B8] block">{sec}</span>
+                          <p className="text-white mt-0.5 whitespace-pre-line leading-relaxed">{text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                  if (!content) return null;
+                {/* LAYER B: CLINICAL REASONING ASSISTANCE */}
+                <div className="zv-card p-4 border-[#3B82F6]/40 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#334155] pb-1.5">
+                    <span className="font-mono text-xs font-bold text-[#60A5FA] uppercase flex items-center gap-1.5">
+                      🧠 Layer B: Clinical Reasoning Assistance
+                    </span>
+                    <span className="zv-badge-blue text-[10px] px-2 py-0.5 rounded font-bold">Humoral & Organ-Axis</span>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    {["CLINICAL SUMMARY", "WHAT IS KNOWN", "DIFFERENTIAL CONSIDERATIONS", "MONITORING"].map((sec) => {
+                      const text = selectedConsultation.parsed_sections?.[sec];
+                      if (!text) return null;
+                      return (
+                        <div key={sec} className="p-2.5 rounded bg-[#0A0F1D] border border-[#334155]">
+                          <span className="font-mono text-[10px] font-bold text-[#94A3B8] block">{sec}</span>
+                          <p className="text-white mt-0.5 whitespace-pre-line leading-relaxed">{text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                  return (
-                    <div
-                      key={secName}
-                      className={`p-3.5 rounded-lg border text-xs leading-relaxed ${getSectionStyle(
-                        secName
-                      )}`}
-                    >
-                      <h5 className="font-mono text-[11px] uppercase font-bold tracking-wider mb-1 opacity-90">
-                        {secName}
-                      </h5>
-                      <div className="whitespace-pre-line text-xs font-normal">
-                        {content}
-                      </div>
-                    </div>
-                  );
-                })}
+                {/* LAYER C: UNVERIFIED SUGGESTIONS */}
+                <div className="zv-card p-4 border-[#F59E0B]/40 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#334155] pb-1.5">
+                    <span className="font-mono text-xs font-bold text-[#FBBF24] uppercase flex items-center gap-1.5">
+                      💡 Layer C: Unverified Suggestions (Subject to Review)
+                    </span>
+                    <span className="zv-badge-amber text-[10px] px-2 py-0.5 rounded font-bold">Candidate Options</span>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    {["POSSIBLE CARE OPTIONS"].map((sec) => {
+                      const text = selectedConsultation.parsed_sections?.[sec];
+                      if (!text) return null;
+                      return (
+                        <div key={sec} className="p-2.5 rounded bg-[#0A0F1D] border border-[#334155]">
+                          <span className="font-mono text-[10px] font-bold text-[#94A3B8] block">{sec}</span>
+                          <p className="text-white mt-0.5 whitespace-pre-line leading-relaxed">{text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* LAYER D: MISSING INFORMATION & RED FLAGS */}
+                <div className="zv-card p-4 border-[#EF4444]/40 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#334155] pb-1.5">
+                    <span className="font-mono text-xs font-bold text-[#FB7185] uppercase flex items-center gap-1.5">
+                      ⚠️ Layer D: Missing Information & Red Flags
+                    </span>
+                    <span className="zv-badge-rose text-[10px] px-2 py-0.5 rounded font-bold">Clinical Safeguard</span>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    {["RED FLAGS", "MISSING INFORMATION", "UNCERTAINTY"].map((sec) => {
+                      const text = selectedConsultation.parsed_sections?.[sec];
+                      if (!text) return null;
+                      return (
+                        <div key={sec} className="p-2.5 rounded bg-[#0A0F1D] border border-[#334155]">
+                          <span className="font-mono text-[10px] font-bold text-[#FB7185] block">{sec}</span>
+                          <p className="text-white mt-0.5 whitespace-pre-line leading-relaxed">{text}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* LAYER E: CLINICIAN DECISION GATE */}
+                <div className="zv-card p-4 border-[#10B981]/40 bg-[#10B981]/5 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#334155] pb-1.5">
+                    <span className="font-mono text-xs font-bold text-[#34D399] uppercase flex items-center gap-1.5">
+                      🔒 Layer E: Clinician Decision Gate
+                    </span>
+                    <span className="zv-badge-emerald text-[10px] px-2 py-0.5 rounded font-bold">Non-Delegable</span>
+                  </div>
+                  <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-1.5 text-xs">
+                    <p className="text-white">
+                      <strong>Prescribing Safety Status:</strong> <span className="text-amber-400 font-bold font-mono">safe_to_lock = False</span>
+                    </p>
+                    <p className="text-[11px] text-[#94A3B8]">
+                      Autonomous AI prescribing is strictly barred. The attending clinician must evaluate all recommendations, verify contraindications, and digitally sign the prescription under 21 CFR Part 11.
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
           ) : isLoadingHistory ? (

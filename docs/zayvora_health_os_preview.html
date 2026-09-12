@@ -168,6 +168,10 @@
   <script>
     // State Store
     const state = {
+      encounterId: 'ENC-2026-0814',
+      afaalStage: 'TANQIYA',
+      afaalDays: 7,
+      hakeemDrawerOpen: false,
       role: 'doctor',
       tab: 'today',
       patient: {
@@ -680,48 +684,62 @@
     }
 
     // -------------------------------------------------------------------------
-    // SINGLE DOCTOR CONSULTATION WORKSPACE (16 SECTIONS UNIFIED)
+    // SINGLE DOCTOR CONSULTATION WORKSPACE (13 CANONICAL TABS + 5-LAYER AI)
     // -------------------------------------------------------------------------
     function renderSingleConsultationWorkspace(container) {
       container.innerHTML = `
-        <div class="space-y-6">
+        <div class="space-y-6 relative">
           
           <!-- Consultation Top Bar -->
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <div class="flex items-center gap-2">
                 <span class="badge-emerald text-xs px-2.5 py-0.5 rounded font-bold">Active Consultation</span>
+                <span class="text-xs font-mono text-[var(--muted)] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)]">${state.encounterId}</span>
                 <h2 class="text-lg font-bold text-white">${state.patient.name} (${state.patient.age}y, ${state.patient.gender})</h2>
               </div>
-              <p class="text-xs text-[var(--muted)] mt-0.5">MRN: <span class="font-mono text-white font-medium">${state.patient.mrn}</span> • Allergies: <span class="text-rose-400 font-semibold">${state.patient.allergies}</span></p>
+              <p class="text-xs text-[var(--muted)] mt-1">
+                MRN: <span class="font-mono text-white font-medium">${state.patient.mrn}</span> • 
+                ABHA: <span class="font-mono text-white">91-1234-5678-9012</span> • 
+                Mizaj: <span class="text-emerald-400 font-medium">${state.patient.mizaj}</span> • 
+                Allergies: <span class="text-rose-400 font-semibold">${state.patient.allergies}</span>
+              </p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="saveConsultationDraft()" class="px-3 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--muted)] hover:text-white">
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="toggleHakeemDrawer(true)" class="px-3.5 py-2 rounded-xl bg-purple-600/20 border border-purple-500/40 text-purple-300 text-xs font-bold hover:bg-purple-600/30 flex items-center gap-1.5 transition">
+                🤖 Hakeem Sahab AI Copilot
+              </button>
+              <button onclick="saveConsultationDraft()" class="px-3 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--muted)] hover:text-white transition">
                 Save Draft
               </button>
-              <button onclick="completeConsultation()" id="btn-complete-consultation" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 shadow-md">
+              <button onclick="completeConsultation()" id="btn-complete-consultation" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 shadow-md transition">
                 Sign & Lock Prescription (21 CFR 11)
               </button>
             </div>
           </div>
 
-          <!-- 16 Clinical Sections Unified Layout -->
+          <!-- 13 Canonical Clinical Sections Layout -->
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             
-            <!-- Left Navigation / Section Jump Bar -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2 h-fit text-xs">
-              <span class="text-[11px] font-bold text-[var(--muted)] uppercase tracking-wider block px-2 pb-1 border-b border-[var(--border)]">Clinical Sections</span>
-              <button onclick="jumpToSection(1)" id="c-step-1" class="consultation-step active w-full text-left px-3 py-2 rounded-lg border border-transparent">1. Patient Summary</button>
-              <button onclick="jumpToSection(2)" id="c-step-2" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">2. Chief Complaint & History</button>
-              <button onclick="jumpToSection(3)" id="c-step-3" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">3. Vital Signs & Examination</button>
-              <button onclick="jumpToSection(4)" id="c-step-4" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">4. Diagnostic Reports</button>
-              <button onclick="jumpToSection(5)" id="c-step-5" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">5. Unani & Biomedical Assessment</button>
-              <button onclick="jumpToSection(6)" id="c-step-6" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">6. 10-Ajnas Mizaj & Organ-Axis</button>
-              <button onclick="jumpToSection(7)" id="c-step-7" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">7. Clinical Assistant (Copilot)</button>
-              <button onclick="jumpToSection(8)" id="c-step-8" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">8. Treatment Plan & Diet</button>
-              <button onclick="jumpToSection(9)" id="c-step-9" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">9. Prescription Formulation</button>
-              <button onclick="jumpToSection(10)" id="c-step-10" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">10. Medication Safety Review</button>
-              <button onclick="jumpToSection(11)" id="c-step-11" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">11. Follow-up & Complete</button>
+            <!-- Left Navigation / Section Jump Bar (13 Canonical Tabs) -->
+            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-1.5 h-fit text-xs">
+              <span class="text-[11px] font-bold text-[var(--muted)] uppercase tracking-wider block px-2 pb-1 border-b border-[var(--border)]">Consultation Tabs (13)</span>
+              <button onclick="jumpToSection(1)" id="c-step-1" class="consultation-step active w-full text-left px-3 py-2 rounded-lg border border-transparent">1. Overview</button>
+              <button onclick="jumpToSection(2)" id="c-step-2" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">2. History</button>
+              <button onclick="jumpToSection(3)" id="c-step-3" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">3. Examination</button>
+              <button onclick="jumpToSection(4)" id="c-step-4" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">4. Vitals</button>
+              <button onclick="jumpToSection(5)" id="c-step-5" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">5. Investigations</button>
+              <button onclick="jumpToSection(6)" id="c-step-6" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">6. Assessment</button>
+              <button onclick="jumpToSection(7)" id="c-step-7" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">7. Mizaj</button>
+              <button onclick="jumpToSection(8)" id="c-step-8" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white flex items-center justify-between">
+                <span>8. Afaal Cascade</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">4-STAGE</span>
+              </button>
+              <button onclick="jumpToSection(9)" id="c-step-9" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">9. Axis Mapping</button>
+              <button onclick="jumpToSection(10)" id="c-step-10" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">10. Treatment Plan</button>
+              <button onclick="jumpToSection(11)" id="c-step-11" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">11. Prescription</button>
+              <button onclick="jumpToSection(12)" id="c-step-12" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">12. Follow-up</button>
+              <button onclick="jumpToSection(13)" id="c-step-13" class="consultation-step w-full text-left px-3 py-2 rounded-lg border border-transparent text-[var(--muted)] hover:text-white">13. Timeline</button>
             </div>
 
             <!-- Right Dynamic Clinical Workspace Container -->
@@ -730,14 +748,160 @@
             </div>
 
           </div>
+
+          <!-- 5-LAYER HAKEEM SAHAB AI COPILOT DRAWER -->
+          <div id="hakeem-drawer-overlay" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-end">
+            <div class="w-full max-w-2xl bg-[#0F172A] border-l border-[#334155] h-full shadow-2xl flex flex-col animate-slide-left">
+              <!-- Drawer Header -->
+              <div class="p-5 border-b border-[#334155] flex items-center justify-between bg-[#1E293B]">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center font-bold">
+                    🤖
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                      Hakeem Sahab AI Copilot
+                      <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">v5.0-Clinical</span>
+                    </h3>
+                    <span class="text-[11px] text-[#94A3B8]">5-Layer Clinical Intelligence & Decision Support</span>
+                  </div>
+                </div>
+                <button onclick="toggleHakeemDrawer(false)" class="text-[#94A3B8] hover:text-white text-lg font-bold px-2 py-1">✕</button>
+              </div>
+
+              <!-- Drawer Body: 5 Layers -->
+              <div class="p-5 flex-1 overflow-y-auto space-y-4 text-xs">
+                <!-- Layer A: Verified Sources -->
+                <div class="p-4 rounded-xl bg-[#1E293B] border border-emerald-500/30 space-y-2">
+                  <div class="flex items-center justify-between border-b border-[#334155] pb-2">
+                    <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                      ✓ Layer A: Verified Sources & Pharmacopoeial Citations
+                    </span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">Statutory Grounded</span>
+                  </div>
+                  <div class="space-y-2 text-[#94A3B8] text-[11px]">
+                    <div class="p-2.5 bg-[#0F172A] rounded-lg border border-[#334155]">
+                      <span class="font-bold text-white block">Unani Pharmacopoeia of India (UPI) — Part I, Vol 1</span>
+                      <span>Monograph 44: <strong class="text-emerald-300">Suranjan Talkh Mudabbar</strong> (Colchicum luteum Baker). Indicated for Waja-ul-Mafasil Barid Balghami. Corrective: Kateera 1g. Maximum posology: 2g/single dose, 6g/day.</span>
+                    </div>
+                    <div class="p-2.5 bg-[#0F172A] rounded-lg border border-[#334155]">
+                      <span class="font-bold text-white block">Kitab al-Kulliyat (Ibn Rushd / Averroes) — Maqala 5</span>
+                      <span>Fasl fi Usool-e-Ilaj: Prescribes 4-stage sequential Afaal (*Tanqiya* $ightarrow$ *Tahleel* $ightarrow$ *Taqwiyaat* $ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Layer B: Clinical Reasoning -->
+                <div class="p-4 rounded-xl bg-[#1E293B] border border-blue-500/30 space-y-2">
+                  <div class="flex items-center justify-between border-b border-[#334155] pb-2">
+                    <span class="font-bold text-blue-400 flex items-center gap-1.5">
+                      🧠 Layer B: Clinical Reasoning & Organ-Axis Synthesis
+                    </span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">Humoral + Biomedical</span>
+                  </div>
+                  <div class="space-y-1.5 text-[#CBD5E1] text-[11px]">
+                    <p>• <strong class="text-white">Unani Pathology:</strong> Primary *Su-e-Mizaj Barid Balghami* (Cold-Moist dyscrasia) with deposition of viscous phlegmatic humor (*Khilt-e-Balgham*) into knee articular capsules.</p>
+                    <p>• <strong class="text-white">Modern Pathophysiology:</strong> Grade II osteoarthritic changes with micro-inflammatory synovitis, verified by elevated hs-CRP (4.8 mg/L) and ESR (28 mm/hr).</p>
+                    <p>• <strong class="text-white">Organ-Axis Cross-talk:</strong> Mafasil-Asab (Locomotor) axis is primary target; Meda-Amaa (GI) axis demonstrates adequate digestion (*Quwwat-e-Hazima*), enabling oral compound confection tolerance.</p>
+                  </div>
+                </div>
+
+                <!-- Layer C: Unverified Suggestions -->
+                <div class="p-4 rounded-xl bg-[#1E293B] border border-amber-500/30 space-y-2">
+                  <div class="flex items-center justify-between border-b border-[#334155] pb-2">
+                    <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                      ⚠️ Layer C: Unverified Suggestions & Adjuncts
+                    </span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold">Non-Statutory / Experimental</span>
+                  </div>
+                  <div class="p-2.5 bg-[#0F172A] rounded-lg border border-[#334155] text-[11px] text-[#94A3B8]">
+                    <span class="text-amber-300 font-semibold block">Experimental Adjunctive Modality:</span>
+                    <span>Standardized Boswellia serrata (Kundur) extract 250mg twice daily has demonstrated 5-LOX inhibition in pre-clinical models. Lacks statutory AYUSH classical monograph; use at tabeeb's sole clinical discretion.</span>
+                  </div>
+                </div>
+
+                <!-- Layer D: Missing Information & Red Flags -->
+                <div class="p-4 rounded-xl bg-[#1E293B] border border-rose-500/30 space-y-2">
+                  <div class="flex items-center justify-between border-b border-[#334155] pb-2">
+                    <span class="font-bold text-rose-400 flex items-center gap-1.5">
+                      🚩 Layer D: Missing Information & Safety Red Flags
+                    </span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-semibold">Safety Firewall Check</span>
+                  </div>
+                  <ul class="space-y-1.5 text-[11px] text-[#FB7185]">
+                    <li>• <strong>Schedule E(1) Mudabbar Requirement:</strong> Suranjan contains colchicine alkaloid. Dispensation strictly blocked unless lot certificate confirms Mudabbar detoxification.</li>
+                    <li>• <strong>Pregnancy Contraindication:</strong> Colchicum luteum is abortifacient. Patient is male; pregnancy contraindication safely cleared.</li>
+                    <li>• <strong>Allergy Alert:</strong> Patient has documented hypersensitivity to Sonf (Foeniculum vulgare). Formulary checked: Majun Suranjan does not contain Sonf.</li>
+                    <li>• <strong>Recommended Missing Lab:</strong> Serum Uric Acid repeated in 4 weeks to monitor purine metabolism baseline.</li>
+                  </ul>
+                </div>
+
+                <!-- Layer E: Clinician Decision Gate -->
+                <div class="p-4 rounded-xl bg-purple-950/40 border border-purple-500/40 space-y-3">
+                  <div class="flex items-center justify-between border-b border-purple-500/30 pb-2">
+                    <span class="font-bold text-purple-300 flex items-center gap-1.5">
+                      🔒 Layer E: Clinician Decision Gate & Statutory Authority
+                    </span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-mono font-bold">safe_to_lock = False</span>
+                  </div>
+                  <p class="text-[11px] text-[#CBD5E1] leading-relaxed">
+                    AI generates clinical recommendations only. Prescribing and clinical lockdown authority resides exclusively with the licensed clinician under Medical Council regulations and 21 CFR Part 11.
+                  </p>
+                  <div class="flex items-center justify-between pt-1">
+                    <span class="text-[11px] text-[#94A3B8]">Review status: <span class="text-amber-400 font-semibold">Pending Clinician Approval</span></span>
+                    <button onclick="approveHakeemSuggestions()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition">
+                      Accept AI Suggestions into Plan
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drawer Footer -->
+              <div class="p-4 border-t border-[#334155] bg-[#1E293B] flex justify-end">
+                <button onclick="toggleHakeemDrawer(false)" class="px-4 py-2 rounded-xl border border-[#334155] text-xs text-[#94A3B8] hover:text-white">
+                  Close AI Assistant
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       `;
       jumpToSection(1);
     }
 
+    function toggleHakeemDrawer(open) {
+      state.hakeemDrawerOpen = open;
+      const overlay = document.getElementById('hakeem-drawer-overlay');
+      if (overlay) {
+        if (open) {
+          overlay.classList.remove('hidden');
+        } else {
+          overlay.classList.add('hidden');
+        }
+      }
+    }
+
+    function approveHakeemSuggestions() {
+      toggleHakeemDrawer(false);
+      showNotification('Hakeem Sahab AI clinical recommendations imported into active plan.', 'success');
+      jumpToSection(8);
+    }
+
+    function selectAfaalStage(stage, days) {
+      state.afaalStage = stage;
+      state.afaalDays = days;
+      showNotification(`Afaal stage set to ${stage} (${days} days protocol).`, 'info');
+      jumpToSection(8);
+    }
+
+    function saveAfaalRecord() {
+      showNotification(`Afaal stage ${state.afaalStage} approved and locked to encounter ${state.encounterId}.`, 'success');
+    }
+
     function jumpToSection(sectionNum) {
       state.consultationStep = sectionNum;
-      for (let i = 1; i <= 11; i++) {
+      for (let i = 1; i <= 13; i++) {
         const btn = document.getElementById(`c-step-${i}`);
         if (btn) {
           if (i === sectionNum) {
@@ -749,173 +913,451 @@
       }
 
       const content = document.getElementById('consultation-section-content');
+      if (!content) return;
+
+      // TAB 1: OVERVIEW
       if (sectionNum === 1) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Section 1: Patient Clinical Summary</h3>
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <h3 class="text-base font-bold text-white">Tab 1: Patient & Encounter Overview</h3>
+              <span class="badge-emerald text-[11px] px-2.5 py-0.5 rounded font-bold">Encounter In Progress</span>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted)] block">Full Name</span>
+                <span class="text-[var(--muted)] block">Patient Name</span>
                 <span class="font-bold text-white text-sm">${state.patient.name}</span>
               </div>
               <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted)] block">Age / Gender</span>
-                <span class="font-bold text-white text-sm">${state.patient.age} Years • ${state.patient.gender}</span>
+                <span class="text-[var(--muted)] block">Demographics</span>
+                <span class="font-bold text-white text-sm">${state.patient.age} Y • ${state.patient.gender}</span>
               </div>
               <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted)] block">Documented Allergies</span>
+                <span class="text-[var(--muted)] block">MRN & ABHA</span>
+                <span class="font-bold text-white text-sm font-mono">${state.patient.mrn}</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Known Allergies</span>
                 <span class="font-bold text-rose-400 text-sm">${state.patient.allergies}</span>
-              </div>
-              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted)] block">Baseline Mizaj</span>
-                <span class="font-bold text-emerald-400 text-sm">Balghami (Cold-Moist)</span>
               </div>
             </div>
             <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
-              <span class="font-bold text-white block">Medical History Summary</span>
-              <p class="text-[var(--muted)]">Patient has a 2-year history of episodic bilateral knee pain, exacerbated during winter months (*Fusool-e-Arbaa* cold season). No history of diabetes, hypertension, or ischemic heart disease.</p>
+              <span class="font-bold text-white block">Chief Complaint</span>
+              <p class="text-[var(--muted)]">${state.patient.primaryComplaint}. Aggravated by cold wet weather and prolonged sitting.</p>
             </div>
             <div class="flex justify-end pt-2">
-              <button onclick="jumpToSection(2)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Chief Complaint →</button>
+              <button onclick="jumpToSection(2)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: History →</button>
             </div>
           </div>
         `;
-      } else if (sectionNum === 2) {
+      }
+      // TAB 2: HISTORY
+      else if (sectionNum === 2) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Section 2: Chief Complaint & Consultation Dialogue</h3>
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 2: Clinical History & Scribe Dialogue</h3>
             <div>
-              <label class="block text-[var(--muted)] mb-1 font-medium">Chief Complaint</label>
-              <input value="${state.patient.primaryComplaint}" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">
+              <label class="block text-[var(--muted)] mb-1 font-medium">History of Present Illness (HPI)</label>
+              <textarea rows="3" class="w-full p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">44-year-old male presents with 3-week progressive worsening of bilateral knee aching, stiffness lasting >45 minutes each morning, and crepitus upon ascending stairs. Reports cold sensation in extremities.</textarea>
             </div>
             <div>
-              <label class="block text-[var(--muted)] mb-1 font-medium">Consultation Voice Notes (Acoustic Capture in Roman Urdu / English)</label>
-              <textarea rows="4" class="w-full p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">Hakeem: Aap ko kitne arse se dard hai?
-Patient: Pichle teen hafton se ghutnon me dard aur subah ke waqt jodon me akad rehti hai. Thande mausam me dard zyada badh jata hai.</textarea>
+              <label class="block text-[var(--muted)] mb-1 font-medium">Ambient Consultation Transcript (Roman Urdu / English Scribe)</label>
+              <textarea rows="3" class="w-full p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-mono text-[11px]">Hakeem: Aap ko kitne arse se dard hai?
+Patient: Pichle teen hafton se ghutnon me dard aur subah ke waqt jodon me akad rehti hai. Thande mausam me dard zyada badh jata hai.
+Hakeem: Kya pet me jalan ya acidity rehti hai?
+Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
             </div>
             <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 flex items-center justify-between">
-              <span>✓ Extracted Classical Entities: <strong class="text-white">Waja-ul-Mafasil</strong> (Articular Pain) • <strong class="text-white">Warm-e-Mafasil</strong> (Joint Effusion)</span>
+              <span>✓ Extracted Pathology: <strong class="text-white">Waja-ul-Mafasil</strong> (Arthralgia) • <strong class="text-white">Su-e-Mizaj Barid</strong> (Cold Dyscrasia)</span>
               <span class="badge-emerald text-[10px] px-2 py-0.5 rounded font-bold">Confidence 96.4%</span>
             </div>
             <div class="flex justify-between pt-2">
               <button onclick="jumpToSection(1)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
-              <button onclick="jumpToSection(3)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Vitals →</button>
+              <button onclick="jumpToSection(3)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Examination →</button>
             </div>
           </div>
         `;
-      } else if (sectionNum === 3) {
+      }
+      // TAB 3: EXAMINATION
+      else if (sectionNum === 3) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Section 3: Vital Signs & Physical Examination</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Blood Pressure</label>
-                <input value="124 / 82 mmHg" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-bold">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 3: Physical & Classical Unani Examination</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-emerald-400 block">Classical Unani Examination</span>
+                <p class="text-[var(--muted)]"><strong class="text-white">Nabz (Pulse):</strong> Nabz-e-Batee (Slow), Azeem (Broad), Layyin (Soft), typical of Balghami predominance.</p>
+                <p class="text-[var(--muted)]"><strong class="text-white">Lisan (Tongue):</strong> Moist, mild white slimy coating without marginal erythema.</p>
+                <p class="text-[var(--muted)]"><strong class="text-white">Malmas (Skin Touch):</strong> Cool to touch over patellar regions.</p>
               </div>
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Pulse / Nabz</label>
-                <input value="74 bpm (Nabz-e-Azeem)" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-bold">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-blue-400 block">Biomedical Musculoskeletal Examination</span>
+                <p class="text-[var(--muted)]"><strong class="text-white">Knee Joints:</strong> Coarse crepitus during passive flexion-extension bilaterally. Joint effusion grade 1.</p>
+                <p class="text-[var(--muted)]"><strong class="text-white">Range of Motion:</strong> Flexion 115° bilateral (mild terminal restriction due to tightness).</p>
+                <p class="text-[var(--muted)]"><strong class="text-white">Stability:</strong> Lachman negative, McMurray negative, Collateral ligaments intact.</p>
               </div>
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Temperature</label>
-                <input value="36.8 °C (Motadil)" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-bold">
-              </div>
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Oxygen Saturation</label>
-                <input value="99% SpO2" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-bold">
-              </div>
-            </div>
-            <div>
-              <label class="block text-[var(--muted)] mb-1 font-medium">Physical & Articular Examination Notes</label>
-              <textarea rows="3" class="w-full p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">Bilateral knee joint crepitus present on passive flexion. Mild peri-articular fullness without erythema. Good passive extension range of motion.</textarea>
             </div>
             <div class="flex justify-between pt-2">
               <button onclick="jumpToSection(2)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
-              <button onclick="jumpToSection(6)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Mizaj & Axis →</button>
+              <button onclick="jumpToSection(4)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Vitals →</button>
             </div>
           </div>
         `;
-      } else if (sectionNum === 6) {
+      }
+      // TAB 4: VITALS
+      else if (sectionNum === 4) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Section 6: 10-Ajnas Longitudinal Mizaj & Organ-Axis</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
-                <span class="font-bold text-emerald-400 block">10-Ajnas Longitudinal Mizaj Evaluation</span>
-                <p class="text-[var(--muted)]">Touch (*Malmas*): Cold & Dry • Body Habitus: Normal-Muscular • Pulse (*Nabz*): Broad, Slow</p>
-                <div class="pt-2 border-t border-[var(--border)]">
-                  <span class="text-white font-bold block">Assessed Temperament: <span class="text-emerald-400">Balghami (Cold & Moist Dyscrasia)</span></span>
-                  <span class="text-[11px] text-[var(--muted)]">Confidence Score: 94.2%</span>
-                </div>
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 4: Clinical Vital Signs</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Blood Pressure</span>
+                <span class="font-bold text-white text-base">124 / 82 mmHg</span>
+                <span class="text-[10px] text-emerald-400 block">Normotensive</span>
               </div>
-              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
-                <span class="font-bold text-blue-400 block">Organ-Axis Physiological Cross-Talk</span>
-                <p class="text-[var(--muted)]">Primary Axis: <strong class="text-white">Mafasil-Asab</strong> (Musculoskeletal Locomotor Axis)</p>
-                <p class="text-[var(--muted)]">Secondary Axis: <strong class="text-white">Meda-Amaa</strong> (Gastrointestinal Metabolic Axis)</p>
-                <p class="text-[11px] text-emerald-400">Normal gastric tolerance. Safe for oral compound confections (*Majun*).</p>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Pulse Rate</span>
+                <span class="font-bold text-white text-base">74 bpm</span>
+                <span class="text-[10px] text-emerald-400 block">Rhythmic, Slow</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Temperature</span>
+                <span class="font-bold text-white text-base">36.8 °C</span>
+                <span class="text-[10px] text-emerald-400 block">Afebrile (Motadil)</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Oxygen Saturation</span>
+                <span class="font-bold text-white text-base">99% SpO2</span>
+                <span class="text-[10px] text-emerald-400 block">Room Air</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 pt-1">
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Respiratory Rate</span>
+                <span class="font-bold text-white text-sm">16 breaths/min</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Body Mass Index (BMI)</span>
+                <span class="font-bold text-white text-sm">25.4 kg/m² (Normal)</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">Blood Glucose (Random)</span>
+                <span class="font-bold text-white text-sm">104 mg/dL</span>
               </div>
             </div>
             <div class="flex justify-between pt-2">
               <button onclick="jumpToSection(3)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
-              <button onclick="jumpToSection(7)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Clinical Assistant →</button>
+              <button onclick="jumpToSection(5)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Investigations →</button>
             </div>
           </div>
         `;
-      } else if (sectionNum === 7) {
+      }
+      // TAB 5: INVESTIGATIONS
+      else if (sectionNum === 5) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Section 7: Hakeem Sahab AI Clinical Assistant</h3>
-            <div class="p-4 bg-[var(--background)] rounded-xl border border-purple-500/30 space-y-3">
-              <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
-                <span class="font-bold text-purple-400 flex items-center gap-1.5">🤖 Clinical Reasoning Synthesis</span>
-                <span class="badge-amber text-[10px] px-2 py-0.5 rounded font-bold">Uncertainty: 0.08 (High Concordance)</span>
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 5: Diagnostic Investigations & Lab Biomarkers</h3>
+            <div class="space-y-3">
+              <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <div>
+                  <span class="font-bold text-white text-sm">High-Sensitivity C-Reactive Protein (hs-CRP)</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Result: 4.8 mg/L (Reference: <3.0 mg/L) • Indicates mild systemic inflammatory activity</span>
+                </div>
+                <span class="badge-amber text-[10px] px-2 py-0.5 rounded font-bold">Mild Elevation</span>
               </div>
-              <p class="text-white leading-relaxed">
-                Based on patient's cold-phlegmatic dyscrasia (*Su-e-Mizaj Barid Balghami*) and knee joint crepitus, standard classical formulary indicates:
-                <strong class="text-emerald-400">Majun Suranjan</strong> (Colchicum compound) alongside external fomentation with <strong class="text-emerald-400">Raughan-e-Balsan</strong>.
-              </p>
-              <div class="p-3 bg-[var(--card)] rounded-lg border border-[var(--border)] text-[11px] space-y-1 text-[var(--muted)]">
-                <span class="font-bold text-white block">Verified UPI Evidence Citations:</span>
-                • Unani Pharmacopoeia of India Vol 1, Monograph 44 (Suranjan Talkh Mudabbar)<br>
-                • Kitab al-Kulliyat (Ibn Rushd, Usool-e-Ilaj fi Waja-ul-Mafasil)
+              <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <div>
+                  <span class="font-bold text-white text-sm">Erythrocyte Sedimentation Rate (ESR)</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Result: 28 mm/hr (Reference: <20 mm/hr)</span>
+                </div>
+                <span class="badge-amber text-[10px] px-2 py-0.5 rounded font-bold">Borderline</span>
+              </div>
+              <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <div>
+                  <span class="font-bold text-white text-sm">Serum Uric Acid</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Result: 5.2 mg/dL (Reference: 3.5 - 7.2 mg/dL) • Excludes acute hyperuricemic gout</span>
+                </div>
+                <span class="badge-emerald text-[10px] px-2 py-0.5 rounded font-bold">Normal</span>
+              </div>
+              <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
+                <div>
+                  <span class="font-bold text-white text-sm">Bilateral Knee Radiograph (Weight-Bearing AP/Lateral)</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Kellgren-Lawrence Grade II: Mild medial joint space narrowing, early marginal osteophytosis.</span>
+                </div>
+                <span class="badge-blue text-[10px] px-2 py-0.5 rounded font-bold">Grade II OA</span>
               </div>
             </div>
             <div class="flex justify-between pt-2">
-              <button onclick="jumpToSection(6)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
-              <button onclick="jumpToSection(9)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Formulate Prescription →</button>
+              <button onclick="jumpToSection(4)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(6)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Assessment →</button>
             </div>
           </div>
         `;
-      } else if (sectionNum === 9 || sectionNum === 10 || sectionNum === 11) {
+      }
+      // TAB 6: ASSESSMENT
+      else if (sectionNum === 6) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 6: Dual Diagnostic Assessment</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-emerald-500/30 space-y-2">
+                <span class="font-bold text-emerald-400 block">Classical Unani Assessment (Tashkhees)</span>
+                <div class="space-y-1 text-[#CBD5E1]">
+                  <p><strong>Primary Diagnosis:</strong> Waja-ul-Mafasil Barid Balghami</p>
+                  <p><strong>Humoral Pathogenesis:</strong> Su-e-Mizaj Barid with Khilt-e-Balgham accumulation in articular joints.</p>
+                  <p><strong>Affected Quwwat:</strong> Quwwat-e-Ghadhiya and joint lubrication equilibrium disrupted.</p>
+                </div>
+              </div>
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-blue-500/30 space-y-2">
+                <span class="font-bold text-blue-400 block">Biomedical Coding & Classification</span>
+                <div class="space-y-1 text-[#CBD5E1]">
+                  <p><strong>ICD-10-CM:</strong> M17.9 (Osteoarthritis of knee, unspecified)</p>
+                  <p><strong>SNOMED CT:</strong> 239872002 (Osteoarthritis of bilateral knees)</p>
+                  <p><strong>Severity / Functional Grade:</strong> Moderate, Kellgren-Lawrence Grade II</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(5)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(7)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Mizaj →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 7: MIZAJ
+      else if (sectionNum === 7) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 7: 10-Ajnas Longitudinal Mizaj Assessment</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">1. Touch (Malmas)</span>
+                <span class="font-bold text-white">Cold & Soft (Barid)</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">2. Flesh & Build (Lahm)</span>
+                <span class="font-bold text-white">Moderate Muscular</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">3. Hair (Sha'r)</span>
+                <span class="font-bold text-white">Straight, Soft</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">4. Complexion (Lawn)</span>
+                <span class="font-bold text-white">Pale-White Hue</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">5. Pulse (Nabz)</span>
+                <span class="font-bold text-white">Batee & Azeem</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">6. Sleep (Nawm)</span>
+                <span class="font-bold text-white">Heavy, Prolonged</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">7. Mental State (Nafs)</span>
+                <span class="font-bold text-white">Calm, Patient</span>
+              </div>
+              <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted)] block">8. Excretions (Fadhalat)</span>
+                <span class="font-bold text-white">Profuse, Clear</span>
+              </div>
+            </div>
+            <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-between">
+              <div>
+                <span class="text-white font-bold block">Assessed Baseline Mizaj: <span class="text-emerald-400">Balghami (Cold & Moist) 55% • Damawi 20% • Saudawi 15% • Safrawi 10%</span></span>
+                <span class="text-[11px] text-[var(--muted)]">Calculated Su-e-Mizaj: Barid Balghami (2nd Degree Cold-Phlegmatic Dyscrasia)</span>
+              </div>
+              <span class="badge-emerald text-xs px-2.5 py-1 rounded font-bold">Confidence 94.2%</span>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(6)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(8)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Afaal Cascade →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 8: AFAAL CASCADE (CANONICAL 4-STAGE PROTOCOL)
+      else if (sectionNum === 8) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 text-xs">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <div>
+                <h3 class="text-base font-bold text-white">Tab 8: ZAYVORA Afaal Cascade (4-Stage Therapeutic Protocol)</h3>
+                <span class="text-[11px] text-[var(--muted)]">Linked to Encounter ${state.encounterId} • Grounded in Classical Unani Principles</span>
+              </div>
+              <span class="badge-emerald text-xs px-2.5 py-1 rounded font-bold">Active Stage: ${state.afaalStage}</span>
+            </div>
+
+            <!-- 4-STAGE INTERACTIVE RIBBON -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div onclick="selectAfaalStage('TANQIYA', 7)" class="p-3.5 rounded-xl border cursor-pointer transition ${state.afaalStage === 'TANQIYA' ? 'bg-emerald-500/15 border-emerald-500/60 ring-1 ring-emerald-500' : 'bg-[var(--background)] border-[var(--border)] hover:border-[#475569]'}">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-white text-xs">1. Tanqiya</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded ${state.afaalStage === 'TANQIYA' ? 'bg-emerald-500/30 text-emerald-300' : 'bg-[#334155] text-[#94A3B8]'} font-mono">7 Days</span>
+                </div>
+                <span class="text-[10px] text-emerald-400 font-medium block mt-1">Humoral Evacuation</span>
+                <p class="text-[11px] text-[var(--muted)] mt-1">Elimination of morbid cold phlegm via concoction (Munzaj).</p>
+              </div>
+
+              <div onclick="selectAfaalStage('TAHLEEL', 14)" class="p-3.5 rounded-xl border cursor-pointer transition ${state.afaalStage === 'TAHLEEL' ? 'bg-emerald-500/15 border-emerald-500/60 ring-1 ring-emerald-500' : 'bg-[var(--background)] border-[var(--border)] hover:border-[#475569]'}">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-white text-xs">2. Tahleel</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded ${state.afaalStage === 'TAHLEEL' ? 'bg-emerald-500/30 text-emerald-300' : 'bg-[#334155] text-[#94A3B8]'} font-mono">14 Days</span>
+                </div>
+                <span class="text-[10px] text-blue-400 font-medium block mt-1">Resolution & Dissolution</span>
+                <p class="text-[11px] text-[var(--muted)] mt-1">Dissolving synovial effusion & localized peri-articular stasis.</p>
+              </div>
+
+              <div onclick="selectAfaalStage('TAQWIYAAT', 28)" class="p-3.5 rounded-xl border cursor-pointer transition ${state.afaalStage === 'TAQWIYAAT' ? 'bg-emerald-500/15 border-emerald-500/60 ring-1 ring-emerald-500' : 'bg-[var(--background)] border-[var(--border)] hover:border-[#475569]'}">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-white text-xs">3. Taqwiyaat</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded ${state.afaalStage === 'TAQWIYAAT' ? 'bg-emerald-500/30 text-emerald-300' : 'bg-[#334155] text-[#94A3B8]'} font-mono">28 Days</span>
+                </div>
+                <span class="text-[10px] text-purple-400 font-medium block mt-1">Organ Restoration</span>
+                <p class="text-[11px] text-[var(--muted)] mt-1">Tonification of joint ligaments & metabolic tone renewal.</p>
+              </div>
+
+              <div onclick="selectAfaalStage('HIFZ', 60)" class="p-3.5 rounded-xl border cursor-pointer transition ${state.afaalStage === 'HIFZ' ? 'bg-emerald-500/15 border-emerald-500/60 ring-1 ring-emerald-500' : 'bg-[var(--background)] border-[var(--border)] hover:border-[#475569]'}">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-white text-xs">4. Hifz</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded ${state.afaalStage === 'HIFZ' ? 'bg-emerald-500/30 text-emerald-300' : 'bg-[#334155] text-[#94A3B8]'} font-mono">Ongoing</span>
+                </div>
+                <span class="text-[10px] text-amber-400 font-medium block mt-1">Health Preservation</span>
+                <p class="text-[11px] text-[var(--muted)] mt-1">Asbab-e-Sittah adherence to prevent relapse.</p>
+              </div>
+            </div>
+
+            <!-- DETAILED STAGE MODALITIES & MONITORING -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-emerald-400 block">Stage Clinical Rationale & Modalities</span>
+                <p class="text-[#CBD5E1]">
+                  <strong>Current Focus:</strong> Patient has 3-week acute flare of cold-moist dyscrasia. Humoral cleansing (*Tanqiya*) must precede restorative confections to avoid entrapping morbid matter.
+                </p>
+                <div class="pt-2 border-t border-[var(--border)] space-y-1 text-[11px] text-[var(--muted)]">
+                  <span class="font-bold text-white block">Authorized Modalities:</span>
+                  • Munzaj wa Mus-hil Balgham (Concoctive-Evacuative decoctions)<br>
+                  • Hijama Bila Shart (Dry cupping for peri-patellar decongestion)<br>
+                  • Dalak Layyin (Gentle warming friction with Roghan-e-Balsan)
+                </div>
+              </div>
+
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-blue-400 block">Monitoring Criteria & Clinician Approval</span>
+                <div class="space-y-1 text-[11px] text-[#CBD5E1]">
+                  <p>• Reduction in morning stiffness duration (<20 mins target)</p>
+                  <p>• Clearing of tongue coating (Lisan) & softening of Nabz</p>
+                  <p>• Serum hs-CRP reduction towards normal baseline</p>
+                </div>
+                <div class="pt-2 border-t border-[var(--border)] flex justify-between items-center">
+                  <span class="text-[11px] text-[var(--muted)]">Review Cycle: <strong class="text-white">7 Days (2026-09-19)</strong></span>
+                  <button onclick="saveAfaalRecord()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition">
+                    Approve Stage Record
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(7)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(9)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Axis Mapping →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 9: AXIS MAPPING
+      else if (sectionNum === 9) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 9: Organ-Axis Physiological Mapping</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-emerald-400 block">Primary Axis: Mafasil-Asab (Locomotor)</span>
+                <p class="text-[var(--muted)]">Target Organ: Bilateral articular cartilage and subchondral bone. Pathological humors accumulate due to reduced innate warmth (*Hararat-e-Ghariziyya*).</p>
+                <div class="p-2 bg-[var(--card)] rounded-lg border border-[var(--border)] text-[11px]">
+                  <span class="text-white font-bold">Biomarker Correlation:</span> hs-CRP 4.8 mg/L with synovial crepitus indicates active microvascular inflammation.
+                </div>
+              </div>
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-blue-400 block">Secondary Axis: Meda-Amaa (GI / Metabolic)</span>
+                <p class="text-[var(--muted)]">Metabolic Root: Normal gastric digestive capacity confirmed. No hyperacidity, allowing oral confections (*Majun*) to be well tolerated.</p>
+                <div class="p-2 bg-[var(--card)] rounded-lg border border-[var(--border)] text-[11px]">
+                  <span class="text-white font-bold">Cross-Talk Indicator:</span> Safe for compound confections with ginger/honey warm water vehicle.
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(8)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(10)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Treatment Plan →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 10: TREATMENT PLAN
+      else if (sectionNum === 10) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 10: Comprehensive Integrative Treatment Plan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-amber-400 block">Ilaj bil-Ghiza (Dietetic Tadbeer)</span>
+                <ul class="space-y-1 text-[#CBD5E1] text-[11px]">
+                  <li>• Strictly avoid chilled drinks, ice cream, curd, and refrigerated foods.</li>
+                  <li>• Reduce intake of phlegm-aggravating lentils (Mash) and cold tubers.</li>
+                  <li>• Daily consume warm barley water (*Maa-ul-Sha'eer*) infused with ginger and a teaspoon of honey.</li>
+                </ul>
+              </div>
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-emerald-400 block">Ilaj bil-Tadbeer (Regimenal Therapy)</span>
+                <ul class="space-y-1 text-[#CBD5E1] text-[11px]">
+                  <li>• Natool (Warm medicated decoction fomentation) over both knees each evening.</li>
+                  <li>• Gentle Dalak Layyin with Roghan-e-Balsan following warm fomentation.</li>
+                  <li>• Supervised non-weight bearing quadriceps isometric exercises.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(9)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(11)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Prescription →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 11: PRESCRIPTION & SAFETY FIREWALL
+      else if (sectionNum === 11) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 text-xs">
             <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
-              <h3 class="text-base font-bold text-white">Sections 9–11: Prescription, Safety Review & Digital Signature</h3>
-              <span id="consultation-lock-badge" class="badge-amber text-[11px] px-3 py-1 rounded font-bold">Draft - Awaiting Signature</span>
+              <div>
+                <h3 class="text-base font-bold text-white">Tab 11: Prescription Formulation & Safety Firewall</h3>
+                <span class="text-[11px] text-[var(--muted)]">Prescription RX-2026-0441 • Doctor: Hakim Dr. Tariq Mansoor</span>
+              </div>
+              <span id="consultation-lock-badge" class="badge-amber text-[11px] px-3 py-1 rounded font-bold">Draft - Awaiting Clinician Signature</span>
             </div>
 
-            <!-- Formulary Items -->
+            <!-- Prescribed Compounds -->
             <div class="space-y-3">
-              <span class="font-bold text-white block">Prescribed Botanical Compounds</span>
+              <span class="font-bold text-white block">Prescribed Formulary Compounds</span>
               <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
                 <div>
                   <span class="font-bold text-white text-sm">Majun Suranjan (5g twice daily post-meals)</span>
-                  <span class="text-[11px] text-[var(--muted)] block">Chief: Suranjan Talkh (Mudabbar) • Corrective Musleh: Kateera 1g • Vehicle: Warm water</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Chief Drug: Suranjan Talkh Mudabbar • Musleh: Kateera 1g • Vehicle: Warm water</span>
                 </div>
                 <span class="badge-amber text-[10px] px-2 py-0.5 rounded font-bold">Schedule E(1) Mudabbar Verified</span>
               </div>
               <div class="p-3.5 bg-[var(--background)] rounded-xl border border-[var(--border)] flex justify-between items-center">
                 <div>
                   <span class="font-bold text-white text-sm">Raughan-e-Balsan (Gentle local massage nocte)</span>
-                  <span class="text-[11px] text-[var(--muted)] block">Regimenal Therapy (*Ilaj bil-Tadbeer*) for local synovial warmth</span>
+                  <span class="text-[11px] text-[var(--muted)] block">Regimenal Therapy for articular synovial warmth and microcirculation restoration</span>
                 </div>
                 <span class="badge-emerald text-[10px] px-2 py-0.5 rounded font-bold">Approved Regimen</span>
               </div>
             </div>
 
-            <!-- Safety Firewall Review -->
+            <!-- Safety Firewall Review Card -->
             <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2 text-emerald-400">
-              <span class="font-bold text-white block">🛡️ Medication Safety & Interaction Review</span>
+              <span class="font-bold text-white block">🛡️ Automated Medication Safety Firewall Review</span>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px]">
                 <div>• Pregnancy Risk: <strong class="text-white">Passed (N/A)</strong></div>
                 <div>• Allergy Cross-Ref: <strong class="text-white">Passed (No Sonf)</strong></div>
@@ -924,24 +1366,12 @@ Patient: Pichle teen hafton se ghutnon me dard aur subah ke waqt jodon me akad r
               </div>
             </div>
 
-            <!-- Follow-up Scheduling -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Schedule Follow-up Encounter</label>
-                <input type="date" value="2026-09-26" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">
-              </div>
-              <div>
-                <label class="block text-[var(--muted)] mb-1">Follow-up Clinical Objective</label>
-                <input value="Review knee crepitus reduction and repeat inflammatory markers" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">
-              </div>
-            </div>
-
-            <!-- Signature Card -->
+            <!-- Digital Signature Card -->
             <div id="clinician-sign-box" class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-3">
               <div class="flex justify-between items-center">
                 <div>
                   <span class="font-bold text-white block">21 CFR Part 11 Cryptographic Clinician Approval</span>
-                  <span class="text-[11px] text-[var(--muted)]">Licensed Senior Tabeeb digital signature anchors prescription immutably.</span>
+                  <span class="text-[11px] text-[var(--muted)]">Non-delegable clinician digital signature anchors prescription immutably into Merkle audit log.</span>
                 </div>
                 <button onclick="completeConsultation()" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-500 shadow-md">
                   Apply Digital Signature & Seal
@@ -952,6 +1382,74 @@ Patient: Pichle teen hafton se ghutnon me dard aur subah ke waqt jodon me akad r
             <div id="consultation-success-banner" class="hidden p-4 bg-emerald-500/15 border border-emerald-500/40 rounded-xl space-y-1.5 text-emerald-300">
               <span class="font-bold text-base text-white block">✓ Consultation Completed & Prescription Sealed</span>
               <p>Prescription <span class="font-mono text-white font-bold">RX-2026-0441</span> is officially locked under 21 CFR Part 11. The prescription is now live in the Patient's Portal and dispatched to the Central Pharmacy dispensing queue.</p>
+            </div>
+
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(10)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(12)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Follow-up →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 12: FOLLOW-UP
+      else if (sectionNum === 12) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 12: Follow-up Scheduling & Clinical Goals</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-[var(--muted)] mb-1">Scheduled Follow-up Date</label>
+                  <input type="date" value="2026-09-26" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-mono">
+                </div>
+                <div>
+                  <label class="block text-[var(--muted)] mb-1">Follow-up Clinical Objective</label>
+                  <input value="Review Afaal Stage 1 (Tanqiya) progress, reassess knee crepitus and morning stiffness" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white">
+                </div>
+              </div>
+              <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
+                <span class="font-bold text-emerald-400 block">Stage Transition Milestones</span>
+                <p class="text-[var(--muted)]">At day 14 follow-up, if tongue coating clears and morning stiffness subsides, patient will graduate from <strong class="text-white">Tanqiya</strong> to <strong class="text-white">Tahleel</strong> stage.</p>
+                <div class="pt-2 border-t border-[var(--border)] text-[11px] text-[var(--muted)]">
+                  Next scheduled lab: Repeat hs-CRP in 4 weeks.
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(11)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(13)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Next: Timeline →</button>
+            </div>
+          </div>
+        `;
+      }
+      // TAB 13: TIMELINE
+      else if (sectionNum === 13) {
+        content.innerHTML = `
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 13: Longitudinal Patient Clinical Timeline</h3>
+            <div class="space-y-3 relative pl-6 border-l-2 border-[var(--border)]">
+              <div class="relative">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute -left-[31px] top-1"></div>
+                <span class="font-mono text-[10px] text-emerald-400 font-bold">TODAY • 10:30 AM</span>
+                <p class="font-bold text-white text-sm">Integrative Outpatient Encounter (${state.encounterId})</p>
+                <p class="text-[var(--muted)]">Consultation with Hakim Dr. Tariq Mansoor. Afaal Stage 1 (Tanqiya) established. Prescription RX-2026-0441 formulated.</p>
+              </div>
+              <div class="relative pt-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-blue-400 absolute -left-[31px] top-3"></div>
+                <span class="font-mono text-[10px] text-blue-400 font-bold">SEP 10, 2026</span>
+                <p class="font-bold text-white text-sm">Diagnostic Lab Panel (hs-CRP, ESR, Uric Acid)</p>
+                <p class="text-[var(--muted)]">hs-CRP 4.8 mg/L, ESR 28 mm/hr, Uric Acid 5.2 mg/dL. Reports digitally signed and archived into EHR.</p>
+              </div>
+              <div class="relative pt-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-purple-400 absolute -left-[31px] top-3"></div>
+                <span class="font-mono text-[10px] text-purple-400 font-bold">AUG 14, 2026</span>
+                <p class="font-bold text-white text-sm">Patient Registration & Baseline 10-Ajnas Mizaj Assessment</p>
+                <p class="text-[var(--muted)]">Patient registered under MRN-2026-0814. Baseline Su-e-Mizaj Barid Balghami codified with 94.2% concordance.</p>
+              </div>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button onclick="jumpToSection(12)" class="px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted)]">← Previous</button>
+              <button onclick="jumpToSection(1)" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500">Return to Overview ↺</button>
             </div>
           </div>
         `;

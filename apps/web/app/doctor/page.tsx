@@ -28,18 +28,22 @@ export default function DoctorWorkspacePage() {
     | "examination"
     | "vitals"
     | "investigations"
-    | "diagnosis"
+    | "assessment"
     | "mizaj"
+    | "afaal"
     | "axis"
     | "treatment"
     | "prescription"
     | "followup"
     | "timeline"
-    | "documents"
   >("overview");
 
   const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
   const [activePatient] = useState<PatientRecord>(DEFAULT_PATIENT);
+  const [encounterId] = useState("ENC-2026-0814");
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Clinical Consultation State
   const [chiefComplaint, setChiefComplaint] = useState(
     "Bilateral knee pain and morning stiffness, aggravating in cold and damp weather. Relieved by warm fomentation."
   );
@@ -53,6 +57,19 @@ export default function DoctorWorkspacePage() {
     weight: "78",
     spo2: "98",
   });
+
+  // Afaal Cascade State
+  const [afaalStage, setAfaalStage] = useState<"TANQIYA" | "TAHLEEL" | "TAQWIYAAT" | "HIFZ">("TAHLEEL");
+  const [afaalRationale, setAfaalRationale] = useState(
+    "Active cold-phlegmatic joint dyscrasia (Waja-ul-Mafasil Barid Balghami). Resolving localized synovial effusion and peri-articular stiffness before progressing to structural organ strengthening."
+  );
+  const [afaalGoals, setAfaalGoals] = useState([
+    "Alleviate morning knee stiffness to <15 minutes",
+    "Resolve peri-patellar crepitus and synovial fullness",
+    "Achieve >40% pain relief on visual analogue scale (VAS)",
+  ]);
+
+  // Lock and Signature State
   const [isLocked, setIsLocked] = useState(false);
   const [signatureHash, setSignatureHash] = useState<string | null>(null);
 
@@ -60,6 +77,7 @@ export default function DoctorWorkspacePage() {
     const mockHash = "731f5cf53472" + Math.random().toString(36).substring(2, 10);
     setSignatureHash(mockHash);
     setIsLocked(true);
+    setHasUnsavedChanges(false);
   };
 
   return (
@@ -72,9 +90,16 @@ export default function DoctorWorkspacePage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h1 className="text-lg font-bold text-white tracking-tight">Clinical Consultation Cockpit</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-bold text-white tracking-tight">Clinical Consultation Cockpit</h1>
+                {hasUnsavedChanges && (
+                  <span className="zv-badge-amber text-[10px] px-2 py-0.5 rounded font-semibold">
+                    ● Unsaved Changes
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-[#94A3B8]">
-                Hakim Dr. Tariq Mansoor • CCIM-BUMS-2004-9841 • OPD Room 3
+                Hakim Dr. Tariq Mansoor • CCIM-BUMS-2004-9841 • Facility: Central Clinical Hospital • Room 3
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -86,7 +111,7 @@ export default function DoctorWorkspacePage() {
               </button>
               {isLocked ? (
                 <span className="zv-badge-emerald px-3 py-1 text-xs rounded-lg font-semibold flex items-center gap-1.5">
-                  ✓ 21 CFR Part 11 Locked
+                  ✓ 21 CFR Part 11 Sealed
                 </span>
               ) : (
                 <button
@@ -118,7 +143,7 @@ export default function DoctorWorkspacePage() {
           
           {/* LEFT CONTEXT PANEL (3 Columns) */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Active Patient Card */}
+            {/* Active Patient & Encounter Card */}
             <div className="zv-card p-4 space-y-3">
               <div className="flex items-center justify-between border-b border-[#334155] pb-2.5">
                 <div className="flex items-center gap-2.5">
@@ -135,6 +160,21 @@ export default function DoctorWorkspacePage() {
                 <StatusBadge status="In Consult" variant="verified" pulse />
               </div>
 
+              <div className="p-2 rounded bg-[#0A0F1D] border border-[#334155] text-xs space-y-1">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#64748B]">Encounter ID:</span>
+                  <span className="font-mono text-white font-bold">{encounterId}</span>
+                </div>
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#64748B]">Facility:</span>
+                  <span className="text-white">Central Clinical Facility</span>
+                </div>
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#64748B]">Token:</span>
+                  <span className="text-[#2DD4BF] font-mono font-bold">T-104</span>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span className="text-[#64748B] block text-[10px] uppercase">Age / Gender</span>
@@ -147,7 +187,7 @@ export default function DoctorWorkspacePage() {
               </div>
 
               <div className="p-2.5 rounded-lg bg-[#0A0F1D] border border-[#334155] space-y-1">
-                <span className="text-[10px] text-[#64748B] uppercase block">Primary Mizaj</span>
+                <span className="text-[10px] text-[#64748B] uppercase block">Assessed Mizaj</span>
                 <span className="text-xs font-semibold text-[#2DD4BF] flex items-center gap-1">
                   ❄️ {activePatient.mizaj_dominant}
                 </span>
@@ -177,7 +217,7 @@ export default function DoctorWorkspacePage() {
               </div>
             </div>
 
-            {/* Quick Vitals Recorder */}
+            {/* Quick Vitals Panel */}
             <div className="zv-card p-4 space-y-3">
               <h4 className="text-xs font-semibold text-white uppercase tracking-wider">Clinical Vitals</h4>
               <div className="grid grid-cols-2 gap-2 text-xs">
@@ -186,7 +226,7 @@ export default function DoctorWorkspacePage() {
                   <input
                     type="text"
                     value={vitals.bp}
-                    onChange={(e) => setVitals({ ...vitals, bp: e.target.value })}
+                    onChange={(e) => { setVitals({ ...vitals, bp: e.target.value }); setHasUnsavedChanges(true); }}
                     disabled={isLocked}
                     className="zv-input mt-0.5 font-mono text-xs"
                   />
@@ -196,7 +236,7 @@ export default function DoctorWorkspacePage() {
                   <input
                     type="text"
                     value={vitals.pulse}
-                    onChange={(e) => setVitals({ ...vitals, pulse: e.target.value })}
+                    onChange={(e) => { setVitals({ ...vitals, pulse: e.target.value }); setHasUnsavedChanges(true); }}
                     disabled={isLocked}
                     className="zv-input mt-0.5 font-mono text-xs"
                   />
@@ -206,7 +246,7 @@ export default function DoctorWorkspacePage() {
                   <input
                     type="text"
                     value={vitals.weight}
-                    onChange={(e) => setVitals({ ...vitals, weight: e.target.value })}
+                    onChange={(e) => { setVitals({ ...vitals, weight: e.target.value }); setHasUnsavedChanges(true); }}
                     disabled={isLocked}
                     className="zv-input mt-0.5 font-mono text-xs"
                   />
@@ -216,7 +256,7 @@ export default function DoctorWorkspacePage() {
                   <input
                     type="text"
                     value={vitals.spo2}
-                    onChange={(e) => setVitals({ ...vitals, spo2: e.target.value })}
+                    onChange={(e) => { setVitals({ ...vitals, spo2: e.target.value }); setHasUnsavedChanges(true); }}
                     disabled={isLocked}
                     className="zv-input mt-0.5 font-mono text-xs"
                   />
@@ -226,7 +266,7 @@ export default function DoctorWorkspacePage() {
           </div>
 
           {/* CENTER DOCUMENTATION SEQUENCE: 13 TABS (9 Columns) */}
-          <div className="lg:col-span-9 zv-card flex flex-col min-h-[680px]">
+          <div className="lg:col-span-9 zv-card flex flex-col min-h-[700px]">
             
             {/* 13-Tab Navigation Header */}
             <div className="border-b border-[#334155] bg-[#0F172A] rounded-t-xl px-2 pt-2 flex items-center gap-1 overflow-x-auto">
@@ -236,14 +276,14 @@ export default function DoctorWorkspacePage() {
                 { id: "examination", label: "3. Examination" },
                 { id: "vitals", label: "4. Vitals" },
                 { id: "investigations", label: "5. Investigations" },
-                { id: "diagnosis", label: "6. Diagnosis" },
+                { id: "assessment", label: "6. Assessment" },
                 { id: "mizaj", label: "7. Mizaj" },
-                { id: "axis", label: "8. Axis Mapping" },
-                { id: "treatment", label: "9. Treatment Plan" },
-                { id: "prescription", label: "10. Prescription" },
-                { id: "followup", label: "11. Follow-up" },
-                { id: "timeline", label: "12. Timeline" },
-                { id: "documents", label: "13. Documents" },
+                { id: "afaal", label: "8. Afaal Cascade" },
+                { id: "axis", label: "9. Axis Mapping" },
+                { id: "treatment", label: "10. Treatment Plan" },
+                { id: "prescription", label: "11. Prescription" },
+                { id: "followup", label: "12. Follow-up" },
+                { id: "timeline", label: "13. Timeline" },
               ].map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -268,7 +308,10 @@ export default function DoctorWorkspacePage() {
               {activeTab === "overview" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-white">Consultation Overview & Chief Complaint</h3>
+                    <div>
+                      <h3 className="text-sm font-bold text-white">Consultation Overview & Encounter Status</h3>
+                      <span className="text-[11px] text-[#94A3B8]">Encounter {encounterId} • Started at 10:15 AM</span>
+                    </div>
                     <StatusBadge status="Encounter In Progress" variant="verified" />
                   </div>
                   <div>
@@ -276,7 +319,7 @@ export default function DoctorWorkspacePage() {
                     <textarea
                       rows={3}
                       value={chiefComplaint}
-                      onChange={(e) => setChiefComplaint(e.target.value)}
+                      onChange={(e) => { setChiefComplaint(e.target.value); setHasUnsavedChanges(true); }}
                       disabled={isLocked}
                       className="zv-input text-xs"
                     />
@@ -285,7 +328,7 @@ export default function DoctorWorkspacePage() {
                     <h4 className="text-xs font-semibold text-[#2DD4BF]">Integrated Diagnostic Assessment</h4>
                     <p className="text-xs text-[#F8FAFC]">
                       <strong>Unani Diagnosis:</strong> Waja-ul-Mafasil Barid Balghami (Knee Osteoarthritis / Joint Phlegmatic Dyscrasia)<br />
-                      <strong>Biomedical Mapping:</strong> ICD-10 M17.9 (Bilateral Primary Knee Osteoarthritis)
+                      <strong>Biomedical Mapping:</strong> ICD-10 M17.9 (Bilateral Primary Knee Osteoarthritis) • SNOMED CT: 399269003
                     </p>
                   </div>
                   {isLocked && signatureHash && (
@@ -335,7 +378,7 @@ export default function DoctorWorkspacePage() {
                     <textarea
                       rows={4}
                       value={examNotes}
-                      onChange={(e) => setExamNotes(e.target.value)}
+                      onChange={(e) => { setExamNotes(e.target.value); setHasUnsavedChanges(true); }}
                       disabled={isLocked}
                       className="zv-input text-xs"
                     />
@@ -407,10 +450,10 @@ export default function DoctorWorkspacePage() {
                 </div>
               )}
 
-              {/* TAB 6: DIAGNOSIS */}
-              {activeTab === "diagnosis" && (
+              {/* TAB 6: ASSESSMENT */}
+              {activeTab === "assessment" && (
                 <div className="space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">Differential & Confirmed Clinical Diagnosis</h3>
+                  <h3 className="text-sm font-bold text-white">Differential & Confirmed Clinical Assessment</h3>
                   <div className="p-4 bg-[#0A0F1D] rounded-lg border border-[#0D9488]/40 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-[#2DD4BF]">PRIMARY DIAGNOSIS: CONFIRMED</span>
@@ -420,7 +463,7 @@ export default function DoctorWorkspacePage() {
                       Waja-ul-Mafasil Barid Balghami (Phlegmatic Cold Knee Osteoarthritis)
                     </p>
                     <p className="text-xs text-[#94A3B8]">
-                      ICD-10 Code: <strong>M17.9</strong> • SNOMED CT: <strong>399269003</strong>
+                      ICD-10: <strong>M17.9</strong> • ICD-11: <strong>FA00.Z</strong> • SNOMED CT: <strong>399269003</strong>
                     </p>
                   </div>
                 </div>
@@ -429,7 +472,10 @@ export default function DoctorWorkspacePage() {
               {/* TAB 7: MIZAJ ASSESSMENT */}
               {activeTab === "mizaj" && (
                 <div className="space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">10-Ajnas Quantitative Mizaj Engine</h3>
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-sm font-bold text-white">10-Ajnas-e-Ashara Quantitative Mizaj Assessment</h3>
+                    <StatusBadge status="65% Balghami Dominant" variant="verified" />
+                  </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155]">
                       <span className="text-[10px] text-[#64748B] block">Balgham (Phlegm)</span>
@@ -451,23 +497,102 @@ export default function DoctorWorkspacePage() {
                 </div>
               )}
 
-              {/* TAB 8: AXIS MAPPING */}
+              {/* TAB 8: AFAAL CASCADE (NEW FIRST-CLASS CLINICAL STAGE) */}
+              {activeTab === "afaal" && (
+                <div className="space-y-5 text-xs">
+                  <div className="flex justify-between items-start border-b border-[#334155] pb-3">
+                    <div>
+                      <h3 className="text-sm font-bold text-white">ZAYVORA Afaal Cascade (Therapeutic Progression)</h3>
+                      <p className="text-[11px] text-[#94A3B8]">
+                        Classical 4-stage protocol linking humoral diagnosis to sequential clinical actions
+                      </p>
+                    </div>
+                    <StatusBadge status={`Active: ${afaalStage}`} variant="verified" />
+                  </div>
+
+                  {/* 4-Stage Interactive Progression Ribbon */}
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      { key: "TANQIYA", step: 1, name: "Tanqiya", title: "Targeted Evacuation", desc: "Nujz & expulsion of morbid matter" },
+                      { key: "TAHLEEL", step: 2, name: "Tahleel", title: "Resolution & Dissolution", desc: "Dissolve local synovial congestion" },
+                      { key: "TAQWIYAAT", step: 3, name: "Taqwiyaat", title: "Organ Restoration", desc: "Strengthen joint structural tone" },
+                      { key: "HIFZ", step: 4, name: "Hifz", title: "Preservation & Health", desc: "Asbab-e-Sittah long-term balance" },
+                    ].map((st) => {
+                      const isCurrent = afaalStage === st.key;
+                      return (
+                        <button
+                          key={st.key}
+                          onClick={() => { setAfaalStage(st.key as typeof afaalStage); setHasUnsavedChanges(true); }}
+                          className={`p-3 rounded-lg border text-left transition ${
+                            isCurrent
+                              ? "bg-[#0D9488]/15 border-[#0D9488] text-white ring-1 ring-[#0D9488]"
+                              : "bg-[#0A0F1D] border-[#334155] text-[#94A3B8] hover:border-[#64748B]"
+                          }`}
+                        >
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="font-mono text-[10px] font-bold text-[#2DD4BF]">Stage {st.step}</span>
+                            {isCurrent && <span className="text-[10px] text-[#34D399] font-bold">ACTIVE</span>}
+                          </div>
+                          <span className="font-bold text-white block">{st.name}</span>
+                          <span className="text-[10px] text-[#64748B] block">{st.title}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Detailed Stage Workspace */}
+                  <div className="p-4 bg-[#0A0F1D] rounded-xl border border-[#334155] space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-white text-sm">
+                        Stage: {afaalStage === "TANQIYA" ? "1. Tanqiya (Humoral Cleansing)" : afaalStage === "TAHLEEL" ? "2. Tahleel (Resolution & Anti-Inflammatory)" : afaalStage === "TAQWIYAAT" ? "3. Taqwiyaat (Organ Tonification)" : "4. Hifz (Preservation & Maintenance)"}
+                      </span>
+                      <span className="zv-badge-teal text-[10px] px-2.5 py-0.5 rounded font-mono">
+                        Review: 14 Days
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="text-[#94A3B8] block mb-1">Clinical Rationale for Active Stage *</label>
+                      <textarea
+                        rows={2}
+                        value={afaalRationale}
+                        onChange={(e) => { setAfaalRationale(e.target.value); setHasUnsavedChanges(true); }}
+                        className="zv-input text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[#94A3B8] block mb-1 font-semibold">Clinician-Selected Goals for this Horizon:</label>
+                      <div className="space-y-1.5">
+                        {afaalGoals.map((goal, idx) => (
+                          <div key={idx} className="flex items-center gap-2 p-2 rounded bg-[#0F172A] border border-[#334155]">
+                            <span className="text-[#2DD4BF] font-bold">✓</span>
+                            <span className="text-white text-xs">{goal}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 9: AXIS MAPPING */}
               {activeTab === "axis" && (
                 <div className="space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">Organ-Axis Functional Cross-Talk</h3>
+                  <h3 className="text-sm font-bold text-white">Organ-Axis Physiological Cross-Talk & Reflex Arc</h3>
                   <div className="p-4 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-2">
-                    <h4 className="text-xs font-semibold text-[#2DD4BF]">Primary Axis: Mafasil-Asab (Joint-Nerve Axis)</h4>
+                    <h4 className="text-xs font-semibold text-[#2DD4BF]">Primary Axis: Mafasil-Asab (Musculoskeletal-Neural Locomotor Axis)</h4>
                     <p className="text-xs text-[#94A3B8]">
-                      Phlegmatic accumulation (Burudat wa Rutubat) in synovial bursae causing localized neurovascular slowing and mechanical friction.
+                      Burudat wa Rutubat (Cold & Moist Dyscrasia) causes impaired synovial fluid dynamics and subchondral congestion. Sympathetic nerve sensitivity aggravates pain during nocturnal temperature drops.
                     </p>
                   </div>
                 </div>
               )}
 
-              {/* TAB 9: TREATMENT PLAN */}
+              {/* TAB 10: TREATMENT PLAN */}
               {activeTab === "treatment" && (
                 <div className="space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">Multi-Horizon Integrative Care Plan</h3>
+                  <h3 className="text-sm font-bold text-white">Multi-Horizon Integrative Treatment Plan</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-1">
                       <h4 className="text-xs font-semibold text-[#34D399]">Ilaj bit-Tadbeer (Regimenal Therapy)</h4>
@@ -479,30 +604,30 @@ export default function DoctorWorkspacePage() {
                     <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-1">
                       <h4 className="text-xs font-semibold text-[#2DD4BF]">Ilaj bil-Ghiza (Dietary Prescription)</h4>
                       <p className="text-[11px] text-[#94A3B8]">
-                        Avoid cold and mucus-generating foods (yogurt, cucumber, iced beverages). Incorporate warm ginger, cinnamon, and sheep bone broth.
+                        Avoid cold and mucus-generating foods. Incorporate warm ginger, cinnamon, and sheep bone broth.
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* TAB 10: PRESCRIPTION & NUSKHA BUILDER */}
+              {/* TAB 11: PRESCRIPTION */}
               {activeTab === "prescription" && (
                 <div className="space-y-4">
                   <NuskhaBuilder
                     token="SESSION_MOCK_TOKEN"
                     patient={activePatient}
-                    encounterId="ENC-2026-0814"
+                    encounterId={encounterId}
                   />
                 </div>
               )}
 
-              {/* TAB 11: FOLLOW-UP */}
+              {/* TAB 12: FOLLOW-UP */}
               {activeTab === "followup" && (
                 <div className="space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">Follow-up Consultation & Warning Red Flags</h3>
+                  <h3 className="text-sm font-bold text-white">Follow-up Consultation & PROMs Outcome Tracking</h3>
                   <div className="p-3 bg-[#0A0F1D] rounded-lg border border-[#334155] space-y-2">
-                    <span className="text-xs font-semibold text-white">Scheduled Review: Day +14 (2026-09-29)</span>
+                    <span className="text-xs font-semibold text-white">Scheduled Review: Day +14 (2026-09-26)</span>
                     <p className="text-xs text-[#94A3B8]">
                       Evaluate VAS pain score reduction, knee flexion degrees, and check for any botanical gastric intolerance.
                     </p>
@@ -510,14 +635,14 @@ export default function DoctorWorkspacePage() {
                 </div>
               )}
 
-              {/* TAB 12: TIMELINE */}
+              {/* TAB 13: TIMELINE */}
               {activeTab === "timeline" && (
                 <div className="space-y-3 text-xs">
-                  <h3 className="text-sm font-bold text-white">Longitudinal Clinical Encounters</h3>
+                  <h3 className="text-sm font-bold text-white">Longitudinal Clinical Encounters & Audit Log</h3>
                   <div className="border-l-2 border-[#0D9488] pl-4 space-y-3">
                     <div>
-                      <span className="text-[10px] text-[#64748B]">2026-09-12 (Today)</span>
-                      <p className="text-xs font-semibold text-white">Integrative OPD Consultation • Hakim Dr. Tariq Mansoor</p>
+                      <span className="text-[10px] text-[#64748B]">2026-09-12 (Today • Active)</span>
+                      <p className="text-xs font-semibold text-white">Encounter {encounterId} • Hakim Dr. Tariq Mansoor</p>
                     </div>
                     <div>
                       <span className="text-[10px] text-[#64748B]">2026-09-02</span>
@@ -526,25 +651,11 @@ export default function DoctorWorkspacePage() {
                   </div>
                 </div>
               )}
-
-              {/* TAB 13: DOCUMENTS */}
-              {activeTab === "documents" && (
-                <div className="space-y-3 text-xs">
-                  <h3 className="text-sm font-bold text-white">Attached Clinical Documents & Reports</h3>
-                  <div className="zv-card p-3 flex justify-between items-center border-[#334155]">
-                    <div>
-                      <span className="text-xs font-semibold text-white">X-Ray Knee Scan Report.pdf</span>
-                      <span className="text-[10px] text-[#64748B] block">Uploaded 2026-09-02 • 1.4 MB</span>
-                    </div>
-                    <button className="zv-btn-secondary text-xs py-1 px-2.5">View PDF</button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
 
-        {/* HAKEEM SAHAB AI REVIEW DRAWER */}
+        {/* HAKEEM SAHAB AI REVIEW DRAWER WITH 5-LAYER DECISION SUPPORT */}
         <HakeemReviewDrawer
           token="SESSION_MOCK_TOKEN"
           patient={activePatient}

@@ -28,6 +28,7 @@ from app.routers import (
     tasks,
     timeline,
     wearables,
+    afaal,
 )
 from app.observability.telemetry import GLOBAL_TELEMETRY
 from fastapi.responses import PlainTextResponse
@@ -81,6 +82,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(tasks.router)
     app.include_router(payments.router)
     app.include_router(cron.router)
+    app.include_router(afaal.router)
 
     @app.get("/metrics", response_class=PlainTextResponse)
     def prometheus_metrics():
