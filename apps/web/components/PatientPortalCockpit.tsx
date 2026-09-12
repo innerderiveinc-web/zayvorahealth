@@ -5,6 +5,7 @@ import {
   portalApi,
   type TodaySchedule,
   type PortalMessage,
+  type DoseSlot,
 } from "@/lib/portalApi";
 
 interface PatientPortalCockpitProps {
@@ -21,6 +22,17 @@ export function PatientPortalCockpit({
   const [schedule, setSchedule] = useState<TodaySchedule | null>(null);
   const [messages, setMessages] = useState<PortalMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Issue ENH-02: Multilingual Audio Prompts & Bhashini Voice
+  const [selectedLanguage, setSelectedLanguage] = useState<"ur" | "hi" | "te" | "en">("ur");
+  const [activeVoicePrompt, setActiveVoicePrompt] = useState<{
+    itemId: string;
+    scriptText: string;
+    languageName: string;
+    audioDataUri: string;
+    isPlaying: boolean;
+  } | null>(null);
+  const [isVoiceLoading, setIsVoiceLoading] = useState<string | null>(null);
 
   // Message compose
   const [newMessageText, setNewMessageText] = useState("");
@@ -100,6 +112,41 @@ export function PatientPortalCockpit({
     }
   };
 
+  const handlePlayVoice = async (item: DoseSlot["items"][0], slotName: string) => {
+    setIsVoiceLoading(item.item_id);
+    try {
+      const res = await portalApi.synthesizeMedicationVoice(token, {
+        patient_id: patientId,
+        medication_name: item.display_name,
+        dosage_display: item.dosage_and_form,
+        timing_slot: slotName,
+        intake_vehicle: item.anupan_vehicle,
+        language: selectedLanguage,
+        dose_id: item.item_id,
+      });
+
+      setActiveVoicePrompt({
+        itemId: item.item_id,
+        scriptText: res.script_text,
+        languageName: res.language_name,
+        audioDataUri: res.audio_data_uri,
+        isPlaying: true,
+      });
+
+      if (typeof Audio !== "undefined" && res.audio_data_uri) {
+        const audio = new Audio(res.audio_data_uri);
+        audio.play().catch((e) => console.warn("Audio playback notice:", e));
+        audio.onended = () => {
+          setActiveVoicePrompt((prev) => (prev ? { ...prev, isPlaying: false } : null));
+        };
+      }
+    } catch (err) {
+      console.error("Voice prompt synthesis error:", err);
+    } finally {
+      setIsVoiceLoading(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header Banner */}
@@ -141,13 +188,28 @@ export function PatientPortalCockpit({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Daily Schedule */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h3 className="text-sm font-serif font-semibold text-[#e3c884] uppercase tracking-wider flex items-center gap-2">
               <span>⏰</span> Today’s Clinical Schedule
             </h3>
-            <span className="text-xs text-[#8a9490]">
-              Date: {schedule?.schedule_date || "Today"}
-            </span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 bg-[#141d17] px-2 py-1 rounded border border-[#243328]">
+                <span className="text-[11px] text-[#8a9490]">🎙️ Voice:</span>
+                <select
+                  value={selectedLanguage}
+                  onChange={(e) => setSelectedLanguage(e.target.value as any)}
+                  className="text-xs bg-transparent text-[#e3c884] focus:outline-none cursor-pointer"
+                >
+                  <option value="ur">Urdu (اردو)</option>
+                  <option value="hi">Hindi (हिन्दी)</option>
+                  <option value="te">Telugu (తెలుగు)</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              <span className="text-xs text-[#8a9490]">
+                Date: {schedule?.schedule_date || "Today"}
+              </span>
+            </div>
           </div>
 
           {schedule?.slots.map((slot, idx) => (
@@ -171,60 +233,99 @@ export function PatientPortalCockpit({
                 {slot.items.map((item) => (
                   <div
                     key={item.item_id}
-                    className="p-3 bg-[#0d130f] rounded border border-[#1b241d] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                    className="p-3 bg-[#0d130f] rounded border border-[#1b241d] flex flex-col gap-2 text-xs"
                   >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-[#ece8dd] text-sm">
-                          {item.display_name}
-                        </span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#18231c] text-[#e3c884] font-mono uppercase">
-                          {item.item_type}
-                        </span>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-[#ece8dd] text-sm">
+                            {item.display_name}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#18231c] text-[#e3c884] font-mono uppercase">
+                            {item.item_type}
+                          </span>
+                        </div>
+                        <p className="text-[#8a9490]">
+                          <strong>Dose & Form:</strong> {item.dosage_and_form}
+                        </p>
+                        <p className="text-[#2ea87f]">
+                          <strong>Vehicle (Anupan):</strong> {item.anupan_vehicle}
+                        </p>
+                        <p className="text-[#8a9490] text-[11px] italic">
+                          {item.instructions}
+                        </p>
                       </div>
-                      <p className="text-[#8a9490]">
-                        <strong>Dose & Form:</strong> {item.dosage_and_form}
-                      </p>
-                      <p className="text-[#2ea87f]">
-                        <strong>Vehicle (Anupan):</strong> {item.anupan_vehicle}
-                      </p>
-                      <p className="text-[#8a9490] text-[11px] italic">
-                        {item.instructions}
-                      </p>
+
+                      <div className="flex sm:flex-col items-center sm:items-end gap-2">
+                        <span
+                          className={`px-2 py-0.5 text-[10px] font-semibold rounded ${
+                            item.adherence_status === "TAKEN"
+                              ? "bg-[#182a1d] text-[#2ea87f]"
+                              : item.adherence_status === "MISSED"
+                              ? "bg-[#331c17] text-[#e06c75]"
+                              : "bg-[#252422] text-[#8a9490]"
+                          }`}
+                        >
+                          {item.adherence_status}
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          {/* Issue ENH-02: Bhashini Voice Listen Button */}
+                          <button
+                            onClick={() => handlePlayVoice(item, slot.slot_name)}
+                            disabled={isVoiceLoading === item.item_id}
+                            className="flex items-center gap-1 px-2 py-1 text-[10px] rounded bg-[#18281e] text-[#e3c884] border border-[#2ea87f]/30 hover:bg-[#203628] transition cursor-pointer"
+                            title="Listen to vernacular audio instructions"
+                          >
+                            <span>{isVoiceLoading === item.item_id ? "⏳" : "🔊"}</span>
+                            <span>
+                              {isVoiceLoading === item.item_id
+                                ? "Generating..."
+                                : activeVoicePrompt?.itemId === item.item_id && activeVoicePrompt.isPlaying
+                                ? "Playing..."
+                                : "Listen"}
+                            </span>
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              handleStatusChange(item.item_type, item.item_id, slot.slot_name, "TAKEN")
+                            }
+                            className="px-2 py-1 text-[10px] rounded bg-[#1f3326] text-[#2ea87f] hover:bg-[#284433] transition cursor-pointer"
+                          >
+                            Taken
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStatusChange(item.item_type, item.item_id, slot.slot_name, "SKIPPED")
+                            }
+                            className="px-2 py-1 text-[10px] rounded bg-[#2a2419] text-[#e3c884] hover:bg-[#382f1f] transition cursor-pointer"
+                          >
+                            Skip
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex sm:flex-col items-center sm:items-end gap-2">
-                      <span
-                        className={`px-2 py-0.5 text-[10px] font-semibold rounded ${
-                          item.adherence_status === "TAKEN"
-                            ? "bg-[#182a1d] text-[#2ea87f]"
-                            : item.adherence_status === "MISSED"
-                            ? "bg-[#331c17] text-[#e06c75]"
-                            : "bg-[#252422] text-[#8a9490]"
-                        }`}
-                      >
-                        {item.adherence_status}
-                      </span>
-
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() =>
-                            handleStatusChange(item.item_type, item.item_id, slot.slot_name, "TAKEN")
-                          }
-                          className="px-2 py-1 text-[10px] rounded bg-[#1f3326] text-[#2ea87f] hover:bg-[#284433] transition cursor-pointer"
-                        >
-                          Taken
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleStatusChange(item.item_type, item.item_id, slot.slot_name, "SKIPPED")
-                          }
-                          className="px-2 py-1 text-[10px] rounded bg-[#2a2419] text-[#e3c884] hover:bg-[#382f1f] transition cursor-pointer"
-                        >
-                          Skip
-                        </button>
+                    {/* Active Voice Prompt Banner */}
+                    {activeVoicePrompt?.itemId === item.item_id && (
+                      <div className="mt-1 p-2 rounded bg-[#142318] border border-[#2ea87f]/40 text-xs space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-mono text-[#2ea87f] flex items-center gap-1">
+                            <span>🎙️ Bhashini Audio ({activeVoicePrompt.languageName})</span>
+                          </span>
+                          <button
+                            onClick={() => setActiveVoicePrompt(null)}
+                            className="text-[#8a9490] hover:text-[#ece8dd] text-[10px]"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="text-sm font-serif text-[#ece8dd] leading-relaxed">
+                          {activeVoicePrompt.scriptText}
+                        </p>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>

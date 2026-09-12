@@ -205,3 +205,97 @@ def test_wearables_database_persistence():
     assert row.source_device == "Apple Watch Ultra 2"
     assert row.hrv_rmssd_ms == 52.0
     assert row.daily_steps == 9200
+
+
+def test_apple_healthkit_webhook_ingestion():
+    """Verify Issue ENH-01: Apple HealthKit background delivery webhook parsing and Unani score calculation."""
+    samples = [
+        {
+            "type": "HKQuantityTypeIdentifierHeartRateVariabilitySDNN",
+            "value": 58.0,
+            "unit": "ms",
+            "startDate": "2026-09-12T07:00:00Z",
+            "endDate": "2026-09-12T07:05:00Z",
+        },
+        {
+            "type": "HKQuantityTypeIdentifierRestingHeartRate",
+            "value": 64.0,
+            "unit": "count/min",
+        },
+        {
+            "type": "HKCategoryTypeIdentifierSleepAnalysis",
+            "value": 8.0,
+            "unit": "hr",
+        },
+        {
+            "type": "HKQuantityTypeIdentifierOxygenSaturation",
+            "value": 98.5,
+            "unit": "%",
+        },
+        {
+            "type": "HKQuantityTypeIdentifierStepCount",
+            "value": 7800.0,
+            "unit": "count",
+        },
+    ]
+
+    sample = WearableIngestionEngine.normalize_apple_healthkit(
+        samples=samples,
+        patient_id="PAT-HK-WEBHOOK-99",
+        device_model="Apple Watch Series 9",
+        sync_anchor="anchor_hk_789410",
+    )
+    assert sample.patient_id == "PAT-HK-WEBHOOK-99"
+    assert sample.source_device == "Apple Watch Series 9"
+    assert sample.resting_heart_rate_bpm == 64
+    assert sample.sleep_hours_total == 8.0
+    assert sample.spo2_average_pct == 98.5
+    assert sample.daily_steps == 7800
+
+    summary = WearableIngestionEngine.ingest_sample(sample)
+    assert summary.quwwat_hayawaniyyah_index > 0.5
+    assert summary.naum_yaqzah_score >= 0.8
+
+
+def test_google_health_connect_webhook_ingestion():
+    """Verify Issue ENH-01: Google Health Connect synchronization webhook parsing and Unani normalization."""
+    records = [
+        {
+            "record_type": "HeartRateVariabilityRmssdRecord",
+            "value": 54.0,
+        },
+        {
+            "record_type": "RestingHeartRateRecord",
+            "value": 62.0,
+        },
+        {
+            "record_type": "SleepSessionRecord",
+            "value": 7.5,
+        },
+        {
+            "record_type": "OxygenSaturationRecord",
+            "value": 99.0,
+        },
+        {
+            "record_type": "StepsRecord",
+            "value": 8400.0,
+        },
+    ]
+
+    sample = WearableIngestionEngine.normalize_google_health_connect(
+        records=records,
+        patient_id="PAT-GHC-WEBHOOK-88",
+        device_name="Google Pixel Watch 2",
+        change_token="token_ghc_abc123",
+    )
+    assert sample.patient_id == "PAT-GHC-WEBHOOK-88"
+    assert sample.source_device == "Google Pixel Watch 2"
+    assert sample.hrv_rmssd_ms == 54.0
+    assert sample.resting_heart_rate_bpm == 62
+    assert sample.daily_steps == 8400
+
+    summary = WearableIngestionEngine.ingest_sample(sample)
+    assert summary.quwwat_hayawaniyyah_index > 0.5
+    assert summary.hawa_riyazat_score > 0.5
+
+

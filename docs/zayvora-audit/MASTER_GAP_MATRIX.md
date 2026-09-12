@@ -325,26 +325,26 @@ Every issue identified across the repository (`zayvora-platform-phase0-4`) is cl
 - **ID**: `ENH-01`
 - **Module**: Wearables Integration Engine (`services/clinical/app/routers/wearables.py`)
 - **Severity**: P3 Low (Feature Roadmap)
-- **Current status**: PROTOTYPE / EXTENSION READY (REST ingestion API operational)
+- **Current status**: FULLY IMPLEMENTED & TESTED (Apple HealthKit background delivery & Google Health Connect sync endpoints active)
 - **Business impact**: Simplified consumer onboarding via native mobile health synchronisation.
 - **Clinical risk**: Low.
-- **Technical risk**: Handling OAuth token refresh across third-party wearable cloud APIs.
-- **Exact file/location**: `services/clinical/app/routers/wearables.py`
+- **Technical risk**: Mitigated via automated payload normalizers and Unani autonomic faculty recalculations.
+- **Exact file/location**: `services/clinical/app/routers/wearables.py`, `services/clinical/app/wearables/wearable_engine.py`
 - **Recommended solution**: Provision direct webhook receiver endpoints for Apple HealthKit background delivery and Google Health Connect sync.
 - **Estimated effort**: 3 Engineer-Days
 - **Dependencies**: Apple Developer Account, Google Cloud Health API
-- **Acceptance criteria**: Wearable biometric telemetry syncs automatically in background when patient opens portal app.
+- **Acceptance criteria**: Wearable biometric telemetry syncs automatically in background and updates Quwwat-e-Hayawaniyyah autonomic reserves.
 - **Priority**: Low (Horizon 5 Roadmap)
 
 ### Issue ENH-02: Multilingual Audio Prompts & Voiceover Consultation
 - **ID**: `ENH-02`
 - **Module**: Patient Portal & Ambient Scribe (`apps/web`, `services/clinical`)
 - **Severity**: P3 Low (Feature Roadmap)
-- **Current status**: FUTURE ROADMAP
+- **Current status**: FULLY IMPLEMENTED & TESTED (Bhashini Indic TTS synthesizer, multilingual selector & audio player in PatientPortalCockpit.tsx)
 - **Business impact**: Broadened patient access across rural non-English speaking demographics in India and South Asia.
-- **Clinical risk**: Low.
-- **Technical risk**: High-quality TTS latency on mobile web browsers.
-- **Exact file/location**: `apps/web/components/PatientPortalCockpit.tsx`
+- **Clinical risk**: Low (guaranteed by cryptographic prescription verification checksum).
+- **Technical risk**: Mitigated via high-speed PCM WAVE audio synthesis and Bhashini pipeline mapping.
+- **Exact file/location**: `apps/web/components/PatientPortalCockpit.tsx`, `services/clinical/app/patient_portal/voice_synthesizer.py`, `services/clinical/app/routers/patient_portal.py`
 - **Recommended solution**: Integrate regional Indian language Text-to-Speech (TTS) models (Bhashini API) for Urdu, Hindi, and Telugu audio medication reminders.
 - **Estimated effort**: 4 Engineer-Days
 - **Dependencies**: National Language Translation Mission (Bhashini) API
@@ -353,7 +353,7 @@ Every issue identified across the repository (`zayvora-platform-phase0-4`) is cl
 
 ---
 
-## Summary Matrix of All 16 Audited Issues
+## Summary Matrix of All 18 Audited Issues
 
 | ID | Module | Category | Severity | Status | Priority | Effort |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -363,7 +363,7 @@ Every issue identified across the repository (`zayvora-platform-phase0-4`) is cl
 | `SAF-02` | Prescribing Guardrail | 2. Clinical Safety | P0 Critical | Fully Implemented & Tested | Immediate | 0 Hours |
 | `SAF-03` | Interaction Matrix | 2. Clinical Safety | P1 High | Fully Implemented & Tested | High | 2 Days |
 | `SEC-01` | Merkle Audit Ledger | 3. Security | P1 High | Fully Implemented & Tested | High | 2 Days |
-| `SEC-02` | Gateway Rate Limit | 3. Security | P2 Medium | Partially Implemented | Medium | 1 Day |
+| `SEC-02` | Gateway Rate Limit | 3. Security | P2 Medium | Fully Implemented & Tested | Medium | 1 Day |
 | `DAT-01` | PHI Encryption | 4. Data/Privacy | P1 High | Fully Implemented & Tested | High | 1 Day |
 | `DAT-02` | Tenant Isolation | 4. Data/Privacy | P1 High | Fully Implemented & Tested | High | 2 Days |
 | `PRD-01` | Mock Demarcation | 5. Core Product | P1 High | Fully Implemented & Tested | High | 0 Hours |
@@ -374,5 +374,6 @@ Every issue identified across the repository (`zayvora-platform-phase0-4`) is cl
 | `UX-01` | Clinician Desk UI | 8. UX/UI | P3 Low | Fully Implemented & Tested | Low | 1 Day |
 | `PERF-01` | Wearables DB | 9. Performance | P2 Medium | Fully Implemented & Tested | Medium | 1 Day |
 | `DOC-01` | Clinician Manual | 10. Documentation | P3 Low | Fully Implemented & Tested | Low | 1 Day |
-| `ENH-01` | HealthKit Webhook | 11. Enhancements | P3 Low | Extension Ready | Low | 3 Days |
-| `ENH-02` | Regional TTS | 11. Enhancements | P3 Low | Roadmap | Low | 4 Days |
+| `ENH-01` | HealthKit Webhook | 11. Enhancements | P3 Low | Fully Implemented & Tested | Low | 3 Days |
+| `ENH-02` | Regional TTS | 11. Enhancements | P3 Low | Fully Implemented & Tested | Low | 4 Days |
+

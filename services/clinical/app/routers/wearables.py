@@ -92,3 +92,107 @@ async def get_patient_wearable_summary(patient_id: str, db: Session = Depends(ge
         "active_anomalies": summary.active_anomalies,
         "clinical_advisory": summary.clinical_advisory,
     }
+
+
+# =====================================================================
+# Issue ENH-01: Direct Wearable Hardware Webhooks
+# Apple HealthKit & Google Health Connect Synchronization Receivers
+# =====================================================================
+
+class AppleHealthKitSample(BaseModel):
+    type: str = Field(..., description="HKQuantityTypeIdentifier or HKCategoryTypeIdentifier")
+    value: float = Field(..., description="Numeric value recorded")
+    unit: Optional[str] = Field("count", description="Unit of measurement (ms, count/min, %, kcal, count, hr)")
+    startDate: Optional[str] = Field(None, description="Start timestamp in ISO-8601")
+    endDate: Optional[str] = Field(None, description="End timestamp in ISO-8601")
+
+
+class AppleHealthKitWebhookPayload(BaseModel):
+    patient_id: str = Field(..., description="UUID of the patient")
+    device_model: Optional[str] = Field("Apple Watch", description="Specific Apple hardware model")
+    sync_anchor: Optional[str] = Field(None, description="HealthKit background delivery sync anchor")
+    samples: List[AppleHealthKitSample] = Field(..., description="Array of HKQuantity samples")
+
+
+class GoogleHealthConnectRecord(BaseModel):
+    record_type: str = Field(..., description="Health Connect Record Type")
+    value: float = Field(..., description="Measurement value")
+    start_time: Optional[str] = Field(None, description="Start timestamp ISO-8601")
+    end_time: Optional[str] = Field(None, description="End timestamp ISO-8601")
+
+
+class GoogleHealthConnectWebhookPayload(BaseModel):
+    patient_id: str = Field(..., description="UUID of the patient")
+    device_name: Optional[str] = Field("Android Health Connect Device", description="Originating client device")
+    change_token: Optional[str] = Field(None, description="Health Connect sync change token")
+    records: List[GoogleHealthConnectRecord] = Field(..., description="Array of Health Connect records")
+
+
+@router.post("/webhooks/apple-healthkit", summary="Direct webhook receiver for Apple HealthKit background delivery (Issue ENH-01)")
+async def apple_healthkit_webhook(payload: AppleHealthKitWebhookPayload, db: Session = Depends(get_db)):
+    """
+    Receives native Apple HealthKit background delivery payloads, normalizes HKQuantity types,
+    and updates the patient's Unani autonomic functional reserves.
+    """
+    if not payload.samples:
+        raise HTTPException(status_code=400, detail="Empty Apple HealthKit sample collection")
+
+    sample = WearableIngestionEngine.normalize_apple_healthkit(
+        samples=payload.samples,
+        patient_id=payload.patient_id,
+        device_model=payload.device_model,
+        sync_anchor=payload.sync_anchor,
+    )
+
+    summary = WearableIngestionEngine.ingest_sample(sample, db=db)
+    return {
+        "status": "PROCESSED",
+        "platform": "APPLE_HEALTHKIT",
+        "patient_id": payload.patient_id,
+        "sample_id": sample.sample_id,
+        "sync_anchor": payload.sync_anchor,
+        "items_aggregated": len(payload.samples),
+        "unani_autonomic_reserves": {
+            "quwwat_hayawaniyyah_index": summary.quwwat_hayawaniyyah_index,
+            "naum_yaqzah_score": summary.naum_yaqzah_score,
+            "hawa_riyazat_score": summary.hawa_riyazat_score,
+        },
+        "active_anomalies": summary.active_anomalies,
+        "clinical_advisory": summary.clinical_advisory,
+    }
+
+
+@router.post("/webhooks/google-health-connect", summary="Direct webhook receiver for Google Health Connect sync (Issue ENH-01)")
+async def google_health_connect_webhook(payload: GoogleHealthConnectWebhookPayload, db: Session = Depends(get_db)):
+    """
+    Receives Google Health Connect sync records, extracts physiological markers,
+    and updates the continuous Unani health balance indices.
+    """
+    if not payload.records:
+        raise HTTPException(status_code=400, detail="Empty Google Health Connect record collection")
+
+    sample = WearableIngestionEngine.normalize_google_health_connect(
+        records=payload.records,
+        patient_id=payload.patient_id,
+        device_name=payload.device_name,
+        change_token=payload.change_token,
+    )
+
+    summary = WearableIngestionEngine.ingest_sample(sample, db=db)
+    return {
+        "status": "PROCESSED",
+        "platform": "GOOGLE_HEALTH_CONNECT",
+        "patient_id": payload.patient_id,
+        "sample_id": sample.sample_id,
+        "change_token": payload.change_token,
+        "records_aggregated": len(payload.records),
+        "unani_autonomic_reserves": {
+            "quwwat_hayawaniyyah_index": summary.quwwat_hayawaniyyah_index,
+            "naum_yaqzah_score": summary.naum_yaqzah_score,
+            "hawa_riyazat_score": summary.hawa_riyazat_score,
+        },
+        "active_anomalies": summary.active_anomalies,
+        "clinical_advisory": summary.clinical_advisory,
+    }
+
+

@@ -37,6 +37,26 @@ export interface PortalMessage {
   requires_immediate_action: boolean;
 }
 
+export interface VoiceSynthesizeResponse {
+  patient_id: string;
+  language: string;
+  language_name: string;
+  script_text: string;
+  transliteration: string;
+  audio_format: string;
+  audio_data_uri: string;
+  audio_duration_seconds: number;
+  clinical_verification_hash: string;
+  safety_note: string;
+  bhashini_pipeline?: {
+    source_language: string;
+    target_language: string;
+    engine: string;
+    voice_gender: string;
+    status: string;
+  };
+}
+
 async function request<T>(path: string, token: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -136,6 +156,53 @@ export const portalApi = {
           message_body: payload.message_body,
           triage_status: isEmergency ? "EMERGENCY_REDIRECT" : "ROUTINE",
           requires_immediate_action: isEmergency,
+        };
+      }
+      throw err;
+    }
+  },
+
+  async synthesizeMedicationVoice(
+    token: string,
+    payload: {
+      patient_id: string;
+      medication_name?: string;
+      dosage_display?: string;
+      timing_slot?: string;
+      intake_vehicle?: string;
+      language?: string;
+      dose_id?: string;
+    }
+  ): Promise<VoiceSynthesizeResponse> {
+    try {
+      return await request<VoiceSynthesizeResponse>(
+        "/api/v1/patient-portal/voice/synthesize",
+        token,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }
+      );
+    } catch (err) {
+      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+        return {
+          patient_id: payload.patient_id,
+          language: payload.language || "ur",
+          language_name: "Urdu (اردو)",
+          script_text: `محترم مریض! آپ کی تجویز کردہ دوا ${payload.medication_name || "جوارش"} نہار منہ لیں۔`,
+          transliteration: `Dear Patient! Please take ${payload.medication_name || "medication"} as prescribed.`,
+          audio_format: "audio/wav;codec=pcm_16",
+          audio_data_uri: "data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=",
+          audio_duration_seconds: 1.5,
+          clinical_verification_hash: "mock-hash-4592",
+          safety_note: "Verified clinical voice instruction.",
+          bhashini_pipeline: {
+            source_language: "en",
+            target_language: payload.language || "ur",
+            engine: "Bhashini-Indic-TTS-v2",
+            voice_gender: "female",
+            status: "SYNTHESIZED_SUCCESS",
+          },
         };
       }
       throw err;

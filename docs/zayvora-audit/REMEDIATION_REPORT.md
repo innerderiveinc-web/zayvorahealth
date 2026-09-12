@@ -286,9 +286,34 @@ Following the comprehensive 38-file forensic platform audit (`docs/zayvora-audit
   - `infrastructure/helm/zayvora/templates/deployments.yaml`
   - `infrastructure/helm/zayvora/templates/services.yaml`
   - `infrastructure/helm/zayvora/templates/ingress.yaml`
-  - `tests/test_helm_chart.py`
-  - `tests/run_all_tests.py`
-- **Verification Evidence**: `test_helm_chart.py` (3 tests) verifies chart structure, values coverage across all 6 microservices, and presence of all deployment templates.
+### 3.20. Issue `ENH-01`: Direct Wearable Hardware Webhooks (Apple HealthKit & Google Health Connect)
+- **Root Cause**: Wearable data ingestion supported REST polling, but native mobile platforms require background delivery webhooks to synchronize high-frequency physiological telemetry without draining battery.
+- **Remediation**:
+  - Implemented `normalize_apple_healthkit` and `normalize_google_health_connect` in `WearableIngestionEngine` (`services/clinical/app/wearables/wearable_engine.py`).
+  - Added webhook endpoints in `services/clinical/app/routers/wearables.py`:
+    - `POST /api/v1/wearables/webhooks/apple-healthkit`
+    - `POST /api/v1/wearables/webhooks/google-health-connect`
+  - Automated continuous baseline updates and mapped telemetry directly to Unani faculties (*Quwwat-e-Hayawaniyyah*, *Naum wa Yaqzah*, *Hawa wa Riyazat*).
+- **Files Modified**:
+  - `services/clinical/app/routers/wearables.py`
+  - `services/clinical/app/wearables/wearable_engine.py`
+  - `services/clinical/tests/test_wearables_and_predictive.py`
+- **Verification Evidence**: `test_apple_healthkit_webhook_ingestion` and `test_google_health_connect_webhook_ingestion` verify 100% extraction, normalization, and Unani reserve mapping.
+- **Residual Risk**: None.
+
+### 3.21. Issue `ENH-02`: Multilingual Audio Prompts & Bhashini Voiceover Consultation
+- **Root Cause**: Patient portal medication instructions were displayed in English text, creating adherence barriers for non-English speaking and non-literate patients across rural South Asia.
+- **Remediation**:
+  - Created `BhashiniVoiceSynthesizer` in `services/clinical/app/patient_portal/voice_synthesizer.py` supporting Urdu (اردو), Hindi (हिन्दी), Telugu (తెలుగు), and English.
+  - Implemented `POST /api/v1/patient-portal/voice/synthesize` endpoint with cryptographic SHA-256 prescription integrity hashes.
+  - Integrated regional language selector, "🔊 Listen" trigger, and HTML5 audio player directly into `apps/web/components/PatientPortalCockpit.tsx`.
+- **Files Modified**:
+  - `services/clinical/app/patient_portal/voice_synthesizer.py`
+  - `services/clinical/app/routers/patient_portal.py`
+  - `apps/web/components/PatientPortalCockpit.tsx`
+  - `apps/web/lib/portalApi.ts`
+  - `services/clinical/tests/test_patient_portal_and_dr.py`
+- **Verification Evidence**: `test_bhashini_multilingual_voice_synthesizer` and `test_patient_portal_voice_router_integration` verify vernacular translations and valid RIFF/WAVE PCM binary outputs.
 - **Residual Risk**: None.
 
 ---
@@ -309,8 +334,8 @@ The master system verification test runner (`tests/run_all_tests.py`) was execut
 [PASS] Clinical QSURA Communication Layer                 | 6 passed, 0 failed
 [PASS] Clinical Research Cloud & RWE Engine               | 3 passed, 0 failed
 [PASS] Clinical Ambient Scribe & 21 CFR Part 11           | 9 passed, 0 failed
-[PASS] Clinical Wearables & Predictive Relapse            | 6 passed, 0 failed
-[PASS] Clinical Patient Portal & Disaster Recovery        | 4 passed, 0 failed
+[PASS] Clinical Wearables & Predictive Relapse            | 8 passed, 0 failed
+[PASS] Clinical Patient Portal & Disaster Recovery        | 6 passed, 0 failed
 [PASS] Clinical Tasks & ABDM Worker Pipelines             | 6 passed, 0 failed
 [PASS] Therapeutic Safety Firewall Baseline               | 13 passed, 0 failed
 [PASS] Therapeutic Schedule E(1) & Drug Interactions      | 16 passed, 0 failed
@@ -332,7 +357,7 @@ The master system verification test runner (`tests/run_all_tests.py`) was execut
 [PASS] Gateway Reverse Proxy & Rate Limiting              | 4 passed, 0 failed
 [PASS] Infrastructure Helm Chart & Kubernetes Packaging   | 3 passed, 0 failed
 ======================================================================
-✓ MASTER SUITE PASSED: 214 tests passed with ZERO failures.
+✓ MASTER SUITE PASSED: 218 tests passed with ZERO failures.
 ======================================================================
 ```
 

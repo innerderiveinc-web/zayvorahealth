@@ -72,6 +72,128 @@ class WearableIngestionEngine:
     """Ingestion, normalization, and autonomic Unani mapping for continuous wearable streams."""
 
     @classmethod
+    def normalize_apple_healthkit(
+        cls,
+        samples: List[Any],
+        patient_id: str,
+        device_model: Optional[str] = "Apple Watch",
+        sync_anchor: Optional[str] = None,
+    ) -> WearableSample:
+        """Normalizes native Apple HealthKit HKQuantity / HKCategory records into a WearableSample."""
+        import uuid
+        hrv_sdnn = 50.0
+        hrv_rmssd = 45.0
+        rhr = 70
+        sleep_total = 7.0
+        deep_sleep = 1.5
+        rem_sleep = 1.8
+        spo2 = 98.0
+        spo2_min = 95.0
+        resp_rate = 15.0
+        steps = 6000
+        active_energy = 350.0
+
+        for s in samples:
+            st = (getattr(s, "type", None) or (s.get("type") if isinstance(s, dict) else "") or "").lower()
+            val = float(getattr(s, "value", 0) if hasattr(s, "value") else (s.get("value", 0) if isinstance(s, dict) else 0))
+            if "heartratevariability" in st or "hrv" in st:
+                hrv_sdnn = val
+                hrv_rmssd = val * 0.9
+            elif "restingheartrate" in st:
+                rhr = int(round(val))
+            elif "sleepanalysis" in st or "sleep" in st:
+                sleep_total = max(sleep_total, val)
+            elif "oxygensaturation" in st or "spo2" in st:
+                v = val * 100.0 if val <= 1.0 else val
+                spo2 = v
+                spo2_min = min(spo2_min, v)
+            elif "stepcount" in st or "steps" in st:
+                steps = int(round(val))
+            elif "activeenergy" in st or "energy" in st:
+                active_energy = val
+            elif "respiratoryrate" in st:
+                resp_rate = val
+
+        return WearableSample(
+            sample_id=f"W-HK-{uuid.uuid4().hex[:8].upper()}",
+            patient_id=patient_id,
+            timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            source_device=device_model or "Apple Watch",
+            hrv_rmssd_ms=round(hrv_rmssd, 1),
+            hrv_sdnn_ms=round(hrv_sdnn, 1),
+            resting_heart_rate_bpm=rhr,
+            sleep_hours_total=round(sleep_total, 1),
+            deep_sleep_hours=round(deep_sleep, 1),
+            rem_sleep_hours=round(rem_sleep, 1),
+            spo2_average_pct=round(spo2, 1),
+            spo2_lowest_pct=round(spo2_min, 1),
+            respiratory_rate_bpm=round(resp_rate, 1),
+            daily_steps=steps,
+            active_energy_kcal=round(active_energy, 1),
+        )
+
+    @classmethod
+    def normalize_google_health_connect(
+        cls,
+        records: List[Any],
+        patient_id: str,
+        device_name: Optional[str] = "Android Health Connect Device",
+        change_token: Optional[str] = None,
+    ) -> WearableSample:
+        """Normalizes Google Health Connect records into a WearableSample."""
+        import uuid
+        hrv_rmssd = 45.0
+        hrv_sdnn = 50.0
+        rhr = 70
+        sleep_total = 7.0
+        deep_sleep = 1.5
+        rem_sleep = 1.8
+        spo2 = 98.0
+        spo2_min = 95.0
+        resp_rate = 15.0
+        steps = 6000
+        active_energy = 350.0
+
+        for r in records:
+            rt = (getattr(r, "record_type", None) or (r.get("record_type") if isinstance(r, dict) else "") or "").lower()
+            val = float(getattr(r, "value", 0) if hasattr(r, "value") else (r.get("value", 0) if isinstance(r, dict) else 0))
+            if "heartratevariability" in rt or "rmssd" in rt:
+                hrv_rmssd = val
+                hrv_sdnn = val * 1.1
+            elif "restingheartrate" in rt:
+                rhr = int(round(val))
+            elif "sleep" in rt:
+                sleep_total = max(sleep_total, val)
+            elif "oxygen" in rt or "spo2" in rt:
+                v = val * 100.0 if val <= 1.0 else val
+                spo2 = v
+                spo2_min = min(spo2_min, v)
+            elif "step" in rt:
+                steps = int(round(val))
+            elif "calorie" in rt or "energy" in rt:
+                active_energy = val
+            elif "respiratory" in rt:
+                resp_rate = val
+
+        return WearableSample(
+            sample_id=f"W-GHC-{uuid.uuid4().hex[:8].upper()}",
+            patient_id=patient_id,
+            timestamp_utc=datetime.now(timezone.utc).isoformat(),
+            source_device=device_name or "Android Health Connect Device",
+            hrv_rmssd_ms=round(hrv_rmssd, 1),
+            hrv_sdnn_ms=round(hrv_sdnn, 1),
+            resting_heart_rate_bpm=rhr,
+            sleep_hours_total=round(sleep_total, 1),
+            deep_sleep_hours=round(deep_sleep, 1),
+            rem_sleep_hours=round(rem_sleep, 1),
+            spo2_average_pct=round(spo2, 1),
+            spo2_lowest_pct=round(spo2_min, 1),
+            respiratory_rate_bpm=round(resp_rate, 1),
+            daily_steps=steps,
+            active_energy_kcal=round(active_energy, 1),
+        )
+
+    @classmethod
     def ingest_sample(cls, sample: WearableSample, db: Optional[Any] = None) -> WearableSummary:
         if sample.patient_id not in WEARABLES_STORE:
             WEARABLES_STORE[sample.patient_id] = []

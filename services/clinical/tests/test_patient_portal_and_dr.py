@@ -99,3 +99,86 @@ def test_disaster_recovery_pitr_compliance():
     assert cert.rpo_status == "COMPLIANT"
 
     assert cert.overall_dr_readiness == "DISASTER_RECOVERY_CERTIFIED_2035"
+
+
+def test_bhashini_multilingual_voice_synthesizer():
+    """Verify Issue ENH-02: Bhashini Indic TTS speech synthesis and localized scripts across Urdu, Hindi, Telugu, and English."""
+    from app.patient_portal.voice_synthesizer import BhashiniVoiceSynthesizer
+    import base64
+
+    # 1. Test Urdu synthesis
+    urdu_res = BhashiniVoiceSynthesizer.synthesize_medication_prompt(
+        patient_id="PAT-TTS-001",
+        medication_name="Jawarish Kamuni",
+        dosage_display="5 grams (1 teaspoon)",
+        timing_slot="Morning",
+        intake_vehicle="Lukewarm water",
+        language="ur",
+    )
+    assert urdu_res["language"] == "ur"
+    assert "محترم مریض" in urdu_res["script_text"]
+    assert "نیم گرم پانی" in urdu_res["script_text"]
+    assert urdu_res["audio_format"].startswith("audio/wav")
+    assert urdu_res["audio_data_uri"].startswith("data:audio/wav;base64,")
+    # Decode audio and check RIFF/WAVE header
+    b64_part = urdu_res["audio_data_uri"].split(",")[1]
+    raw_audio = base64.b64decode(b64_part)
+    assert raw_audio[:4] == b"RIFF"
+    assert raw_audio[8:12] == b"WAVE"
+    assert len(urdu_res["clinical_verification_hash"]) == 64
+
+    # 2. Test Hindi synthesis
+    hi_res = BhashiniVoiceSynthesizer.synthesize_medication_prompt(
+        patient_id="PAT-TTS-001",
+        medication_name="Khamira Gaozaban",
+        dosage_display="6g paste",
+        timing_slot="Bedtime",
+        intake_vehicle="Milk",
+        language="hi",
+    )
+    assert hi_res["language"] == "hi"
+    assert "प्रिय मरीज" in hi_res["script_text"]
+    assert "दूध" in hi_res["script_text"]
+
+    # 3. Test Telugu synthesis
+    te_res = BhashiniVoiceSynthesizer.synthesize_medication_prompt(
+        patient_id="PAT-TTS-001",
+        medication_name="Sharbat Bazoori",
+        dosage_display="20 ml",
+        timing_slot="Morning",
+        intake_vehicle="Lukewarm water",
+        language="te",
+    )
+    assert te_res["language"] == "te"
+    assert "ప్రియమైన రోగి" in te_res["script_text"]
+    assert "తీసుకోండి" in te_res["script_text"]
+
+
+def test_patient_portal_voice_router_integration():
+    """Verify Issue ENH-02: Patient portal voice prompt synthesis with verified clinical posology."""
+    from app.patient_portal.voice_synthesizer import BhashiniVoiceSynthesizer
+
+    payload = {
+        "patient_id": "PAT-VOICE-100",
+        "medication_name": "Majun Suranjan",
+        "dosage_display": "5g paste",
+        "timing_slot": "Morning",
+        "intake_vehicle": "Lukewarm water",
+        "language": "ur",
+    }
+    res = BhashiniVoiceSynthesizer.synthesize_medication_prompt(
+        patient_id=payload["patient_id"],
+        medication_name=payload["medication_name"],
+        dosage_display=payload["dosage_display"],
+        timing_slot=payload["timing_slot"],
+        intake_vehicle=payload["intake_vehicle"],
+        language=payload["language"],
+    )
+    assert res["patient_id"] == "PAT-VOICE-100"
+    assert res["language"] == "ur"
+    assert "Majun Suranjan" in res["script_text"]
+    assert "محترم مریض" in res["script_text"]
+    assert res["audio_data_uri"].startswith("data:audio/wav;base64,")
+    assert res["bhashini_pipeline"]["status"] == "SYNTHESIZED_SUCCESS"
+
+

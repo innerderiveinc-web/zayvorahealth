@@ -110,3 +110,45 @@ async def get_patient_messages(patient_id: str):
         }
         for m in messages
     ]
+
+
+class VoiceSynthesisRequest(BaseModel):
+    patient_id: str = Field(..., description="UUID of the patient")
+    medication_name: Optional[str] = Field("Jawarish Kamuni", description="Name of prescribed formulation")
+    dosage_display: Optional[str] = Field("5g (1 teaspoon)", description="Dosage quantity")
+    timing_slot: Optional[str] = Field("Morning", description="Timing slot (Morning, Afternoon, Evening, Bedtime)")
+    intake_vehicle: Optional[str] = Field("Lukewarm water", description="Anupana / intake vehicle (Lukewarm water, Milk, Honey)")
+    language: str = Field("ur", description="Target language: ur (Urdu), hi (Hindi), te (Telugu), en (English)")
+    dose_id: Optional[str] = Field(None, description="Optional dose ID from today's schedule")
+
+
+@router.post("/voice/synthesize", summary="Synthesize localized audio instructions via Bhashini / Indic TTS engine (Issue ENH-02)")
+async def synthesize_medication_voice_prompt(payload: VoiceSynthesisRequest):
+    from ..patient_portal.voice_synthesizer import BhashiniVoiceSynthesizer
+
+    med_name = payload.medication_name or "Prescribed Medication"
+    dose_disp = payload.dosage_display or "as directed"
+    timing = payload.timing_slot or "Morning"
+    vehicle = payload.intake_vehicle or "lukewarm water"
+
+    # If dose_id provided, look up from verified daily schedule to guarantee clinical accuracy
+    if payload.dose_id:
+        schedule = PatientPortalEngine.get_daily_schedule(payload.patient_id)
+        for d in schedule.doses:
+            if d.dose_id == payload.dose_id:
+                med_name = d.medication_name
+                dose_disp = d.quantity_display
+                timing = d.timing_slot
+                vehicle = d.intake_vehicle
+                break
+
+    result = BhashiniVoiceSynthesizer.synthesize_medication_prompt(
+        patient_id=payload.patient_id,
+        medication_name=med_name,
+        dosage_display=dose_disp,
+        timing_slot=timing,
+        intake_vehicle=vehicle,
+        language=payload.language,
+    )
+    return result
+
