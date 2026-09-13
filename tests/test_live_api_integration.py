@@ -209,8 +209,10 @@ def run_tests():
     try:
         status, body = client.request("GET", "/api/v1/inventory")
         assert status == 200
-        initial_stock = body["inventory"][0]["stock_qty"]
-        target_batch = body["inventory"][0]["batch_number"]
+        active_items = [b for b in body["inventory"] if b["expiry_date"] > "2026-09-13" and (not b.get("is_schedule_e1") or b.get("mudabbar_cert"))]
+        target_item = active_items[0]
+        initial_stock = target_item["stock_qty"]
+        target_batch = target_item["batch_number"]
 
         dispense_status, dispense_body = client.request("POST", "/api/v1/inventory/dispense", {
             "batchNumber": target_batch,

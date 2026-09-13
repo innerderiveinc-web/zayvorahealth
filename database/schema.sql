@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS inventory (
     stock_qty INTEGER NOT NULL DEFAULT 100,
     min_threshold INTEGER DEFAULT 20,
     category TEXT NOT NULL, -- CLINIC_UNANI, RETAIL_UNANI, AYUSH_PROPRIETARY, FSSAI_SUPPLEMENT
+    unit_price REAL DEFAULT 150.0,
     is_schedule_e1 INTEGER DEFAULT 0,
     mudabbar_required INTEGER DEFAULT 0,
     mudabbar_cert TEXT,
@@ -134,9 +135,12 @@ CREATE TABLE IF NOT EXISTS invoices (
     department TEXT DEFAULT "Integrative Unani OPD",
     payment_method TEXT DEFAULT "UPI",
     status TEXT DEFAULT "PAID",
+    prescription_id TEXT,
+    items_json TEXT DEFAULT "[]",
     facility_id TEXT DEFAULT "FAC-HQ-01",
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(facility_id) REFERENCES facilities(id)
+    FOREIGN KEY(facility_id) REFERENCES facilities(id),
+    FOREIGN KEY(prescription_id) REFERENCES prescriptions(id)
 );
 
 CREATE TABLE IF NOT EXISTS encounters (
@@ -169,7 +173,9 @@ CREATE INDEX IF NOT EXISTS idx_patients_facility ON patients(facility_id);
 CREATE INDEX IF NOT EXISTS idx_appointments_facility ON appointments(facility_id);
 CREATE INDEX IF NOT EXISTS idx_prescriptions_facility ON prescriptions(facility_id);
 CREATE INDEX IF NOT EXISTS idx_inventory_facility ON inventory(facility_id);
+CREATE INDEX IF NOT EXISTS idx_inventory_name ON inventory(name);
 CREATE INDEX IF NOT EXISTS idx_invoices_facility ON invoices(facility_id);
+CREATE INDEX IF NOT EXISTS idx_invoices_prescription ON invoices(prescription_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
 CREATE INDEX IF NOT EXISTS idx_encounters_mrn ON encounters(mrn);
 CREATE INDEX IF NOT EXISTS idx_encounters_facility ON encounters(facility_id);

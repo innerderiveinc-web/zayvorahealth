@@ -19,7 +19,8 @@ import base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import urllib.parse
-from datetime import datetime
+import random
+from datetime import datetime, date
 
 # Resolve database path relative to this script
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -654,17 +655,32 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "count": len(rows), "facilityId": target_facility, "appointments": rows})
             return
 
-        # Prescriptions (Tenant-Scoped)
+        # Prescriptions (Tenant-Scoped with Status Filter)
         if path == "/api/v1/prescriptions":
             target_facility = self._resolve_facility(auth_ctx, query_params)
+            status_filter = query_params.get("status", [None])[0]
+            mrn_filter = query_params.get("mrn", [None])[0]
             with get_db() as conn:
                 cur = conn.cursor()
+                query = "SELECT * FROM prescriptions WHERE 1=1"
+                params = []
+
                 if auth_ctx and auth_ctx["role"] == "PATIENT":
-                    cur.execute("SELECT * FROM prescriptions WHERE mrn = ? ORDER BY created_at DESC", (auth_ctx["mrn"],))
-                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params):
-                    cur.execute("SELECT * FROM prescriptions ORDER BY created_at DESC")
-                else:
-                    cur.execute("SELECT * FROM prescriptions WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
+                    query += " AND mrn = ?"
+                    params.append(auth_ctx["mrn"])
+                elif not ((auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params)):
+                    query += " AND facility_id = ?"
+                    params.append(target_facility)
+
+                if status_filter:
+                    query += " AND status = ?"
+                    params.append(status_filter)
+                if mrn_filter:
+                    query += " AND mrn = ?"
+                    params.append(mrn_filter)
+
+                query += " ORDER BY created_at DESC"
+                cur.execute(query, params)
                 rows = [dict(r) for r in cur.fetchall()]
                 for r in rows:
                     try:
@@ -675,7 +691,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             return
 
         # Single Prescription Details
-        if path.startswith("/api/v1/prescriptions/"):
+        if path.startswith("/api/v1/prescriptions/") and not path.endswith("/dispense"):
             rx_id = path.split("/")[-1]
             with get_db() as conn:
                 cur = conn.cursor()
@@ -695,15 +711,31 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         # Billing Invoices & Receipts (Tenant-Scoped)
         if path == "/api/v1/billing/invoices":
             target_facility = self._resolve_facility(auth_ctx, query_params)
+            rx_filter = query_params.get("prescriptionId", [None])[0] or query_params.get("prescription_id", [None])[0]
             with get_db() as conn:
                 cur = conn.cursor()
+                query = "SELECT * FROM invoices WHERE 1=1"
+                params = []
+
                 if auth_ctx and auth_ctx["role"] == "PATIENT":
-                    cur.execute("SELECT * FROM invoices WHERE mrn = ? ORDER BY created_at DESC", (auth_ctx["mrn"],))
-                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params):
-                    cur.execute("SELECT * FROM invoices ORDER BY created_at DESC")
-                else:
-                    cur.execute("SELECT * FROM invoices WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
+                    query += " AND mrn = ?"
+                    params.append(auth_ctx["mrn"])
+                elif not ((auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params)):
+                    query += " AND facility_id = ?"
+                    params.append(target_facility)
+
+                if rx_filter:
+                    query += " AND prescription_id = ?"
+                    params.append(rx_filter)
+
+                query += " ORDER BY created_at DESC"
+                cur.execute(query, params)
                 rows = [dict(r) for r in cur.fetchall()]
+                for r in rows:
+                    try:
+                        r["items"] = json.loads(r.get("items_json") or "[]")
+                    except Exception:
+                        r["items"] = []
             self._send_json({"ok": True, "count": len(rows), "facilityId": target_facility, "invoices": rows})
             return
 
@@ -1174,6 +1206,8 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
 
             batch_num = body.get("batchNumber")
             qty = int(body.get("quantity", 1))
+            target_facility = self._resolve_facility(auth_ctx, query_params, body)
+            today_str = date.today().isoformat()
 
             with get_db() as conn:
                 cur = conn.cursor()
@@ -1184,12 +1218,42 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     return
                 item = dict(row)
 
+                # Cross-tenant facility guard
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN" and item.get("facility_id") != auth_ctx.get("facilityId", target_facility):
+                    self._send_error("Access denied: You do not have authorization to dispense inventory from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                    return
+
+                # Expiry check
+                if item["expiry_date"] <= today_str:
+                    self._send_error("Dispensing blocked: This medication batch has passed its expiration date.", status=400, code="EXPIRED_STOCK_ERROR")
+                    return
+
+                # Schedule E(1) Mudabbar verification
                 if item["is_schedule_e1"] and not item.get("mudabbar_cert"):
                     self._send_error("DISPENSE BLOCKED: Schedule E(1) item requires validated Mudabbar Certificate.", status=403, code="MUDABBAR_CERTIFICATE_REQUIRED")
                     return
 
-                new_stock = max(0, item["stock_qty"] - qty)
+                # Stock check
+                if item["stock_qty"] < qty:
+                    self._send_error(f"Insufficient stock for batch {batch_num}. Available: {item['stock_qty']}, Requested: {qty}.", status=400, code="INSUFFICIENT_STOCK")
+                    return
+
+                new_stock = item["stock_qty"] - qty
                 cur.execute("UPDATE inventory SET stock_qty = ? WHERE batch_number = ?", (new_stock, batch_num))
+
+                # Anchor in audit ledger
+                dispense_leaf = hashlib.sha256(f"{batch_num}:{qty}:{new_stock}:{time.time()}".encode()).hexdigest()
+                cur.execute("""
+                INSERT INTO audit_ledger (leaf_hash, event_type, signer, status, facility_id, details_json)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    dispense_leaf,
+                    "INVENTORY_DISPENSED",
+                    auth_ctx["fullName"] if auth_ctx else "Chief Pharmacist",
+                    "ANCHORED",
+                    item.get("facility_id", target_facility),
+                    json.dumps({"batch_number": batch_num, "quantity": qty, "remaining_stock": new_stock})
+                ))
                 conn.commit()
 
             self._send_json({
@@ -1197,6 +1261,250 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 "message": f"Successfully dispensed {qty} unit(s) of {item['name']}.",
                 "batchNumber": batch_num,
                 "remainingStock": new_stock
+            })
+            return
+
+        # FEFO Batch Allocation Calculation (First-Expired, First-Out)
+        if path == "/api/v1/inventory/allocate-fefo":
+            med_name = (body.get("medicineName") or body.get("medicine_name") or body.get("name") or "").strip()
+            if not med_name:
+                self._send_error("Medicine name is required for FEFO batch allocation.", status=400, code="MEDICINE_NAME_REQUIRED")
+                return
+
+            req_qty = float(body.get("requestedQuantity") or body.get("requested_quantity") or body.get("quantity") or 1)
+            target_facility = self._resolve_facility(auth_ctx, query_params, body)
+            today_str = date.today().isoformat()
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                SELECT * FROM inventory
+                WHERE name = ? AND facility_id = ? AND stock_qty > 0
+                ORDER BY expiry_date ASC
+                """, (med_name, target_facility))
+                all_batches = [dict(r) for r in cur.fetchall()]
+
+            eligible_batches = []
+            has_uncertified_e1 = False
+
+            for b in all_batches:
+                if b["expiry_date"] <= today_str:
+                    continue
+                if b.get("is_schedule_e1") and not b.get("mudabbar_cert"):
+                    has_uncertified_e1 = True
+                    continue
+                eligible_batches.append(b)
+
+            if not eligible_batches and has_uncertified_e1:
+                self._send_error("FEFO allocation blocked: Substance is statutory Schedule E(1) and all available batches lack validated Mudabbar detoxification certificates.", status=403, code="MUDABBAR_CERTIFICATE_REQUIRED")
+                return
+
+            allocations = []
+            needed = req_qty
+            for eb in eligible_batches:
+                avail = float(eb["stock_qty"])
+                take = min(avail, needed)
+                allocations.append({
+                    "batch_id": eb["id"],
+                    "batch_number": eb["batch_number"],
+                    "allocated_quantity": take,
+                    "expiry_date": eb["expiry_date"],
+                    "stock_qty": eb["stock_qty"],
+                    "unit_price": eb.get("unit_price", 150.0),
+                    "is_schedule_e1": bool(eb.get("is_schedule_e1")),
+                    "mudabbar_cert": eb.get("mudabbar_cert")
+                })
+                needed -= take
+                if needed <= 0.001:
+                    break
+
+            total_allocated = sum(a["allocated_quantity"] for a in allocations)
+            is_fulfilled = total_allocated >= (req_qty - 0.001)
+
+            self._send_json({
+                "ok": True,
+                "medicine_name": med_name,
+                "facility_id": target_facility,
+                "requested_quantity": req_qty,
+                "total_allocated": total_allocated,
+                "remaining_unfilled": max(0.0, req_qty - total_allocated),
+                "status": "ALLOCATED" if is_fulfilled else "PARTIALLY_ALLOCATED",
+                "allocations": allocations,
+                "fefo_compliant": True
+            })
+            return
+
+        # Atomically Dispense Complete Prescription (FEFO & Statutory Gates & Invoice Generation)
+        if path.startswith("/api/v1/prescriptions/") and path.endswith("/dispense"):
+            rx_id = path.split("/")[-2]
+            if auth_ctx and auth_ctx["role"] not in ("PHARMACIST", "SUPER_ADMIN", "CLINIC_ADMIN"):
+                self._send_error("Access restricted: Only licensed pharmacy personnel are authorized to dispense medications.", status=403, code="FORBIDDEN")
+                return
+
+            target_facility = self._resolve_facility(auth_ctx, query_params, body)
+            today_str = date.today().isoformat()
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM prescriptions WHERE id = ? OR order_number = ?", (rx_id, rx_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Prescription record not found.", status=404, code="PRESCRIPTION_NOT_FOUND")
+                    return
+                rx = dict(row)
+
+                # Cross-tenant isolation check
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN" and rx["facility_id"] != auth_ctx.get("facilityId", target_facility):
+                    self._send_error("Access denied: You do not have authorization to dispense prescriptions from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                    return
+
+                # Status check
+                if rx["status"] == "DISPENSED":
+                    self._send_error("This prescription has already been dispensed and cannot be fulfilled again.", status=400, code="PRESCRIPTION_ALREADY_DISPENSED")
+                    return
+
+                try:
+                    items = json.loads(rx.get("items_json") or "[]")
+                except Exception:
+                    items = []
+
+                if not items:
+                    self._send_error("Prescription contains no dispensable items.", status=400, code="EMPTY_PRESCRIPTION")
+                    return
+
+                dispensed_items = []
+                total_amount = 0.0
+
+                for itm in items:
+                    item_name = itm.get("name") or itm.get("item")
+                    specified_batch = itm.get("batchNumber")
+                    qty = int(itm.get("quantity") or 1)
+
+                    if specified_batch:
+                        cur.execute("SELECT * FROM inventory WHERE batch_number = ? AND facility_id = ?", (specified_batch, rx["facility_id"]))
+                        b_row = cur.fetchone()
+                        if not b_row:
+                            self._send_error(f"Batch {specified_batch} not found in dispensary for {item_name}.", status=404, code="BATCH_NOT_FOUND")
+                            return
+                        batch = dict(b_row)
+                        if batch["expiry_date"] <= today_str:
+                            self._send_error(f"Dispensing blocked: Batch {specified_batch} for {item_name} has expired.", status=400, code="EXPIRED_STOCK_ERROR")
+                            return
+                        if batch.get("is_schedule_e1") and not batch.get("mudabbar_cert"):
+                            self._send_error(f"DISPENSE BLOCKED: Schedule E(1) item {item_name} requires validated Mudabbar Certificate.", status=403, code="MUDABBAR_CERTIFICATE_REQUIRED")
+                            return
+                        if batch["stock_qty"] < qty:
+                            self._send_error(f"Insufficient stock for {item_name} (batch {specified_batch}). Available: {batch['stock_qty']}, Requested: {qty}.", status=400, code="INSUFFICIENT_STOCK")
+                            return
+
+                        new_qty = batch["stock_qty"] - qty
+                        cur.execute("UPDATE inventory SET stock_qty = ? WHERE batch_number = ?", (new_qty, specified_batch))
+                        item_cost = batch.get("unit_price", 150.0) * qty
+                        total_amount += item_cost
+                        dispensed_items.append({
+                            "name": item_name,
+                            "batch_number": specified_batch,
+                            "quantity": qty,
+                            "unit_price": batch.get("unit_price", 150.0),
+                            "cost": item_cost,
+                            "expiry_date": batch["expiry_date"],
+                            "mudabbar_cert": batch.get("mudabbar_cert")
+                        })
+                    else:
+                        # FEFO Allocation
+                        cur.execute("""
+                        SELECT * FROM inventory
+                        WHERE name = ? AND facility_id = ? AND stock_qty > 0
+                        ORDER BY expiry_date ASC
+                        """, (item_name, rx["facility_id"]))
+                        batches = [dict(b) for b in cur.fetchall()]
+                        eligible = [b for b in batches if b["expiry_date"] > today_str and (not b.get("is_schedule_e1") or b.get("mudabbar_cert"))]
+
+                        if not eligible:
+                            self._send_error(f"No valid unexpired batches available in stock for {item_name}.", status=400, code="OUT_OF_STOCK")
+                            return
+
+                        b = eligible[0]
+                        if b["stock_qty"] < qty:
+                            self._send_error(f"Insufficient stock for {item_name}. Available: {b['stock_qty']}, Requested: {qty}.", status=400, code="INSUFFICIENT_STOCK")
+                            return
+                        new_qty = b["stock_qty"] - qty
+                        cur.execute("UPDATE inventory SET stock_qty = ? WHERE batch_number = ?", (new_qty, b["batch_number"]))
+                        item_cost = b.get("unit_price", 150.0) * qty
+                        total_amount += item_cost
+                        dispensed_items.append({
+                            "name": item_name,
+                            "batch_number": b["batch_number"],
+                            "quantity": qty,
+                            "unit_price": b.get("unit_price", 150.0),
+                            "cost": item_cost,
+                            "expiry_date": b["expiry_date"],
+                            "mudabbar_cert": b.get("mudabbar_cert")
+                        })
+
+                # Mark prescription DISPENSED
+                cur.execute("UPDATE prescriptions SET status = 'DISPENSED' WHERE id = ?", (rx["id"],))
+
+                # Auto-generate Pharmacy Billing Invoice
+                inv_id = f"INV-PHARM-{uuid.uuid4().hex[:6].upper()}"
+                inv_num = f"RCPT-PHARM-{random.randint(1000, 9999)}"
+                payment_method = body.get("paymentMethod") or "UPI"
+
+                cur.execute("""
+                INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status, prescription_id, items_json, facility_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    inv_id,
+                    inv_num,
+                    rx["mrn"],
+                    rx["patient_name"],
+                    round(total_amount, 2),
+                    "Central Dispensary",
+                    payment_method,
+                    "PAID",
+                    rx["id"],
+                    json.dumps(dispensed_items),
+                    rx["facility_id"]
+                ))
+
+                # Anchor in Merkle audit ledger
+                dispense_raw = f"{rx['id']}|{inv_num}|{json.dumps(dispensed_items)}|{datetime.utcnow().isoformat()}"
+                leaf_hash = hashlib.sha256(dispense_raw.encode("utf-8")).hexdigest()
+                cur.execute("""
+                INSERT INTO audit_ledger (leaf_hash, event_type, signer, status, facility_id, details_json)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    leaf_hash,
+                    "PRESCRIPTION_DISPENSED",
+                    auth_ctx["fullName"] if auth_ctx else "Pharmacist System",
+                    "ANCHORED",
+                    rx["facility_id"],
+                    json.dumps({"prescription_id": rx["id"], "order_number": rx["order_number"], "invoice_number": inv_num, "amount": total_amount})
+                ))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": f"Prescription {rx['order_number']} successfully dispensed under FEFO protocol.",
+                "prescription": {
+                    "id": rx["id"],
+                    "order_number": rx["order_number"],
+                    "mrn": rx["mrn"],
+                    "patient_name": rx["patient_name"],
+                    "status": "DISPENSED"
+                },
+                "dispensed_items": dispensed_items,
+                "invoice": {
+                    "id": inv_id,
+                    "invoice_number": inv_num,
+                    "amount": round(total_amount, 2),
+                    "department": "Central Dispensary",
+                    "status": "PAID"
+                },
+                "audit_block": {
+                    "leaf_hash": leaf_hash,
+                    "event": "PRESCRIPTION_DISPENSED"
+                }
             })
             return
 

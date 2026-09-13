@@ -110,18 +110,21 @@ def init_db():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, appointments)
 
-    # Seed Inventory
+    # Seed Inventory (Phase 4 FEFO, Batch Allocation & Mudabbar Gates)
     inventory = [
-        ("INV-001", "Majun Suranjan (Mudabbar)", "MS-2026-LOT4", "2027-08-30", 142, 25, "CLINIC_UNANI", 1, 1, "SHA256:7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b", "FAC-HQ-01"),
-        ("INV-002", "Roghan-e-Balsan", "RB-2026-LOT1", "2028-01-15", 88, 15, "RETAIL_UNANI", 0, 0, None, "FAC-HQ-01"),
-        ("INV-003", "Habb-e-Suranjan Forte", "HS-2026-LOT3", "2027-08-31", 210, 30, "CLINIC_UNANI", 1, 1, "SHA256:f1e2d3c4b5a6978800112233445566778899aabbccddeeff0011223344556677", "FAC-HQ-01"),
-        ("INV-004", "MetaboCore Elite Powder", "MCE-2026-LOT2", "2028-06-20", 320, 50, "AYUSH_PROPRIETARY", 0, 0, None, "FAC-HQ-01"),
-        ("INV-005", "RestoreVital Herbal Infusion", "RVH-2026-LOT5", "2028-11-15", 450, 60, "FSSAI_SUPPLEMENT", 0, 0, None, "FAC-HQ-01"),
-        ("INV-006", "Khamira Gaozaban Ambari", "KGA-2026-B1", "2027-12-31", 95, 20, "CLINIC_UNANI", 0, 0, None, "FAC-BRANCH-02"),
+        ("INV-001", "Majun Suranjan (Mudabbar)", "MS-2026-LOT4", "2027-08-30", 142, 25, "CLINIC_UNANI", 240.0, 1, 1, "SHA256:7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b", "FAC-HQ-01"),
+        ("INV-002", "Roghan-e-Balsan", "RB-2026-LOT1", "2028-01-15", 88, 15, "RETAIL_UNANI", 180.0, 0, 0, None, "FAC-HQ-01"),
+        ("INV-003", "Habb-e-Suranjan Forte", "HS-2026-LOT3", "2027-08-31", 210, 30, "CLINIC_UNANI", 310.0, 1, 1, "SHA256:f1e2d3c4b5a6978800112233445566778899aabbccddeeff0011223344556677", "FAC-HQ-01"),
+        ("INV-004", "MetaboCore Elite Powder", "MCE-2026-LOT2", "2028-06-20", 320, 50, "AYUSH_PROPRIETARY", 450.0, 0, 0, None, "FAC-HQ-01"),
+        ("INV-005", "RestoreVital Herbal Infusion", "RVH-2026-LOT5", "2028-11-15", 450, 60, "FSSAI_SUPPLEMENT", 280.0, 0, 0, None, "FAC-HQ-01"),
+        ("INV-006", "Khamira Gaozaban Ambari", "KGA-2026-B1", "2027-12-31", 95, 20, "CLINIC_UNANI", 190.0, 0, 0, None, "FAC-BRANCH-02"),
+        ("INV-007", "Majun Suranjan (Mudabbar)", "MS-2026-LOT5", "2027-05-15", 45, 20, "CLINIC_UNANI", 240.0, 1, 1, "SHA256:7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b", "FAC-HQ-01"),
+        ("INV-008", "Majun Suranjan (Unpurified Raw)", "MS-2026-RAW", "2028-01-01", 50, 10, "CLINIC_UNANI", 180.0, 1, 1, None, "FAC-HQ-01"),
+        ("INV-009", "Roghan-e-Balsan (Expired)", "RB-2024-EXP", "2024-12-31", 20, 10, "RETAIL_UNANI", 150.0, 0, 0, None, "FAC-HQ-01"),
     ]
     cursor.executemany("""
-    INSERT INTO inventory (id, name, batch_number, expiry_date, stock_qty, min_threshold, category, is_schedule_e1, mudabbar_required, mudabbar_cert, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO inventory (id, name, batch_number, expiry_date, stock_qty, min_threshold, category, unit_price, is_schedule_e1, mudabbar_required, mudabbar_cert, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, inventory)
 
     # Seed Prescription
@@ -162,14 +165,14 @@ def init_db():
 
     # Seed Invoices
     invoices = [
-        ("INV-001", "RCPT-2026-1041", "MRN-2026-0814", "Hamza Farooqi", 800.0, "Integrative Unani OPD", "UPI", "PAID", "FAC-HQ-01"),
-        ("INV-002", "RCPT-2026-1042", "MRN-2026-0815", "Ayesha Siddiqui", 800.0, "Preventive Dietetics", "CARD", "PAID", "FAC-HQ-01"),
-        ("INV-003", "RCPT-2026-1043", "MRN-2026-0816", "Mohammed Zeeshan", 500.0, "Musculoskeletal & Regimenal", "CASH", "PAID", "FAC-HQ-01"),
-        ("INV-004", "RCPT-2026-2011", "MRN-2026-0901", "Bilqees Begum", 600.0, "Nizamia Regimenal OPD", "UPI", "PAID", "FAC-BRANCH-02"),
+        ("INV-001", "RCPT-2026-1041", "MRN-2026-0814", "Hamza Farooqi", 800.0, "Integrative Unani OPD", "UPI", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 800.0}]), "FAC-HQ-01"),
+        ("INV-002", "RCPT-2026-1042", "MRN-2026-0815", "Ayesha Siddiqui", 800.0, "Preventive Dietetics", "CARD", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 800.0}]), "FAC-HQ-01"),
+        ("INV-003", "RCPT-2026-1043", "MRN-2026-0816", "Mohammed Zeeshan", 500.0, "Musculoskeletal & Regimenal", "CASH", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 500.0}]), "FAC-HQ-01"),
+        ("INV-004", "RCPT-2026-2011", "MRN-2026-0901", "Bilqees Begum", 600.0, "Nizamia Regimenal OPD", "UPI", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 600.0}]), "FAC-BRANCH-02"),
     ]
     cursor.executemany("""
-    INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status, prescription_id, items_json, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, invoices)
 
     # Seed Encounters (Phase 3 Core Clinical Continuum)
