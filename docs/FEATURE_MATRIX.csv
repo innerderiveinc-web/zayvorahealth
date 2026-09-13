@@ -1,0 +1,48 @@
+Feature_ID,Feature_Name,Domain_Module,Route_or_Service,Implementation_Type,Classification,Real_or_Mock,Connected_or_Disconnected,Tests_Available,Test_Pass_Fail,Security_Risk,Clinical_Risk,Required_Fix,Priority,Acceptance_Criteria
+FEAT-WEB-01,Flagship Clinical Homepage,Website,/website,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,12 clinical sections render with zero dev jargon
+FEAT-WEB-02,About ZAYVORA Foundation,Website,/website/about,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,"Vision, governance, and AYUSH council advisory board render"
+FEAT-WEB-03,Modern Unani Philosophy,Website,/website/modern-unani,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,"Mizaj, Arkan, Akhlat, Ruh scientific bridges render"
+FEAT-WEB-04,Specialized Care Journey,Website,/website/care-journey,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,"4-phase clinical continuum (Tanqiya, Tahleel, Taqwiyaat, Hifz)"
+FEAT-WEB-05,Health Programs Directory,Website,/website/programs,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,6 clinical programs with Afaal treatment cascades
+FEAT-WEB-06,Herbal Formulations Catalog,Website,/website/herbals,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,Canonical catalog with Mudabbar badges and Schedule E1 flags
+FEAT-WEB-07,Clinical Faculty Roster,Website,/website/doctors,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,Verified BUMS/MD faculty with council registration numbers
+FEAT-WEB-08,Knowledge Centre Library,Website,/website/knowledge-centre,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,9-category publication library with live search
+FEAT-WEB-09,Online Appointment Booking,Website,/website/book,Wizard,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Multi-step booking writing directly to database/zayvora_live.db
+FEAT-WEB-10,Prescription Cart & Checkout,Website,/website/cart,Cart,READY FOR PILOT,Real,Connected,Yes,Pass,Medium,Medium,None,P2,Cart calculates totals and validates FEFO batch availability
+FEAT-WEB-11,Statutory Medical Disclaimer,Website,/website/medical-disclaimer,Page,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,DISHA / AYUSH emergency red-flag disclaimer
+FEAT-PAT-01,Patient Dashboard,Patient,/patient,Portal,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,13-section personalized patient dashboard
+FEAT-PAT-02,Patient Demographics & Profile,Patient,/patient,Profile,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"MRN, blood group, emergency contact, dominant Mizaj"
+FEAT-PAT-03,Live OPD Queue Token Tracking,Patient,/patient,Tracker,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Displays waiting position and estimated consultation time
+FEAT-PAT-04,Prescription Access & QR,Patient,/patient,Prescriptions,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,21 CFR Part 11 signed prescriptions and dosage schedules
+FEAT-PAT-05,Vernacular Audio Posology,Patient,/patient,Audio,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"Voice posology prompts synthesized in Urdu, Hindi, English"
+FEAT-PAT-06,10-Ajnas Mizaj Self-Assessment,Patient,/patient,Mizaj,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,Interactive questionnaire computing temperament radar
+FEAT-PAT-07,Organ-Axis Physiological Radar,Patient,/patient,OrganAxis,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P2,Cross-talk risk scores across 9 physiological organ axes
+FEAT-PAT-08,Patient Investigation Uploads,Patient,/patient,Lab,READY FOR PILOT,Real,Connected,Yes,Pass,Medium,Low,None,P2,Secure attachment of blood reports and radiology
+FEAT-DOC-01,Today OPD Patient Queue,Doctor,/doctor,Queue,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Sequential tokens (T-104..T-107) with triage acuity
+FEAT-DOC-02,Patient 360 Workspace,Doctor,/doctor,Workspace,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"Integrated demographics, clinical history, prior visits"
+FEAT-DOC-03,Clinical Vitals & Nabz Entry,Doctor,/doctor,Vitals,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"BP, pulse, temp, SpO2, BMI, and Nabz examination"
+FEAT-DOC-04,Allergy Alert Banner,Doctor,/doctor,Safety,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,High,None,P0,Prominent warning for botanical and drug contraindications
+FEAT-DOC-05,10-Ajnas Clinician Mizaj Exam,Doctor,/doctor,Mizaj,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,"Longitudinal assessment across Malmas, Lahm, Shaar, etc."
+FEAT-DOC-06,9 Organ-Axis Cross-Talk Mapping,Doctor,/doctor,OrganAxis,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,"Evaluates Gut-Liver, Metabolic, Neuro, and Renal axes"
+FEAT-DOC-07,Structured SOAP Clinical Notes,Doctor,/doctor,SOAP,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"Subjective, Objective, Assessment, Plan documentation"
+FEAT-DOC-08,Botanical Nuskha Builder,Doctor,/doctor,Prescription,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,High,None,P0,Botanical compound formulator with Musleh mapping
+FEAT-DOC-09,Schedule E1 Mudabbar Guardrail,Doctor,/doctor,Safety,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,High,None,P0,Mandatory purification certificate check before Rx locking
+FEAT-DOC-10,21 CFR Part 11 Digital Signatures,Doctor,/doctor,Security,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P0,SHA-256 clinician signature anchored to Merkle audit block
+FEAT-DOC-11,Printable A4 Prescription Letterhead,Doctor,/doctor,Print,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Formal Jamia Hamdard hospital letterhead with print CSS
+FEAT-DOC-12,Hakeem Sahab AI Clinical Studio,Doctor,/doctor,AI,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,Advisory copilot with strict safe_to_lock physician gate
+FEAT-REC-01,Front Desk Command Center,Reception,/receptionist,Dashboard,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Live waiting room metrics and room assignments
+FEAT-REC-02,Walk-in Patient Fast Registration,Reception,/receptionist,Registration,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Quick modal writing patient & appointment to live DB
+FEAT-REC-03,OPD Token Advancement,Reception,/receptionist,Queue,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Advances patient status to In Consultation / Completed
+FEAT-REC-04,OPD Fee Collection & Receipts,Reception,/receptionist,Billing,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Records cash/UPI fees and generates invoice receipts
+FEAT-PHARM-01,Dispensary Command Center,Pharmacy,/pharmacy,Dashboard,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Stock threshold alerts and pending prescription queue
+FEAT-PHARM-02,FEFO Batch Inventory Manager,Pharmacy,/pharmacy,Inventory,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,First-Expired First-Out automated stock allocation
+FEAT-PHARM-03,Schedule E1 Mudabbar Verification,Pharmacy,/pharmacy,Safety,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,High,None,P0,Programmatic block on dispensing uncertified toxic herbs
+FEAT-PHARM-04,Physical Dispense & Stock Decrement,Pharmacy,/pharmacy,Dispense,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Medium,None,P1,Decrements inventory units in live SQLite database
+FEAT-ADM-01,Multi-Tenant Enterprise Console,Admin,/admin,Dashboard,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,"17 modules managing facility, branch, and staff rosters"
+FEAT-ADM-02,Role-Based Access Control (RBAC),Admin,/admin,Security,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P0,9 enterprise roles x 42 granular permissions matrix
+FEAT-ADM-03,Merkle Audit Trail Inspector,Admin,/admin,Audit,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Inspects chained cryptographic SHA-256 audit blocks
+FEAT-ADM-04,Disaster Recovery Backup Engine,Admin,/admin,DR,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P0,Automated snapshots with SHA-256 checksum verification
+FEAT-MOB-01,Multi-Role Mobile Companion,Mobile,App.tsx,App,READY FOR PILOT,Real,Connected,Yes,Pass,Low,Low,None,P1,"Doctor, patient, and receptionist mobile experience"
+FEAT-MOB-02,Mobile Vernacular Audio Posology,Mobile,App.tsx,Audio,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Native audio player for Urdu/Hindi/English medicine doses
+FEAT-MOB-03,Mobile Token Queue Tracker,Mobile,App.tsx,Tracker,VERIFIED LIVE,Real,Connected,Yes,Pass,Low,Low,None,P1,Synchronized OPD token status and room call notices
+FEAT-MOB-04,Mobile Clinician Quick SOAP,Mobile,ClinicianCompanion,Screen,READY FOR PILOT,Real,Connected,Yes,Pass,Low,Low,None,P1,Rapid consultation and Rx drafting on mobile device

@@ -1,0 +1,10 @@
+Engine_Number,Engine_Name,Documented_Failure_Mode,Handled_Exception_Class,Recovery_Action,User_Facing_Message
+5,Mufradat Intelligence,Unknown herb name query,KeyError / ValueError,Fallback to partial string search,Herb not found in canonical pharmacopoeia. Please check spelling.
+9,Nuskha Nawisi,Schedule E(1) herb without Mudabbar cert,MudabbarDispenseBlockError,Hard block on compilation,Schedule E(1) botanical requires verified detoxification certificate before lock.
+10,Hakeem Sahab Copilot,Upstream AI provider timeout,TimeoutError / ConnectionError,Activates deterministic rule-based fallback,AI service is currently unavailable. Please try again later.
+13,Safety Firewall,Severe drug-herb interaction or pregnancy risk,SafetyFirewallViolation,Overrides draft to DO_NOT_RECOMMEND,Contraindicated formulation. Licensed clinician override required.
+22,Pharmacovigilance,Unpurified Schedule E(1) ADR latency < 24h,StatutoryADRQuarantineException,Automated batch quarantine alert,Adverse reaction flagged for statutory WHO-UMC pharmacovigilance review.
+24,FEFO Inventory Allocator,Requested batch expired or out of stock,InsufficientStockError,Selects next nearest valid expiry lot,Selected batch is depleted or expired. Next valid lot assigned.
+29,Clinical Governance Quorum,Quorum threshold not met by board,QuorumNotReachedError,Blocks monograph promotion to AI availability,Quorum requirement not satisfied. Minimum 3 verified expert reviews needed.
+32,Billing & Payment,Tampered webhook payment signature,SecuritySignatureMismatchError,Rejects transaction and flags fraud alert,Payment signature verification failed. Transaction rejected.
+44,Backup & Recovery,Checksum mismatch during snapshot restore,DatabaseCorruptedRestoreError,Rollback to prior validated snapshot,Snapshot integrity check failed. Restoring from last verified checkpoint.

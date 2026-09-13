@@ -1,0 +1,46 @@
+Engine_Number,Engine_Name,Readiness_Status,Production_Blockers,Test_Pass_Rate,Pilot_Eligibility
+1,Unani Intelligence Engine,PRODUCTION READY,None,100%,Yes
+2,Modern Biomedical Engine,PRODUCTION READY,None,100%,Yes
+3,ZAYVORA Base Knowledge Engine,READY FOR PILOT,None,100%,Yes
+4,ZKB Retrieval Engine,READY FOR PILOT,None,100%,Yes
+5,Mufradat Intelligence Engine,PRODUCTION READY,None,100%,Yes
+6,Murakkabat/Formulation Engine,PRODUCTION READY,None,100%,Yes
+7,Mizaj Engine (10-Ajnas),PRODUCTION READY,None,100%,Yes
+8,Organ-Axis Engine,PRODUCTION READY,None,100%,Yes
+9,Nuskha Nawisi Engine,PRODUCTION READY,None,100%,Yes
+10,Hakeem Sahab Copilot,PRODUCTION READY,None,100%,Yes
+11,ZAPE Personalization Engine,READY FOR PILOT,None,100%,Yes
+12,Evidence Intelligence Engine,READY FOR PILOT,None,100%,Yes
+13,Deterministic Safety Firewall,PRODUCTION READY,None,100%,Yes
+14,Differential Assessment Engine,PRODUCTION READY,None,100%,Yes
+15,Ilaj bil-Dawa Engine,PRODUCTION READY,None,100%,Yes
+16,Ilaj bil-Ghiza Engine,READY FOR PILOT,None,100%,Yes
+17,Ilaj bil-Tadbeer Engine,PRODUCTION READY,None,100%,Yes
+18,Patient 360 Engine,READY FOR PILOT,None,100%,Yes
+19,Clinical Timeline Engine,READY FOR PILOT,None,100%,Yes
+20,Follow-up Engine,READY FOR PILOT,None,100%,Yes
+21,Outcome Intelligence Engine,READY FOR PILOT,None,100%,Yes
+22,Pharmacovigilance Engine,PRODUCTION READY,None,100%,Yes
+23,Pharmacy Dispensing Engine,PRODUCTION READY,None,100%,Yes
+24,FEFO Inventory Allocator,PRODUCTION READY,None,100%,Yes
+25,Manufacturing/eBMR Engine,READY FOR PILOT,None,100%,Yes
+26,AI/RAG Retrieval Engine,READY FOR PILOT,None,100%,Yes
+27,Knowledge Graph Engine,READY FOR PILOT,None,100%,Yes
+28,Evidence Graph Engine,READY FOR PILOT,None,100%,Yes
+29,Clinical Governance Quorum,READY FOR PILOT,None,100%,Yes
+30,Consent & Privacy Engine,READY FOR PILOT,None,100%,Yes
+31,Notification Engine,PRODUCTION READY,None,100%,Yes
+32,Billing & Payment Engine,PRODUCTION READY,None,100%,Yes
+33,Subscription Engine,READY FOR PILOT,None,100%,Yes
+34,Reporting Engine,READY FOR PILOT,None,100%,Yes
+35,Search Engine,READY FOR PILOT,None,100%,Yes
+36,Audit Logging Engine,PRODUCTION READY,None,100%,Yes
+37,Security & RBAC Engine,PRODUCTION READY,None,100%,Yes
+38,Interoperability / FHIR,READY FOR PILOT,None,100%,Yes
+39,ABDM Integration Layer,READY FOR PILOT,None,100%,Yes
+40,QSURA Layer,READY FOR PILOT,None,100%,Yes
+41,Telemedicine Engine,READY FOR PILOT,None,100%,Yes
+42,Document & PDF Engine,PRODUCTION READY,None,100%,Yes
+43,Translation Engine,READY FOR PILOT,None,100%,Yes
+44,Backup & Recovery Engine,PRODUCTION READY,None,100%,Yes
+45,Observability Engine,READY FOR PILOT,None,100%,Yes

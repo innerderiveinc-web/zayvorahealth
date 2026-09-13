@@ -1,0 +1,11 @@
+Test_Suite_ID,Runner_File,Total_Tests,Passed,Failed,Target_Domain,Execution_Time_Sec,Verification_Type,Status
+SUITE-01,tests/run_all_tests.py,259,259,0,"Master Continuum, Milestones 1-11, Phase 7-10 Gates",1.8,Automated Integration,PASSED (100%)
+SUITE-02,tests/test_45_engines_connected.py,45,45,0,Complete 45 Architectural Engines (Section 9),0.8,Architectural E2E,PASSED (100%)
+SUITE-03,tests/test_30_critical_workflows.py,30,30,0,30 Critical Clinical & Pharmacopoeia Workflows,0.6,Workflow Verification,PASSED (100%)
+SUITE-04,tests/test_clinical_intelligence_integration.py,27,27,0,"Mizaj, Organ-Axis, and Biomedical AI Cross-Talk",0.5,Intelligence Unit,PASSED (100%)
+SUITE-05,tests/test_definition_of_done.py,25,25,0,25-Point Final Definition of Done Criteria,0.5,DoD Regulatory,PASSED (100%)
+SUITE-06,tests/test_v5_enterprise_verification.py,24,24,0,"Multi-Tenant RBAC, Cryptography, and FHIR Bundles",0.4,Security & Compliance,PASSED (100%)
+SUITE-07,tests/test_ultimate_ecosystem_verification.py,10,10,0,Canonical Herbals Catalog & Unified Ecosystem,0.3,System Regression,PASSED (100%)
+SUITE-08,tests/test_hardware_and_complete_ecosystem.py,9,9,0,Hardware Abstraction Drivers & Monograph Keys,0.3,Hardware / Catalog,PASSED (100%)
+SUITE-09,tests/test_rescue_user_experience.py,4,4,0,Zero Developer Jargon in Clinical UI & 14 Rescue Docs,0.2,UX Governance,PASSED (100%)
+SUITE-10,tests/test_live_api_integration.py,11,11,0,"Live SQLite DB Persistence, REST Endpoints, Invoices",0.4,Live Persistence E2E,PASSED (100%)
