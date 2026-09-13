@@ -9,3 +9,4 @@ SUITE-07,tests/test_ultimate_ecosystem_verification.py,10,10,0,Canonical Herbals
 SUITE-08,tests/test_hardware_and_complete_ecosystem.py,9,9,0,Hardware Abstraction Drivers & Monograph Keys,0.3,Hardware / Catalog,PASSED (100%)
 SUITE-09,tests/test_rescue_user_experience.py,4,4,0,Zero Developer Jargon in Clinical UI & 14 Rescue Docs,0.2,UX Governance,PASSED (100%)
 SUITE-10,tests/test_live_api_integration.py,11,11,0,"Live SQLite DB Persistence, REST Endpoints, Invoices",0.4,Live Persistence E2E,PASSED (100%)
+SUITE-11,tests/test_phase2_auth_rbac_tenancy.py,15,15,0,"Cryptographic HMAC Tokens, RBAC Route Guards, Multi-Tenancy Scoping",0.3,Auth & Multi-Tenancy,PASSED (100%)
