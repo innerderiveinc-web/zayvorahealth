@@ -1,54 +1,137 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { CLINICAL_TEAM } from "@/lib/cms/doctorsData";
 
 export default function DoctorsPage() {
+  const [selectedFocus, setSelectedFocus] = useState<string>("All");
+
+  const focusAreas = [
+    "All",
+    "Musculoskeletal",
+    "Metabolic & Liver",
+    "Women's Health",
+    "Pharmacology & Gut"
+  ];
+
+  const filteredDoctors = CLINICAL_TEAM.filter((doc) => {
+    if (selectedFocus === "All") return true;
+    if (selectedFocus === "Musculoskeletal") return doc.areasOfFocus.some(f => f.includes("Musculoskeletal"));
+    if (selectedFocus === "Metabolic & Liver") return doc.areasOfFocus.some(f => f.includes("Metabolic") || f.includes("Hepatic"));
+    if (selectedFocus === "Women's Health") return doc.areasOfFocus.some(f => f.includes("Women") || f.includes("PCOS"));
+    if (selectedFocus === "Pharmacology & Gut") return doc.areasOfFocus.some(f => f.includes("Gut") || f.includes("Pharmacology"));
+    return true;
+  });
+
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 space-y-8 text-xs text-[#CBD5E1]">
-      <div className="border-b border-[#334155] pb-6 space-y-2">
-        <span className="text-[11px] font-bold text-[#2DD4BF] uppercase tracking-wider">ZAYVORA Health OS™ v5.0</span>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white">Licensed Practitioners & Tabeebs</h1>
-        <p className="text-sm text-[#94A3B8]">Senior Faculty, Unani Physicians, and Researchers</p>
-      </div>
-
-      <div className="space-y-6 leading-relaxed">
-        
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div className="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-[#0D9488] flex items-center justify-center font-bold text-white text-base">TM</div>
-        <div>
-          <h3 className="font-bold text-white text-base">Hakim Dr. Tariq Mansoor</h3>
-          <span className="text-[11px] text-[#2DD4BF] font-mono">CCIM-BUMS-2004-9841</span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-10 text-[#CBD5E1]">
+      
+      {/* Header */}
+      <div className="border-b border-[#1E293B] pb-8 space-y-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
+          <span>🩺</span> Central Clinical Faculty & Registered Practitioners
         </div>
-      </div>
-      <p className="text-[#94A3B8]">Senior Tabeeb with 22 years of clinical experience in Waja-ul-Mafasil, metabolic dyscrasia, and complex Nuskha formulation.</p>
-      <Link href="/website/book" className="text-emerald-400 font-bold hover:underline inline-block text-xs">Book with Dr. Mansoor →</Link>
-    </div>
-    <div className="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center font-bold text-white text-base">AP</div>
-        <div>
-          <h3 className="font-bold text-white text-base">Dr. Asma Parveen</h3>
-          <span className="text-[11px] text-purple-400 font-mono">CCIM-BUMS-2011-5420</span>
-        </div>
-      </div>
-      <p className="text-[#94A3B8]">Specialist in female reproductive vitality (*Niswan*), ovarian reserve regulation, and Asbab Sittah lifestyle optimization.</p>
-      <Link href="/website/book" className="text-purple-400 font-bold hover:underline inline-block text-xs">Book with Dr. Parveen →</Link>
-    </div>
-  </div>
-
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Licensed Practitioners & Tabeebs
+        </h1>
+        <p className="text-sm text-[#94A3B8] max-w-3xl leading-relaxed">
+          Our senior clinical faculty hold statutory CCIM/BUMS credentials with decades of combined clinical leadership at premier academic hospitals, blending classical pulse diagnostics with modern laboratory medicine.
+        </p>
       </div>
 
-      <div className="pt-8 border-t border-[#334155] flex justify-between items-center">
-        <Link href="/website" className="text-xs font-semibold text-[#94A3B8] hover:text-white">
-          ← Back to Home
-        </Link>
-        <Link href="/website/book" className="px-5 py-2 rounded-xl bg-[#0D9488] text-white font-bold hover:bg-[#14B8A6]">
-          Book Consultation →
-        </Link>
+      {/* Focus Area Filter */}
+      <div className="flex flex-wrap gap-2 p-4 rounded-2xl bg-[#0F172A] border border-[#334155]">
+        <span className="text-xs font-bold text-[#64748B] flex items-center pr-2">Filter Specialization:</span>
+        {focusAreas.map((focus) => (
+          <button
+            key={focus}
+            onClick={() => setSelectedFocus(focus)}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${
+              selectedFocus === focus
+                ? "bg-[#0D9488] text-white"
+                : "bg-[#1E293B] text-[#94A3B8] hover:text-white"
+            }`}
+          >
+            {focus}
+          </button>
+        ))}
       </div>
+
+      {/* Doctors Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {filteredDoctors.map((doc) => (
+          <div
+            key={doc.id}
+            className="rounded-3xl bg-[#0F172A] border border-[#334155] p-7 space-y-5 hover:border-[#0D9488] transition flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0D9488] text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                    {doc.avatarInitials}
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-white text-lg">{doc.name}</h3>
+                    <span className="text-xs text-[#2DD4BF] font-mono font-medium block">{doc.regNumber}</span>
+                    <span className="text-[11px] text-[#94A3B8] block">{doc.degrees}</span>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                  ★ {doc.rating}
+                </span>
+              </div>
+
+              <p className="text-xs text-[#94A3B8] leading-relaxed">{doc.bio}</p>
+
+              <div className="p-4 rounded-2xl bg-[#0A0F1D] border border-[#1E293B] space-y-2 text-xs">
+                <div>
+                  <span className="text-[10px] font-bold text-white uppercase block tracking-wider">Hospital Affiliation:</span>
+                  <span className="text-[#94A3B8] text-[11px]">{doc.hospitalAffiliation}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <span className="text-[10px] font-bold text-[#64748B] block">OPD Hours:</span>
+                    <span className="text-white text-[11px]">{doc.clinicTimings}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-[#64748B] block">Languages:</span>
+                    <span className="text-white text-[11px]">{doc.languages.join(", ")}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider block">Areas of Focus:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {doc.areasOfFocus.map((f, idx) => (
+                    <span key={idx} className="text-[10px] px-2.5 py-0.5 rounded-lg bg-[#1E293B] text-[#CBD5E1] border border-[#334155]">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Card Footer Actions */}
+            <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between gap-3">
+              <Link
+                href={`/website/doctor?id=${doc.id}`}
+                className="w-1/2 text-center py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#334155] text-xs font-semibold text-white transition"
+              >
+                View Profile & Credentials
+              </Link>
+              <Link
+                href={`/website/book?doctor=${doc.id}`}
+                className="w-1/2 text-center py-2.5 rounded-xl bg-[#0D9488] hover:bg-[#0F766E] text-xs font-bold text-white shadow-sm transition"
+              >
+                Book Consultation
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 }

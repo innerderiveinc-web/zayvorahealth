@@ -2,25 +2,23 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { HEALTH_PROGRAMS } from "@/lib/cms/programsData";
+import { PRODUCTS_CATALOG, RegulatoryCategory } from "@/lib/cms/productsData";
+import { CLINICAL_TEAM } from "@/lib/cms/doctorsData";
+import { KNOWLEDGE_ARTICLES } from "@/lib/cms/articlesData";
+import { FAQS_DATA } from "@/lib/cms/faqsData";
 
-export default function PublicHomePage() {
-  // Live hardware telemetry state
-  const [pulseBpm, setPulseBpm] = useState(72);
-  const [coldChainTemp, setColdChainTemp] = useState(19.4);
-  const [bleDevices, setBleDevices] = useState(4);
-  const [activeStageIndex, setActiveStageIndex] = useState(0);
-
-  // Mini Mizaj assessment state
-  const [mizajAnswers, setMizajAnswers] = useState({
-    temp: "cold",
-    moisture: "moist",
-    physique: "broad",
-    sleep: "deep"
-  });
-
-  // Canvas for Nabz 10-Ajnas pulse wave simulation
+export default function ZayvoraHealthHomepage() {
+  // Waveform canvas ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // Filter states
+  const [selectedProgramCategory, setSelectedProgramCategory] = useState<string>("All");
+  const [selectedProductCategory, setSelectedProductCategory] = useState<RegulatoryCategory | "All">("All");
+  const [openFaqId, setOpenFaqId] = useState<string | null>("faq-1");
+  const [activeConcern, setActiveConcern] = useState<string | null>(null);
+
+  // Animated Nabz Waveform Simulation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -30,776 +28,459 @@ export default function PublicHomePage() {
     let animationFrameId: number;
     let t = 0;
 
-    const render = () => {
-      t += 0.05;
-      const width = canvas.width;
-      const height = canvas.height;
+    const renderWave = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#0F172A";
-      ctx.fillRect(0, 0, width, height);
-
-      // Draw grid
-      ctx.strokeStyle = "rgba(51, 65, 85, 0.4)";
+      // Grid background
+      ctx.strokeStyle = "rgba(13, 148, 136, 0.1)";
       ctx.lineWidth = 1;
-      for (let x = 0; x < width; x += 30) {
+      for (let x = 0; x < canvas.width; x += 20) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
+        ctx.lineTo(x, canvas.height);
         ctx.stroke();
       }
-      for (let y = 0; y < height; y += 20) {
+      for (let y = 0; y < canvas.height; y += 20) {
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
+        ctx.lineTo(canvas.width, y);
         ctx.stroke();
       }
 
-      // Draw arterial PPG waveform: systolic peak + dicrotic wave
+      // Waveform line
       ctx.strokeStyle = "#2DD4BF";
       ctx.lineWidth = 2.5;
       ctx.beginPath();
 
-      const midY = height / 2;
-      for (let x = 0; x < width; x++) {
-        const cycle = ((x - t * 40) % 120 + 120) % 120;
-        let val = 0;
-        if (cycle >= 0 && cycle < 30) {
-          // Systolic upstroke & rapid fall
-          val = Math.sin((cycle / 30) * Math.PI) * 32;
-        } else if (cycle >= 30 && cycle < 60) {
-          // Dicrotic notch and secondary wave
-          val = Math.sin(((cycle - 30) / 30) * Math.PI) * 14;
-        } else {
-          // Diastolic decay
-          val = Math.sin(((cycle - 60) / 60) * Math.PI * 0.5) * 4;
-        }
-        const y = midY - val;
+      const centerY = canvas.height / 2;
+      for (let x = 0; x < canvas.width; x++) {
+        // Compound arterial PPG wave with dicrotic notch
+        const wave1 = Math.sin((x + t) * 0.04) * 20;
+        const wave2 = Math.sin((x + t) * 0.08) * 8;
+        const dicrotic = Math.exp(-Math.pow(((x + t) % 120) - 60, 2) / 200) * 18;
+        const y = centerY + wave1 + wave2 - dicrotic;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
-      animationFrameId = requestAnimationFrame(render);
+      t += 1.5;
+      animationFrameId = requestAnimationFrame(renderWave);
     };
 
-    render();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
+    renderWave();
+    return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  // Telemetry fluctuation simulator
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPulseBpm(Math.floor(70 + Math.random() * 5));
-      setColdChainTemp(Number((19.2 + Math.random() * 0.4).toFixed(1)));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // 12-Stage Closed-Loop Clinical Continuum
-  const clinicalStages = [
+  const healthConcerns = [
     {
-      num: "01",
-      name: "KNOW",
-      title: "Codified Knowledge & Evidence Retrieval",
-      latin: "ZKB Pharmacopoeia Integration",
-      desc: "Instant multi-hop traversal of UPI and NFUM classical monographs, Badal (substitutes), Musleh (correctives), and pharmacological affinities.",
-      action: "Queried 1,280+ canonical botanical monographs with verified HPLC fingerprints."
+      id: "male-fertility",
+      title: "Male Fertility & Reproductive Health",
+      desc: "Evidence-informed 74-day spermatogenesis support addressing sperm count, progressive motility, and seminal oxidative protection.",
+      icon: "🧬",
+      href: "/website/programs"
     },
     {
-      num: "02",
-      name: "ASSESS",
-      title: "10-Ajnas Longitudinal Mizaj Evaluation",
-      latin: "Al-Ajnas al-Ashrah",
-      desc: "Rigorous objective quantification across the 10 classical pulse criteria (Miqdar, Kayfiyat-e-Qar', Zamanah, Qawam, Khalwa, Mala, etc.) and tongue chromametry.",
-      action: "Evaluates hot/cold, moist/dry deviations against patient baseline."
+      id: "female-hormones",
+      title: "Female Hormonal Health & PCOS",
+      desc: "Gentle pelvic circulation and ovarian harmony protocols for cycle regularity, dysmenorrhea, and hormonal balance.",
+      icon: "🌸",
+      href: "/website/programs"
     },
     {
-      num: "03",
-      name: "DIFFERENTIATE",
-      title: "Biomedical & Humoral Dual Assessment",
-      latin: "Tashkheesh-e-Murakkab",
-      desc: "Harmonizes classical Su-e-Mizaj humoral dyscrasias with modern ICD-10 diagnostic classifications, metabolic panels, and immunological markers.",
-      action: "Cross-references biochemical lab results with humoral disharmonies."
+      id: "gut-ibs",
+      title: "Gut & IBS Support",
+      desc: "Rebuilding gastric digestive warmth (Hazm) to relieve chronic abdominal bloating, post-meal heaviness, and erratic transit.",
+      icon: "🍃",
+      href: "/website/programs"
     },
     {
-      num: "04",
-      name: "VERIFY",
-      title: "Spectral Lab & Acoustic Scribe Validation",
-      latin: "Lisan & Nabz Hardware Verification",
-      desc: "Multispectral tongue imaging at 415nm, 560nm, 660nm, and 850nm paired with 100 Hz arterial PPG waveform analysis to establish objective physical signs.",
-      action: "Hardware-confirmed coating thickness, moisture, and arterial elasticity."
+      id: "liver-metabolic",
+      title: "Liver & Metabolic Health",
+      desc: "Targeted hepatic decongestion (Kabid) and circadian nutrition supporting insulin sensitivity and fatty infiltration reduction.",
+      icon: "🔬",
+      href: "/website/programs"
     },
     {
-      num: "05",
-      name: "PERSONALIZE",
-      title: "ZAPE Vitality & Posology Adaptation",
-      latin: "ZAYVORA Adaptive Posology Engine",
-      desc: "Calculates individual drug absorption, hepatic clearance, age, seasonal temperament (Fasl), and circadian timing (Anupan vehicle selection).",
-      action: "Generates patient-specific dosing vectors with required correctives (Musleh)."
-    },
-    {
-      num: "06",
-      name: "PLAN",
-      title: "Tri-Modal Regimen Synthesis",
-      latin: "Ilaj bil-Ghiza, Tadbeer, Dawa",
-      desc: "Simultaneous formulation of dietary directives (Dietetics), non-pharmacological regimenal therapies (Hijama, Natool, Zimad), and tailored botanical compounds.",
-      action: "Synthesizes multi-week Afaal treatment roadmap with dietary prohibitions."
-    },
-    {
-      num: "07",
-      name: "TREAT",
-      title: "21 CFR Part 11 Clinician Digital Signature",
-      latin: "Statutory Clinician Discretion Barrier",
-      desc: "Mandatory non-delegable clinical review. Prescriptions remain cryptographically locked until a credentialed Senior Tabeeb signs with cryptographic token.",
-      action: "Zero automated autonomous prescribing; safe_to_lock=False strictly enforced."
-    },
-    {
-      num: "08",
-      name: "MONITOR",
-      title: "IoT Wearable Telemetry & Relapse Forecasting",
-      latin: "Asbab-e-Sittah Sensor Stream",
-      desc: "Continuous BLE telemetry tracking sleep architecture, heart rate variability, skin temperature, and activity to anticipate humoral relapse before symptoms emerge.",
-      action: "Real-time relapse prediction score updated every 15 minutes."
-    },
-    {
-      num: "09",
-      name: "MEASURE",
-      title: "Longitudinal PROMs & Clinical Trajectory",
-      latin: "Patient-Reported Outcomes (VAS / WOMAC)",
-      desc: "Systematic tracking of functional mobility, pain attenuation curves, inflammatory marker reduction, and Meezan-e-Sehat 0-100 scores over time.",
-      action: "Validates symptomatic and systemic recovery across weekly milestones."
-    },
-    {
-      num: "10",
-      name: "LEARN",
-      title: "Real-World Evidence (RWE) Aggregation",
-      latin: "De-Identified Observational Registry",
-      desc: "Secure aggregation of clinical response vectors into HIPAA/ABDM-compliant research cohorts for botanical efficacy benchmarking.",
-      action: "1,240+ multi-center clinical subjects actively contributing RWE insights."
-    },
-    {
-      num: "11",
-      name: "VALIDATE",
-      title: "Academic Multi-Center Concordance",
-      latin: "DSMB & University Consortium Review",
-      desc: "Formal concordance analysis between traditional Unani diagnostics and blinded clinical specialist evaluations across 3 university hospitals.",
-      action: "Maintains 94.2% diagnostic concordance across enrolled clinical trials."
-    },
-    {
-      num: "12",
-      name: "IMPROVE",
-      title: "Governance Board Quorum & Protocol Evolution",
-      latin: "3/3 Senior Specialist Quorum",
-      desc: "Continuous clinical protocol updates requiring unanimous signed approval from Chief Clinician, Pharmacognosist, and Medical Director.",
-      action: "Auditable governance log with immutable cryptographic Merkle tree hashes."
-    }
-  ];
-
-  // 6 Specialized Clinical Care Areas
-  const careAreas = [
-    {
-      id: "metabolic",
-      name: "Metabolic & Endocrine Disorders",
-      desc: "Su-e-Mizaj Barid Balghami management, insulin sensitivity, lipid dyscrasia, and metabolic syndrome reversal.",
+      id: "thyroid-endocrine",
+      title: "Thyroid & Hormonal Health",
+      desc: "Nutritional support for sluggish glandular temperament (Su-e-Mizaj Barid), cold intolerance, and peripheral energy conversion.",
       icon: "⚡",
-      regimen: "Munzij-Mushil Balgham + MetaboCore Elite + Low-Glycemic Warm Diet"
+      href: "/website/programs"
     },
     {
-      id: "joints",
-      name: "Musculoskeletal & Joint Care (Mafasil)",
-      desc: "Osteoarthritis, rheumatoid arthralgia, synovial fluid restoration, and peri-articular exudate resolution.",
-      icon: "🦴",
-      regimen: "Habb-e-Suranjan Forte + Medicated Natool Irrigation + Zimad Poultice"
+      id: "stress-sleep",
+      title: "Stress, Anxiety & Sleep Support",
+      desc: "Nervous faculty tonification (Taskeen-e-Asab) using non-habit-forming adaptogens to support restorative deep sleep architecture.",
+      icon: "🌙",
+      href: "/website/programs"
     },
     {
-      id: "gut-liver",
-      name: "Liver & Gastrointestinal Axis (Kabid-Mida)",
-      desc: "Hepatobiliary stasis, non-alcoholic fatty liver, dyspeptic stasis, and gut microbiome humoral balance.",
+      id: "weight-metabolism",
+      title: "Weight & Metabolic Management",
+      desc: "Restoring innate metabolic heat (Hararat-e-Ghariziyyah) through circadian meal timing and gentle thermogenic botanicals.",
+      icon: "⚖️",
+      href: "/website/programs"
+    },
+    {
+      id: "skin-hair",
+      title: "Skin & Hair Wellness",
+      desc: "Clearing internal humoral impurities (Fasad-e-Dam) to support radiant dermal clarity and nourish hair root vitality.",
+      icon: "✨",
+      href: "/website/programs"
+    },
+    {
+      id: "respiratory",
+      title: "Respiratory Wellness",
+      desc: "Clearing phlegmatic mucosal accumulation (Balgham) from pulmonary pathways through gentle expectorant fomentations.",
+      icon: "🌬️",
+      href: "/website/programs"
+    },
+    {
+      id: "vitality",
+      title: "General Vitality & Resilience",
+      desc: "Comprehensive preventive tonification (Hifz-e-Sehat) enhancing the body's self-healing faculty (Tabi'at) across all seasons.",
       icon: "🌿",
-      regimen: "LiverPrime Core + Majun Dabeed-ul-Ward + Arq-e-Badiyan Anupan"
+      href: "/website/programs"
     },
-    {
-      id: "fertility",
-      name: "Reproductive Vitality & Fertility",
-      desc: "Male spermatogenic renewal and female follicular equilibrium via classical Muqawwiyat and endocrine harmonizers.",
-      icon: "👶",
-      regimen: "ManiVital Pro / OvaSync + Asbab-e-Sittah Circadian Sleep Calibration"
-    },
-    {
-      id: "neuro",
-      name: "Neuro-Psychiatric & Sleep Disorders",
-      desc: "Chronic stress adaptation, GABAergic modulation, vagal nerve restoration, and restorative non-REM sleep.",
-      icon: "🧠",
-      regimen: "NeuroCalmX + NightOne X + Roghan-e-Badaam Shireen Nasal Drops"
-    },
-    {
-      id: "preventive",
-      name: "Preventive Health & Hifz-e-Sehat",
-      desc: "Codified adherence to the Six Essential Precepts (Asbab-e-Sittah الضرورية) for lifelong immunity and vitality.",
-      icon: "🛡️",
-      regimen: "Seasonal Fasl Detoxification + Qalb-e-Salim + Personalized Ghiza Plan"
-    }
   ];
 
-  // Complete 10 Botanical Formulations Portfolio
-  const allProducts = [
-    {
-      id: "manivital-pro",
-      name: "ManiVital Pro",
-      category: "Fertility & Vitality",
-      price: "₹1,450",
-      desc: "Targeted spermatogenic renewal formulation with Withania somnifera and purified Mucuna pruriens.",
-      monograph: "UPI Vol. 1, p. 112 | HPLC Withanolide A > 2.5%"
-    },
-    {
-      id: "ovasync",
-      name: "OvaSync",
-      category: "Fertility & Vitality",
-      price: "₹1,380",
-      desc: "Ovarian reserve and hormonal rhythm balancer with standardized Asparagus racemosus saponins.",
-      monograph: "NFUM Part II, p. 74 | Shatavarin IV > 1.8%"
-    },
-    {
-      id: "metabocore-elite",
-      name: "MetaboCore Elite",
-      category: "Metabolic Care",
-      price: "₹1,250",
-      desc: "Potent metabolic regulator featuring Gymnema sylvestre gymnemic acids and Berberis aristata.",
-      monograph: "UPI Vol. 3, p. 89 | Berberine HCl > 8.0%"
-    },
-    {
-      id: "liverprime-core",
-      name: "LiverPrime Core",
-      category: "Hepatobiliary",
-      price: "₹1,150",
-      desc: "Hepatoprotective and bile-regulating compound backed by classical Unani pharmacopoeia.",
-      monograph: "UPI Vol. 2, p. 45 | Kutkin Assay > 4.2%"
-    },
-    {
-      id: "neurocalmx",
-      name: "NeuroCalmX",
-      category: "Neuro-Psychiatric",
-      price: "₹1,200",
-      desc: "Nootropic stress modulator and adaptogenic nerve tonic with Convolvulus pluricaulis.",
-      monograph: "NFUM Part I, p. 188 | Shankhpushpine > 1.2%"
-    },
-    {
-      id: "nightone-x",
-      name: "NightOne X",
-      category: "Neuro-Psychiatric",
-      price: "₹1,320",
-      desc: "Restorative deep sleep confection enriched with Valeriana wallichii and Nardostachys jatamansi.",
-      monograph: "UPI Vol. 4, p. 62 | Valerenic Acid > 0.8%"
-    },
-    {
-      id: "qalb-e-salim",
-      name: "Qalb-e-Salim Cardio Tonic",
-      category: "Cardiovascular",
-      price: "₹1,490",
-      desc: "Classical Terminalia arjuna and Salvia haematodes cardio-protective vascular tonic.",
-      monograph: "Al-Qanoon fit-Tibb | Arjunic Acid > 1.5%"
-    },
-    {
-      id: "habbe-suranjan-forte",
-      name: "Habb-e-Suranjan Forte",
-      category: "Joints & Mafasil",
-      price: "₹980",
-      desc: "Mudabbar Colchicum luteum with Kateera corrective for rapid relief of joint inflammation.",
-      monograph: "UPI Vol. 1, p. 98 | Schedule E(1) Mudabbar Verified"
-    },
-    {
-      id: "majun-dabeed",
-      name: "Majun Dabeed-ul-Ward",
-      category: "Hepatobiliary",
-      price: "₹850",
-      desc: "Classical compound for chronic liver enlargement, gastritis, and systemic humoral cleansing.",
-      monograph: "NFUM Part I, p. 210 | Rosa damascena Essence"
-    },
-    {
-      id: "itrifal-ustukhuddus",
-      name: "Itrifal Ustukhuddus",
-      category: "Neuro & Head Care",
-      price: "₹720",
-      desc: "Lavandula stoechas cerebral purifier for chronic migraine, sinusitis, and cold-matter clearance.",
-      monograph: "NFUM Part III, p. 33 | Lavandula Stoechas > 5.0%"
-    }
-  ];
+  const filteredPrograms = selectedProgramCategory === "All"
+    ? HEALTH_PROGRAMS.slice(0, 6)
+    : HEALTH_PROGRAMS.filter(p => p.category === selectedProgramCategory);
 
-  // Calculate calculated Mizaj based on mini-quiz
-  const calculateMizaj = () => {
-    const { temp, moisture } = mizajAnswers;
-    if (temp === "hot" && moisture === "moist") return { name: "Damawi (Sanguine)", trait: "Warm & Moist", affinity: "Qalb & Damm (Circulation)" };
-    if (temp === "hot" && moisture === "dry") return { name: "Safrawi (Choleric)", trait: "Warm & Dry", affinity: "Kabid & Safra (Liver & Bile)" };
-    if (temp === "cold" && moisture === "moist") return { name: "Balghami (Phlegmatic)", trait: "Cold & Moist", affinity: "Mida & Dimagh (Gut & Brain)" };
-    return { name: "Sawdawi (Melancholic)", trait: "Cold & Dry", affinity: "Tihal & A'sab (Spleen & Nerves)" };
-  };
-
-  const calculatedMizaj = calculateMizaj();
+  const filteredProducts = selectedProductCategory === "All"
+    ? PRODUCTS_CATALOG
+    : PRODUCTS_CATALOG.filter(p => p.regulatoryCategory === selectedProductCategory);
 
   return (
-    <div className="space-y-16 pb-20">
-      
-      {/* Top Banner / Breadcrumb */}
-      <div className="bg-[#0A0F1D] border-b border-[#1E293B] py-2 px-6">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs text-[#94A3B8]">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="font-semibold text-emerald-400">ZAYVORA Health OS™ v5.0 Live Production Network</span>
-            <span className="text-[#475569]">|</span>
-            <span>21 CFR Part 11 Clinically Governed</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <Link href="/" className="text-[#2DD4BF] hover:underline font-semibold">Open Executive Cockpit →</Link>
-            <Link href="/patient" className="hover:text-white">Patient Portal</Link>
-            <Link href="/doctor" className="hover:text-white">Doctor Workspace</Link>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-20 pb-20 text-[#CBD5E1]">
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-8 pb-16 border-b border-[#334155] bg-gradient-to-b from-[#0F172A] via-[#0D1526] to-[#0A0F1D]">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0D9488]/15 border border-[#0D9488]/30 text-[#2DD4BF] text-xs font-semibold shadow-inner">
-            <span>Codified Greco-Arab Wisdom + Molecular Omics Intelligence</span>
-          </div>
+      {/* ========================================================================= */}
+      {/* SECTION 1 — HERO                                                          */}
+      {/* ========================================================================= */}
+      <section className="relative pt-12 pb-16 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
-            Ancient Wisdom. Modern Science. <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] via-[#14B8A6] to-emerald-400">Intelligent Healthcare.</span>
-          </h1>
+          <div className="lg:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0D5C46]/20 border border-[#0D9488]/40 text-[#2DD4BF] text-xs font-semibold">
+              <span>🌿</span>
+              <span>Modern Unani Care System • Jamia Hamdard AUTC Facility</span>
+            </div>
 
-          <p className="text-base sm:text-lg text-[#94A3B8] max-w-3xl mx-auto leading-relaxed">
-            ZAYVORA Health OS™ unites 1,000 years of codified Unani medicine (*Tibb-e-Unani*) with state-of-the-art clinical AI, longitudinal 10-Ajnas Mizaj profiling, organ-axis cross-talk, IoT diagnostic hardware, and 21 CFR Part 11 medical governance.
-          </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15]">
+              Modern Unani Care for Your <span className="text-[#2DD4BF]">Complete Health Journey</span>
+            </h1>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <Link href="/website/book" className="px-7 py-3.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white font-bold text-sm shadow-xl shadow-teal-900/30 transition transform hover:-translate-y-0.5">
-              Book Doctor Consultation
-            </Link>
-            <Link href="/website/philosophy" className="px-7 py-3.5 rounded-xl border border-[#334155] bg-[#1E293B]/70 hover:bg-[#1E293B] text-white font-semibold text-sm transition">
-              Explore Clinical Philosophy →
-            </Link>
-            <Link href="/website/herbals" className="px-7 py-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 font-semibold text-sm transition">
-              View Herbals Store
-            </Link>
+            <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed max-w-2xl">
+              Classical Unani wisdom, modern clinical understanding, and personalized care — brought together through the ZAYVORA Health System.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <Link
+                href="/website/book"
+                className="px-6 py-3.5 rounded-2xl bg-[#0D9488] text-white font-bold text-sm hover:bg-[#0F766E] shadow-xl hover:shadow-[#0D9488]/20 transition flex items-center gap-2"
+              >
+                <span>📅</span>
+                <span>Book a Consultation</span>
+              </Link>
+              <Link
+                href="/website/programs"
+                className="px-6 py-3.5 rounded-2xl bg-[#1E293B] border border-[#334155] text-white font-semibold text-sm hover:bg-[#334155] hover:border-[#0D9488] transition"
+              >
+                Explore Health Programs
+              </Link>
+              <Link
+                href="/patient/login"
+                className="px-5 py-3.5 rounded-2xl text-[#94A3B8] hover:text-white text-sm font-semibold transition"
+              >
+                Patient Login →
+              </Link>
+            </div>
+
+            {/* 4 Trust Points */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-[#1E293B]">
+              <div className="space-y-0.5">
+                <span className="text-white font-bold text-sm block">Personalized Care</span>
+                <span className="text-[11px] text-[#64748B] block">10-Ajnas Mizaj profiling</span>
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-white font-bold text-sm block">Clinician-Guided</span>
+                <span className="text-[11px] text-[#64748B] block">Supervised by senior Tabeebs</span>
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-white font-bold text-sm block">Evidence-Informed</span>
+                <span className="text-[11px] text-[#64748B] block">Standardized HPLC assays</span>
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-white font-bold text-sm block">Secure Experience</span>
+                <span className="text-[11px] text-[#64748B] block">HIPAA & ABDM compliant</span>
+              </div>
+            </div>
           </div>
 
-          {/* Clinical Credentials Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-6 pt-6 text-xs text-[#94A3B8]">
-            <span className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> AYUSH GMP Certified</span>
-            <span className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> HPLC Active Fingerprinted</span>
-            <span className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> Schedule E(1) Mudabbar Verified</span>
-            <span className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> ABDM & FHIR R4 Ready</span>
+          {/* Hero Visual: Physiological Diagnostic & Telemetry Card */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="rounded-3xl bg-gradient-to-br from-[#0F172A] to-[#1E293B] border border-[#334155] p-6 shadow-2xl space-y-5">
+              <div className="flex items-center justify-between border-b border-[#334155] pb-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2DD4BF] animate-pulse"></span>
+                  <span className="font-bold text-white text-xs">Arterial Pulse (Nabz) Waveform Simulation</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0D9488]/20 text-[#2DD4BF]">100 Hz DSP</span>
+              </div>
+
+              {/* Canvas Waveform */}
+              <div className="rounded-2xl bg-[#070B14] border border-[#1E293B] p-2 overflow-hidden shadow-inner">
+                <canvas ref={canvasRef} width={420} height={130} className="w-full h-28 block" />
+              </div>
+
+              {/* Real-time Physiological Vitals Grid */}
+              <div className="grid grid-cols-3 gap-2.5 text-xs text-center">
+                <div className="p-3 rounded-xl bg-[#0A0F1D] border border-[#334155]">
+                  <span className="text-[10px] text-[#64748B] block">Heart Rate</span>
+                  <span className="font-bold text-white text-base">72 <span className="text-[10px] text-[#94A3B8]">BPM</span></span>
+                </div>
+                <div className="p-3 rounded-xl bg-[#0A0F1D] border border-[#334155]">
+                  <span className="text-[10px] text-[#64748B] block">Dominant Mizaj</span>
+                  <span className="font-bold text-[#2DD4BF] text-sm">Balghami</span>
+                </div>
+                <div className="p-3 rounded-xl bg-[#0A0F1D] border border-[#334155]">
+                  <span className="text-[10px] text-[#64748B] block">Cold-Chain FEFO</span>
+                  <span className="font-bold text-amber-400 text-sm">19.4°C</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#0D9488]/10 border border-[#0D9488]/30 flex items-center justify-between text-xs">
+                <span className="text-white font-medium">Non-invasive clinical assessment</span>
+                <Link href="/website/book" className="text-[#2DD4BF] font-bold hover:underline text-[11px]">
+                  Schedule Assessment →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 2 — INTRODUCTION                                                  */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="rounded-3xl bg-[#0F172A] border border-[#334155] p-8 sm:p-12 space-y-8">
+          <div className="max-w-3xl space-y-4">
+            <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Introduction to ZAYVORA</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              A Living Synthesis of Classical Wisdom & Contemporary Medical Science
+            </h2>
+            <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+              ZAYVORA Health was established to bridge a profound divide in healthcare: while modern medicine excels in emergency triage and acute interventions, millions of individuals struggle with chronic, multi-system disorders that standard symptomatic therapies fail to resolve.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-[#1E293B]">
+            <div className="space-y-2">
+              <h3 className="font-bold text-white text-base flex items-center gap-2">
+                <span className="text-lg">🏛️</span> Why We Exist
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                To transform traditional Unani Tibb into an evidence-based, clinically governed science with verified botanical compounds and measurable biomarker outcomes.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-bold text-white text-base flex items-center gap-2">
+                <span className="text-lg">👥</span> Who It Is For
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Individuals navigating persistent metabolic slowdown, hormonal imbalances, chronic joint discomfort, and stress burnout seeking root-cause restoration.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-bold text-white text-base flex items-center gap-2">
+                <span className="text-lg">⚙️</span> How It Combines Care
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                We integrate classical 10-Ajnas pulse evaluation and Asbab-e-Sittah lifestyle factors with laboratory chemistry and clinician-guided digital health tracking.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-2 flex justify-start">
+            <Link
+              href="/website/about"
+              className="px-5 py-2.5 rounded-xl bg-[#1E293B] border border-[#334155] text-white font-semibold text-xs hover:border-[#0D9488] transition inline-flex items-center gap-2"
+            >
+              <span>Discover ZAYVORA</span>
+              <span>→</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Live Diagnostic Hardware Telemetry Bar */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="p-6 rounded-3xl bg-[#0F172A] border border-[#334155] shadow-2xl space-y-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#1E293B] pb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Clinical Diagnostic Hardware Stream</span>
-              </div>
-              <h2 className="text-xl font-bold text-white mt-1">Live Sensor Mesh & DSP Telemetry</h2>
-            </div>
-            <div className="flex items-center gap-3 text-xs">
-              <span className="px-3 py-1 rounded-lg bg-[#1E293B] text-emerald-400 font-mono font-bold border border-emerald-500/30">
-                Mesh Sync: 100 Hz
-              </span>
-              <span className="px-3 py-1 rounded-lg bg-[#1E293B] text-[#94A3B8] font-mono">
-                Latency: 12ms
-              </span>
-            </div>
-          </div>
+      {/* ========================================================================= */}
+      {/* SECTION 3 — HEALTH CONCERNS                                               */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Areas of Specialization</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Clinician-Guided Health Concerns We Address
+          </h2>
+          <p className="text-xs sm:text-sm text-[#94A3B8]">
+            Care pathways designed around physiological organ axes, constitutional humors, and evidence-informed botanical protocols.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            {/* Real-time Arterial PPG Waveform Canvas */}
-            <div className="lg:col-span-5 p-4 rounded-2xl bg-[#0A0F1D] border border-[#1E293B] space-y-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-white flex items-center gap-1.5">
-                  <span className="text-teal-400">📊</span> Nabz 10-Ajnas Arterial PPG Wave
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {healthConcerns.map((c) => (
+            <div
+              key={c.id}
+              className="p-5 rounded-2xl bg-[#0F172A] border border-[#334155] hover:border-[#0D9488] transition duration-200 flex flex-col justify-between space-y-4 group"
+            >
+              <div className="space-y-2.5">
+                <span className="text-2xl block p-2.5 rounded-xl bg-[#1E293B] w-fit border border-[#334155]">
+                  {c.icon}
                 </span>
-                <span className="font-mono text-emerald-400 font-bold">{pulseBpm} BPM (Bat'ee)</span>
+                <h4 className="font-bold text-white text-sm group-hover:text-[#2DD4BF] transition leading-snug">
+                  {c.title}
+                </h4>
+                <p className="text-[11px] text-[#94A3B8] leading-relaxed">
+                  {c.desc}
+                </p>
               </div>
-              
-              <canvas
-                ref={canvasRef}
-                width={380}
-                height={120}
-                className="w-full h-28 rounded-lg bg-[#0F172A] border border-[#1E293B]"
-              />
 
-              <div className="grid grid-cols-3 gap-2 text-[10px] text-[#94A3B8] font-mono">
-                <div className="p-1.5 rounded bg-[#1E293B]/70">
-                  <span className="block text-white font-bold">Kayfiyat</span>
-                  <span>Layyin (Soft)</span>
-                </div>
-                <div className="p-1.5 rounded bg-[#1E293B]/70">
-                  <span className="block text-white font-bold">Miqdar</span>
-                  <span>Azeem (Large)</span>
-                </div>
-                <div className="p-1.5 rounded bg-[#1E293B]/70">
-                  <span className="block text-white font-bold">Zamanah</span>
-                  <span>Bat'ee (Slow)</span>
-                </div>
-              </div>
+              <Link
+                href={c.href}
+                className="pt-2 border-t border-[#1E293B] text-[11px] font-bold text-[#0D9488] hover:text-white transition flex items-center justify-between"
+              >
+                <span>View Pathway</span>
+                <span>→</span>
+              </Link>
             </div>
-
-            {/* 3 Satellite Hardware Sensors */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Lisan Multispectral Camera */}
-              <div className="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xl">👅</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded font-mono bg-blue-500/20 text-blue-300 font-bold">SPECTRAL</span>
-                </div>
-                <h4 className="text-xs font-bold text-white">Lisan Tongue Analysis</h4>
-                <div className="text-[11px] text-[#94A3B8] space-y-1">
-                  <div className="flex justify-between"><span>Coating:</span> <strong className="text-white">Saburra (Whitish)</strong></div>
-                  <div className="flex justify-between"><span>Moisture:</span> <strong className="text-emerald-400">Rutubat 68%</strong></div>
-                  <div className="flex justify-between"><span>NIR Index:</span> <strong className="text-white">88.4%</strong></div>
-                  <div className="flex justify-between"><span>Humoral:</span> <strong className="text-amber-400">Balghami</strong></div>
-                </div>
-              </div>
-
-              {/* Dispensary Cold-Chain IoT */}
-              <div className="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xl">❄️</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded font-mono bg-emerald-500/20 text-emerald-300 font-bold">COLD-CHAIN</span>
-                </div>
-                <h4 className="text-xs font-bold text-white">Dispensary IoT Storage</h4>
-                <div className="text-[11px] text-[#94A3B8] space-y-1">
-                  <div className="flex justify-between"><span>Chamber Temp:</span> <strong className="text-emerald-400">{coldChainTemp}°C</strong></div>
-                  <div className="flex justify-between"><span>Target Range:</span> <strong className="text-white">15°C - 25°C</strong></div>
-                  <div className="flex justify-between"><span>Humidity:</span> <strong className="text-white">42% RH</strong></div>
-                  <div className="flex justify-between"><span>FEFO Gate:</span> <strong className="text-emerald-400">LOCKED SECURE</strong></div>
-                </div>
-              </div>
-
-              {/* Wearables BLE Gateway */}
-              <div className="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xl">📡</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded font-mono bg-purple-500/20 text-purple-300 font-bold">BLE MESH</span>
-                </div>
-                <h4 className="text-xs font-bold text-white">Wearables Gateway</h4>
-                <div className="text-[11px] text-[#94A3B8] space-y-1">
-                  <div className="flex justify-between"><span>Paired Nodes:</span> <strong className="text-purple-300">{bleDevices} Active</strong></div>
-                  <div className="flex justify-between"><span>SpO2 Level:</span> <strong className="text-emerald-400">98% Normal</strong></div>
-                  <div className="flex justify-between"><span>HRV Index:</span> <strong className="text-white">58 ms</strong></div>
-                  <div className="flex justify-between"><span>Relapse Risk:</span> <strong className="text-emerald-400">0.04 (Minimal)</strong></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Interactive 12-Stage Closed-Loop Clinical Continuum */}
-      <section className="max-w-7xl mx-auto px-6 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-bold text-[#2DD4BF] tracking-wider uppercase">Clinical Protocol Framework</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">The 12-Stage Closed-Loop Clinical Continuum</h2>
-          <p className="text-xs md:text-sm text-[#94A3B8] max-w-2xl mx-auto">
-            Every patient encounter is anchored in codified classical evidence, verified through diagnostic hardware, adapted to individual vitality, and locked by licensed clinicians.
+      {/* ========================================================================= */}
+      {/* SECTION 4 — ZAYVORA CARE SYSTEM                                           */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">The Continuum of Care</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            The ZAYVORA 7-Step Care Journey
+          </h2>
+          <p className="text-xs sm:text-sm text-[#94A3B8]">
+            From your first assessment to long-term health preservation, every step is deliberate, measured, and clinician-supervised.
           </p>
         </div>
 
-        {/* 12 Clickable Stage Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {clinicalStages.map((stage, idx) => {
-            const isActive = idx === activeStageIndex;
-            return (
+        {/* Visual Process Diagram */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+          {[
+            { step: "01", title: "Patient Assessment", sub: "Intake symptom survey and digital registration" },
+            { step: "02", title: "Health History", sub: "Review of prior reports, labs, and medications" },
+            { step: "03", title: "Mizaj Mapping", sub: "10-Ajnas constitutional temperament evaluation" },
+            { step: "04", title: "Clinical Evaluation", sub: "Video or in-clinic consult with registered Tabeeb" },
+            { step: "05", title: "Care Plan", sub: "Personalized 4-phase sequential protocol" },
+            { step: "06", title: "Lifestyle Guidance", sub: "Asbab-e-Sittah nutrition, sleep & movement" },
+            { step: "07", title: "Follow-up & Review", sub: "Bi-weekly milestone audits and progress scores" },
+          ].map((s, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-2xl bg-[#0F172A] border border-[#334155] space-y-2 relative group hover:border-[#0D9488] transition"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-extrabold text-[#0D9488] px-2 py-0.5 rounded bg-[#0D9488]/10">
+                  {s.step}
+                </span>
+                {idx < 6 && (
+                  <span className="hidden lg:inline text-xs text-[#334155] font-bold">→</span>
+                )}
+              </div>
+              <h5 className="font-bold text-white text-xs leading-snug">{s.title}</h5>
+              <p className="text-[10px] text-[#64748B] leading-normal">{s.sub}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 5 — FEATURED HEALTH PROGRAMS                                      */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Structured Clinical Programs</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Featured Health Reversal Programs
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              Multi-week clinician-supervised care programs targeting chronic constitutional dyscrasias.
+            </p>
+          </div>
+
+          {/* Program Category Filters */}
+          <div className="flex flex-wrap gap-2 text-xs font-semibold">
+            {["All", "Men's Health", "Women's Health", "Metabolic Health", "Gut & Liver", "Stress & Sleep", "General Wellness"].map((cat) => (
               <button
-                key={stage.name}
-                onClick={() => setActiveStageIndex(idx)}
-                className={`p-3.5 rounded-xl text-left border transition-all ${
-                  isActive
-                    ? "bg-[#0D9488]/20 border-[#2DD4BF] shadow-lg shadow-teal-900/20"
-                    : "bg-[#1E293B] border-[#334155] hover:border-[#0D9488]/50"
+                key={cat}
+                onClick={() => setSelectedProgramCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-xl border transition ${
+                  selectedProgramCategory === cat
+                    ? "bg-[#0D9488] border-[#0D9488] text-white"
+                    : "bg-[#0F172A] border-[#334155] text-[#94A3B8] hover:text-white"
                 }`}
               >
-                <div className="flex items-center justify-between text-[11px] font-mono font-bold">
-                  <span className={isActive ? "text-[#2DD4BF]" : "text-[#64748B]"}>{stage.num}.</span>
-                  <span className={isActive ? "text-white font-bold" : "text-[#94A3B8]"}>{stage.name}</span>
-                </div>
-                <p className="text-[11px] text-[#CBD5E1] mt-1.5 line-clamp-1 font-semibold">{stage.title}</p>
+                {cat}
               </button>
-            );
-          })}
-        </div>
-
-        {/* Active Stage Detailed Deep-Dive Card */}
-        <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#1E293B] via-[#0F172A] to-[#1E293B] border border-[#2DD4BF]/40 space-y-4 shadow-xl">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[#334155] pb-4">
-            <div>
-              <span className="text-xs font-mono font-bold text-[#2DD4BF]">STAGE {clinicalStages[activeStageIndex].num} OF 12</span>
-              <h3 className="text-xl md:text-2xl font-bold text-white mt-0.5">
-                {clinicalStages[activeStageIndex].name}: {clinicalStages[activeStageIndex].title}
-              </h3>
-              <span className="text-xs text-emerald-400 font-serif italic">{clinicalStages[activeStageIndex].latin}</span>
-            </div>
-            <div className="px-4 py-1.5 rounded-full bg-[#0D9488]/20 border border-[#0D9488]/40 text-[#2DD4BF] text-xs font-semibold">
-              Live Verified Standard
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold text-[#94A3B8] uppercase">Clinical Mechanism</h4>
-              <p className="text-sm text-[#CBD5E1] leading-relaxed">
-                {clinicalStages[activeStageIndex].desc}
-              </p>
-            </div>
-            <div className="space-y-2 bg-[#0A0F1D] p-4 rounded-xl border border-[#334155]">
-              <h4 className="text-xs font-bold text-[#2DD4BF] uppercase">Clinical Execution & Safety Output</h4>
-              <p className="text-xs text-[#94A3B8] leading-relaxed font-mono">
-                {clinicalStages[activeStageIndex].action}
-              </p>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
 
-      {/* 4-Stage Afaal Treatment Cascade */}
-      <section className="max-w-7xl mx-auto px-6 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-bold text-[#2DD4BF] tracking-wider uppercase">Humoral Healing Continuum</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">The ZAYVORA Afaal Treatment Cascade</h2>
-          <p className="text-xs md:text-sm text-[#94A3B8] max-w-xl mx-auto">
-            Unlike superficial pharmaceutical suppression, our clinical protocol restores innate vitality (*Tabi'at*) through four systematic phases:
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 hover:border-emerald-500/50 transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-emerald-400">STAGE 01</span>
-              <span className="text-xs text-[#64748B]">Days 1 - 14</span>
-            </div>
-            <h3 className="text-lg font-bold text-white">Tanqiya</h3>
-            <span className="text-xs text-[#2DD4BF] block font-semibold">Humoral Cleansing & Detoxification</span>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Targeted concoction and elimination of accumulated cold, phlegmatic, or bilious morbid matter (*Mawad-e-Fasida*) through concoctive Munzaj pharmacotherapy and gentle cupping (*Hijama*).
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 hover:border-blue-500/50 transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-blue-400">STAGE 02</span>
-              <span className="text-xs text-[#64748B]">Days 15 - 30</span>
-            </div>
-            <h3 className="text-lg font-bold text-white">Tahleel</h3>
-            <span className="text-xs text-blue-400 block font-semibold">Resolution of Inflammation</span>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Dissolution of deep-seated peri-articular exudates and microvascular stasis via medicated warm fomentations (*Natool*), poultices (*Zimad*), and classical resolvent botanicals.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 hover:border-purple-500/50 transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-purple-400">STAGE 03</span>
-              <span className="text-xs text-[#64748B]">Days 31 - 60</span>
-            </div>
-            <h3 className="text-lg font-bold text-white">Taqwiyaat</h3>
-            <span className="text-xs text-purple-400 block font-semibold">Organ & Tissue Restoration</span>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Targeted nourishment of compromised primary organs and neural pathways (*Muqawwiyat-e-A'za*) to rebuild functional stamina and prevent recurring pathological deposition.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 hover:border-amber-500/50 transition">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-amber-400">STAGE 04</span>
-              <span className="text-xs text-[#64748B]">Lifelong</span>
-            </div>
-            <h3 className="text-lg font-bold text-white">Hifz</h3>
-            <span className="text-xs text-amber-400 block font-semibold">Homeostasis & Preservation</span>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Sustained physiological equilibrium through personalized dietetics (*Ilaj bil-Ghiza*) and strict daily adherence to the Six Essential Lifestyle Precepts (*Asbab-e-Sittah*).
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Mini Mizaj Self-Assessment */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="p-6 md:p-8 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-6">
-          <div className="text-center space-y-1">
-            <span className="text-xs font-bold text-[#2DD4BF] tracking-wider uppercase">Individualized Health Architecture</span>
-            <h2 className="text-2xl font-bold text-white">Discover Your Innate Humoral Mizaj</h2>
-            <p className="text-xs text-[#94A3B8] max-w-lg mx-auto">
-              Answer 4 preliminary constitutional questions to estimate your Greco-Arab temperament and primary organ affinities.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Question 1: Thermal Tendency */}
-            <div className="p-4 rounded-xl bg-[#1E293B] border border-[#334155] space-y-2">
-              <span className="text-[10px] font-bold text-teal-400 uppercase">1. Thermal Sensitivity</span>
-              <p className="text-xs font-semibold text-white">How does your body react to climate?</p>
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, temp: "hot" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.temp === "hot" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  🔥 Feel Warm
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, temp: "cold" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.temp === "cold" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  ❄️ Feel Cold
-                </button>
-              </div>
-            </div>
-
-            {/* Question 2: Moisture Tendency */}
-            <div className="p-4 rounded-xl bg-[#1E293B] border border-[#334155] space-y-2">
-              <span className="text-[10px] font-bold text-teal-400 uppercase">2. Skin & Moisture</span>
-              <p className="text-xs font-semibold text-white">What is your natural skin quality?</p>
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, moisture: "moist" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.moisture === "moist" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  💧 Soft & Moist
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, moisture: "dry" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.moisture === "dry" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  🍂 Rough & Dry
-                </button>
-              </div>
-            </div>
-
-            {/* Question 3: Body Frame */}
-            <div className="p-4 rounded-xl bg-[#1E293B] border border-[#334155] space-y-2">
-              <span className="text-[10px] font-bold text-teal-400 uppercase">3. Physique & Build</span>
-              <p className="text-xs font-semibold text-white">What is your natural skeletal build?</p>
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, physique: "broad" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.physique === "broad" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  🛡️ Broad / Heavy
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, physique: "slender" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.physique === "slender" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  ⚡ Lean / Slender
-                </button>
-              </div>
-            </div>
-
-            {/* Question 4: Sleep Tendency */}
-            <div className="p-4 rounded-xl bg-[#1E293B] border border-[#334155] space-y-2">
-              <span className="text-[10px] font-bold text-teal-400 uppercase">4. Sleep Architecture</span>
-              <p className="text-xs font-semibold text-white">How do you typically sleep?</p>
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, sleep: "deep" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.sleep === "deep" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  😴 Deep & Heavy
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMizajAnswers({ ...mizajAnswers, sleep: "light" })}
-                  className={`p-2 rounded-lg text-xs font-semibold border ${
-                    mizajAnswers.sleep === "light" ? "bg-[#0D9488] text-white border-transparent" : "bg-[#0F172A] text-[#94A3B8] border-[#334155]"
-                  }`}
-                >
-                  🌙 Light & Alert
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Assessment Result Box */}
-          <div className="p-5 rounded-2xl bg-[#1E293B] border border-[#2DD4BF]/40 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="space-y-1 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="text-xs text-[#94A3B8]">Preliminary Mizaj Estimate:</span>
-                <span className="text-base font-bold text-white">{calculatedMizaj.name}</span>
-                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">{calculatedMizaj.trait}</span>
-              </div>
-              <p className="text-xs text-[#94A3B8]">
-                Organ Affinity: <strong className="text-teal-300">{calculatedMizaj.affinity}</strong>. Complete formal diagnosis requires in-person Nabz (pulse) and Lisan spectral examination.
-              </p>
-            </div>
-            <Link
-              href="/website/book"
-              className="px-6 py-2.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold whitespace-nowrap shadow-lg"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {filteredPrograms.map((p) => (
+            <div
+              key={p.id}
+              className="rounded-3xl bg-[#0F172A] border border-[#334155] p-6 space-y-5 hover:border-[#0D9488] transition flex flex-col justify-between"
             >
-              Book Full 10-Ajnas Clinical Exam →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 6 Specialized Clinical Care Areas */}
-      <section className="max-w-7xl mx-auto px-6 space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-bold text-[#2DD4BF] tracking-wider uppercase">Comprehensive Care</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Specialized Clinical Care Areas</h2>
-          <p className="text-xs md:text-sm text-[#94A3B8] max-w-xl mx-auto">
-            Rigorous integrative protocols targeting root humoral dyscrasias across major metabolic, musculoskeletal, and organ-axis disorders.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {careAreas.map((area) => (
-            <div key={area.id} className="p-6 rounded-2xl bg-[#0F172A] border border-[#334155] hover:border-[#0D9488]/60 transition space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl">{area.icon}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#1E293B] text-[#2DD4BF] font-mono font-bold">
-                    PROTOCOL READY
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#0D9488]/20 text-[#2DD4BF] font-mono">
+                    {p.duration}
                   </span>
+                  <span className="text-[10px] text-[#64748B] font-semibold">{p.category}</span>
                 </div>
-                <h3 className="text-base font-bold text-white">{area.name}</h3>
-                <p className="text-xs text-[#94A3B8] leading-relaxed">{area.desc}</p>
-                <div className="p-3 rounded-lg bg-[#1E293B] border border-[#334155]/60 text-[11px] text-teal-300">
-                  <span className="block text-[10px] text-[#94A3B8] font-bold uppercase">Standard Regimen</span>
-                  {area.regimen}
+
+                <h3 className="text-lg font-bold text-white">{p.title}</h3>
+                <p className="text-xs text-[#94A3B8] leading-relaxed">{p.shortDescription}</p>
+
+                <div className="space-y-1.5 pt-2 border-t border-[#1E293B]">
+                  <span className="text-[10px] font-bold text-white uppercase block">What is included:</span>
+                  <ul className="space-y-1 text-[11px] text-[#64748B]">
+                    {p.inclusions.slice(0, 3).map((inc, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="text-[#0D9488]">✓</span>
+                        <span>{inc}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-              <div className="pt-2 border-t border-[#1E293B] flex items-center justify-between">
-                <Link href="/website/conditions" className="text-xs font-bold text-[#2DD4BF] hover:text-white">
-                  Clinical Details →
+
+              <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between gap-3">
+                <Link
+                  href={`/website/program?id=${p.id}`}
+                  className="px-4 py-2 rounded-xl bg-[#1E293B] text-xs font-semibold text-white hover:bg-[#334155] transition"
+                >
+                  View Details
                 </Link>
-                <Link href="/website/book" className="text-xs font-semibold text-[#94A3B8] hover:text-white">
-                  Consult Specialist
+                <Link
+                  href="/website/book"
+                  className="px-4 py-2 rounded-xl bg-[#0D9488] text-xs font-bold text-white hover:bg-[#0F766E] shadow-sm transition"
+                >
+                  Book Consult
                 </Link>
               </div>
             </div>
@@ -807,50 +488,248 @@ export default function PublicHomePage() {
         </div>
       </section>
 
-      {/* Complete 10 Botanical Formulations Portfolio */}
-      <section className="max-w-7xl mx-auto px-6 space-y-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#334155] pb-4">
-          <div>
-            <span className="text-xs font-bold text-[#2DD4BF] tracking-wider uppercase">Codified Botanical Therapeutics</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">ZAYVORA Herbals Portfolio</h2>
-            <p className="text-xs text-[#94A3B8] mt-1">
-              GMP manufactured, HPLC verified, Schedule E(1) Mudabbar purified classical & proprietary compounds.
+      {/* ========================================================================= */}
+      {/* SECTION 6 — FEATURED PRODUCTS (REGULATORY CATEGORIZED)                    */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-bold">
+              <span>🛡️</span> Statutory Regulatory Traceability
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Standardized Botanical Formulations
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              Formulated in GMP cleanrooms, authenticated via HPLC assays, and verified under Schedule E(1) Mudabbar standards.
             </p>
           </div>
-          <Link href="/website/herbals" className="px-4 py-2 rounded-xl border border-[#334155] text-xs font-bold text-[#2DD4BF] hover:text-white hover:bg-[#1E293B] transition">
-            View All 10 Formulations Store →
+
+          {/* Regulatory Category Filter */}
+          <div className="flex flex-wrap gap-2 text-xs font-semibold">
+            {(["All", "Clinic-Prescribed Unani Formulation", "AYUSH-Licensed Botanical Preparation", "FSSAI Dietary & Nutraceutical Supplement"] as const).map((rc) => (
+              <button
+                key={rc}
+                onClick={() => setSelectedProductCategory(rc)}
+                className={`px-3 py-1.5 rounded-xl border text-[11px] transition ${
+                  selectedProductCategory === rc
+                    ? "bg-[#0D9488] border-[#0D9488] text-white"
+                    : "bg-[#0F172A] border-[#334155] text-[#94A3B8] hover:text-white"
+                }`}
+              >
+                {rc === "All" ? "All Formulations" : rc.replace(" Preparation", "").replace(" Formulation", "")}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredProducts.slice(0, 8).map((prod) => (
+            <div
+              key={prod.id}
+              className="rounded-3xl bg-[#0F172A] border border-[#334155] p-5 space-y-4 hover:border-[#0D9488] transition flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex justify-between items-start gap-2">
+                  <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-[#1E293B] border border-[#334155] text-[#94A3B8] uppercase">
+                    {prod.regulatoryCategory === "Clinic-Prescribed Unani Formulation" ? "Rx Only" : "AYUSH"}
+                  </span>
+                  <span className="text-sm font-bold text-white font-mono">{prod.currency}{prod.price}</span>
+                </div>
+
+                <h4 className="font-bold text-white text-base leading-snug">{prod.name}</h4>
+                <p className="text-[11px] text-[#94A3B8] line-clamp-2 leading-relaxed">{prod.intendedUse}</p>
+
+                <div className="p-2.5 rounded-xl bg-[#0A0F1D] border border-[#1E293B] space-y-1 text-[10px]">
+                  <span className="text-[#64748B] block">Batch: <strong className="text-white font-mono">{prod.batchInfo.lotNumber}</strong></span>
+                  <span className="text-[#64748B] block">Heavy Metals: <strong className="text-emerald-400">Passed (&lt;0.05 ppm)</strong></span>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-[#1E293B]">
+                <div className="flex items-center justify-between text-[11px]">
+                  <Link href={`/website/product?id=${prod.id}`} className="text-[#0D9488] font-bold hover:underline">
+                    View Monograph →
+                  </Link>
+                  {prod.consultBeforeUseRequired ? (
+                    <span className="text-amber-400 font-semibold text-[10px]">Consult Required</span>
+                  ) : (
+                    <span className="text-emerald-400 font-semibold text-[10px]">OTC Available</span>
+                  )}
+                </div>
+
+                {prod.canBuyDirectly ? (
+                  <Link
+                    href={`/website/product?id=${prod.id}`}
+                    className="w-full text-center block py-2 rounded-xl bg-[#1E293B] hover:bg-[#334155] border border-[#334155] text-white text-xs font-semibold transition"
+                  >
+                    View & Order
+                  </Link>
+                ) : (
+                  <Link
+                    href="/website/book"
+                    className="w-full text-center block py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition"
+                  >
+                    Consult for Prescription
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center pt-2">
+          <Link
+            href="/website/herbals"
+            className="px-6 py-3 rounded-2xl bg-[#1E293B] border border-[#334155] text-white font-semibold text-xs hover:border-[#0D9488] transition inline-flex items-center gap-2"
+          >
+            <span>Explore Complete 10-Formulation Portfolio</span>
+            <span>→</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 7 — HOW CONSULTATION WORKS                                        */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Seamless Clinical Experience</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            How a ZAYVORA Consultation Works
+          </h2>
+          <p className="text-xs sm:text-sm text-[#94A3B8]">
+            Whether consulting online via secure video room or visiting our hospital OPD in New Delhi.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {[
+            { num: "1", title: "Book Consultation", desc: "Select preferred physician, date, and mode (Online or In-Clinic)." },
+            { num: "2", title: "Share Health History", desc: "Complete brief symptom questionnaire and upload prior lab reports." },
+            { num: "3", title: "Clinical Assessment", desc: "Comprehensive 10-Ajnas evaluation and organ-axis functional analysis." },
+            { num: "4", title: "Personalized Care Plan", desc: "Sequential 4-phase nutrition, lifestyle directives, and herbal guidance." },
+            { num: "5", title: "Follow-up & Tracking", desc: "Regular check-ins via Patient Portal with digital dose reminders." },
+          ].map((c) => (
+            <div key={c.num} className="p-5 rounded-2xl bg-[#0F172A] border border-[#334155] space-y-3">
+              <span className="w-8 h-8 rounded-full bg-[#0D9488]/20 border border-[#0D9488]/40 text-[#2DD4BF] font-extrabold text-xs flex items-center justify-center">
+                {c.num}
+              </span>
+              <h4 className="font-bold text-white text-sm">{c.title}</h4>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 8 — CLINICAL TEAM                                                 */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Clinical Faculty</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Our Certified Practitioners & Tabeebs
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              All practitioners hold statutory CCIM/BUMS credentials with extensive clinical experience at academic teaching hospitals.
+            </p>
+          </div>
+          <Link href="/website/doctors" className="text-xs font-bold text-[#0D9488] hover:text-white transition">
+            View All Clinical Faculty →
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {allProducts.map((p) => (
-            <div key={p.id} className="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 flex flex-col justify-between hover:border-teal-500/50 transition">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-[#0D9488]/20 text-[#2DD4BF]">
-                    {p.category}
-                  </span>
-                  <span className="text-sm font-bold text-white">{p.price}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CLINICAL_TEAM.map((doc) => (
+            <div
+              key={doc.id}
+              className="rounded-3xl bg-[#0F172A] border border-[#334155] p-5 space-y-4 hover:border-[#0D9488] transition flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-[#0D9488] text-white font-bold flex items-center justify-center text-base shadow-md">
+                    {doc.avatarInitials}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-sm">{doc.name}</h4>
+                    <span className="text-[10px] text-[#2DD4BF] font-mono block">{doc.regNumber}</span>
+                  </div>
                 </div>
-                <h4 className="text-sm font-bold text-white leading-snug">{p.name}</h4>
-                <p className="text-[11px] text-[#94A3B8] line-clamp-2 leading-relaxed">{p.desc}</p>
-                <div className="text-[10px] font-mono text-[#64748B] pt-1">
-                  {p.monograph}
+
+                <p className="text-[11px] text-[#94A3B8] leading-snug">{doc.designation}</p>
+
+                <div className="space-y-1 pt-2 border-t border-[#1E293B] text-[11px]">
+                  <span className="text-[10px] font-bold text-white uppercase block">Focus:</span>
+                  <p className="text-[#64748B] text-[10px] leading-tight">{doc.areasOfFocus.slice(0, 2).join(" • ")}</p>
                 </div>
               </div>
-              
-              <div className="pt-3 border-t border-[#334155] flex items-center justify-between gap-2">
-                <Link
-                  href={`/website/product?id=${p.id}`}
-                  className="text-[11px] font-semibold text-[#94A3B8] hover:text-white"
-                >
-                  Monograph
-                </Link>
-                <Link
-                  href={`/website/cart?add=${p.id}`}
-                  className="px-3 py-1.5 rounded-lg bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition shadow"
-                >
-                  + Add to Cart
+
+              <div className="space-y-2 pt-3 border-t border-[#1E293B]">
+                <div className="flex justify-between items-center text-[10px] text-[#64748B]">
+                  <span>Experience: <strong className="text-white">{doc.experienceYears} Years</strong></span>
+                  <span>{doc.languages.join(", ")}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href={`/website/doctor?id=${doc.id}`}
+                    className="w-full text-center py-2 rounded-xl bg-[#1E293B] text-[11px] font-semibold text-white hover:bg-[#334155] transition"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href="/website/book"
+                    className="w-full text-center py-2 rounded-xl bg-[#0D9488] text-[11px] font-bold text-white hover:bg-[#0F766E] transition"
+                  >
+                    Book
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 9 — KNOWLEDGE CENTER                                              */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Evidence & Education</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Clinical Insights & Unani Science
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              Clinician-reviewed articles connecting classical manuscripts with modern laboratory biology.
+            </p>
+          </div>
+          <Link href="/website/knowledge-centre" className="text-xs font-bold text-[#0D9488] hover:text-white transition">
+            Explore All 9 Categories →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {KNOWLEDGE_ARTICLES.slice(0, 3).map((art) => (
+            <div
+              key={art.id}
+              className="rounded-3xl bg-[#0F172A] border border-[#334155] p-6 space-y-4 hover:border-[#0D9488] transition flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-[10px]">
+                  <span className="font-bold px-2 py-0.5 rounded bg-[#1E293B] text-[#2DD4BF]">{art.category}</span>
+                  <span className="text-[#64748B]">{art.readTimeMinutes} min read</span>
+                </div>
+
+                <h3 className="font-bold text-white text-base leading-snug">{art.title}</h3>
+                <p className="text-xs text-[#94A3B8] leading-relaxed line-clamp-3">{art.summary}</p>
+              </div>
+
+              <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between">
+                <span className="text-[10px] text-[#64748B]">{art.author}</span>
+                <Link href={`/website/article?id=${art.id}`} className="text-xs font-bold text-[#0D9488] hover:underline">
+                  Read Article →
                 </Link>
               </div>
             </div>
@@ -858,34 +737,121 @@ export default function PublicHomePage() {
         </div>
       </section>
 
-      {/* Statutory Safety & 21 CFR Part 11 Banner */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="p-6 rounded-2xl bg-[#0F172A] border border-amber-500/30 space-y-3">
-          <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
-            <span>🛡️</span>
-            <span>Non-Delegable Clinician Discretion Barrier (21 CFR Part 11)</span>
+      {/* ========================================================================= */}
+      {/* SECTION 10 — TRUST AND SAFETY                                             */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#131F37] to-[#0F172A] border border-[#334155] p-8 sm:p-12 space-y-8">
+          <div className="max-w-3xl space-y-3">
+            <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Governance & Ethics</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Patient Trust, Privacy & Clinical Safety
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              We adhere strictly to statutory AYUSH regulations, patient data isolation, and verified medical transparency.
+            </p>
           </div>
-          <p className="text-xs text-[#94A3B8] leading-relaxed">
-            ZAYVORA Health OS strictly enforces that AI assistants and algorithmic engines function strictly as assistive decision support. Prescriptions remain in non-dispensable draft status (<code className="text-amber-300">safe_to_lock = False</code>) until a licensed Senior Tabeeb completes independent clinical review and applies a 21 CFR Part 11 cryptographic digital signature.
-          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="space-y-2">
+              <span className="text-xl block">🔒</span>
+              <h4 className="font-bold text-white text-sm">Patient Privacy</h4>
+              <p className="text-xs text-[#94A3B8]">
+                Protected health information (PHI) is compartmentalized under HIPAA and Indian ABDM digital health standards.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="text-xl block">🩺</span>
+              <h4 className="font-bold text-white text-sm">Clinician Supervision</h4>
+              <p className="text-xs text-[#94A3B8]">
+                No autonomous AI prescriptions. All care pathways require non-delegable sign-off from a registered Tabeeb.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="text-xl block">🧪</span>
+              <h4 className="font-bold text-white text-sm">Lab Tested Purity</h4>
+              <p className="text-xs text-[#94A3B8]">
+                Heavy metals ICP-MS screened below 0.05 ppm with authentic pharmacopoeial batch certificates of analysis.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="text-xl block">📜</span>
+              <h4 className="font-bold text-white text-sm">Medical Disclaimer</h4>
+              <p className="text-xs text-[#94A3B8]">
+                Transparent non-guaranteed clinical guidance. Emergency cases are immediately triaged to hospital facilities.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Appointment Booking Call-To-Action */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-r from-[#0D9488]/25 via-[#1E293B] to-[#0F172A] border border-[#0D9488]/40 flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl">
-          <div className="space-y-2">
-            <h3 className="text-2xl md:text-3xl font-bold text-white">Experience Modern Evidence-Based Unani Care</h3>
-            <p className="text-xs md:text-sm text-[#94A3B8] max-w-xl">
-              Consult with senior licensed practitioners, receive objective 10-Ajnas Mizaj profiling, and benefit from organ-axis therapeutic formulations and supervised Ilaj bil-Tadbeer regimens.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Link href="/website/book" className="px-8 py-3.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white font-bold text-sm shadow-xl whitespace-nowrap transition text-center">
-              Schedule Appointment Now
+      {/* ========================================================================= */}
+      {/* SECTION 11 — FAQ ACCORDION                                                */}
+      {/* ========================================================================= */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+        <div className="text-center space-y-3">
+          <span className="text-[11px] font-bold text-[#0D9488] uppercase tracking-wider block">Frequently Asked Questions</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Clear Answers to Common Clinical Questions
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {FAQS_DATA.map((faq) => {
+            const isOpen = openFaqId === faq.id;
+            return (
+              <div
+                key={faq.id}
+                className="rounded-2xl bg-[#0F172A] border border-[#334155] overflow-hidden transition"
+              >
+                <button
+                  onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
+                  className="w-full text-left p-5 flex items-center justify-between gap-4 font-bold text-white text-sm hover:text-[#2DD4BF] transition"
+                >
+                  <span>{faq.question}</span>
+                  <span className="text-base text-[#0D9488] shrink-0">{isOpen ? "−" : "+"}</span>
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-xs text-[#94A3B8] leading-relaxed border-t border-[#1E293B] pt-3 animate-fade-in">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 12 — FINAL CTA                                                    */}
+      {/* ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="rounded-3xl bg-gradient-to-br from-[#0D5C46] to-[#0A2E23] p-10 sm:p-14 text-center space-y-6 shadow-2xl">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight max-w-2xl mx-auto">
+            Start Your Personalized Health Journey
+          </h2>
+          <p className="text-sm sm:text-base text-[#E6F4EA] max-w-xl mx-auto leading-relaxed">
+            Schedule an online or in-clinic evaluation with senior Unani clinicians at Jamia Hamdard AUTC - Main Hospital.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <Link
+              href="/website/book"
+              className="px-7 py-3.5 rounded-2xl bg-white text-[#0D5C46] font-bold text-sm hover:bg-[#F8FAFC] shadow-lg transition"
+            >
+              Book Consultation
             </Link>
-            <Link href="/website/cart" className="px-6 py-3.5 rounded-xl border border-[#334155] hover:bg-[#1E293B] text-white font-semibold text-sm transition text-center">
-              View Cart / Checkout
+            <Link
+              href="/website/contact"
+              className="px-7 py-3.5 rounded-2xl bg-[#07241B] border border-[#0D9488]/50 text-white font-semibold text-sm hover:bg-[#051A14] transition"
+            >
+              Contact ZAYVORA
+            </Link>
+            <Link
+              href="/patient/login"
+              className="px-6 py-3.5 rounded-2xl text-[#A7F3D0] hover:text-white text-sm font-semibold transition"
+            >
+              Patient Login →
             </Link>
           </div>
         </div>
