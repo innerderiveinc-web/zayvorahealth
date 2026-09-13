@@ -77,13 +77,14 @@ export default function EnterpriseHealthDashboard() {
   // 18 Sidebar Main Menu items
   const sidebarItems = [
     { id: "dashboard", label: "Dashboard", icon: "📊", tab: "all" },
+    { id: "reception", label: "Reception & Queue", icon: "🛎️", href: "/receptionist" },
     { id: "patients", label: "Patients", icon: "👥", tab: "patients" },
     { id: "appointments", label: "Appointments", icon: "📅", tab: "appointments" },
     { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
-    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", tab: "clinical_ai" },
+    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", href: "/ai" },
     { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", tab: "axes_treatment" },
     { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor" },
-    { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", tab: "pharmacy_labs" },
+    { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", href: "/pharmacy" },
     { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", tab: "pharmacy_labs" },
     { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", tab: "axes_treatment" },
     { id: "followups", label: "Follow-ups", icon: "🔄", tab: "appointments" },
@@ -333,7 +334,13 @@ export default function EnterpriseHealthDashboard() {
               {(["doctor", "admin", "patient", "pharmacist", "receptionist"] as DashboardRole[]).map(r => (
                 <button
                   key={r}
-                  onClick={() => setActiveRole(r)}
+                  onClick={() => {
+                    setActiveRole(r);
+                    if (r === "admin") router.push("/admin");
+                    else if (r === "patient") router.push("/patient");
+                    else if (r === "pharmacist") router.push("/pharmacy");
+                    else if (r === "receptionist") router.push("/receptionist");
+                  }}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition ${
                     activeRole === r
                       ? "bg-[#0D9488] text-white shadow-xs"

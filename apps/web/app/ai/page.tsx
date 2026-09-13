@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { PlatformHeader } from "@/components/PlatformHeader";
+import { AppShell } from "@/components/AppShell";
+import { StatCard } from "@/components/StatCard";
+import { StatusBadge } from "@/components/StatusBadge";
 
 interface CopilotResponse {
   query: string;
@@ -14,6 +16,9 @@ interface CopilotResponse {
   uncertainty_rating: "LOW" | "MODERATE" | "HIGH";
   confidence_score: number;
   model_provider: string;
+  organ_axis: string;
+  suggested_herbs: string[];
+  evidence_tier: string;
 }
 
 export default function AiStudioPage() {
@@ -21,11 +26,14 @@ export default function AiStudioPage() {
     "62-year-old male with chronic knee stiffness and early morning gel phenomenon, exacerbated by cold damp weather. Mild epigastric fullness after meals."
   );
   const [patientMizaj, setPatientMizaj] = useState("Damawi with secondary Balghami deviation");
+  const [activeAxis, setActiveAxis] = useState("mafasil-asab");
   const [isLoading, setIsLoading] = useState(false);
+  const [doctorApproved, setDoctorApproved] = useState(false);
+
   const [response, setResponse] = useState<CopilotResponse | null>({
     query: "62yo male chronic knee stiffness, cold weather exacerbation, epigastric fullness",
     unani_reasoning:
-      "Pathology is consistent with Waja-ul-Mafasil Balghami (Phlegmatic arthropathy) wherein morbid, cold viscous humors accumulate in articular capsules during cold weather (Asbab Sittah Zarooriyyah - Hawa). Coexisting Hurqat-ul-Meda / Zof-e-Hazm indicates sluggish digestive concoction (Nujz) in the liver-gut axis.",
+      "Pathology is consistent with Waja-ul-Mafasil Barid Balghami (Phlegmatic arthropathy) wherein morbid, cold viscous humors accumulate in articular capsules during cold weather (Asbab-e-Sittah Zarooriyyah - Hawa). Coexisting Hurqat-ul-Meda / Zof-e-Hazm indicates sluggish digestive concoction (Nujz) in the liver-gut axis.",
     biomedical_correlates:
       "Clinical presentation aligns with Osteoarthritis (ICD-11: FA00) characterized by articular cartilage matrix degradation, with secondary functional dyspepsia. Avoid high-dose unbuffered oral NSAIDs to prevent mucosal injury.",
     recommended_investigations: [
@@ -35,7 +43,7 @@ export default function AiStudioPage() {
       "Stool occult blood & serum liver enzymes",
     ],
     differential_diagnoses: [
-      "Waja-ul-Mafasil Balghami / Primary Knee Osteoarthritis (94% confidence)",
+      "Waja-ul-Mafasil Barid Balghami / Primary Knee Osteoarthritis (94% confidence)",
       "Niqras / Gouty monoarthritis (Excluded if serum urate normal)",
       "Rheumatoid arthritis / Waja-ul-Mafasil Damawi (Low likelihood, no MCP/PIP symmetry)",
     ],
@@ -51,10 +59,14 @@ export default function AiStudioPage() {
     uncertainty_rating: "LOW",
     confidence_score: 0.94,
     model_provider: "ZAYVORA-Clinical-LLM (Fallback Router Active)",
+    organ_axis: "Mafasil-Asab (Joint-Neuro Axis) & Kabid-Mida (Hepato-Gastric)",
+    suggested_herbs: ["Suranjan Talkh (Mudabbar)", "Asgandh (Withania somnifera)", "Zanjabeel (Zingiber officinale)"],
+    evidence_tier: "E5 (Randomized Clinical Trial & Observational Registry Concordance)",
   });
 
   function handleRunConsultation() {
     setIsLoading(true);
+    setDoctorApproved(false);
     setTimeout(() => {
       setIsLoading(false);
       setResponse({
@@ -78,181 +90,219 @@ export default function AiStudioPage() {
         uncertainty_rating: "LOW",
         confidence_score: 0.93,
         model_provider: "ZAYVORA Cognitive Engine v4.2",
+        organ_axis: "Mafasil-Asab (Joint-Neuro Axis)",
+        suggested_herbs: ["Suranjan Talkh (Mudabbar)", "Filfil Siyah", "Babuna"],
+        evidence_tier: "E5 (Randomized Clinical Trial Concordance)",
       });
-    }, 800);
+    }, 600);
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
-      <PlatformHeader />
-
-      <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6 space-y-6">
+    <AppShell activeRole="doctor">
+      <div className="space-y-6 max-w-7xl mx-auto pb-12 text-slate-100 text-xs">
         
-        {/* Header */}
-        <div className="zv-panel p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
+        {/* Workspace Header */}
+        <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0C1524] via-[#101C30] to-[#152540] border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold">Hakeem Sahab™ AI Reasoning Studio</h1>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold">
-                Clinician Decision Support (Advisory Only)
+              <span className="text-xl">🤖</span>
+              <span className="text-[11px] font-bold text-teal-400 uppercase tracking-widest bg-teal-950/80 px-3 py-1 rounded-full border border-teal-800/80">
+                Hakeem Sahab™ Clinical AI Copilot
               </span>
+              <span className="text-xs text-slate-400 font-mono">• Clinician Decision Support (Advisory Only)</span>
             </div>
-            <p className="text-xs text-[var(--muted)] mt-0.5">
-              Explainable clinical reasoning partner synthesizing classical Unani wisdom with peer-reviewed modern biomedical literature.
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
+              AI Clinical Reasoning & Pharmacopeia Studio
+            </h1>
+            <p className="text-slate-400 text-xs">
+              Synthesizes classical Greco-Arab Unani medical treatises with peer-reviewed biomedical literature, organ-axis mapping, and drug safety checks.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-[var(--muted)]">Concordance Score:</span>
-            <span className="font-bold text-emerald-400">94.2%</span>
-            <span className="text-[var(--border)]">|</span>
-            <span className="text-[var(--gold-soft)] font-medium">Zero Autonomous Prescribing</span>
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="px-3 py-1.5 rounded-xl bg-teal-950/80 border border-teal-500/50 text-teal-300 text-xs font-bold flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+              <span>Non-Delegable Doctor Review Enforced</span>
+            </span>
           </div>
+        </div>
+
+        {/* Executive KPI Overview */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard label="Clinical Concordance" value="94.2%" subtext="Across 3 university hospitals" variant="teal" icon="🎯" />
+          <StatCard label="Codified Monographs" value="1,280+" subtext="UPI & NFUM standardized" variant="emerald" icon="📚" />
+          <StatCard label="Autonomous Lock" value="Blocked" subtext="Doctor signature mandatory" variant="amber" icon="🛡️" />
+          <StatCard label="Safety Firewall" value="Active" subtext="Schedule E(1) Mudabbar gate" variant="teal" icon="⚙️" />
         </div>
 
         {/* Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Query Formulation Input Panel */}
-          <div className="zv-panel p-5 space-y-4">
-            <div className="border-b border-[var(--border)] pb-3">
-              <span className="text-[10px] uppercase tracking-wider text-[var(--muted)] block">Consultation Input</span>
-              <h3 className="text-sm font-bold text-white">Clinical Reasoning Request</h3>
+          <div className="bg-[#0F172A] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-md">
+            <div className="border-b border-slate-800 pb-3">
+              <span className="text-[10px] uppercase tracking-wider text-teal-400 font-bold block">Clinical Query Input</span>
+              <h3 className="text-sm font-bold text-white mt-0.5">Patient Case & Symptoms</h3>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3">
               <div>
-                <label className="text-[var(--muted)] block mb-1">Patient Presentation & Symptoms</label>
+                <label className="block text-slate-300 font-semibold mb-1">Chief Clinical Complaint & Symptoms</label>
                 <textarea
-                  rows={5}
-                  className="zv-input text-xs"
+                  rows={4}
                   value={clinicianQuery}
                   onChange={(e) => setClinicianQuery(e.target.value)}
-                  placeholder="Enter clinical vignette, symptoms, vitals, or investigation results..."
+                  placeholder="Enter patient symptoms, duration, exacerbating factors..."
+                  className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-teal-500"
                 />
               </div>
 
               <div>
-                <label className="text-[var(--muted)] block mb-1">Evaluated Mizaj (Temperament)</label>
+                <label className="block text-slate-300 font-semibold mb-1">Assessed Patient Mizaj (Constitution)</label>
                 <select
-                  className="zv-input text-xs py-1.5"
                   value={patientMizaj}
                   onChange={(e) => setPatientMizaj(e.target.value)}
+                  className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-teal-500"
                 >
-                  <option value="Damawi with secondary Balghami deviation">Damawi (Sanguine) / Balghami</option>
-                  <option value="Safrawi with secondary Yabusat">Safrawi (Choleric) / Yabis</option>
-                  <option value="Balghami with cold predominance">Balghami (Phlegmatic) / Barid</option>
-                  <option value="Sawdawi with chronic dryness">Sawdawi (Melancholic) / Yabis</option>
+                  <option value="Balghami (Cold & Moist)">Balghami (Cold & Moist Dyscrasia)</option>
+                  <option value="Damawi with secondary Balghami deviation">Damawi with secondary Balghami deviation</option>
+                  <option value="Safrawi (Hot & Dry)">Safrawi (Hot & Dry Dyscrasia)</option>
+                  <option value="Saudawi (Cold & Dry)">Saudawi (Cold & Dry Dyscrasia)</option>
                 </select>
               </div>
 
-              <div className="pt-2">
-                <button
-                  onClick={handleRunConsultation}
-                  disabled={isLoading}
-                  className="zv-btn-primary w-full text-xs font-semibold py-2.5 cursor-pointer disabled:opacity-50"
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Primary Functional Organ-Axis</label>
+                <select
+                  value={activeAxis}
+                  onChange={(e) => setActiveAxis(e.target.value)}
+                  className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-teal-500"
                 >
-                  {isLoading ? "Consulting ZKB Knowledge Graph..." : "Ask Hakeem Sahab"}
-                </button>
+                  <option value="mafasil-asab">Mafasil-Asab (Joint & Peripheral Neurological Axis)</option>
+                  <option value="kabid-mida">Kabid-Mida (Hepato-Gastric Digestive Axis)</option>
+                  <option value="qalb-dimagh">Qalb-Dimagh (Cardio-Cerebral Vital Axis)</option>
+                  <option value="kulyah-masanah">Kulyah-Masanah (Renal-Urinary Elimination Axis)</option>
+                </select>
               </div>
 
-              <div className="p-3 rounded-lg bg-[var(--elevated)] border border-[var(--border)] text-[11px] text-[var(--muted)] space-y-1">
-                <span className="font-bold text-[var(--gold-soft)] block">🛡️ AI Governance Guardrail</span>
-                <p>Hakeem Sahab outputs are strictly decision support. Algorithmic recommendations cannot lock prescriptions or override attending clinician judgment.</p>
-              </div>
+              <button
+                onClick={handleRunConsultation}
+                disabled={isLoading}
+                className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 disabled:bg-slate-800 text-white font-bold transition shadow-lg shadow-teal-900/30 flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <span>Synthesizing Literature & Evidence...</span>
+                  </>
+                ) : (
+                  <span>Run Hakeem Sahab Reasoning →</span>
+                )}
+              </button>
             </div>
           </div>
 
-          {/* Reasoning & Evidence Output Dossier */}
-          <div className="lg:col-span-2 zv-panel p-6 space-y-6">
-            
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-white">Clinical Advisory Dossier</h3>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                    Confidence {(response?.confidence_score ?? 0.94) * 100}%
+          {/* AI Clinical Reasoning Output Panel */}
+          <div className="lg:col-span-2 space-y-4">
+            {response && (
+              <div className="bg-[#0F172A] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-md">
+                
+                {/* Advisory Header Banner */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-teal-950/60 border border-teal-800/80">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xl">🛡️</span>
+                    <div>
+                      <span className="font-bold text-teal-300 block">AI-Generated Decision Support • Advisory Only</span>
+                      <span className="text-slate-400 text-[11px]">Final prescription must be approved and digitally signed by attending physician.</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="px-2.5 py-1 rounded-lg bg-teal-900 text-teal-200 font-mono font-bold text-[11px]">
+                      Confidence: {(response.confidence_score * 100).toFixed(0)}%
+                    </span>
+                    <span className={`px-2.5 py-1 rounded-lg font-bold text-[11px] ${
+                      doctorApproved ? "bg-emerald-950 text-emerald-300 border border-emerald-800" : "bg-amber-950 text-amber-300 border border-amber-800"
+                    }`}>
+                      {doctorApproved ? "✓ Doctor Approved" : "Doctor Review Required"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Classical Unani Reasoning */}
+                <div className="space-y-1.5">
+                  <span className="font-bold text-teal-300 uppercase tracking-wider text-[10px]">1. Classical Unani Humoral Analysis</span>
+                  <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 leading-relaxed">
+                    {response.unani_reasoning}
+                  </div>
+                </div>
+
+                {/* Biomedical Correlates */}
+                <div className="space-y-1.5">
+                  <span className="font-bold text-teal-300 uppercase tracking-wider text-[10px]">2. Modern Biomedical Correlation (ICD-11)</span>
+                  <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 leading-relaxed">
+                    {response.biomedical_correlates}
+                  </div>
+                </div>
+
+                {/* Differentials & Suggested Herbs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
+                    <span className="font-bold text-teal-300 uppercase tracking-wider text-[10px]">Differential Considerations</span>
+                    <ul className="space-y-1 text-slate-300">
+                      {response.differential_diagnoses.map((d, i) => (
+                        <li key={i} className="flex items-center gap-1.5 text-[11px]">
+                          <span className="text-teal-400 font-bold">•</span> {d}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
+                    <span className="font-bold text-teal-300 uppercase tracking-wider text-[10px]">Candidate Botanicals (UPI Monographed)</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {response.suggested_herbs.map((h, i) => (
+                        <span key={i} className="bg-teal-950/80 text-teal-300 border border-teal-800 px-2.5 py-1 rounded-xl text-[11px]">
+                          🌿 {h}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Statutory Citations */}
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5 text-[11px]">
+                  <span className="font-bold text-slate-400 uppercase text-[10px]">Peer-Reviewed & Classical Citations</span>
+                  {response.citations.map((c, i) => (
+                    <div key={i} className="text-slate-400 italic">[{i + 1}] {c}</div>
+                  ))}
+                </div>
+
+                {/* Doctor Decision Trigger */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-800">
+                  <span className="text-slate-400 text-[11px]">
+                    Statutory Rule: Recommendations are advisory. Lock authority remains strictly with the clinician.
                   </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setDoctorApproved(!doctorApproved)}
+                      className={`px-5 py-2.5 rounded-xl font-bold transition text-xs ${
+                        doctorApproved
+                          ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                          : "bg-teal-600 hover:bg-teal-500 text-white shadow-md"
+                      }`}
+                    >
+                      {doctorApproved ? "Revoke Approval" : "Approve & Transfer to Rx Builder →"}
+                    </button>
+                  </div>
                 </div>
-                <p className="text-xs text-[var(--muted)] mt-0.5 font-mono">{response?.model_provider}</p>
+
               </div>
-
-              <div className="text-xs">
-                <span className="text-[var(--muted)]">Uncertainty Rating: </span>
-                <span className="font-bold text-emerald-400">{response?.uncertainty_rating}</span>
-              </div>
-            </div>
-
-            {/* Unani vs Biomedical Dual Perspective */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-2">
-                <div className="flex items-center gap-1.5 font-bold text-emerald-400">
-                  <span>🌿</span>
-                  <span>Classical Unani Nosology & Humorology</span>
-                </div>
-                <p className="text-[var(--text)] leading-relaxed">{response?.unani_reasoning}</p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-2">
-                <div className="flex items-center gap-1.5 font-bold text-blue-400">
-                  <span>🔬</span>
-                  <span>Modern Biomedical & Pathological Correlates</span>
-                </div>
-                <p className="text-[var(--text)] leading-relaxed">{response?.biomedical_correlates}</p>
-              </div>
-            </div>
-
-            {/* Differential Diagnoses & Investigations */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-2">
-                <span className="font-bold text-[var(--gold-soft)] block">Differential Diagnostic Considerations</span>
-                <ul className="space-y-1.5 list-disc list-inside text-[var(--text)]">
-                  {response?.differential_diagnoses.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-4 rounded-xl bg-[var(--elevated)] border border-[var(--border)] space-y-2">
-                <span className="font-bold text-purple-400 block">Recommended Diagnostic Investigations</span>
-                <ul className="space-y-1.5 list-disc list-inside text-[var(--text)]">
-                  {response?.recommended_investigations.map((inv, i) => (
-                    <li key={i}>{inv}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Red Flags & Emergency Triaging */}
-            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-1.5">
-              <span className="font-bold text-amber-400 flex items-center gap-1.5">
-                <span>⚠️</span>
-                <span>Triage & Clinical Safety Warnings</span>
-              </span>
-              <ul className="space-y-1 text-[var(--text)] list-disc list-inside">
-                {response?.red_flags.map((rf, i) => (
-                  <li key={i}>{rf}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Evidence Citations */}
-            <div className="pt-2 border-t border-[var(--border)] space-y-2 text-xs">
-              <span className="font-bold text-[var(--muted)] uppercase tracking-wider text-[10px] block">
-                Evidence Citations & Knowledge Graph Provenance
-              </span>
-              <ul className="space-y-1 font-mono text-[11px] text-[var(--muted)]">
-                {response?.citations.map((c, i) => (
-                  <li key={i} className="hover:text-white transition-colors">• {c}</li>
-                ))}
-              </ul>
-            </div>
-
+            )}
           </div>
 
         </div>
 
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

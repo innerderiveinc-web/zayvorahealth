@@ -293,7 +293,7 @@ export function PlatformHeader() {
                     <button onClick={() => handleSwitchRole("Pharmacist", "/pharmacy")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
                       💊 Pharmacist (Dispensary)
                     </button>
-                    <button onClick={() => handleSwitchRole("Receptionist", "/clinic")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
+                    <button onClick={() => handleSwitchRole("Receptionist", "/receptionist")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
                       🏥 Receptionist (Queue OPD)
                     </button>
                   </div>

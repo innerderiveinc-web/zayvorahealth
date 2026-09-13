@@ -10,6 +10,7 @@ export type UserRole =
   | "doctor"
   | "patient"
   | "clinic"
+  | "receptionist"
   | "pharmacy"
   | "research"
   | "admin"
@@ -37,6 +38,7 @@ export function AppShell({
   useEffect(() => {
     if (pathname.startsWith("/doctor")) setRole("doctor");
     else if (pathname.startsWith("/patient")) setRole("patient");
+    else if (pathname.startsWith("/receptionist")) setRole("receptionist");
     else if (pathname.startsWith("/clinic")) setRole("clinic");
     else if (pathname.startsWith("/pharmacy")) setRole("pharmacy");
     else if (pathname.startsWith("/research")) setRole("research");
@@ -49,6 +51,7 @@ export function AppShell({
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
     { id: "patients", label: "Patients", icon: "👥", href: "/patient" },
+    { id: "reception", label: "Reception / Queue", icon: "🏥", href: "/receptionist" },
     { id: "appointments", label: "Appointments", icon: "📅", href: "/clinic" },
     { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
     { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", href: "/ai" },
