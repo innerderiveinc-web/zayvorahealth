@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { PlatformHeader } from "@/components/PlatformHeader";
+import { PlatformFooter } from "@/components/PlatformFooter";
 
 export type UserRole = 
   | "doctor"
@@ -16,148 +18,6 @@ export type UserRole =
   | "website"
   | "herbals";
 
-interface RoleConfig {
-  id: UserRole;
-  label: string;
-  userName: string;
-  title: string;
-  defaultPath: string;
-  allowedNav: { label: string; href: string; icon: string }[];
-}
-
-const ROLES: Record<UserRole, RoleConfig> = {
-  doctor: {
-    id: "doctor",
-    label: "Doctor / Senior Tabeeb",
-    userName: "Hakim Dr. Tariq Mansoor",
-    title: "Senior Tabeeb (CCIM-BUMS-2004-9841)",
-    defaultPath: "/doctor",
-    allowedNav: [
-      { label: "Consultation Cockpit", href: "/doctor", icon: "🩺" },
-      { label: "Patient 360", href: "/patient", icon: "👤" },
-      { label: "Knowledge Monograph", href: "/knowledge", icon: "📖" },
-      { label: "Research Cohorts", href: "/research", icon: "🔬" },
-    ],
-  },
-  patient: {
-    id: "patient",
-    label: "Patient Portal",
-    userName: "Hamza Farooqi",
-    title: "MRN-2026-0814 • Balghami",
-    defaultPath: "/patient",
-    allowedNav: [
-      { label: "My Health 360", href: "/patient", icon: "👤" },
-      { label: "Care Plans & Nuskha", href: "/patient?tab=prescriptions", icon: "💊" },
-      { label: "Lifestyle (Asbab Sittah)", href: "/patient?tab=lifestyle", icon: "🌿" },
-      { label: "Book Appointment", href: "/patient?tab=appointments", icon: "📅" },
-    ],
-  },
-  clinic: {
-    id: "clinic",
-    label: "Clinic Receptionist / Admin",
-    userName: "Sana Khan",
-    title: "OPD Operations Desk Lead",
-    defaultPath: "/clinic",
-    allowedNav: [
-      { label: "Live OPD Queue", href: "/clinic", icon: "📋" },
-      { label: "Walk-in Registration", href: "/clinic?tab=register", icon: "📝" },
-      { label: "Doctor Availability", href: "/clinic?tab=roster", icon: "🩺" },
-      { label: "Billing & Invoicing", href: "/clinic?tab=billing", icon: "💳" },
-    ],
-  },
-  pharmacy: {
-    id: "pharmacy",
-    label: "Clinical Pharmacist",
-    userName: "Zainab Ali",
-    title: "Chief Dispensary Pharmacist",
-    defaultPath: "/pharmacy",
-    allowedNav: [
-      { label: "Dispensary Queue", href: "/pharmacy", icon: "💊" },
-      { label: "FEFO Inventory", href: "/pharmacy?tab=fefo", icon: "📦" },
-      { label: "Schedule E(1) Mudabbar", href: "/pharmacy?tab=mudabbar", icon: "🛡️" },
-      { label: "Stock Movement", href: "/pharmacy?tab=stock", icon: "📊" },
-    ],
-  },
-  research: {
-    id: "research",
-    label: "Clinical Researcher",
-    userName: "Dr. K. Saxena",
-    title: "Principal Clinical Investigator",
-    defaultPath: "/research",
-    allowedNav: [
-      { label: "Clinical Trials Registry", href: "/research", icon: "🔬" },
-      { label: "RWE Patient Cohorts", href: "/research?tab=cohorts", icon: "👥" },
-      { label: "Adverse Events (WHO-UMC)", href: "/research?tab=adr", icon: "⚠️" },
-      { label: "Protocol Designer", href: "/research?tab=protocols", icon: "📑" },
-    ],
-  },
-  admin: {
-    id: "admin",
-    label: "Platform Administrator",
-    userName: "Admin Console",
-    title: "IT Governance & Security",
-    defaultPath: "/admin",
-    allowedNav: [
-      { label: "Facility Management", href: "/admin", icon: "🏥" },
-      { label: "21 CFR Part 11 Merkle Ledger", href: "/admin?tab=merkle", icon: "🔒" },
-      { label: "RBAC & Permissions", href: "/admin?tab=rbac", icon: "🛡️" },
-      { label: "Safety Firewall Rules", href: "/admin?tab=firewall", icon: "⚙️" },
-    ],
-  },
-  manufacturing: {
-    id: "manufacturing",
-    label: "Manufacturing & eBMR",
-    userName: "Dr. A. R. Qureshi",
-    title: "GMP Plant Quality Director",
-    defaultPath: "/manufacturing",
-    allowedNav: [
-      { label: "eBMR Batches", href: "/manufacturing", icon: "🏭" },
-      { label: "CoA Verification", href: "/manufacturing?tab=coa", icon: "🔬" },
-      { label: "Mudabbar Detox Logs", href: "/manufacturing?tab=mudabbar", icon: "🛡️" },
-      { label: "Packaging & QA Release", href: "/manufacturing?tab=qa", icon: "📦" },
-    ],
-  },
-  enterprise: {
-    id: "enterprise",
-    label: "Enterprise Owner & SaaS",
-    userName: "Enterprise Executive",
-    title: "Health System Network Lead",
-    defaultPath: "/admin",
-    allowedNav: [
-      { label: "Multi-Facility Network", href: "/admin", icon: "🏥" },
-      { label: "Tenancy & Quotas", href: "/admin?tab=tenancy", icon: "🌐" },
-      { label: "Merkle Audit Ledger", href: "/admin?tab=merkle", icon: "🔒" },
-      { label: "Subscription & Billing", href: "/clinic?tab=billing", icon: "💳" },
-    ],
-  },
-  website: {
-    id: "website",
-    label: "Public Website & Brand",
-    userName: "Public Guest",
-    title: "ZAYVORA Health Brand Portal",
-    defaultPath: "/website",
-    allowedNav: [
-      { label: "Public Home", href: "/website", icon: "🌐" },
-      { label: "Clinical Philosophy", href: "/website/philosophy", icon: "🌿" },
-      { label: "Care Areas & Matab", href: "/website/matab", icon: "🏥" },
-      { label: "Book Consultation", href: "/website/book", icon: "📅" },
-    ],
-  },
-  herbals: {
-    id: "herbals",
-    label: "ZAYVORA Herbals & Store",
-    userName: "Store Customer",
-    title: "Classical & Proprietary Formulations",
-    defaultPath: "/website/herbals",
-    allowedNav: [
-      { label: "Herbals Portfolio", href: "/website/herbals", icon: "🛍️" },
-      { label: "Fertility Category", href: "/website/herbals?cat=fertility", icon: "👶" },
-      { label: "Metabolic Category", href: "/website/herbals?cat=metabolic", icon: "⚡" },
-      { label: "Cart & Checkout", href: "/website/cart", icon: "🛒" },
-    ],
-  },
-};
-
 interface AppShellProps {
   children: React.ReactNode;
   activeRole?: UserRole;
@@ -167,15 +27,14 @@ interface AppShellProps {
 export function AppShell({ 
   children, 
   activeRole = "doctor",
-  currentFacility = "Central Integrative Clinical Facility"
+  currentFacility = "Jamia Hamdard AUTC - Main Hospital"
 }: AppShellProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [role, setRole] = useState<UserRole>(activeRole);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
-    // Detect role from path
     if (pathname.startsWith("/doctor")) setRole("doctor");
     else if (pathname.startsWith("/patient")) setRole("patient");
     else if (pathname.startsWith("/clinic")) setRole("clinic");
@@ -187,131 +46,102 @@ export function AppShell({
     else if (pathname.startsWith("/website")) setRole("website");
   }, [pathname]);
 
-  const currentRoleConfig = ROLES[role] || ROLES.doctor;
-
-  const handleRoleChange = (newRole: UserRole) => {
-    setRole(newRole);
-    router.push(ROLES[newRole].defaultPath);
-  };
+  const menuItems = [
+    { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
+    { id: "patients", label: "Patients", icon: "👥", href: "/patient" },
+    { id: "appointments", label: "Appointments", icon: "📅", href: "/clinic" },
+    { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
+    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", href: "/ai" },
+    { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", href: "/dashboard" },
+    { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor" },
+    { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", href: "/pharmacy" },
+    { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", href: "/dashboard" },
+    { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", href: "/dashboard" },
+    { id: "followups", label: "Follow-ups", icon: "🔄", href: "/clinic" },
+    { id: "telemedicine", label: "Telemedicine", icon: "📱", href: "/website" },
+    { id: "billing", label: "Billing & Payments", icon: "💳", href: "/clinic" },
+    { id: "analytics", label: "Analytics", icon: "📈", href: "/research" },
+    { id: "knowledge", label: "Knowledge Base", icon: "📚", href: "/knowledge" },
+    { id: "messages", label: "Messages", icon: "💬", href: "/dashboard" },
+    { id: "notifications", label: "Notifications", icon: "🔔", href: "/dashboard" },
+    { id: "settings", label: "Settings", icon: "⚙️", href: "/admin" },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A0F1D] text-[#F8FAFC]">
-      {/* ================================================================= */}
-      {/* ENTERPRISE TOP HEADER */}
-      {/* ================================================================= */}
-      <header className="bg-[#0F172A] border-b border-[#334155] px-4 py-2.5 sticky top-0 z-40">
-        <div className="flex items-center justify-between gap-4">
-          
-          {/* Brand & Facility Info */}
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-1.5 rounded-lg hover:bg-[#1E293B] text-[#94A3B8] transition"
-              aria-label="Toggle Navigation"
-            >
-              ☰
-            </button>
-            <div className="w-8 h-8 rounded-lg bg-[#0D9488] flex items-center justify-center font-bold text-white text-lg">
-              Z
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-white text-sm md:text-base">ZAYVORA Health OS™</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-[#0D9488]/20 text-[#2DD4BF] border border-[#0D9488]/30">
-                  Enterprise v5.0
-                </span>
-              </div>
-              <p className="text-[11px] text-[#94A3B8] hidden sm:block">{currentFacility}</p>
-            </div>
-          </div>
+    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
+      {/* Universal SaaS Header */}
+      <PlatformHeader />
 
-          {/* Role Switcher & User Profile Context */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-[#0A0F1D] px-2.5 py-1.5 rounded-lg border border-[#334155]">
-              <span className="text-[11px] text-[#94A3B8] hidden md:inline">Workspace:</span>
-              <select
-                value={role}
-                onChange={(e) => handleRoleChange(e.target.value as UserRole)}
-                className="bg-transparent text-xs font-semibold text-[#2DD4BF] focus:outline-none cursor-pointer"
-              >
-                {Object.values(ROLES).map((r) => (
-                  <option key={r.id} value={r.id} className="bg-[#0F172A] text-white">
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* User Details */}
-            <div className="hidden lg:flex flex-col text-right">
-              <span className="text-xs font-medium text-white">{currentRoleConfig.userName}</span>
-              <span className="text-[10px] text-[#94A3B8]">{currentRoleConfig.title}</span>
-            </div>
-
-            {/* Status Ping */}
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#1E293B] border border-[#334155] text-[11px] text-[#34D399]">
-              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
-              <span className="hidden sm:inline">Systems Live</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* ================================================================= */}
-      {/* MAIN LAYOUT (SIDEBAR + CONTENT) */}
-      {/* ================================================================= */}
+      {/* Main Layout (Sidebar + Workspace) */}
       <div className="flex-1 flex overflow-hidden">
         
-        {/* Contextual Left Sidebar */}
-        <aside 
-          className={`bg-[#0F172A] border-r border-[#334155] flex flex-col transition-all duration-200 ${
-            sidebarOpen ? "w-60" : "w-16"
-          }`}
+        {/* Collapsible Left Sidebar */}
+        <aside
+          className={`bg-[var(--panel)] border-r border-[var(--border)] flex flex-col transition-all duration-200 shrink-0 ${
+            sidebarCollapsed ? "w-16" : "w-60"
+          } hidden md:flex`}
         >
-          {/* Navigation Links */}
-          <nav className="p-2 space-y-1 flex-1 overflow-y-auto">
-            <div className="px-2 py-1.5 text-[10px] font-semibold tracking-wider text-[#64748B] uppercase">
-              {sidebarOpen ? currentRoleConfig.label : "NAV"}
-            </div>
-            {currentRoleConfig.allowedNav.map((item) => {
-              const isActive = pathname === item.href.split("?")[0];
+          <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
+            {!sidebarCollapsed && (
+              <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">
+                Menu
+              </span>
+            )}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="p-1 rounded-lg hover:bg-[var(--elevated)] text-[var(--muted)] hover:text-white transition"
+              title="Toggle sidebar"
+            >
+              {sidebarCollapsed ? "▶" : "◀"}
+            </button>
+          </div>
+
+          <nav className="p-2 space-y-0.5 flex-1 overflow-y-auto">
+            {menuItems.map((item) => {
+              const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname?.startsWith(item.href));
               return (
                 <Link
-                  key={item.label}
+                  key={item.id}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition ${
-                    isActive 
-                      ? "bg-[#0D9488]/15 text-[#2DD4BF] border border-[#0D9488]/30" 
-                      : "text-[#94A3B8] hover:bg-[#1E293B] hover:text-white"
+                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition ${
+                    isActive
+                      ? "bg-[#0D9488]/20 text-[#2DD4BF] border border-[#0D9488]/30 font-semibold"
+                      : "text-[var(--muted)] hover:bg-[var(--elevated)] hover:text-white"
                   }`}
+                  title={item.label}
                 >
-                  <span className="text-sm">{item.icon}</span>
-                  {sidebarOpen && <span>{item.label}</span>}
+                  <span className="text-base shrink-0">{item.icon}</span>
+                  {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Quick Security & Integrity Status */}
-          {sidebarOpen && (
-            <div className="p-3 border-t border-[#334155] bg-[#0A0F1D]/50 text-[11px] text-[#94A3B8] space-y-1">
-              <div className="flex items-center justify-between">
-                <span>21 CFR Part 11:</span>
-                <span className="text-[#34D399] font-medium">Secured</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Schedule E(1):</span>
-                <span className="text-[#2DD4BF] font-medium">Gate Active</span>
-              </div>
-            </div>
-          )}
+          {/* Bottom Sidebar Links */}
+          <div className="p-2 border-t border-[var(--border)] bg-[var(--background)] space-y-0.5 text-xs">
+            <Link href="/website/faqs" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>❓</span> {!sidebarCollapsed && <span>Help Center</span>}
+            </Link>
+            <Link href="/knowledge" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>📖</span> {!sidebarCollapsed && <span>Documentation</span>}
+            </Link>
+            <Link href="/admin" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>🟢</span> {!sidebarCollapsed && <span>System Status</span>}
+            </Link>
+            <Link href="/website/contact" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>📞</span> {!sidebarCollapsed && <span>Contact Support</span>}
+            </Link>
+          </div>
         </aside>
 
-        {/* Dynamic Page Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-[#0A0F1D]">
+        {/* Workspace Body */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[var(--background)]">
           {children}
         </main>
       </div>
+
+      {/* Universal SaaS Footer */}
+      <PlatformFooter />
     </div>
   );
 }

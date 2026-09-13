@@ -71,15 +71,15 @@
       
       <!-- Facility & Product Brand -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
-          Z
+        <div class="w-10 h-10 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center p-1 shadow-md overflow-hidden">
+          <img src="zayvora-logo.png" alt="ZAYVORA" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='/zayvora-logo.png';" />
         </div>
         <div>
           <div class="flex items-center gap-2">
             <span class="font-bold tracking-tight text-lg text-white">ZAYVORA Health OS™</span>
             <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold badge-emerald">Enterprise Clinical OS v5.0</span>
           </div>
-          <p class="text-xs text-[var(--muted)]">National Institute of Integrative Medicine • Central Clinical Facility</p>
+          <p class="text-xs text-[var(--muted)]">🏥 Jamia Hamdard AUTC - Main Hospital • National Institute of Integrative Medicine</p>
         </div>
       </div>
 
@@ -107,6 +107,17 @@
           <button onclick="toggleHelpModal()" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs text-[var(--muted)] hover:text-white hover:bg-[var(--background)] transition-colors">
             Help & Guidelines
           </button>
+          <button onclick="showNotification('Global search active: Type Ctrl+K to search Patients, Rx, Protocols, Medicines.')" class="px-2.5 py-1 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-[var(--muted)] hover:border-[#2DD4BF] flex items-center gap-1.5 transition">
+            <span>🔍</span> <span class="hidden sm:inline">Search...</span> <kbd class="px-1 py-0.2 rounded bg-[var(--card)] text-[9px] font-mono">⌘K</kbd>
+          </button>
+          <button onclick="showNotification('3 Clinical & System Alerts Pending: 1 Drug Interaction, 1 Lab Value, 1 Refill.')" class="relative p-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs hover:border-[#2DD4BF] transition" title="Notifications">
+            🔔<span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white font-bold text-[8px] flex items-center justify-center">3</span>
+          </button>
+          <div class="flex items-center bg-[var(--background)] rounded-xl border border-[var(--border)] p-0.5 text-[10px] font-bold">
+            <button onclick="showNotification('Language: English')" class="px-2 py-0.5 rounded-lg bg-[var(--card)] text-[#2DD4BF]">EN</button>
+            <button onclick="showNotification('Language: Hindi (हिन्दी)')" class="px-2 py-0.5 rounded-lg text-[var(--muted)] hover:text-white">HI</button>
+            <button onclick="showNotification('Language: Urdu (اردو)')" class="px-2 py-0.5 rounded-lg text-[var(--muted)] hover:text-white">UR</button>
+          </div>
           <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Clinical Services Connected"></div>
         </div>
       </div>
@@ -624,105 +635,281 @@
     function renderDoctorApp(container) {
       if (state.tab === 'today') {
         container.innerHTML = `
-          <div class="space-y-6">
-            <!-- Doctor Header -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="space-y-8 pb-10">
+            
+            <!-- SECTION 3: Welcome Section & Quick Actions -->
+            <div class="bg-gradient-to-r from-[#1E293B] via-[var(--card)] to-[#0F172A] border border-[var(--border)] rounded-3xl p-6 shadow-xl space-y-5">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-4">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">☀️</span>
+                    <h2 class="text-2xl font-extrabold text-white">Good Morning, Dr. Irfan</h2>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">Clinic Open</span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-[var(--muted)] mt-1">Here is your clinical and operational overview for today.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                  <div class="px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                    <span class="text-[10px] text-[var(--muted)] block">Date</span>
+                    <strong class="text-white font-mono">Sunday, 13 Sep 2026</strong>
+                  </div>
+                  <div class="px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                    <span class="text-[10px] text-[var(--muted)] block">Clinic Timing</span>
+                    <strong class="text-[#2DD4BF] font-mono">09:00 AM – 06:00 PM</strong>
+                  </div>
+                  <div class="px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+                    <span class="text-[10px] text-[var(--muted)] block">Current Shift</span>
+                    <strong class="text-amber-300 font-mono">Morning OPD (General)</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Action Buttons -->
               <div>
-                <h2 class="text-xl font-bold text-white">Hakim Dr. Tariq Mansoor</h2>
-                <p class="text-xs text-[var(--muted)] mt-1">Medical Registration: <span class="font-mono text-emerald-400 font-semibold">CCIM-BUMS-2004-9841</span> • Senior Tabeeb (Integrative Rheumatology)</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="switchTab('consultation')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors shadow-md">
-                  🩺 Open Consultation Workspace
-                </button>
-              </div>
-            </div>
-
-            <!-- 8 Executive Overview Widgets -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-xs">
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Today's Appts</span>
-                <span class="text-lg font-bold text-white font-mono">14</span>
-                <p class="text-[10px] text-emerald-400">3 Done</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Waiting Queue</span>
-                <span class="text-lg font-bold text-amber-400 font-mono">3</span>
-                <p class="text-[10px] text-amber-400">Next: T-105</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Active Consult</span>
-                <span class="text-lg font-bold text-emerald-400 font-mono">T-104</span>
-                <p class="text-[10px] text-white truncate">H. Farooqi</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Pending Notes</span>
-                <span class="text-lg font-bold text-blue-400 font-mono">2</span>
-                <p class="text-[10px] text-[var(--muted)]">Drafted</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Draft Rx</span>
-                <span class="text-lg font-bold text-rose-400 font-mono">1</span>
-                <p class="text-[10px] text-rose-400">Awaiting Sign</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Follow-ups</span>
-                <span class="text-lg font-bold text-purple-400 font-mono">4</span>
-                <p class="text-[10px] text-purple-400">This Week</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Safety Alerts</span>
-                <span class="text-lg font-bold text-amber-400 font-mono">1</span>
-                <p class="text-[10px] text-amber-400">Mudabbar Gate</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-                <span class="text-[var(--muted)] text-[10px] uppercase font-semibold block">Recent Vitals</span>
-                <span class="text-lg font-bold text-emerald-400 font-mono">Norm</span>
-                <p class="text-[10px] text-emerald-400">124/82</p>
+                <span class="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block mb-2">Quick Actions</span>
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <button onclick="showNotification('Opening Add Patient Modal...')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow">+ Add New Patient</button>
+                  <button onclick="switchTab('prescriptions')" class="px-3.5 py-2 rounded-xl bg-[var(--background)] hover:bg-slate-700 text-white font-semibold border border-[var(--border)] transition">📝 Create Prescription</button>
+                  <button onclick="switchTab('consultation')" class="px-3.5 py-2 rounded-xl bg-[var(--background)] hover:bg-slate-700 text-white font-semibold border border-[var(--border)] transition">🩺 Start Consultation</button>
+                  <button onclick="switchRole('clinic')" class="px-3.5 py-2 rounded-xl bg-[var(--background)] hover:bg-slate-700 text-white font-semibold border border-[var(--border)] transition">📅 Book Appointment</button>
+                  <button onclick="showNotification('Hakeem Sahab AI Doctor Copilot ready in panel below.')" class="px-3.5 py-2 rounded-xl bg-teal-500/20 text-teal-300 hover:bg-teal-500/30 font-semibold border border-teal-500/40 transition">🤖 Open AI Doctor</button>
+                  <button onclick="switchRole('pharmacy')" class="px-3.5 py-2 rounded-xl bg-[var(--background)] hover:bg-slate-700 text-white font-semibold border border-[var(--border)] transition">💊 Add Medicine</button>
+                  <button onclick="showNotification('Generating Clinical Outcomes Audit PDF...')" class="px-3.5 py-2 rounded-xl bg-[var(--background)] hover:bg-slate-700 text-white font-semibold border border-[var(--border)] transition">📑 Generate Report</button>
+                </div>
               </div>
             </div>
 
-            <!-- Waiting Queue Table -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4">
+            <!-- SECTION 4: 6 KPI Cards / Summary Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">👥</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">+12.4%</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Total Patients</span><span class="text-2xl font-extrabold text-white">1,248</span><span class="text-[10px] text-[#64748B] block mt-0.5">Registered EMR profiles</span></div>
+                <button onclick="switchTab('patients')" class="text-[10px] text-teal-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">View details →</button>
+              </div>
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">📅</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">+4 vs avg</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Today's Appts</span><span class="text-2xl font-extrabold text-white">28</span><span class="text-[10px] text-[#64748B] block mt-0.5">8 Done • 4 In Consult</span></div>
+                <button onclick="switchTab('today')" class="text-[10px] text-teal-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">View details →</button>
+              </div>
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">🔄</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">6 Urgent</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Pending Follow-ups</span><span class="text-2xl font-extrabold text-white">14</span><span class="text-[10px] text-[#64748B] block mt-0.5">Requires outreach</span></div>
+                <button onclick="switchTab('followups')" class="text-[10px] text-teal-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">View details →</button>
+              </div>
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">🌿</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">+7 wk</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Active Treatment Plans</span><span class="text-2xl font-extrabold text-white">89</span><span class="text-[10px] text-[#64748B] block mt-0.5">24 in Phase 1 Tanqiya</span></div>
+                <button onclick="switchTab('consultation')" class="text-[10px] text-teal-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">View details →</button>
+              </div>
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">💳</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">+18.2%</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Today's Revenue</span><span class="text-2xl font-extrabold text-white">₹54,200</span><span class="text-[10px] text-[#64748B] block mt-0.5">OPD + Dispensary</span></div>
+                <button onclick="switchRole('clinic')" class="text-[10px] text-teal-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">View details →</button>
+              </div>
+              <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center"><span class="text-xl">⚠️</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono animate-pulse">Action Req</span></div>
+                <div><span class="text-[11px] text-[var(--muted)] block">Critical Alerts</span><span class="text-2xl font-extrabold text-white">2</span><span class="text-[10px] text-[#64748B] block mt-0.5">1 Interaction • 1 Lab</span></div>
+                <button onclick="showNotification('Reviewing Drug/Herb interaction for Azaraqi...')" class="text-[10px] text-rose-400 hover:text-white font-semibold pt-1 border-t border-[var(--border)] text-left">Review alerts →</button>
+              </div>
+            </div>
+
+            <!-- SECTION 7: Clinical Safety Alerts -->
+            <div class="space-y-3">
+              <span class="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span>⚠️</span> Clinical Safety Alerts & Interceptions (2 Active)
+              </span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs space-y-2">
+                  <div class="flex justify-between items-start">
+                    <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold text-[10px]">DRUG / HERB INTERACTION WARNING</span>
+                    <button onclick="showNotification('Alert 1 Acknowledged by Dr. Irfan.')" class="text-[10px] px-2 py-1 rounded bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold">Acknowledge</button>
+                  </div>
+                  <h4 class="font-bold text-white text-sm">Azaraqi (Mudabbar) + Sedative Therapy</h4>
+                  <p class="text-[11px] text-rose-200/80 leading-relaxed">Patient Hamza Farooqi (MRN-2026-0814): Azaraqi must not be co-administered with CNS depressants without 6h spacing and Kateera corrective.</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2">
+                  <div class="flex justify-between items-start">
+                    <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[10px]">ABNORMAL DIAGNOSTIC VALUE</span>
+                    <button onclick="showNotification('Alert 2 Acknowledged by Dr. Irfan.')" class="text-[10px] px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-bold">Acknowledge</button>
+                  </div>
+                  <h4 class="font-bold text-white text-sm">Elevated Serum Uric Acid (8.4 mg/dL)</h4>
+                  <p class="text-[11px] text-amber-200/80 leading-relaxed">Patient Bilal Ahmad (MRN-2026-0744): Hyperuricemia detected. Suranjan Talkh Mudabbar protocol initiated. Strict purine restriction advised.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 5 & 8: Today's Appointments & Hakeem Sahab AI -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              <!-- Today's Appointments (7 cols) -->
+              <div class="lg:col-span-7 bg-[var(--card)] rounded-3xl border border-[var(--border)] p-6 space-y-4 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border)] pb-3">
+                  <div>
+                    <h3 class="font-bold text-white text-base">Today's Scheduled Consultations</h3>
+                    <p class="text-xs text-[var(--muted)]">Active OPD queue & room allocation</p>
+                  </div>
+                  <div class="flex gap-1 text-[10px] bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] font-bold">
+                    <button class="px-2.5 py-1 rounded-lg bg-[var(--card)] text-emerald-400">Today</button>
+                    <button class="px-2.5 py-1 rounded-lg text-[var(--muted)] hover:text-white">Tomorrow</button>
+                    <button class="px-2.5 py-1 rounded-lg text-[var(--muted)] hover:text-white">Online</button>
+                    <button class="px-2.5 py-1 rounded-lg text-[var(--muted)] hover:text-white">In-Person</button>
+                  </div>
+                </div>
+
+                <div class="space-y-2.5 text-xs">
+                  <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-white text-sm">Hamza Farooqi</span>
+                        <span class="text-[10px] font-mono text-emerald-400">MRN-2026-0814</span>
+                        <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[9px]">In Consultation</span>
+                      </div>
+                      <p class="text-[11px] text-[var(--muted)] mt-1">🕒 10:30 AM • In-Person (Room 204) • Dr. Irfan</p>
+                    </div>
+                    <button onclick="switchTab('consultation')" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition shadow">
+                      Start Consult →
+                    </button>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-white text-sm">Ayesha Siddiqui</span>
+                        <span class="text-[10px] font-mono text-emerald-400">MRN-2026-0921</span>
+                        <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold text-[9px]">Waiting</span>
+                      </div>
+                      <p class="text-[11px] text-[var(--muted)] mt-1">🕒 11:15 AM • Online (WebRTC) • Dr. Irfan</p>
+                    </div>
+                    <button onclick="switchRole('mobile')" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-[var(--border)] transition">
+                      Video Call
+                    </button>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-white text-sm">Bilal Ahmad</span>
+                        <span class="text-[10px] font-mono text-emerald-400">MRN-2026-0744</span>
+                        <span class="px-2 py-0.5 rounded bg-slate-700 text-slate-300 font-bold text-[9px]">Confirmed</span>
+                      </div>
+                      <p class="text-[11px] text-[var(--muted)] mt-1">🕒 12:00 PM • In-Person (Room 204) • Dr. Irfan</p>
+                    </div>
+                    <button onclick="showNotification('Patient notified: Appointment confirmed.')" class="px-3 py-1.5 bg-[var(--card)] text-[var(--muted)] text-xs rounded-xl border border-[var(--border)]">
+                      Notify
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 8: Hakeem Sahab AI Doctor Copilot (5 cols) -->
+              <div class="lg:col-span-5 bg-gradient-to-b from-[#1E293B] to-[var(--card)] rounded-3xl border border-teal-500/40 p-6 space-y-4 shadow-xl">
+                <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">🤖</span>
+                    <div>
+                      <h3 class="font-bold text-white text-base">Hakeem Sahab AI Doctor</h3>
+                      <span class="text-[10px] text-teal-300 font-mono">5-Layer Clinical Decision Support</span>
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 font-bold text-[10px]">Active</span>
+                </div>
+
+                <div class="flex flex-wrap gap-1.5 text-[10px]">
+                  <button onclick="showNotification('Analyzing Hamza Farooqi: Barid Balghami dyscrasia along knee joint axis.')" class="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] text-slate-300 hover:border-teal-400">⚡ Analyze Hamza</button>
+                  <button onclick="showNotification('Suggested Protocol: Tanqiya Stage 1 with Munzij-e-Balgham.')" class="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] text-slate-300 hover:border-teal-400">🌿 Suggest Protocol</button>
+                  <button onclick="showNotification('Interaction Check: Suranjan + Colchicum. Safe with Kateera Musleh.')" class="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] text-slate-300 hover:border-teal-400">💊 Check Interactions</button>
+                </div>
+
+                <div class="flex gap-2">
+                  <input id="ai-quick-input" placeholder="Ask symptoms, herbs, or clinical interaction..." class="flex-1 px-3 py-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-400" />
+                  <button onclick="showNotification('Hakeem AI Copilot: Su-e-Mizaj Barid Balghami identified. Prescriptions require Dr. Irfan signature.'); document.getElementById('ai-quick-input').value='';" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">Ask</button>
+                </div>
+
+                <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 leading-snug">
+                  <strong>Statutory Disclaimer:</strong> AI-generated information is for clinical decision support only. Final diagnosis and treatment decisions require qualified clinician approval (<code class="text-amber-200">safe_to_lock = False</code>).
+                </div>
+              </div>
+
+            </div>
+
+            <!-- SECTION 9: 9-Axis Functional Clinical Mapping -->
+            <div class="bg-[var(--card)] rounded-3xl border border-[var(--border)] p-6 space-y-4">
               <div class="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <h3 class="text-base font-bold text-white">Today's Patient Queue</h3>
-                <span class="badge-emerald text-xs px-2.5 py-0.5 rounded font-semibold">Live Queue</span>
+                <div>
+                  <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Functional Biomarker Topology</span>
+                  <h3 class="font-bold text-white text-base mt-0.5">ZAYVORA 9-Axis Clinical Mapping</h3>
+                </div>
+                <span class="text-xs text-[var(--muted)] font-mono">Patient Baseline vs Current Humoral Deviation</span>
               </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                  <thead class="bg-[var(--background)] text-[var(--muted)] uppercase border-b border-[var(--border)]">
-                    <tr>
-                      <th class="p-3">Token</th>
-                      <th class="p-3">Patient Name</th>
-                      <th class="p-3">MRN</th>
-                      <th class="p-3">Chief Complaint</th>
-                      <th class="p-3">Time</th>
-                      <th class="p-3">Status</th>
-                      <th class="p-3 text-right">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-[var(--border)]">
-                    ${state.appointments.map(a => `
-                      <tr>
-                        <td class="p-3 font-mono text-emerald-400 font-bold">${a.token}</td>
-                        <td class="p-3 font-semibold text-white">${a.patientName}</td>
-                        <td class="p-3 font-mono text-[var(--muted)]">${a.mrn}</td>
-                        <td class="p-3 text-[var(--muted)]">${a.complaint}</td>
-                        <td class="p-3">${a.scheduledTime}</td>
-                        <td class="p-3"><span class="badge-blue text-[10px] px-2 py-0.5 rounded font-semibold">${a.status}</span></td>
-                        <td class="p-3 text-right">
-                          <button onclick="startConsultationFor('${a.patientName}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-500 transition-colors shadow">
-                            Start Consultation
-                          </button>
-                        </td>
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Liver Axis (Kabid)</span><span class="px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-300 text-[10px] font-bold">72/100 • Needs Attention</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-amber-400 h-full rounded-full" style="width: 72%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: LiverPrime + Majun Dabeed</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Gut Axis (Mida)</span><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold">58/100 • Moderate</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-blue-400 h-full rounded-full" style="width: 58%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: Warm Anupan Dietetics</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Metabolic Axis</span><span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold">81/100 • High Priority</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-rose-500 h-full rounded-full" style="width: 81%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: MetaboCore Elite Protocol</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Stress Axis (Dimagh)</span><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">43/100 • Stable</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-emerald-400 h-full rounded-full" style="width: 43%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: NightOne X Restorative Sleep</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Musculoskeletal (Mafasil)</span><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">78/100 • Needs Attention</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-amber-400 h-full rounded-full" style="width: 78%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: Habb-e-Suranjan + Medicated Natool</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+                  <div class="flex justify-between items-center"><span class="font-bold text-white">Hormonal Axis</span><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold">65/100 • Moderate</span></div>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-blue-400 h-full rounded-full" style="width: 65%"></div></div>
+                  <span class="text-[10px] text-[var(--muted)] block">Active: OvaSync Botanical Formula</span>
+                </div>
               </div>
             </div>
+
+            <!-- SECTION 10 & 11: Active Plans & Follow-ups -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div class="lg:col-span-6 bg-[var(--card)] rounded-3xl border border-[var(--border)] p-6 space-y-3">
+                <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                  <h3 class="font-bold text-white text-base">Active Treatment Plan Tracker</h3>
+                  <span class="text-xs text-[#2DD4BF] font-semibold">89 Active</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2 text-xs">
+                  <div class="flex justify-between"><strong class="text-white">Metabolic Reset 90 (Hamza Farooqi)</strong><span class="text-emerald-400 font-mono font-bold">27% Complete</span></div>
+                  <p class="text-[11px] text-[var(--muted)]">Phase: Liver Priming (Day 24 of 90) • Next Milestone: Lipid Profile in 7 days</p>
+                  <div class="w-full bg-[var(--card)] h-2 rounded-full overflow-hidden"><div class="bg-emerald-400 h-full rounded-full" style="width: 27%"></div></div>
+                </div>
+              </div>
+
+              <div class="lg:col-span-6 bg-[var(--card)] rounded-3xl border border-[var(--border)] p-6 space-y-3">
+                <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                  <h3 class="font-bold text-white text-base">Pending Follow-ups (QSURA Outreach)</h3>
+                  <span class="text-xs text-amber-300 font-mono font-bold">3 Due</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center text-xs">
+                  <div>
+                    <strong class="text-white block">Hamza Farooqi (Tanqiya Day 9 Check)</strong>
+                    <span class="text-[10px] text-[var(--muted)]">Due: Today</span>
+                  </div>
+                  <button onclick="showNotification('Sent WhatsApp follow-up message to Hamza Farooqi via QSURA.')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]">
+                    💬 Send WhatsApp
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
         `;
+        return;
       } else if (state.tab === 'consultation') {
         renderSingleConsultationWorkspace(container);
       } else if (state.tab === 'patients') {
@@ -817,7 +1004,7 @@
                   </div>
                   <div>
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                      Hakeem Sahab AI Copilot
+                      Hakeem Sahab AI Clinical Assistant
                       <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">v5.0-Clinical</span>
                     </h3>
                     <span class="text-[11px] text-[#94A3B8]">5-Layer Clinical Intelligence & Decision Support</span>
@@ -980,7 +1167,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
             <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
-              <h3 class="text-base font-bold text-white">Tab 1: Patient & Encounter Overview</h3>
+              <h3 class="text-base font-bold text-white">Tab 1: Patient Clinical Summary & Encounter Overview</h3>
               <span class="badge-emerald text-[11px] px-2.5 py-0.5 rounded font-bold">Encounter In Progress</span>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -1330,7 +1517,7 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
       else if (sectionNum === 9) {
         content.innerHTML = `
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4 text-xs">
-            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 9: Organ-Axis Physiological Mapping</h3>
+            <h3 class="text-base font-bold text-white border-b border-[var(--border)] pb-3">Tab 9: Organ-Axis Physiological Cross-Talk & Mapping</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-2">
                 <span class="font-bold text-emerald-400 block">Primary Axis: Mafasil-Asab (Locomotor)</span>
@@ -1417,7 +1604,7 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
 
             <!-- Safety Firewall Review Card -->
             <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2 text-emerald-400">
-              <span class="font-bold text-white block">🛡️ Automated Medication Safety Firewall Review</span>
+              <span class="font-bold text-white block">🛡️ Medication Safety & Interaction Review</span>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[11px]">
                 <div>• Pregnancy Risk: <strong class="text-white">Passed (N/A)</strong></div>
                 <div>• Allergy Cross-Ref: <strong class="text-white">Passed (No Sonf)</strong></div>
@@ -1459,7 +1646,7 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-3">
                 <div>
-                  <label class="block text-[var(--muted)] mb-1">Scheduled Follow-up Date</label>
+                  <label class="block text-[var(--muted)] mb-1">Schedule Follow-up Encounter</label>
                   <input type="date" value="2026-09-26" class="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--background)] text-white font-mono">
                 </div>
                 <div>
@@ -3068,5 +3255,61 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
     }
 
   </script>
+  <!-- ===================================================================== -->
+  <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
+  <!-- ===================================================================== -->
+  <footer class="w-full border-t border-[var(--border)] bg-[var(--card)] text-xs text-[var(--muted)] py-6 px-4 md:px-8 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <!-- Footer Left -->
+      <div class="text-center md:text-left space-y-1">
+        <div class="flex items-center justify-center md:justify-start gap-2">
+          <span class="font-bold text-white text-sm">ZAYVORA Health OS™</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] border border-emerald-500/20">
+            v1.0.0
+          </span>
+        </div>
+        <p class="text-[11px] text-[var(--muted)]">
+          © 2026 ZAYVORA Health. Modern Unani Care System.
+        </p>
+        <p class="text-[10px] text-[#64748B]">
+          Codified Greco-Arab Wisdom + Level 4 Clinical AI Governance
+        </p>
+      </div>
+
+      <!-- Footer Center Links -->
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px]">
+        <a href="javascript:void(0)" onclick="switchRole('website'); switchTab('philosophy');" class="hover:text-white transition-colors">About ZAYVORA</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="toggleHelpModal()" class="hover:text-white transition-colors">Help Center</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="switchRole('website'); switchTab('knowledge');" class="hover:text-white transition-colors">Documentation</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="showNotification('Support Desk: support@zayvora.health • +91 1800-ZAYVORA')" class="hover:text-white transition-colors">Contact Support</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="showNotification('Privacy Policy: 100% HIPAA, DISHA, DPDP, ABDM compliant.')" class="hover:text-white transition-colors">Privacy Policy</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="showNotification('Terms of Clinical Telemedicine Service & Non-Delegable Clinician Gate.')" class="hover:text-white transition-colors">Terms of Service</a>
+        <span class="text-[#334155]">•</span>
+        <a href="javascript:void(0)" onclick="showNotification('Data Protection: AES-256-GCM PHI encryption at rest & TLS 1.3 in transit.')" class="hover:text-white transition-colors">Data Protection</a>
+        <span class="text-[#334155]">•</span>
+        <span class="text-emerald-400/80 font-semibold cursor-default">Accessibility (WCAG 2.1 AA)</span>
+      </div>
+
+      <!-- Footer Right -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 text-[11px]">
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--background)] border border-[var(--border)]">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-semibold text-emerald-400">System Status:</span>
+          <span class="text-white">Operational</span>
+        </div>
+        <span class="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[10px] font-mono font-bold whitespace-nowrap">
+          🔒 21 CFR Part 11
+        </span>
+      </div>
+
+    </div>
+  </footer>
+
 </body>
 </html>

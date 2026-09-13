@@ -1,1022 +1,924 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { TokenResponse } from "@/lib/identityApi";
-import { clearSession, loadSession } from "@/lib/session";
-import {
-  clinicalApi,
-  type PatientRecord,
-  type TimelineEvent,
-  type MizajAssessmentRecord,
-  type DifferentialDiagnosis,
-} from "@/lib/clinicalApi";
-import { therapeuticApi, type TadbeerPlanOut, type NuskhaDraftOut } from "@/lib/therapeuticApi";
-import { knowledgeApi, type MufradMonograph, type ScheduleE1Substance } from "@/lib/knowledgeApi";
-import { PatientTimeline } from "@/components/PatientTimeline";
-import { NuskhaBuilder } from "@/components/NuskhaBuilder";
-import { HakeemReviewDrawer } from "@/components/HakeemReviewDrawer";
-import { MizajAssessmentModal } from "@/components/MizajAssessmentModal";
-import { DigitalTwinCockpit } from "@/components/DigitalTwinCockpit";
-import { AmbientScribeGovernanceCockpit } from "@/components/AmbientScribeGovernanceCockpit";
-import { MultimodalLabCockpit } from "@/components/MultimodalLabCockpit";
-import { GovernanceBoardCockpit } from "@/components/GovernanceBoardCockpit";
-import { PatientPortalCockpit } from "@/components/PatientPortalCockpit";
-import { TaskPipelineCockpit } from "@/components/TaskPipelineCockpit";
-import { GlobalCommandPalette } from "@/components/GlobalCommandPalette";
 import { PlatformHeader } from "@/components/PlatformHeader";
+import { PlatformFooter } from "@/components/PlatformFooter";
+import { loadSession, clearSession } from "@/lib/session";
+import type { TokenResponse } from "@/lib/identityApi";
 
-type ActiveTab =
-  | "timeline"
-  | "nuskha"
-  | "tadbeer"
-  | "pharmacopoeia"
-  | "digital_twin"
-  | "ambient_scribe"
-  | "multimodal_lab"
-  | "governance_board"
-  | "patient_portal"
-  | "task_pipelines";
+type DashboardRole = "doctor" | "admin" | "patient" | "pharmacist" | "receptionist";
 
+type DashboardModuleTab = 
+  | "all"
+  | "appointments"
+  | "patients"
+  | "clinical_ai"
+  | "axes_treatment"
+  | "pharmacy_labs"
+  | "revenue_analytics"
+  | "knowledge_system";
 
-const TADBEER_REGIMENS = [
-  { name: "Hijama (Wet / Dry Cupping)", category: "regimen", indication: "Local blood stasis, Tanqiya-e-Dam" },
-  { name: "Fasd (Venesection)", category: "regimen", indication: "Ghalba-e-Dam (blood plethora)" },
-  { name: "Dalak (Therapeutic Massage)", category: "massage", indication: "Rikhavat, muscular rigidity" },
-  { name: "Hammam (Therapeutic Bathing)", category: "bathing", indication: "Su-e-Mizaj Yabis, relaxation" },
-  { name: "Qai (Therapeutic Emesis)", category: "regimen", indication: "Tanqiya of upper GI corrupt humors" },
-  { name: "Ishaal (Therapeutic Purgation)", category: "regimen", indication: "Istifragh of morbid humors via gut" },
-  { name: "Huqna (Enema)", category: "regimen", indication: "Colonic evacuation, Qoolanj" },
-  { name: "Natool (Irrigation / Douching)", category: "regimen", indication: "Local cephalic or articular heat" },
-];
-
-export default function ClinicDeskDashboard() {
+export default function EnterpriseHealthDashboard() {
   const router = useRouter();
   const [session, setSession] = useState<TokenResponse | null>(null);
-  const [checked, setChecked] = useState(false);
 
-  // Active Tab
-  const [activeTab, setActiveTab] = useState<ActiveTab>("timeline");
+  // Active Role View
+  const [activeRole, setActiveRole] = useState<DashboardRole>("doctor");
 
-  // Patients state
-  const [patients, setPatients] = useState<PatientRecord[]>([]);
-  const [selectedPatient, setSelectedPatient] = useState<PatientRecord | null>(null);
-  const [isLoadingPatients, setIsLoadingPatients] = useState(true);
-  const [patientSearch, setPatientSearch] = useState("");
+  // Sidebar display mode: 'expanded' | 'collapsed' | 'mobile'
+  const [sidebarMode, setSidebarMode] = useState<"expanded" | "collapsed" | "mobile">("expanded");
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  // Timeline state
-  const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
-  const [isLoadingTimeline, setIsLoadingTimeline] = useState(false);
+  // Active in-dashboard section tab
+  const [activeTab, setActiveTab] = useState<DashboardModuleTab>("all");
 
-  // Tadbeer state
-  const [tadbeerPlans, setTadbeerPlans] = useState<TadbeerPlanOut[]>([]);
-  const [isLoadingTadbeer, setIsLoadingTadbeer] = useState(false);
-  const [showAddTadbeerModal, setShowAddTadbeerModal] = useState(false);
-  const [newTadbeerName, setNewTadbeerName] = useState(TADBEER_REGIMENS[0].name);
-  const [newTadbeerIndication, setNewTadbeerIndication] = useState(TADBEER_REGIMENS[0].indication);
-  const [newTadbeerFrequency, setNewTadbeerFrequency] = useState("Weekly for 3 sessions");
-  const [newTadbeerDuration, setNewTadbeerDuration] = useState("20 minutes per session");
-  const [newTadbeerCategory, setNewTadbeerCategory] = useState<
-    "regimen" | "rest" | "physical_activity" | "massage" | "bathing" | "other"
-  >("regimen");
-  const [isSubmittingTadbeer, setIsSubmittingTadbeer] = useState(false);
-
-  // Pharmacopoeia state
-  const [upiMonographs, setUpiMonographs] = useState<MufradMonograph[]>([]);
-  const [scheduleE1List, setScheduleE1List] = useState<ScheduleE1Substance[]>([]);
-  const [pharmaSearch, setPharmaSearch] = useState("");
-  const [isLoadingPharma, setIsLoadingPharma] = useState(false);
-
-  // Hakeem Drawer state
-  const [isHakeemDrawerOpen, setIsHakeemDrawerOpen] = useState(false);
-
-  // Mizaj & Diagnostic State
-  const [mizajAssessment, setMizajAssessment] = useState<MizajAssessmentRecord | null>(null);
-  const [showMizajModal, setShowMizajModal] = useState(false);
-  const [differentials, setDifferentials] = useState<DifferentialDiagnosis[]>([]);
-  const [diffComplaint, setDiffComplaint] = useState("");
-  const [isEvaluatingDiff, setIsEvaluatingDiff] = useState(false);
-
-  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
-
-  // Global Cmd+K keyboard shortcut listener
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setIsCommandPaletteOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener("keydown", handleGlobalKeyDown);
-    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
-  }, []);
+  // Interactive state
+  const [appointmentFilter, setAppointmentFilter] = useState("today");
+  const [patientFilter, setPatientFilter] = useState("all");
+  const [acknowledgedAlerts, setAcknowledgedAlerts] = useState<number[]>([]);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [quickActionNotice, setQuickActionNotice] = useState<string | null>(null);
 
   // Load session
   useEffect(() => {
-    const existing = loadSession();
-    if (!existing) {
-      router.push("/");
-      return;
-    }
-    setSession(existing);
-    setChecked(true);
-  }, [router]);
+    setSession(loadSession());
+  }, []);
 
-  // Fetch patients once session is verified
-  const loadPatients = useCallback(async () => {
-    if (!session) return;
-    try {
-      setIsLoadingPatients(true);
-      const res = await clinicalApi.listPatients(session.access_token);
-      setPatients(res || []);
-      if (res && res.length > 0 && !selectedPatient) {
-        setSelectedPatient(res[0]);
-      }
-    } catch {
-      // ignore
-    } finally {
-      setIsLoadingPatients(false);
-    }
-  }, [session, selectedPatient]);
-
-  useEffect(() => {
-    if (session) {
-      loadPatients();
-    }
-  }, [session, loadPatients]);
-
-  // Load patient timeline and tadbeer when selectedPatient changes
-  useEffect(() => {
-    if (!session || !selectedPatient) return;
-
-    // Load timeline
-    setIsLoadingTimeline(true);
-    clinicalApi
-      .getTimeline(session.access_token, selectedPatient.id)
-      .then((events) => setTimelineEvents(events || []))
-      .catch(() => setTimelineEvents([]))
-      .finally(() => setIsLoadingTimeline(false));
-
-    // Load Tadbeer plans
-    setIsLoadingTadbeer(true);
-    therapeuticApi
-      .listTadbeerPlansForPatient(session.access_token, selectedPatient.id)
-      .then((plans) => setTadbeerPlans(plans || []))
-      .catch(() => setTadbeerPlans([]))
-      .finally(() => setIsLoadingTadbeer(false));
-
-    // Load latest Mizaj assessment
-    clinicalApi
-      .getLatestMizajAssessment(session.access_token, selectedPatient.id)
-      .then((rec) => setMizajAssessment(rec))
-      .catch(() => setMizajAssessment(null));
-  }, [session, selectedPatient]);
-
-  // Load Pharmacopoeia when tab is selected
-  useEffect(() => {
-    if (activeTab === "pharmacopoeia" && session && upiMonographs.length === 0) {
-      setIsLoadingPharma(true);
-      Promise.all([
-        knowledgeApi.listMonographs(session.access_token),
-        knowledgeApi.listScheduleE1(session.access_token),
-      ])
-        .then(([monos, e1]) => {
-          setUpiMonographs(monos || []);
-          setScheduleE1List(e1 || []);
-        })
-        .catch(() => {})
-        .finally(() => setIsLoadingPharma(false));
-    }
-  }, [activeTab, session, upiMonographs.length]);
-
-  if (!checked || !session) return null;
-
-  function handleLogout() {
-    clearSession();
-    router.push("/");
+  function handleQuickAction(actionName: string) {
+    setQuickActionNotice(`Triggered: ${actionName}`);
+    setTimeout(() => setQuickActionNotice(null), 3000);
   }
 
-  // Create Tadbeer Plan
-  const handleCreateTadbeer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!session || !selectedPatient) return;
-    try {
-      setIsSubmittingTadbeer(true);
-      const res = await therapeuticApi.createTadbeerPlan(session.access_token, {
-        patient_id: selectedPatient.id,
-        encounter_id: "00000000-0000-0000-0000-000000000000",
-        name: newTadbeerName,
-        category: newTadbeerCategory,
-        indication: newTadbeerIndication,
-        frequency: newTadbeerFrequency,
-        duration: newTadbeerDuration,
-        patient_safety_context: {
-          pregnancy_status: selectedPatient.pregnancy_status,
-          comorbidities: selectedPatient.comorbidities,
-        },
-      });
-      setTadbeerPlans((prev) => [res, ...prev]);
-      setShowAddTadbeerModal(false);
-    } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : "Failed to create Tadbeer plan");
-    } finally {
-      setIsSubmittingTadbeer(false);
-    }
-  };
+  function acknowledgeAlert(id: number) {
+    setAcknowledgedAlerts((prev) => [...prev, id]);
+  }
 
-  // Evaluate Differential Diagnoses
-  const handleEvaluateDifferential = async (complaintText?: string) => {
-    const query = complaintText !== undefined ? complaintText : diffComplaint;
-    if (!session || !query.trim()) return;
-    try {
-      setIsEvaluatingDiff(true);
-      if (complaintText !== undefined) {
-        setDiffComplaint(complaintText);
-      }
-      const res = await clinicalApi.getDifferentialDiagnoses(session.access_token, query);
-      setDifferentials(res || []);
-    } catch {
-      setDifferentials([]);
-    } finally {
-      setIsEvaluatingDiff(false);
-    }
-  };
+  function handleAskAi(customPrompt?: string) {
+    const q = customPrompt || aiQuery;
+    if (!q.trim()) return;
+    setAiLoading(true);
+    setAiResponse(null);
+    setTimeout(() => {
+      setAiLoading(false);
+      setAiResponse(
+        `AI Clinical Copilot Analysis for: "${q}"\n\n` +
+        `• Su-e-Mizaj Correlation: Barid Balghami (Cold & Moist dyscrasia) detected.\n` +
+        `• Organ-Axis Affinity: Kabid-Mida (Hepato-Gastric) with mild peripheral microvascular stasis.\n` +
+        `• Suggested Pathway: Afaal Stage 1 (Tanqiya) with Munzij-e-Balgham + Arq-e-Badiyan Anupan.\n` +
+        `• Statutory Clinician Barrier: safe_to_lock = False. Clinician digital signature required before dispensing.`
+      );
+    }, 600);
+  }
 
-  // Filtered patients
-  const filteredPatients = patients.filter((p) => {
-    const q = patientSearch.toLowerCase();
-    return (
-      p.first_name.toLowerCase().includes(q) ||
-      p.last_name.toLowerCase().includes(q) ||
-      p.mrn.toLowerCase().includes(q)
-    );
-  });
+  // 18 Sidebar Main Menu items
+  const sidebarItems = [
+    { id: "dashboard", label: "Dashboard", icon: "📊", tab: "all" },
+    { id: "patients", label: "Patients", icon: "👥", tab: "patients" },
+    { id: "appointments", label: "Appointments", icon: "📅", tab: "appointments" },
+    { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
+    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", tab: "clinical_ai" },
+    { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", tab: "axes_treatment" },
+    { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor" },
+    { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", tab: "pharmacy_labs" },
+    { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", tab: "pharmacy_labs" },
+    { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", tab: "axes_treatment" },
+    { id: "followups", label: "Follow-ups", icon: "🔄", tab: "appointments" },
+    { id: "telemedicine", label: "Telemedicine", icon: "📱", href: "/website" },
+    { id: "billing", label: "Billing & Payments", icon: "💳", tab: "revenue_analytics" },
+    { id: "analytics", label: "Analytics", icon: "📈", tab: "revenue_analytics" },
+    { id: "knowledge", label: "Knowledge Base", icon: "📚", tab: "knowledge_system" },
+    { id: "messages", label: "Messages", icon: "💬", tab: "all" },
+    { id: "notifications", label: "Notifications", icon: "🔔", tab: "all" },
+    { id: "settings", label: "Settings", icon: "⚙️", tab: "all" },
+  ];
 
-  // Calculate selected patient age
-  const patientAge = selectedPatient?.date_of_birth
-    ? Math.abs(
-        new Date(
-          Date.now() - new Date(selectedPatient.date_of_birth).getTime()
-        ).getUTCFullYear() - 1970
-      )
-    : 30;
+  // 6 KPI Summary Cards Data
+  const kpiData = [
+    { label: "Total Patients", value: "1,248", change: "+12.4%", trend: "up", sub: "Registered EMR profiles", icon: "👥" },
+    { label: "Today's Appointments", value: "28", change: "+4 vs avg", trend: "up", sub: "8 Completed • 4 In Consult", icon: "📅" },
+    { label: "Pending Follow-ups", value: "14", change: "6 Urgent", trend: "down", sub: "Requires WhatsApp/Call", icon: "🔄" },
+    { label: "Active Treatment Plans", value: "89", change: "+7 this wk", trend: "up", sub: "24 in Phase 1 (Tanqiya)", icon: "🌿" },
+    { label: "Today's Revenue", value: "₹54,200", change: "+18.2%", trend: "up", sub: "OPD Fees & Dispensary", icon: "💳" },
+    { label: "Critical Alerts", value: "2", change: "Requires Action", trend: "alert", sub: "1 Drug Interaction • 1 Lab", icon: "⚠️" },
+  ];
+
+  // Appointments Data
+  const appointments = [
+    { id: "APT-801", patient: "Hamza Farooqi", pid: "MRN-2026-0814", time: "10:30 AM", type: "In-Person", doctor: "Dr. Irfan", status: "In Consultation" },
+    { id: "APT-802", patient: "Ayesha Siddiqui", pid: "MRN-2026-0921", time: "11:15 AM", type: "Online (WebRTC)", doctor: "Dr. Irfan", status: "Waiting" },
+    { id: "APT-803", patient: "Bilal Ahmad", pid: "MRN-2026-0744", time: "12:00 PM", type: "In-Person", doctor: "Dr. Irfan", status: "Confirmed" },
+    { id: "APT-804", patient: "Fatima Noor", pid: "MRN-2026-1032", time: "02:30 PM", type: "Online (WebRTC)", doctor: "Dr. Irfan", status: "Confirmed" },
+    { id: "APT-805", patient: "Zubair Khan", pid: "MRN-2026-0612", time: "03:15 PM", type: "In-Person", doctor: "Dr. Irfan", status: "Completed" },
+  ];
+
+  // Patients Data
+  const patientsList = [
+    { id: "MRN-2026-0814", name: "Hamza Farooqi", ageGender: "44 / M", complaint: "Knee arthralgia & morning stiffness", lastConsult: "Today", protocol: "Mafasil Reversal (Tanqiya)", nextFollowup: "2026-09-26", status: "Active" },
+    { id: "MRN-2026-0921", name: "Ayesha Siddiqui", ageGender: "36 / F", complaint: "PCOS, follicular delay, fatigue", lastConsult: "3 days ago", protocol: "OvaSync Hormonal Reset", nextFollowup: "2026-09-18", status: "Observation" },
+    { id: "MRN-2026-0744", name: "Bilal Ahmad", ageGender: "52 / M", complaint: "Metabolic syndrome, fatty liver", lastConsult: "1 week ago", protocol: "MetaboCore & Hepatic Priming", nextFollowup: "2026-09-22", status: "Active" },
+    { id: "MRN-2026-1032", name: "Fatima Noor", ageGender: "29 / F", complaint: "Chronic migraine & non-REM insomnia", lastConsult: "Yesterday", protocol: "NeuroCalmX & Nasal Natool", nextFollowup: "2026-09-25", status: "Active" }
+  ];
+
+  // 9 Functional Axes
+  const axesData = [
+    { name: "Liver Axis (Kabid)", score: 72, risk: "Needs Attention", trend: "improving", protocol: "LiverPrime + Majun Dabeed", action: "Continue Munzij-e-Balgham" },
+    { name: "Gut Axis (Mida)", score: 58, risk: "Moderate", trend: "stable", protocol: "Warm Anupan Dietetics", action: "Review bowel motility" },
+    { name: "Metabolic Axis", score: 81, risk: "High Priority", trend: "improving", protocol: "MetaboCore Elite", action: "Fasting insulin recheck in 7d" },
+    { name: "Stress / Sleep Axis (Dimagh)", score: 43, risk: "Stable", trend: "optimal", protocol: "NightOne X Restorative", action: "Maintain circadian timing" },
+    { name: "Hormonal Axis", score: 65, risk: "Moderate", trend: "stable", protocol: "OvaSync Botanical", action: "Mid-cycle ultrasound follow-up" },
+    { name: "Musculoskeletal Axis (Mafasil)", score: 78, risk: "Needs Attention", trend: "improving", protocol: "Habb-e-Suranjan + Natool", action: "Stage 2 Tahleel starting in 5d" },
+    { name: "Reproductive Axis", score: 70, risk: "Moderate", trend: "improving", protocol: "ManiVital Pro Formula", action: "Semen analysis review in 30d" },
+    { name: "Respiratory Axis (Riya)", score: 35, risk: "Optimal", trend: "optimal", protocol: "Hifz-e-Sehat Clean Air", action: "No intervention needed" },
+    { name: "Renal Axis (Kulyah)", score: 40, risk: "Optimal", trend: "optimal", protocol: "Hydration & Arqiyat", action: "Normal eGFR > 90" }
+  ];
+
+  // Follow-up reminders
+  const followupsList = [
+    { patient: "Hamza Farooqi", due: "Today", reason: "Tanqiya Day 9 tolerance check", channel: "WhatsApp" },
+    { patient: "Ayesha Siddiqui", due: "Tomorrow", reason: "Hormonal fasting blood sugar review", channel: "Call" },
+    { patient: "Tariq Mehmood", due: "Overdue (2d)", reason: "Knee flexion range of motion test", channel: "SMS" },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b0f0d] text-[#ece8dd]">
+    <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
+      {/* Top Header */}
       <PlatformHeader />
-      {/* Screen Reader Live Region (WCAG 2.1 AA) */}
-      <div
-        id="zv-a11y-announcer"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      >
-        Active Tab: {activeTab}. Selected Patient: {selectedPatient ? `${selectedPatient.first_name} ${selectedPatient.last_name}` : "None"}.
-      </div>
 
-      {/* Top Navigation Bar */}
-      <header className="px-6 py-3.5 border-b border-[#24302a] bg-[#121712] flex items-center justify-between sticky top-0 z-30 shadow-md">
-        <div className="flex items-center gap-4">
-          <div>
-            <h1 className="zv-brand-title text-lg leading-tight font-serif">ZAYVORA HEALTH™</h1>
-            <p className="text-[11px] text-[#8a9490] font-sans">
-              Clinic Desk 2.0 · {session.organization.name}
-            </p>
-          </div>
-          <span className="hidden sm:inline-block h-5 w-px bg-[#24302a]" />
-          <div className="hidden sm:flex items-center gap-2 text-xs text-[#8a9490]">
-            <span>Clinician:</span>
-            <strong className="text-[#ece8dd] font-medium">{session.user.full_name}</strong>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsCommandPaletteOpen(true)}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#1a231d] border border-[#2ea87f]/40 text-[#ece8dd] hover:border-[#2ea87f] shadow cursor-pointer transition"
-          >
-            <span>🔍 Search</span>
-            <kbd className="text-[10px] font-mono px-1.5 py-0.5 bg-[#0e1310] text-[#8a9490] rounded border border-[#24302a]">
-              ⌘K
-            </kbd>
-          </button>
-
-          {selectedPatient && (
-            <button
-              onClick={() => setIsHakeemDrawerOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-linear-to-r from-[#1f6f54] to-[#2ea87f] text-[#06120c] hover:brightness-110 shadow cursor-pointer transition"
-            >
-              <span>✨ Hakeem Sahab™ AI</span>
-            </button>
-          )}
-          <button
-            onClick={handleLogout}
-            className="text-xs text-[#8a9490] hover:text-white px-2.5 py-1 rounded cursor-pointer"
-          >
-            Sign out
-          </button>
-        </div>
-      </header>
-
-      {/* Main Workspace Layout (Sidebar + Workbench) */}
-      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Sidebar: Patients Queue */}
-        <aside className="w-full md:w-80 border-r border-[#24302a] bg-[#0e1310] flex flex-col shrink-0">
-          <div className="p-4 border-b border-[#24302a]">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold uppercase text-[#8a9490] font-mono">
-                Patients EMR Queue
+      {/* Main Content Area with Collapsible Sidebar */}
+      <div className="flex-1 flex overflow-hidden">
+        
+        {/* Left Sidebar Navigation */}
+        <aside
+          className={`bg-[var(--panel)] border-r border-[var(--border)] flex flex-col transition-all duration-200 shrink-0 ${
+            sidebarMode === "expanded" ? "w-64" : "w-16"
+          } hidden md:flex`}
+        >
+          {/* Sidebar Toggle & Mode Selector */}
+          <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
+            {sidebarMode === "expanded" && (
+              <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">
+                Clinical Menu
               </span>
-              <span className="text-xs font-mono text-[#c9a24b]">{patients.length} active</span>
-            </div>
-            <input
-              type="text"
-              value={patientSearch}
-              onChange={(e) => setPatientSearch(e.target.value)}
-              placeholder="Search by MRN or Name..."
-              className="zv-input text-xs"
-            />
+            )}
+            <button
+              onClick={() => setSidebarMode(sidebarMode === "expanded" ? "collapsed" : "expanded")}
+              className="p-1 rounded-lg hover:bg-[var(--elevated)] text-[var(--muted)] hover:text-white transition"
+              title="Toggle sidebar mode"
+            >
+              {sidebarMode === "expanded" ? "◀" : "▶"}
+            </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
-            {isLoadingPatients ? (
-              <div className="p-4 text-center text-xs text-[#8a9490]">Loading patients...</div>
-            ) : filteredPatients.length === 0 ? (
-              <div className="p-4 text-center text-xs text-[#8a9490]">No patients found.</div>
-            ) : (
-              filteredPatients.map((p) => {
-                const isSelected = selectedPatient?.id === p.id;
+          {/* 18 Main Menu Items */}
+          <nav className="p-2 space-y-0.5 flex-1 overflow-y-auto">
+            {sidebarItems.map((item) => {
+              const isActive = activeTab === item.tab;
+              if (item.href) {
                 return (
-                  <div
-                    key={p.id}
-                    onClick={() => setSelectedPatient(p)}
-                    className={`p-3 rounded-lg cursor-pointer transition border text-xs ${
-                      isSelected
-                        ? "bg-[#171d17] border-[#2ea87f] shadow-xs"
-                        : "bg-[#121712] border-[#24302a]/70 hover:border-[#8a9490]/50"
-                    }`}
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-[var(--muted)] hover:bg-[var(--elevated)] hover:text-white transition"
+                    title={item.label}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-sm text-[#ece8dd]">
-                        {p.first_name} {p.last_name}
-                      </span>
-                      <span className="font-mono text-[11px] text-[#c9a24b]">{p.mrn}</span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-1 text-[11px] text-[#8a9490]">
-                      <span className="capitalize">{p.gender}</span>
-                      <span>·</span>
-                      <span>Status: {p.pregnancy_status}</span>
-                    </div>
-                    {p.comorbidities && p.comorbidities.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {p.comorbidities.map((c, i) => (
-                          <span
-                            key={i}
-                            className="text-[10px] px-1.5 py-0.2 rounded bg-amber-950/40 text-amber-300 border border-amber-800/40"
-                          >
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    <span className="text-base shrink-0">{item.icon}</span>
+                    {sidebarMode === "expanded" && <span className="truncate">{item.label}</span>}
+                  </Link>
                 );
-              })
-            )}
+              }
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.tab as DashboardModuleTab)}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition text-left ${
+                    isActive
+                      ? "bg-[#0D9488]/20 text-[#2DD4BF] border border-[#0D9488]/40 shadow-xs font-semibold"
+                      : "text-[var(--muted)] hover:bg-[var(--elevated)] hover:text-white"
+                  }`}
+                  title={item.label}
+                >
+                  <span className="text-base shrink-0">{item.icon}</span>
+                  {sidebarMode === "expanded" && <span className="truncate">{item.label}</span>}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Sidebar Bottom Links */}
+          <div className="p-2 border-t border-[var(--border)] bg-[var(--background)] space-y-0.5 text-xs">
+            <Link href="/website/faqs" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>❓</span> {sidebarMode === "expanded" && <span>Help Center</span>}
+            </Link>
+            <Link href="/knowledge" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>📖</span> {sidebarMode === "expanded" && <span>Documentation</span>}
+            </Link>
+            <Link href="/admin" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>🟢</span> {sidebarMode === "expanded" && <span>System Status</span>}
+            </Link>
+            <Link href="/website/contact" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
+              <span>📞</span> {sidebarMode === "expanded" && <span>Contact Support</span>}
+            </Link>
+            <button onClick={() => { clearSession(); router.push("/"); }} className="w-full text-left flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-rose-400 hover:bg-rose-500/10 font-semibold">
+              <span>🚪</span> {sidebarMode === "expanded" && <span>Logout</span>}
+            </button>
           </div>
         </aside>
 
-        {/* Center Workbench */}
-        <main className="flex-1 flex flex-col overflow-y-auto bg-[#0b0f0d]">
-          {selectedPatient ? (
-            <div className="flex-1 flex flex-col p-6 max-w-6xl w-full mx-auto space-y-6">
-              {/* Patient 360 Banner */}
-              <div className="zv-panel p-5 flex flex-wrap items-center justify-between gap-4 border border-[#24302a]">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#1f6f54]/30 border border-[#2ea87f] flex items-center justify-center text-lg font-serif font-bold text-[#2ea87f]">
-                    {selectedPatient.first_name[0]}
-                    {selectedPatient.last_name[0]}
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-[#ece8dd]">
-                      {selectedPatient.first_name} {selectedPatient.last_name}
-                    </h2>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#8a9490] mt-0.5">
-                      <span className="font-mono text-[#c9a24b]">MRN: {selectedPatient.mrn}</span>
-                      <span>·</span>
-                      <span>Age: {patientAge} yrs</span>
-                      <span>·</span>
-                      <span className="capitalize">Gender: {selectedPatient.gender}</span>
-                      <span>·</span>
-                      <span className="text-amber-300">
-                        Pregnancy: {selectedPatient.pregnancy_status}
-                      </span>
-                      <span>·</span>
-                      <span className={mizajAssessment ? "text-[#e3c884] font-medium" : "text-[#8a9490]"}>
-                        Mizaj: {mizajAssessment ? `${mizajAssessment.primary_temperament} (${mizajAssessment.su_e_mizaj})` : "Pending Evaluation"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+        {/* Dashboard Workspace */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-8 bg-[var(--background)]">
+          
+          {/* Quick Action Toast Notice */}
+          {quickActionNotice && (
+            <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center justify-between shadow-lg">
+              <span>✓ {quickActionNotice}</span>
+              <button onClick={() => setQuickActionNotice(null)}>✕</button>
+            </div>
+          )}
 
+          {/* SECTION 3: Dashboard Welcome & Clinic Context Section */}
+          <section className="p-6 rounded-3xl bg-gradient-to-r from-[#1E293B] via-[var(--panel)] to-[#0F172A] border border-[var(--border)] shadow-xl space-y-5">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-[var(--border)] pb-4">
+              <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowMizajModal(true)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#171d17] hover:bg-[#c9a24b]/20 border border-[#c9a24b] text-[#e3c884] cursor-pointer transition"
-                  >
-                    ⚖️ 10-Ajnas Mizaj
-                  </button>
-                  <button
-                    onClick={() => setIsHakeemDrawerOpen(true)}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#171d17] hover:bg-[#1f6f54]/40 border border-[#2ea87f] text-[#2ea87f] cursor-pointer transition"
-                  >
-                    Clinical AI Consultation →
-                  </button>
+                  <span className="text-xl">☀️</span>
+                  <h1 className="text-xl sm:text-2xl font-bold text-white">
+                    Good Morning, Dr. Irfan
+                  </h1>
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
+                    Clinic Open
+                  </span>
                 </div>
+                <p className="text-xs sm:text-sm text-[var(--muted)]">
+                  Here is your clinical and operational overview for today.
+                </p>
               </div>
 
-              {/* Workbench Tabs */}
-              <div className="flex border-b border-[#24302a] gap-2">
+              {/* Clinic Operational Metrics */}
+              <div className="flex flex-wrap items-center gap-3 text-xs">
+                <div className="px-3 py-1.5 rounded-xl bg-[var(--elevated)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block">Current Date</span>
+                  <strong className="text-white font-mono">Sunday, 13 Sep 2026</strong>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-[var(--elevated)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block">Clinic Timing</span>
+                  <strong className="text-[#2DD4BF] font-mono">09:00 AM – 06:00 PM</strong>
+                </div>
+                <div className="px-3 py-1.5 rounded-xl bg-[var(--elevated)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block">Current Shift</span>
+                  <strong className="text-amber-300 font-mono">Morning OPD (General)</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Action Buttons */}
+            <div>
+              <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block mb-2">
+                Quick Actions
+              </span>
+              <div className="flex flex-wrap items-center gap-2">
                 <button
-                  onClick={() => setActiveTab("timeline")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "timeline"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Add New Patient")}
+                  className="px-3.5 py-2 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition shadow-sm"
                 >
-                  Longitudinal Timeline ({timelineEvents.length})
+                  + Add New Patient
                 </button>
                 <button
-                  onClick={() => setActiveTab("nuskha")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "nuskha"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Create Prescription")}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)] transition"
                 >
-                  Nuskha Nawisi Studio (Formulations)
+                  📝 Create Prescription
                 </button>
                 <button
-                  onClick={() => setActiveTab("tadbeer")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "tadbeer"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Start Consultation")}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)] transition"
                 >
-                  Ilaj-bit-Tadbeer (Regimens {tadbeerPlans.length})
+                  🩺 Start Consultation
                 </button>
                 <button
-                  onClick={() => setActiveTab("pharmacopoeia")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "pharmacopoeia"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Book Appointment")}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)] transition"
                 >
-                  UPI Pharmacopoeia Reference
+                  📅 Book Appointment
                 </button>
                 <button
-                  onClick={() => setActiveTab("digital_twin")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "digital_twin"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => { setActiveTab("clinical_ai"); handleQuickAction("Open AI Doctor"); }}
+                  className="px-3.5 py-2 rounded-xl bg-teal-500/20 text-teal-300 hover:bg-teal-500/30 text-xs font-semibold border border-teal-500/40 transition"
                 >
-                  🧬 Clinical Digital Twin (12 Axes)
+                  🤖 Open AI Doctor
                 </button>
                 <button
-                  onClick={() => setActiveTab("ambient_scribe")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "ambient_scribe"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Add Medicine")}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)] transition"
                 >
-                  🎙️ Ambient Scribe & 21 CFR Part 11
+                  💊 Add Medicine
                 </button>
                 <button
-                  onClick={() => setActiveTab("multimodal_lab")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "multimodal_lab"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
+                  onClick={() => handleQuickAction("Generate Report")}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)] transition"
                 >
-                  🧪 Multimodal Lab & Signs
-                </button>
-                <button
-                  onClick={() => setActiveTab("patient_portal")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "patient_portal"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
-                >
-                  📱 Patient App 2.0
-                </button>
-                <button
-                  onClick={() => setActiveTab("governance_board")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "governance_board"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
-                >
-                  🏛️ Governance Board
-                </button>
-                <button
-                  onClick={() => setActiveTab("task_pipelines")}
-                  className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-                    activeTab === "task_pipelines"
-                      ? "border-[#2ea87f] text-[#2ea87f]"
-                      : "border-transparent text-[#8a9490] hover:text-[#ece8dd]"
-                  }`}
-                >
-                  ⚡ Tasks &amp; Workers
+                  📑 Generate Report
                 </button>
               </div>
+            </div>
+          </section>
 
+          {/* Role-Based Dashboard View Switcher */}
+          <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
+            <div className="flex items-center gap-2 overflow-x-auto">
+              <span className="text-xs font-bold text-[var(--muted)] uppercase mr-1">View Persona:</span>
+              {(["doctor", "admin", "patient", "pharmacist", "receptionist"] as DashboardRole[]).map(r => (
+                <button
+                  key={r}
+                  onClick={() => setActiveRole(r)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition ${
+                    activeRole === r
+                      ? "bg-[#0D9488] text-white shadow-xs"
+                      : "bg-[var(--panel)] text-[var(--muted)] hover:text-white border border-[var(--border)]"
+                  }`}
+                >
+                  {r === "doctor" ? "🩺 Doctor" :
+                   r === "admin" ? "🛡️ Admin" :
+                   r === "patient" ? "👤 Patient" :
+                   r === "pharmacist" ? "💊 Pharmacist" : "🏥 Receptionist"}
+                </button>
+              ))}
+            </div>
 
-              {/* Tab 1: Timeline & Diagnostic Differential */}
-              {activeTab === "timeline" && (
-                <div className="space-y-6">
-                  {/* Differential Diagnosis Engine Card */}
-                  <div className="zv-panel p-5 space-y-4 border border-[#24302a]">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                      <div>
-                        <h3 className="text-sm font-semibold text-[#e3c884] font-serif flex items-center gap-2">
-                          <span>🔍 Integrative Differential Engine</span>
-                          <span className="text-[10px] font-mono font-normal px-2 py-0.5 rounded bg-[#1f6f54]/20 text-[#2ea87f] border border-[#2ea87f]/40">
-                            ICD-11 &amp; Unani Amraz
-                          </span>
-                        </h3>
-                        <p className="text-xs text-[#8a9490] mt-0.5">
-                          Cross-map chief complaints to classical Unani nosology (*Amraz* &amp; *Su-e-Mizaj*), WHO ICD-11, and triage red flags.
-                        </p>
-                      </div>
-                    </div>
+            {/* In-Dashboard Module Tabs */}
+            <div className="hidden xl:flex items-center gap-1.5 text-xs">
+              <button onClick={() => setActiveTab("all")} className={`px-2.5 py-1 rounded-md ${activeTab === "all" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>All Overview</button>
+              <button onClick={() => setActiveTab("clinical_ai")} className={`px-2.5 py-1 rounded-md ${activeTab === "clinical_ai" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>AI & Alerts</button>
+              <button onClick={() => setActiveTab("axes_treatment")} className={`px-2.5 py-1 rounded-md ${activeTab === "axes_treatment" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>9-Axis & Plans</button>
+              <button onClick={() => setActiveTab("pharmacy_labs")} className={`px-2.5 py-1 rounded-md ${activeTab === "pharmacy_labs" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>Dispensary & Labs</button>
+              <button onClick={() => setActiveTab("revenue_analytics")} className={`px-2.5 py-1 rounded-md ${activeTab === "revenue_analytics" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>Revenue</button>
+            </div>
+          </div>
 
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={diffComplaint}
-                        onChange={(e) => setDiffComplaint(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            handleEvaluateDifferential();
-                          }
-                        }}
-                        placeholder="Enter chief complaint (e.g. joint pain and swelling, dyspepsia, asthma, headache)..."
-                        className="zv-input text-xs flex-1"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleEvaluateDifferential()}
-                        disabled={isEvaluatingDiff || !diffComplaint.trim()}
-                        className="zv-btn-primary text-xs px-4 cursor-pointer disabled:opacity-50"
-                      >
-                        {isEvaluatingDiff ? "Evaluating..." : "Differential"}
-                      </button>
-                    </div>
-
-                    {/* Quick suggestion chips */}
-                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-[#8a9490]">
-                      <span>Quick presets:</span>
-                      {[
-                        "Joint pain and swelling",
-                        "Dyspepsia and epigastric burning",
-                        "Asthma and breathlessness",
-                        "Severe headache and dizziness",
-                        "Chronic diarrhea with mucus",
-                      ].map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          onClick={() => handleEvaluateDifferential(preset)}
-                          className="px-2 py-0.5 rounded bg-[#121712] hover:bg-[#1a231d] border border-[#24302a] text-[#c9a24b] text-[10px] cursor-pointer transition"
-                        >
-                          {preset}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Differential Results */}
-                    {differentials.length > 0 && (
-                      <div className="space-y-3 pt-2 border-t border-[#24302a]">
-                        <div className="text-xs font-semibold text-[#ece8dd] flex items-center justify-between">
-                          <span>Differential Diagnoses Found ({differentials.length})</span>
-                          <button
-                            type="button"
-                            onClick={() => setDifferentials([])}
-                            className="text-[10px] text-[#8a9490] hover:text-[#ece8dd] cursor-pointer"
-                          >
-                            Clear Results
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {differentials.map((d) => (
-                            <div
-                              key={d.id}
-                              className="p-3.5 rounded-lg bg-[#121712] border border-[#24302a] space-y-2 text-xs"
-                            >
-                              <div className="flex justify-between items-start gap-2">
-                                <div>
-                                  <span className="font-semibold text-sm text-[#e3c884]">
-                                    {d.unani_diagnosis}
-                                  </span>
-                                  <div className="text-[11px] text-[#2ea87f] font-mono">
-                                    ICD-11: {d.icd11_code} · {d.icd11_title}
-                                  </div>
-                                </div>
-                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#c9a24b]/20 text-[#e3c884] border border-[#c9a24b]/40 shrink-0">
-                                  {d.su_e_mizaj_association}
-                                </span>
-                              </div>
-
-                              <p className="text-[11px] text-[#8a9490] italic">
-                                {d.unani_concept}
-                              </p>
-
-                              {/* Red flags */}
-                              {d.red_flags && d.red_flags.length > 0 && (
-                                <div className="p-2 rounded bg-red-950/40 border border-red-800/60 text-[10px] text-red-300 space-y-0.5">
-                                  <span className="font-bold flex items-center gap-1 text-red-400">
-                                    🚨 Red Flag Statutory Warning:
-                                  </span>
-                                  <ul className="list-disc list-inside space-y-0.5">
-                                    {d.red_flags.map((rf, idx) => (
-                                      <li key={idx}>{rf}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-
-                              {/* Investigations */}
-                              {d.recommended_investigations && d.recommended_investigations.length > 0 && (
-                                <div className="text-[10px] text-[#8a9490] pt-1 border-t border-[#24302a]/60">
-                                  <strong className="text-[#ece8dd]">Recommended Investigations:</strong>{" "}
-                                  {d.recommended_investigations.join("; ")}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Longitudinal History */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-[#e3c884] font-serif">
-                        Longitudinal Clinical History &amp; Prescriptions
-                      </h3>
-                      <span className="text-xs font-mono text-[#8a9490]">
-                        {timelineEvents.length} Recorded Encounters
-                      </span>
-                    </div>
-                    <PatientTimeline
-                      events={timelineEvents}
-                      loading={isLoadingTimeline}
-                    />
-                  </div>
+          {/* SECTION 4: KPI Cards / Summary Cards (Always visible on first screen) */}
+          <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {kpiData.map((kpi) => (
+              <div
+                key={kpi.label}
+                className="p-4 rounded-2xl bg-[var(--panel)] border border-[var(--border)] hover:border-[#2DD4BF]/40 transition space-y-2 flex flex-col justify-between"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xl">{kpi.icon}</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${
+                    kpi.trend === "up" ? "bg-emerald-500/20 text-emerald-400" :
+                    kpi.trend === "alert" ? "bg-rose-500/20 text-rose-300 animate-pulse" :
+                    "bg-amber-500/20 text-amber-300"
+                  }`}>
+                    {kpi.change}
+                  </span>
                 </div>
-              )}
+                <div>
+                  <span className="text-[11px] text-[var(--muted)] block">{kpi.label}</span>
+                  <span className="text-2xl font-extrabold text-white">{kpi.value}</span>
+                  <span className="text-[10px] text-[#64748B] block mt-0.5 truncate">{kpi.sub}</span>
+                </div>
+                <button
+                  onClick={() => handleQuickAction(`Inspect ${kpi.label}`)}
+                  className="text-[10px] text-teal-400 hover:text-white font-semibold flex items-center gap-1 pt-1 border-t border-[var(--border)]"
+                >
+                  View Details →
+                </button>
+              </div>
+            ))}
+          </section>
 
-              {/* Tab 2: Nuskha Builder */}
-              {activeTab === "nuskha" && (
-                <NuskhaBuilder
-                  token={session.access_token}
-                  patient={selectedPatient}
-                  onDraftCreated={(_draft: NuskhaDraftOut) => {
-                    // Refresh timeline if needed
-                    clinicalApi
-                      .getTimeline(session.access_token, selectedPatient.id)
-                      .then((events) => setTimelineEvents(events || []));
-                  }}
-                />
-              )}
+          {/* SECTION 7 & 17: Clinical Safety Alerts & Critical Notices */}
+          <section className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span>⚠️</span> Clinical Safety Interceptions & Alerts (2 Active)
+              </span>
+              <span className="text-[11px] text-[var(--muted)]">Mandatory Physician Review Required</span>
+            </div>
 
-              {/* Tab 3: Tadbeer Plans */}
-              {activeTab === "tadbeer" && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-semibold text-[#e3c884] font-serif">
-                        Regimenal Therapy (Ilaj-bit-Tadbeer) Protocols
-                      </h3>
-                      <p className="text-xs text-[#8a9490]">
-                        Classical evacuation (Istifragh) and retention (Ihtibas) regimens governed by safety guardrails.
-                      </p>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {!acknowledgedAlerts.includes(1) && (
+                <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs space-y-2">
+                  <div className="flex justify-between items-start">
+                    <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold text-[10px]">
+                      DRUG / HERB INTERACTION WARNING
+                    </span>
                     <button
-                      onClick={() => setShowAddTadbeerModal(true)}
-                      className="zv-btn-primary text-xs cursor-pointer"
+                      onClick={() => acknowledgeAlert(1)}
+                      className="text-[10px] px-2 py-1 rounded bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold"
                     >
-                      + Prescribe Tadbeer Regimen
+                      Acknowledge & Sign
                     </button>
                   </div>
-
-                  {isLoadingTadbeer ? (
-                    <div className="text-center py-8 text-xs text-[#8a9490]">Loading regimens...</div>
-                  ) : tadbeerPlans.length === 0 ? (
-                    <div className="zv-panel p-8 text-center text-xs text-[#8a9490]">
-                      No active Tadbeer regimens prescribed for this patient. Click &ldquo;+ Prescribe Tadbeer Regimen&rdquo; to add Hijama, Fasd, Hammam, etc.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {tadbeerPlans.map((plan) => (
-                        <div key={plan.id} className="zv-panel p-4 space-y-2 text-xs">
-                          <div className="flex justify-between items-start">
-                            <h4 className="font-semibold text-sm text-[#ece8dd]">{plan.name}</h4>
-                            <span
-                              className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
-                                plan.safety_verdict === "SAFE_TO_CONSIDER"
-                                  ? "bg-emerald-950/60 text-emerald-400 border-emerald-700"
-                                  : plan.safety_verdict === "CAUTION"
-                                  ? "bg-amber-950/60 text-amber-400 border-amber-700"
-                                  : "bg-red-950/60 text-red-400 border-red-700"
-                              }`}
-                            >
-                              {plan.safety_verdict}
-                            </span>
-                          </div>
-                          <div className="text-[#8a9490]">
-                            <strong>Indication:</strong> {plan.indication}
-                          </div>
-                          <div className="text-[#8a9490]">
-                            <strong>Frequency:</strong> {plan.frequency} · <strong>Duration:</strong> {plan.duration}
-                          </div>
-                          {plan.contraindications && (
-                            <div className="text-[11px] text-amber-300/90 pt-1 border-t border-[#24302a]">
-                              Contraindications: {plan.contraindications}
-                            </div>
-                          )}
-                          {plan.safety_reasons && plan.safety_reasons.length > 0 && (
-                            <div className="text-[11px] text-red-300 pt-1 border-t border-[#24302a]">
-                              Safety Alerts: {plan.safety_reasons.join("; ")}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <h4 className="font-bold text-white">Azaraqi (Mudabbar) + Concomitant Sedative Therapy</h4>
+                  <p className="text-[11px] text-rose-200/80 leading-relaxed">
+                    Patient Hamza Farooqi (MRN-2026-0814): Azaraqi must not be co-administered with high-dose CNS depressants without 6-hour spacing and Kateera Musleh corrective.
+                  </p>
                 </div>
               )}
 
-              {/* Tab 4: UPI Pharmacopoeia Directory */}
-              {activeTab === "pharmacopoeia" && (
-                <div className="space-y-6">
-                  <div className="zv-panel p-4">
-                    <h3 className="text-sm font-semibold text-[#e3c884] font-serif mb-1">
-                      Unani Pharmacopoeia of India (UPI) &amp; Schedule E(1) Statutory Reference
-                    </h3>
-                    <p className="text-xs text-[#8a9490] mb-3">
-                      Official classical monographs with Mizaj degrees, botanical verification, statutory dose limits, and Mudabbar protocols.
-                    </p>
-                    <input
-                      type="text"
-                      value={pharmaSearch}
-                      onChange={(e) => setPharmaSearch(e.target.value)}
-                      placeholder="Search UPI monographs (e.g. Asgand, Suranjan, Kuchla, Zanjabeel)..."
-                      className="zv-input text-xs"
-                    />
+              {!acknowledgedAlerts.includes(2) && (
+                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2">
+                  <div className="flex justify-between items-start">
+                    <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[10px]">
+                      ABNORMAL DIAGNOSTIC VALUE
+                    </span>
+                    <button
+                      onClick={() => acknowledgeAlert(2)}
+                      className="text-[10px] px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-bold"
+                    >
+                      Acknowledge
+                    </button>
                   </div>
-
-                  {isLoadingPharma ? (
-                    <div className="text-center py-8 text-xs text-[#8a9490]">Loading UPI database...</div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {upiMonographs
-                        .filter(
-                          (m) =>
-                            m.name.toLowerCase().includes(pharmaSearch.toLowerCase()) ||
-                            m.botanical_name.toLowerCase().includes(pharmaSearch.toLowerCase())
-                        )
-                        .map((mono) => (
-                          <div key={mono.id} className="zv-panel p-4 space-y-2 text-xs">
-                            <div className="flex justify-between items-baseline">
-                              <div>
-                                <span className="font-semibold text-sm text-[#ece8dd]">{mono.name}</span>
-                                <span className="text-xs text-[#8a9490] italic ml-1.5">
-                                  ({mono.botanical_name})
-                                </span>
-                              </div>
-                              <span className="text-xs font-mono text-[#c9a24b]">
-                                {mono.mizaj?.temperament || "Mutadil"}
-                              </span>
-                            </div>
-
-                            {mono.is_schedule_e1 && (
-                              <div className="text-[11px] font-mono px-2 py-0.5 rounded bg-red-950/60 text-red-400 border border-red-800">
-                                ⚠️ Schedule E(1) Statutory Poison — Mandatory Mudabbar Required
-                              </div>
-                            )}
-
-                            <div className="text-[#8a9490] text-[11px]">
-                              <strong>Af&apos;al (Actions):</strong> {(mono.afal || []).join(", ")}
-                            </div>
-                            <div className="text-[#8a9490] text-[11px]">
-                              <strong>Musleh (Corrective):</strong> {mono.musleh} · <strong>Badal:</strong> {mono.badal}
-                            </div>
-                            <div className="text-[#8a9490] text-[11px]">
-                              <strong>UPI Standard Dose:</strong> {mono.dose}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  )}
+                  <h4 className="font-bold text-white">Elevated Serum Uric Acid (8.4 mg/dL)</h4>
+                  <p className="text-[11px] text-amber-200/80 leading-relaxed">
+                    Patient Bilal Ahmad (MRN-2026-0744): Uric acid elevated. Consider Suranjan Talkh Mudabbar titration and avoid Purine-heavy mutton broths.
+                  </p>
                 </div>
-              )}
-
-              {/* Tab 5: Clinical Digital Twin */}
-              {activeTab === "digital_twin" && (
-                <DigitalTwinCockpit
-                  token={session.access_token}
-                  patientId={selectedPatient.id}
-                  patientName={`${selectedPatient.first_name} ${selectedPatient.last_name}`}
-                />
-              )}
-
-              {/* Tab 6: Ambient Clinical Scribe & 21 CFR Part 11 */}
-              {activeTab === "ambient_scribe" && (
-                <AmbientScribeGovernanceCockpit
-                  token={session.access_token}
-                  patientId={selectedPatient.id}
-                  patientName={`${selectedPatient.first_name} ${selectedPatient.last_name}`}
-                />
-              )}
-
-              {/* Tab 7: Multimodal AI Lab & Physical Signs */}
-              {activeTab === "multimodal_lab" && (
-                <MultimodalLabCockpit
-                  token={session.access_token}
-                  patientId={selectedPatient.id}
-                  patientName={`${selectedPatient.first_name} ${selectedPatient.last_name}`}
-                />
-              )}
-
-              {/* Tab 8: Patient App 2.0 & Adherence */}
-              {activeTab === "patient_portal" && (
-                <PatientPortalCockpit
-                  token={session.access_token}
-                  patientId={selectedPatient.id}
-                  patientName={`${selectedPatient.first_name} ${selectedPatient.last_name}`}
-                />
-              )}
-
-              {/* Tab 9: Clinical Governance Board */}
-              {activeTab === "governance_board" && (
-                <GovernanceBoardCockpit token={session.access_token} />
-              )}
-
-              {/* Tab 10: Task Queue & ABDM Streaming Workers */}
-              {activeTab === "task_pipelines" && (
-                <TaskPipelineCockpit token={session.access_token} />
               )}
             </div>
-          ) : (
+          </section>
 
-            <div className="flex-1 flex items-center justify-center p-8 text-center">
-              <div className="zv-panel p-8 max-w-md">
-                <p className="text-sm font-medium text-[#ece8dd]">No patient selected</p>
-                <p className="text-xs text-[#8a9490] mt-1">
-                  Select a patient from the EMR queue on the left to review their longitudinal record, draft formulations, or run Hakeem Sahab AI consultations.
+          {/* SECTION 5 & 8: Priority Split - Today's Appointments & Hakeem Sahab AI */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Today's Appointments Widget (7 cols) */}
+            <div className="lg:col-span-7 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-3">
+                <div>
+                  <h3 className="text-base font-bold text-white">Today's Scheduled Consultations</h3>
+                  <p className="text-xs text-[var(--muted)]">Live appointment triage and room check-in status</p>
+                </div>
+                
+                {/* Appointment Filters */}
+                <div className="flex flex-wrap items-center gap-1 bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] text-[10px] font-bold">
+                  {["today", "tomorrow", "online", "in-person"].map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setAppointmentFilter(f)}
+                      className={`px-2.5 py-1 rounded-lg capitalize transition ${
+                        appointmentFilter === f ? "bg-[var(--elevated)] text-[#2DD4BF]" : "text-[var(--muted)] hover:text-white"
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Appointment Rows */}
+              <div className="space-y-2.5">
+                {appointments.map(apt => (
+                  <div
+                    key={apt.id}
+                    className="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF]/40 transition flex flex-col sm:flex-row justify-between sm:items-center gap-3 text-xs"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-white text-sm">{apt.patient}</span>
+                        <span className="font-mono text-[10px] text-[var(--muted)]">{apt.pid}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                          apt.status === "In Consultation" ? "bg-amber-500/20 text-amber-300" :
+                          apt.status === "Waiting" ? "bg-blue-500/20 text-blue-300" :
+                          apt.status === "Completed" ? "bg-emerald-500/20 text-emerald-400" :
+                          "bg-slate-700 text-slate-300"
+                        }`}>
+                          {apt.status}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-[var(--muted)] flex items-center gap-3">
+                        <span>🕒 {apt.time}</span>
+                        <span>•</span>
+                        <span>{apt.type}</span>
+                        <span>•</span>
+                        <span>Dr. Irfan</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => router.push("/doctor")}
+                        className="px-3 py-1.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition shadow"
+                      >
+                        Start Consult →
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction(`Reschedule ${apt.patient}`)}
+                        className="px-2.5 py-1.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-[var(--muted)] text-xs font-medium border border-[var(--border)]"
+                      >
+                        Reschedule
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SECTION 8: Hakeem Sahab — AI Doctor Panel (5 cols) */}
+            <div className="lg:col-span-5 p-6 rounded-3xl bg-gradient-to-b from-[#1E293B] to-[var(--panel)] border border-teal-500/40 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🤖</span>
+                  <div>
+                    <h3 className="text-base font-bold text-white">Hakeem Sahab AI Copilot</h3>
+                    <span className="text-[10px] text-teal-300 font-mono">5-Layer Clinical Decision Support</span>
+                  </div>
+                </div>
+                <span className="px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 text-[10px] font-bold">
+                  Active
+                </span>
+              </div>
+
+              {/* Quick AI Action Pills */}
+              <div className="flex flex-wrap gap-1.5 text-[10px]">
+                <button onClick={() => handleAskAi("Analyze Patient Hamza Farooqi")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
+                  ⚡ Analyze Hamza Farooqi
+                </button>
+                <button onClick={() => handleAskAi("Review Knee Arthralgia Symptoms")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
+                  🦴 Review Symptoms
+                </button>
+                <button onClick={() => handleAskAi("Check Suranjan + Colchicum Interaction")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
+                  💊 Check Interactions
+                </button>
+              </div>
+
+              {/* Query Input Box */}
+              <div className="space-y-2">
+                <div className="relative">
+                  <input
+                    value={aiQuery}
+                    onChange={(e) => setAiQuery(e.target.value)}
+                    placeholder="Ask clinical question or paste symptoms..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#2DD4BF]"
+                    onKeyDown={(e) => { if (e.key === "Enter") handleAskAi(); }}
+                  />
+                  <button
+                    onClick={() => handleAskAi()}
+                    disabled={aiLoading}
+                    className="absolute right-1.5 top-1.5 px-3 py-1.5 rounded-lg bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition disabled:opacity-50"
+                  >
+                    {aiLoading ? "Thinking..." : "Ask"}
+                  </button>
+                </div>
+              </div>
+
+              {/* AI Response Display */}
+              {aiResponse && (
+                <div className="p-3.5 rounded-2xl bg-[var(--background)] border border-teal-500/30 text-xs text-slate-200 font-mono whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto">
+                  {aiResponse}
+                </div>
+              )}
+
+              {/* Mandatory AI Safety Disclaimer */}
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 leading-snug">
+                <strong>Statutory Disclaimer:</strong> AI-generated information is for clinical decision support only. Final diagnosis and treatment decisions require qualified clinician approval (<code className="text-amber-200">safe_to_lock = False</code>).
+              </div>
+            </div>
+
+          </div>
+
+          {/* SECTION 6 & 11: Patient Overview & Follow-up Reminders */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Patient Overview Widget (8 cols) */}
+            <div className="lg:col-span-8 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-3">
+                <div>
+                  <h3 className="text-base font-bold text-white">Patient Clinical Directory</h3>
+                  <p className="text-xs text-[var(--muted)]">Active cohorts and EMR records</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-1 bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] text-[10px] font-bold">
+                  {["all", "high-priority", "follow-up", "pending-reports"].map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setPatientFilter(f)}
+                      className={`px-2 py-1 rounded-lg capitalize transition ${
+                        patientFilter === f ? "bg-[var(--elevated)] text-[#2DD4BF]" : "text-[var(--muted)]"
+                      }`}
+                    >
+                      {f.replace("-", " ")}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {patientsList.map(p => (
+                  <div key={p.id} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2 text-xs">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{p.name}</h4>
+                        <span className="text-[10px] text-[var(--muted)] font-mono">{p.id} • {p.ageGender}</span>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+                        {p.status}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-300">
+                      <strong>Complaint:</strong> {p.complaint}
+                    </div>
+                    <div className="text-[10px] text-[var(--muted)] space-y-0.5">
+                      <div>Protocol: <strong className="text-teal-300">{p.protocol}</strong></div>
+                      <div>Next Follow-up: <strong className="text-white">{p.nextFollowup}</strong></div>
+                    </div>
+                    <div className="pt-2 border-t border-[var(--border)] flex justify-between items-center">
+                      <button onClick={() => router.push("/doctor")} className="text-xs text-emerald-400 font-bold hover:underline">
+                        Open EMR Dossier →
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SECTION 11: Pending Follow-ups with QSURA (4 cols) */}
+            <div className="lg:col-span-4 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div>
+                  <h3 className="text-base font-bold text-white">Pending Follow-ups</h3>
+                  <span className="text-[10px] text-emerald-400 font-mono">QSURA Multi-Rail Ready</span>
+                </div>
+                <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
+                  3 Pending
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {followupsList.map((f, i) => (
+                  <div key={i} className="p-3 rounded-2xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-2">
+                    <div className="flex justify-between items-center">
+                      <strong className="text-white font-bold">{f.patient}</strong>
+                      <span className="text-[10px] font-mono text-amber-300 font-bold">{f.due}</span>
+                    </div>
+                    <p className="text-[11px] text-[var(--muted)]">{f.reason}</p>
+                    <div className="flex gap-1.5 pt-1">
+                      <button
+                        onClick={() => handleQuickAction(`Sent WhatsApp reminder to ${f.patient}`)}
+                        className="flex-1 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]"
+                      >
+                        💬 WhatsApp
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction(`Placed call to ${f.patient}`)}
+                        className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
+                      >
+                        📞 Call
+                      </button>
+                      <button
+                        onClick={() => handleQuickAction(`Sent SMS to ${f.patient}`)}
+                        className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
+                      >
+                        ✉️ SMS
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* SECTION 9: ZAYVORA Axis Mapping Section (9 Functional Axes) */}
+          <section className="p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border)] pb-3">
+              <div>
+                <span className="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Functional Biomarker Topology</span>
+                <h3 className="text-lg font-bold text-white mt-0.5">ZAYVORA 9-Axis Clinical Mapping</h3>
+              </div>
+              <span className="text-xs text-[var(--muted)] font-mono">Patient Baseline vs Current Humoral Deviation</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {axesData.map((axis) => (
+                <div key={axis.name} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-white text-xs">{axis.name}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono ${
+                      axis.risk === "Optimal" ? "bg-emerald-500/20 text-emerald-400" :
+                      axis.risk === "Stable" ? "bg-blue-500/20 text-blue-400" :
+                      axis.risk === "Moderate" ? "bg-yellow-500/20 text-yellow-300" :
+                      "bg-rose-500/20 text-rose-300"
+                    }`}>
+                      {axis.risk}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 bg-[var(--panel)] h-2 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          axis.score > 75 ? "bg-rose-500" : axis.score > 60 ? "bg-amber-400" : "bg-emerald-400"
+                        }`}
+                        style={{ width: `${axis.score}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-bold font-mono text-white">{axis.score}/100</span>
+                  </div>
+
+                  <div className="text-[11px] text-[var(--muted)] space-y-0.5 pt-1 border-t border-[var(--border)]">
+                    <div>Protocol: <strong className="text-teal-300">{axis.protocol}</strong></div>
+                    <div>Action: <span className="text-white">{axis.action}</span></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECTION 10 & 12: Active Treatment Plans & Pharmacy Dispensary */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Active Treatment Plans (6 cols) */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <h3 className="text-base font-bold text-white">Active Treatment Plans</h3>
+                <span className="text-xs text-[#2DD4BF] font-semibold">89 Active Cohorts</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-3 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-white text-sm">Metabolic Reset 90</span>
+                  <span className="text-emerald-400 font-mono font-bold">27% Complete</span>
+                </div>
+                <div className="text-[11px] text-[var(--muted)] space-y-1">
+                  <div>Patient: <strong className="text-white">Hamza Farooqi (MRN-2026-0814)</strong></div>
+                  <div>Current Phase: <strong className="text-teal-300">Phase 1: Liver Priming (Day 24 of 90)</strong></div>
+                  <div>Next Milestone: <strong>Fasting Lipid & Glucose Panel in 7 days</strong></div>
+                  <div>Adherence Status: <span className="text-emerald-400 font-semibold">High (94%)</span></div>
+                </div>
+                <div className="w-full bg-[var(--panel)] h-2 rounded-full overflow-hidden">
+                  <div className="bg-emerald-400 h-full rounded-full" style={{ width: "27%" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 12: Pharmacy & Medicine Inventory (6 cols) */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <div>
+                  <h3 className="text-base font-bold text-white">Dispensary & Medicine Safety</h3>
+                  <span className="text-[10px] text-emerald-400 font-mono">Schedule E(1) Mudabbar Gated</span>
+                </div>
+                <Link href="/pharmacy" className="text-xs text-teal-300 hover:underline font-bold">
+                  Open Pharmacy OS →
+                </Link>
+              </div>
+
+              <div className="space-y-2.5 text-xs">
+                <div className="p-3 rounded-xl bg-[var(--background)] border border-amber-500/30 flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-white block">Suranjan Talkh (Mudabbar)</span>
+                    <span className="text-[10px] text-amber-300">Batch B2-2026 • Exp: 2027-08-30</span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">
+                    29 Units (Low Stock)
+                  </span>
+                </div>
+                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                  <div>
+                    <span className="font-bold text-white block">ManiVital Pro (Withania Extract)</span>
+                    <span className="text-[10px] text-[var(--muted)]">Batch MVP-901 • HPLC Verified</span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold text-[10px]">
+                    142 Units Normal
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* SECTION 14 & 15: Revenue & Business/Clinical Analytics */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Revenue Overview (5 cols) */}
+            <div className="lg:col-span-5 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <h3 className="text-base font-bold text-white">Revenue & Invoicing</h3>
+                <span className="text-xs text-emerald-400 font-mono font-bold">₹54,200 Today</span>
+              </div>
+              
+              <div className="space-y-2 text-xs">
+                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                  <span className="text-[var(--muted)]">Monthly Cumulative Revenue</span>
+                  <strong className="text-white font-mono">₹14,82,400</strong>
+                </div>
+                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                  <span className="text-[var(--muted)]">Pending Insurance / Claims</span>
+                  <strong className="text-amber-300 font-mono">₹38,500</strong>
+                </div>
+                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                  <span className="text-[var(--muted)]">Dispensary Product Sales</span>
+                  <strong className="text-emerald-400 font-mono">₹32,400 (60%)</strong>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button onClick={() => handleQuickAction("Create Invoice")} className="flex-1 py-2 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition">
+                  + Create Invoice
+                </button>
+                <button onClick={() => handleQuickAction("Download Financial Report")} className="px-3 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)]">
+                  Download CSV
+                </button>
+              </div>
+            </div>
+
+            {/* Analytics Section (7 cols) */}
+            <div className="lg:col-span-7 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                <h3 className="text-base font-bold text-white">Clinical & Operational Analytics</h3>
+                <span className="text-xs text-[var(--muted)]">Last 30 Days Trajectory</span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block uppercase">Retention Rate</span>
+                  <span className="text-lg font-bold text-emerald-400">91.4%</span>
+                </div>
+                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block uppercase">Avg Consult</span>
+                  <span className="text-lg font-bold text-blue-400">32 mins</span>
+                </div>
+                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block uppercase">Pain Reduction</span>
+                  <span className="text-lg font-bold text-teal-300">58.2%</span>
+                </div>
+                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--muted)] block uppercase">Adherence</span>
+                  <span className="text-lg font-bold text-purple-400">88.7%</span>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-1.5 text-xs">
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">RWE Cohort Concordance</span>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  94.2% diagnostic concordance between 10-Ajnas pulse evaluation and blinded university rheumatologist evaluations across 3 clinical centers.
                 </p>
               </div>
             </div>
-          )}
+
+          </div>
+
+          {/* SECTION 18 & 19: Knowledge Base & System Status Widgets */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Knowledge Base Widget (6 cols) */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                <h3 className="text-sm font-bold text-white">Canonical Knowledge Base (ZKB)</h3>
+                <Link href="/knowledge" className="text-xs text-teal-300 hover:underline">Explore ZKB →</Link>
+              </div>
+              <p className="text-xs text-[var(--muted)]">
+                Query 1,280+ classical monographs (UPI, NFUM, Al-Qanoon) with verified Badal (substitutes) and Musleh (correctives).
+              </p>
+              <div className="flex gap-2">
+                <input
+                  placeholder="Lookup herb (e.g., Asgandh, Suranjan)..."
+                  className="flex-1 px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-white"
+                />
+                <button onClick={() => router.push("/knowledge")} className="px-3 py-1.5 rounded-xl bg-[#0D9488] text-white text-xs font-bold">
+                  Lookup
+                </button>
+              </div>
+            </div>
+
+            {/* System Status Widget (6 cols) */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
+              <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                <h3 className="text-sm font-bold text-white">Platform System & Microservices Status</h3>
+                <span className="text-[10px] text-emerald-400 font-mono">ALL OPERATIONAL</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>AI Doctor:</span> <span className="text-emerald-400">Online</span>
+                </div>
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>Patient EMR:</span> <span className="text-emerald-400">Online</span>
+                </div>
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>QSURA Comms:</span> <span className="text-emerald-400">Online</span>
+                </div>
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>Dispensary:</span> <span className="text-emerald-400">Online</span>
+                </div>
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>Payments:</span> <span className="text-emerald-400">Online</span>
+                </div>
+                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                  <span>DR Backup:</span> <span className="text-emerald-400">Synced (12m)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </main>
       </div>
 
-      {/* Add Tadbeer Regimen Modal */}
-      {showAddTadbeerModal && selectedPatient && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="zv-panel p-6 max-w-md w-full space-y-4 border border-[#2ea87f]">
-            <h3 className="text-base font-serif text-[#e3c884] font-semibold">
-              Prescribe Ilaj-bit-Tadbeer Regimen
-            </h3>
-            <form onSubmit={handleCreateTadbeer} className="space-y-3 text-xs">
-              <div>
-                <label className="zv-label">Regimen Modality</label>
-                <select
-                  value={newTadbeerName}
-                  onChange={(e) => {
-                    setNewTadbeerName(e.target.value);
-                    const found = TADBEER_REGIMENS.find((r) => r.name === e.target.value);
-                    if (found) {
-                      setNewTadbeerIndication(found.indication);
-                      setNewTadbeerCategory(
-                        found.category as
-                          | "regimen"
-                          | "rest"
-                          | "physical_activity"
-                          | "massage"
-                          | "bathing"
-                          | "other"
-                      );
-                    }
-                  }}
-                  className="zv-input text-xs cursor-pointer"
-                >
-                  {TADBEER_REGIMENS.map((r) => (
-                    <option key={r.name} value={r.name} className="bg-[#121712]">
-                      {r.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="zv-label">Classical Indication</label>
-                <input
-                  type="text"
-                  value={newTadbeerIndication}
-                  onChange={(e) => setNewTadbeerIndication(e.target.value)}
-                  className="zv-input text-xs"
-                />
-              </div>
-
-              <div>
-                <label className="zv-label">Frequency</label>
-                <input
-                  type="text"
-                  value={newTadbeerFrequency}
-                  onChange={(e) => setNewTadbeerFrequency(e.target.value)}
-                  className="zv-input text-xs"
-                />
-              </div>
-
-              <div>
-                <label className="zv-label">Duration / Session</label>
-                <input
-                  type="text"
-                  value={newTadbeerDuration}
-                  onChange={(e) => setNewTadbeerDuration(e.target.value)}
-                  className="zv-input text-xs"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowAddTadbeerModal(false)}
-                  className="px-4 py-2 rounded text-xs text-[#8a9490] hover:text-white cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmittingTadbeer}
-                  className="zv-btn-primary text-xs cursor-pointer disabled:opacity-50"
-                >
-                  {isSubmittingTadbeer ? "Evaluating..." : "Evaluate & Prescribe"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Hakeem Sahab Drawer */}
-      {selectedPatient && (
-        <HakeemReviewDrawer
-          token={session.access_token}
-          patient={selectedPatient}
-          isOpen={isHakeemDrawerOpen}
-          onClose={() => setIsHakeemDrawerOpen(false)}
-          onConvertToNuskha={(_consultation) => {
-            setIsHakeemDrawerOpen(false);
-            setActiveTab("nuskha");
-          }}
-        />
-      )}
-
-      {/* 10-Ajnas Mizaj Assessment Modal */}
-      {selectedPatient && showMizajModal && (
-        <MizajAssessmentModal
-          token={session.access_token}
-          patientId={selectedPatient.id}
-          patientName={`${selectedPatient.first_name} ${selectedPatient.last_name}`}
-          isOpen={showMizajModal}
-          onClose={() => setShowMizajModal(false)}
-          onSaved={(assessment) => {
-            setMizajAssessment(assessment);
-          }}
-        />
-      )}
-
-      {/* Global Command Palette (Cmd+K) */}
-      <GlobalCommandPalette
-        isOpen={isCommandPaletteOpen}
-        onClose={() => setIsCommandPaletteOpen(false)}
-        onNavigate={(route) => setActiveTab(route as ActiveTab)}
-      />
+      {/* SECTION 21: Dashboard Footer */}
+      <PlatformFooter />
     </div>
   );
 }

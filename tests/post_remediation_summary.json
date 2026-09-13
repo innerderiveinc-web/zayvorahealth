@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-09-12 18:33:18 UTC",
+  "started_at": "2026-09-13 11:15:05 UTC",
   "categories": {
     "1. Unit Tests": {
       "status": "PASSED",
@@ -141,40 +141,40 @@
       "passed": 7,
       "failed": 0,
       "details": [
-        "AES-256-GCM Envelope Crypto: 0.002 ms/op (469842 ops/sec): PASS",
+        "AES-256-GCM Envelope Crypto: 0.002 ms/op (474374 ops/sec): PASS",
         "10-Ajnas Mizaj Scoring Engine: 0.002 ms/assessment: PASS",
-        "Organ-Axis Biomarker Bridge Engine: 0.015 ms/analysis: PASS",
+        "Organ-Axis Biomarker Bridge Engine: 0.013 ms/analysis: PASS",
         "Safety Firewall 30+ Interaction Matrix: 0.049 ms/eval: PASS",
-        "Gateway Rate Limiter Throughput: 0.0031 ms/req (326287 req/sec): PASS",
-        "Wearables Normalization & Autonomic Mapping: 0.014 ms/sample: PASS",
-        "Bhashini Multilingual TTS & PCM Synthesis: 42.234 ms/prompt: PASS"
+        "Gateway Rate Limiter Throughput: 0.0030 ms/req (336636 req/sec): PASS",
+        "Wearables Normalization & Autonomic Mapping: 0.011 ms/sample: PASS",
+        "Bhashini Multilingual TTS & PCM Synthesis: 40.092 ms/prompt: PASS"
       ]
     }
   },
   "benchmarks": {
     "phi_crypto": {
       "avg_ms": 0.002,
-      "ops_sec": 469842
+      "ops_sec": 474374
     },
     "mizaj_engine": {
       "avg_ms": 0.002
     },
     "organ_axis_engine": {
-      "avg_ms": 0.015
+      "avg_ms": 0.013
     },
     "safety_firewall": {
       "avg_ms": 0.049
     },
     "rate_limiter": {
-      "avg_ms": 0.0031
+      "avg_ms": 0.003
     },
     "wearable_engine": {
-      "avg_ms": 0.014
+      "avg_ms": 0.011
     },
     "bhashini_tts": {
-      "avg_ms": 42.234
+      "avg_ms": 40.092
     }
   },
   "issues_evaluated": {},
-  "total_duration_seconds": 2.8
+  "total_duration_seconds": 2.67
 }
