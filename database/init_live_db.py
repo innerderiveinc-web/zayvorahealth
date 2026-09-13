@@ -264,6 +264,39 @@ def init_db():
         "FAC-HQ-01"
     ))
 
+    # Seed QSURA Baseline Notifications
+    cursor.execute("""
+    INSERT INTO notifications (id, notification_id, mrn, recipient, channel, template_id, message_text, status, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        "NOTIF-001",
+        "MSG-2026-9011",
+        "MRN-2026-0814",
+        "+91 98110 44219",
+        "SMS",
+        "DISPENSE_READY_NOTIFICATION",
+        "Dear Hamza Farooqi, your customized Unani prescription from ZAYVORA Pharmacy is prepared and verified. Batch: MS-2026-LOT4. Dosage: Majun Suranjan 5g nocte with warm milk.",
+        "DELIVERED",
+        "FAC-HQ-01"
+    ))
+
+    # Seed Active Telemedicine Room
+    cursor.execute("""
+    INSERT INTO telemedicine_rooms (id, room_id, encounter_id, appointment_id, mrn, patient_name, doctor_name, session_token, status, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        "ROOM-001",
+        "TELE-ROOM-2026-HF",
+        "ENC-001",
+        "APT-104",
+        "MRN-2026-0814",
+        "Hamza Farooqi",
+        "Prof. (Dr.) Mansoor Alam",
+        "zyv.tele.d9f8e7a6b5c4.webrtc",
+        "ACTIVE",
+        "FAC-HQ-01"
+    ))
+
     conn.commit()
     conn.close()
     print(f"Successfully initialized live database at {DB_PATH}")

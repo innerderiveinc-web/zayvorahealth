@@ -188,6 +188,37 @@ CREATE TABLE IF NOT EXISTS ai_consultations (
     FOREIGN KEY(facility_id) REFERENCES facilities(id)
 );
 
+CREATE TABLE IF NOT EXISTS notifications (
+    id TEXT PRIMARY KEY,
+    notification_id TEXT UNIQUE NOT NULL,
+    mrn TEXT,
+    recipient TEXT NOT NULL,
+    channel TEXT NOT NULL, -- SMS, WHATSAPP, EMAIL, IN_APP
+    template_id TEXT NOT NULL,
+    message_text TEXT NOT NULL,
+    status TEXT DEFAULT "DELIVERED", -- PENDING, DELIVERED, FAILED
+    facility_id TEXT DEFAULT "FAC-HQ-01",
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(facility_id) REFERENCES facilities(id)
+);
+
+CREATE TABLE IF NOT EXISTS telemedicine_rooms (
+    id TEXT PRIMARY KEY,
+    room_id TEXT UNIQUE NOT NULL,
+    encounter_id TEXT,
+    appointment_id TEXT,
+    mrn TEXT NOT NULL,
+    patient_name TEXT NOT NULL,
+    doctor_name TEXT NOT NULL,
+    session_token TEXT NOT NULL,
+    status TEXT DEFAULT "ACTIVE", -- ACTIVE, CLOSED
+    facility_id TEXT DEFAULT "FAC-HQ-01",
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    closed_at DATETIME,
+    FOREIGN KEY(facility_id) REFERENCES facilities(id),
+    FOREIGN KEY(appointment_id) REFERENCES appointments(id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_patients_facility ON patients(facility_id);
 CREATE INDEX IF NOT EXISTS idx_appointments_facility ON appointments(facility_id);
 CREATE INDEX IF NOT EXISTS idx_prescriptions_facility ON prescriptions(facility_id);
@@ -201,6 +232,10 @@ CREATE INDEX IF NOT EXISTS idx_encounters_facility ON encounters(facility_id);
 CREATE INDEX IF NOT EXISTS idx_encounters_apt ON encounters(appointment_id);
 CREATE INDEX IF NOT EXISTS idx_ai_consultations_mrn ON ai_consultations(mrn);
 CREATE INDEX IF NOT EXISTS idx_ai_consultations_facility ON ai_consultations(facility_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_mrn ON notifications(mrn);
+CREATE INDEX IF NOT EXISTS idx_notifications_facility ON notifications(facility_id);
+CREATE INDEX IF NOT EXISTS idx_telemedicine_mrn ON telemedicine_rooms(mrn);
+CREATE INDEX IF NOT EXISTS idx_telemedicine_facility ON telemedicine_rooms(facility_id);
 
 
 
