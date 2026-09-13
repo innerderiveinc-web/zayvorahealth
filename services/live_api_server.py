@@ -145,6 +145,33 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "count": len(rows), "prescriptions": rows})
             return
 
+        # Single Prescription Details
+        if path.startswith("/api/v1/prescriptions/"):
+            rx_id = path.split("/")[-1]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM prescriptions WHERE id = ? OR order_number = ?", (rx_id, rx_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Prescription not found", status=404)
+                    return
+                res = dict(row)
+                try:
+                    res["items"] = json.loads(res.get("items_json") or "[]")
+                except:
+                    res["items"] = []
+            self._send_json({"ok": True, "prescription": res})
+            return
+
+        # Billing Invoices & Receipts
+        if path == "/api/v1/billing/invoices":
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM invoices ORDER BY created_at DESC")
+                rows = [dict(r) for r in cur.fetchall()]
+            self._send_json({"ok": True, "count": len(rows), "invoices": rows})
+            return
+
         # Inventory (Sorted by FEFO expiry date)
         if path == "/api/v1/inventory":
             with get_db() as conn:
@@ -395,6 +422,83 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 "batchNumber": batch_num,
                 "remainingStock": new_stock
             })
+            return
+
+        # Direct Patient Registration by Staff
+        if path == "/api/v1/patients":
+            first_name = (body.get("firstName") or body.get("first_name") or "").strip()
+            last_name = (body.get("lastName") or body.get("last_name") or "").strip()
+            if not first_name:
+                self._send_error("First name is required.", status=400)
+                return
+
+            phone = body.get("phone") or body.get("contactPhone") or ""
+            email = body.get("email") or body.get("contactEmail") or ""
+            dob = body.get("dob") or body.get("dateOfBirth") or "1990-01-01"
+            gender = body.get("gender") or "Unspecified"
+            blood_group = body.get("bloodGroup") or "Unknown"
+            mizaj = body.get("mizaj") or body.get("mizajDominant") or "Motadil (Balanced)"
+            allergies = body.get("allergies") or []
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT COUNT(*) FROM patients")
+                p_count = cur.fetchone()[0] + 1
+                mrn = f"MRN-2026-{p_count:04d}"
+                pat_id = f"PAT-{uuid.uuid4().hex[:6].upper()}"
+
+                cur.execute("""
+                INSERT INTO patients (id, mrn, first_name, last_name, date_of_birth, gender, contact_phone, contact_email, blood_group, mizaj_dominant, allergies_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (pat_id, mrn, first_name, last_name, dob, gender, phone, email, blood_group, mizaj, json.dumps(allergies)))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Patient registered successfully.",
+                "patient": {
+                    "id": pat_id,
+                    "mrn": mrn,
+                    "firstName": first_name,
+                    "lastName": last_name,
+                    "phone": phone,
+                    "email": email,
+                    "mizajDominant": mizaj,
+                    "allergies": allergies
+                }
+            }, status=201)
+            return
+
+        # Record Billing Invoice
+        if path == "/api/v1/billing/invoices":
+            mrn = body.get("mrn") or "MRN-2026-0814"
+            patient_name = body.get("patientName") or "Patient"
+            amount = float(body.get("amount", 800.0))
+            dept = body.get("department") or "Integrative Unani OPD"
+            method = body.get("paymentMethod") or "UPI"
+            inv_id = f"INV-{uuid.uuid4().hex[:6].upper()}"
+            inv_num = f"RCPT-2026-{uuid.uuid4().hex[:4].upper()}"
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (inv_id, inv_num, mrn, patient_name, amount, dept, method, "PAID"))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Invoice generated and payment recorded.",
+                "invoice": {
+                    "id": inv_id,
+                    "invoiceNumber": inv_num,
+                    "mrn": mrn,
+                    "patientName": patient_name,
+                    "amount": amount,
+                    "status": "PAID"
+                }
+            }, status=201)
             return
 
         self._send_error(f"Cannot POST to {path}", status=404)

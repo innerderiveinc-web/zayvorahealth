@@ -89,3 +89,16 @@ CREATE TABLE IF NOT EXISTS audit_ledger (
     status TEXT DEFAULT "ANCHORED",
     details_json TEXT
 );
+
+CREATE TABLE IF NOT EXISTS invoices (
+    id TEXT PRIMARY KEY,
+    invoice_number TEXT UNIQUE NOT NULL,
+    mrn TEXT NOT NULL,
+    patient_name TEXT NOT NULL,
+    amount REAL NOT NULL,
+    department TEXT DEFAULT "Integrative Unani OPD",
+    payment_method TEXT DEFAULT "UPI",
+    status TEXT DEFAULT "PAID",
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+

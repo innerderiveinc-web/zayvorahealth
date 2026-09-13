@@ -129,6 +129,17 @@ def init_db():
         json.dumps({"order_number": "RX-2026-0441", "mrn": "MRN-2026-0814"})
     ))
 
+    # Seed Invoices
+    invoices = [
+        ("INV-001", "RCPT-2026-1041", "MRN-2026-0814", "Hamza Farooqi", 800.0, "Integrative Unani OPD", "UPI", "PAID"),
+        ("INV-002", "RCPT-2026-1042", "MRN-2026-0815", "Ayesha Siddiqui", 800.0, "Preventive Dietetics", "CARD", "PAID"),
+        ("INV-003", "RCPT-2026-1043", "MRN-2026-0816", "Mohammed Zeeshan", 500.0, "Musculoskeletal & Regimenal", "CASH", "PAID"),
+    ]
+    cursor.executemany("""
+    INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, invoices)
+
     conn.commit()
     conn.close()
     print(f"Successfully initialized live database at {DB_PATH}")

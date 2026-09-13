@@ -224,6 +224,71 @@ def run_tests():
         print(f"[FAIL] Test 08: FEFO Inventory Stock Decrement ({e})")
         failed += 1
 
+    # 9. Direct Patient Registration by Staff
+    created_order_number = None
+    try:
+        status, body = client.request("POST", "/api/v1/patients", {
+            "firstName": "Fatima",
+            "lastName": "Bi",
+            "dob": "1968-12-10",
+            "gender": "Female",
+            "phone": "+91 98440 11223",
+            "mizajDominant": "Balghami (Cold & Moist)",
+            "allergies": ["Peanuts"]
+        })
+        assert status == 201
+        assert body["ok"] is True
+        assert body["patient"]["mrn"].startswith("MRN-2026-")
+        print(f"[PASS] Test 09: Staff Walk-in Patient Registration ({body['patient']['mrn']} - {body['patient']['firstName']})")
+        passed += 1
+    except Exception as e:
+        print(f"[FAIL] Test 09: Staff Walk-in Patient Registration ({e})")
+        failed += 1
+
+    # 10. Single Prescription Lookup
+    try:
+        # Fetch all to get an order number
+        _, p_body = client.request("GET", "/api/v1/prescriptions")
+        if p_body.get("prescriptions"):
+            first_rx = p_body["prescriptions"][0]
+            status, body = client.request("GET", f"/api/v1/prescriptions/{first_rx['order_number']}")
+            assert status == 200
+            assert body["ok"] is True
+            assert body["prescription"]["order_number"] == first_rx["order_number"]
+            assert len(body["prescription"]["items"]) > 0
+            print(f"[PASS] Test 10: Single Prescription Lookup ({first_rx['order_number']})")
+            passed += 1
+        else:
+            print("[FAIL] Test 10: No prescriptions available for single lookup")
+            failed += 1
+    except Exception as e:
+        print(f"[FAIL] Test 10: Single Prescription Lookup ({e})")
+        failed += 1
+
+    # 11. Billing Invoices & Receipts
+    try:
+        status, body = client.request("POST", "/api/v1/billing/invoices", {
+            "mrn": registered_mrn,
+            "patientName": "Zainab Parveen",
+            "amount": 800.0,
+            "department": "Integrative Unani OPD",
+            "paymentMethod": "UPI"
+        })
+        assert status == 201
+        assert body["ok"] is True
+        inv_num = body["invoice"]["invoiceNumber"]
+
+        status_get, body_get = client.request("GET", "/api/v1/billing/invoices")
+        assert status_get == 200
+        assert body_get["count"] >= 1
+        numbers = [inv["invoice_number"] for inv in body_get["invoices"]]
+        assert inv_num in numbers
+        print(f"[PASS] Test 11: Billing Invoice Creation & Receipt Verification ({inv_num})")
+        passed += 1
+    except Exception as e:
+        print(f"[FAIL] Test 11: Billing Invoice Creation & Receipt Verification ({e})")
+        failed += 1
+
     print("=" * 70)
     print(f"LIVE API VERIFICATION SUMMARY: {passed} PASSED | {failed} FAILED (TOTAL {passed + failed})")
     print("=" * 70)

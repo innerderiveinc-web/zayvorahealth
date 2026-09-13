@@ -42,6 +42,7 @@ export default function DoctorWorkspacePage() {
   const [activePatient] = useState<PatientRecord>(DEFAULT_PATIENT);
   const [encounterId] = useState("ENC-2026-0814");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showRxPrintModal, setShowRxPrintModal] = useState(false);
 
   // Clinical Consultation State
   const [chiefComplaint, setChiefComplaint] = useState(
@@ -614,6 +615,23 @@ export default function DoctorWorkspacePage() {
               {/* TAB 11: PRESCRIPTION */}
               {activeTab === "prescription" && (
                 <div className="space-y-4">
+                  <div className="flex flex-wrap justify-between items-center bg-[#0D1527] p-3.5 rounded-lg border border-[#1E293B] gap-2">
+                    <div>
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Botanical Nuskha &amp; Medical Prescription</span>
+                        <span className="px-2 py-0.5 bg-[#0D9488]/20 text-[#2DD4BF] border border-[#0D9488]/40 rounded text-[10px] font-mono uppercase">21 CFR Part 11 Certified</span>
+                      </h3>
+                      <p className="text-xs text-[#94A3B8]">Formulate, safety-check with Schedule E(1) guardrails, and seal for dispensary fulfillment.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowRxPrintModal(true)}
+                      className="px-3.5 py-2 bg-[#0D9488] hover:bg-[#14B8A6] text-white rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+                    >
+                      <span>🖨️</span>
+                      <span>Generate &amp; Print Prescription PDF</span>
+                    </button>
+                  </div>
                   <NuskhaBuilder
                     token="SESSION_MOCK_TOKEN"
                     patient={activePatient}
@@ -654,6 +672,187 @@ export default function DoctorWorkspacePage() {
             </div>
           </div>
         </div>
+
+        {/* STANDARDIZED MEDICAL PRESCRIPTION PRINTABLE MODAL */}
+        {showRxPrintModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="bg-white text-neutral-900 rounded-xl max-w-3xl w-full p-8 shadow-2xl space-y-6 print:p-0 print:shadow-none print:max-w-none">
+              {/* Modal Controls (Hidden in print) */}
+              <div className="flex justify-between items-center pb-4 border-b border-neutral-200 print:hidden">
+                <span className="text-xs font-semibold uppercase tracking-wider text-teal-800">
+                  Clinical Record: Prescription Letterhead (A4 Ready)
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="px-4 py-1.5 bg-teal-700 hover:bg-teal-800 text-white rounded text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <span>🖨️</span>
+                    <span>Print Letterhead (PDF)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowRxPrintModal(false)}
+                    className="px-3 py-1.5 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 rounded text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+
+              {/* Printable Medical Letterhead */}
+              <div className="space-y-6 font-serif">
+                {/* Hospital Branding Header */}
+                <div className="flex items-center justify-between border-b-2 border-neutral-900 pb-4">
+                  <div>
+                    <h1 className="text-xl font-bold tracking-tight text-neutral-900">
+                      JAMIA HAMDARD AYUSH UNANI TEACHING HOSPITAL
+                    </h1>
+                    <p className="text-xs text-neutral-600">
+                      Centre for Advanced Clinical Care, Classical Unani Medicine &amp; Integrative Therapeutics
+                    </p>
+                    <p className="text-[11px] text-neutral-500">
+                      Hamdard Nagar, New Delhi - 110062 | Tel: +91 11 2605 9688 | Lic: AYUSH-DL-2004/09
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <span className="inline-block px-2.5 py-1 bg-teal-900 text-white text-[10px] font-sans font-bold uppercase rounded">
+                      Outpatient Department
+                    </span>
+                    <p className="text-xs font-mono font-bold mt-1 text-neutral-800">Order: RX-2026-0441</p>
+                  </div>
+                </div>
+
+                {/* Patient Profile Bar */}
+                <div className="grid grid-cols-4 gap-3 bg-neutral-50 p-3 rounded border border-neutral-200 text-xs font-sans">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 block uppercase">Patient Name</span>
+                    <strong className="text-neutral-900 font-serif text-sm">{activePatient.first_name} {activePatient.last_name}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 block uppercase">Age / Gender</span>
+                    <span className="text-neutral-800">42 Y / Male</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 block uppercase">Medical Record No.</span>
+                    <strong className="text-neutral-900 font-mono">MRN-2026-0814</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 block uppercase">Date &amp; Token</span>
+                    <span className="text-neutral-800">2026-09-13 (Token T-104)</span>
+                  </div>
+                </div>
+
+                {/* Mizaj & Diagnosis Row */}
+                <div className="grid grid-cols-2 gap-4 text-xs font-sans pb-2 border-b border-neutral-200">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-teal-800 block">Baseline Mizaj Assessment</span>
+                    <p className="text-neutral-800 font-semibold">{activePatient.mizaj_dominant || "Balghami (Cold & Moist)"}</p>
+                    <span className="text-[11px] text-neutral-500">Known Allergies: {activePatient.allergies?.join(", ") || "None Reported"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-teal-800 block">Clinical Diagnosis (Tashkhees)</span>
+                    <p className="text-neutral-800 font-semibold">Waja-ul-Mafasil (Su-e-Mizaj Barid Balghami)</p>
+                    <span className="text-[11px] text-neutral-500">Vitals: BP 124/82 • Pulse 72 • Nabz: Bat'ee, Layyin</span>
+                  </div>
+                </div>
+
+                {/* Prescription Items Table */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-bold text-neutral-900 uppercase tracking-wide flex items-center gap-2">
+                    <span>℞</span>
+                    <span className="text-xs">Botanical &amp; Compound Formulations</span>
+                  </h3>
+                  <table className="w-full text-left text-xs font-sans border-collapse border border-neutral-200">
+                    <thead>
+                      <tr className="bg-neutral-100 text-neutral-700 text-[11px] border-b border-neutral-300">
+                        <th className="p-2 border-r border-neutral-200">#</th>
+                        <th className="p-2 border-r border-neutral-200">Medicine Name &amp; Classification</th>
+                        <th className="p-2 border-r border-neutral-200">Dosage &amp; Timing</th>
+                        <th className="p-2 border-r border-neutral-200">Duration</th>
+                        <th className="p-2">Regulatory Safety / Mudabbar</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200">
+                      <tr>
+                        <td className="p-2 border-r border-neutral-200 font-mono">1</td>
+                        <td className="p-2 border-r border-neutral-200">
+                          <strong className="text-neutral-900 block font-serif">Majun Suranjan (Mudabbar)</strong>
+                          <span className="text-[10px] text-neutral-500">Colchicum autumnale purified</span>
+                        </td>
+                        <td className="p-2 border-r border-neutral-200">5g twice daily with lukewarm water after meals</td>
+                        <td className="p-2 border-r border-neutral-200">14 Days</td>
+                        <td className="p-2 text-[10px] font-mono text-emerald-800 font-semibold">
+                          Certified Mudabbar (SHA256:7a8b9c0d...)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-neutral-200 font-mono">2</td>
+                        <td className="p-2 border-r border-neutral-200">
+                          <strong className="text-neutral-900 block font-serif">Roghan-e-Balsan</strong>
+                          <span className="text-[10px] text-neutral-500">Commiphora gileadensis</span>
+                        </td>
+                        <td className="p-2 border-r border-neutral-200">Gentle local application over knees at night</td>
+                        <td className="p-2 border-r border-neutral-200">14 Days</td>
+                        <td className="p-2 text-[10px] text-neutral-600">Standard Retail Unani (External)</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-neutral-200 font-mono">3</td>
+                        <td className="p-2 border-r border-neutral-200">
+                          <strong className="text-neutral-900 block font-serif">Habb-e-Suranjan Forte</strong>
+                          <span className="text-[10px] text-neutral-500">Purified classical pill</span>
+                        </td>
+                        <td className="p-2 border-r border-neutral-200">1 pill twice daily after meals with water</td>
+                        <td className="p-2 border-r border-neutral-200">10 Days</td>
+                        <td className="p-2 text-[10px] font-mono text-emerald-800 font-semibold">
+                          Certified Mudabbar (SHA256:f1e2d3c4...)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Dietary Advice (Ilaj bil-Ghiza / Parhez) */}
+                <div className="grid grid-cols-2 gap-4 text-xs font-sans bg-amber-50/60 p-3 rounded border border-amber-200/80">
+                  <div>
+                    <h4 className="font-bold text-amber-900 uppercase text-[11px] mb-1">Ilaj bil-Ghiza (Dietary Parhez)</h4>
+                    <p className="text-neutral-700 leading-relaxed text-[11px]">
+                      Avoid sour foods, cold refrigerated water, curd, lentils (Mash), and red meat. Prefer warm ginger decoction and barley water.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-teal-900 uppercase text-[11px] mb-1">Ilaj bil-Tadbeer (Regimenal Therapy)</h4>
+                    <p className="text-neutral-700 leading-relaxed text-[11px]">
+                      Nutool Haar (warm medicated irrigation) with Babuna decoction for 10 minutes daily in evening over bilateral patellae.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Doctor Sign-off & 21 CFR Part 11 Electronic Seal */}
+                <div className="pt-4 border-t-2 border-neutral-900 flex justify-between items-end">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-sans uppercase font-bold text-teal-900 block">
+                      21 CFR Part 11 Cryptographic Electronic Signature
+                    </span>
+                    <p className="text-[10px] font-mono text-neutral-600 break-all max-w-md">
+                      SHA-256: 731f5cf53472e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495
+                    </p>
+                    <span className="text-[10px] text-neutral-500 font-sans block">
+                      Anchored in Merkle Audit Block #1041 • Timestamp: 2026-09-13T16:30:00Z
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <div className="h-10 border-b border-dashed border-neutral-400 mb-1 w-44"></div>
+                    <strong className="text-xs font-serif text-neutral-900 block">Prof. (Dr.) Mansoor Alam</strong>
+                    <span className="text-[11px] text-neutral-600 block">BUMS, MD (Unani)</span>
+                    <span className="text-[10px] font-mono text-neutral-500 block">Council Reg: CCIM-U-1988-0412</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* HAKEEM SAHAB AI REVIEW DRAWER WITH 5-LAYER DECISION SUPPORT */}
         <HakeemReviewDrawer

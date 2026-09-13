@@ -191,7 +191,23 @@ export default function ReceptionistDashboardPage() {
 
   // Payment Handler
   const handleMarkPaid = (id: string) => {
+    const item = queue.find(q => q.id === id);
     setQueue(prev => prev.map(item => item.id === id ? { ...item, paymentStatus: "PAID" } : item));
+    if (item) {
+      try {
+        fetch("http://localhost:8000/api/v1/billing/invoices", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mrn: item.mrn,
+            patientName: item.patientName,
+            amount: item.feeAmount,
+            department: "Integrative Unani OPD",
+            paymentMethod: "UPI"
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    }
   };
 
   // Call Patient Trigger
@@ -233,6 +249,32 @@ export default function ReceptionistDashboardPage() {
       feeAmount: newPatient.feeAmount,
       paymentStatus: "PAID"
     };
+
+    // Synchronize walk-in patient with live database API
+    try {
+      fetch("http://localhost:8000/api/v1/patients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: newPatient.fullName.split(" ")[0] || "Walk-in",
+          lastName: newPatient.fullName.split(" ").slice(1).join(" ") || "Patient",
+          phone: newPatient.mobile,
+          gender: newPatient.gender
+        })
+      }).catch(() => {});
+
+      fetch("http://localhost:8000/api/v1/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patientName: newPatient.fullName,
+          mrn: mrnStr,
+          doctorName: newPatient.doctor,
+          chiefComplaint: newPatient.chiefComplaint || "General consultation",
+          fee: newPatient.feeAmount
+        })
+      }).catch(() => {});
+    } catch (e) {}
 
     setQueue([newItem, ...queue]);
     setShowRegModal(false);
