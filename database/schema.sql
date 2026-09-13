@@ -139,10 +139,40 @@ CREATE TABLE IF NOT EXISTS invoices (
     FOREIGN KEY(facility_id) REFERENCES facilities(id)
 );
 
+CREATE TABLE IF NOT EXISTS encounters (
+    id TEXT PRIMARY KEY,
+    encounter_number TEXT UNIQUE NOT NULL,
+    mrn TEXT NOT NULL,
+    patient_name TEXT NOT NULL,
+    appointment_id TEXT,
+    doctor_name TEXT NOT NULL,
+    doctor_reg TEXT NOT NULL,
+    facility_id TEXT DEFAULT "FAC-HQ-01",
+    chief_complaint TEXT,
+    examination_notes TEXT,
+    vitals_json TEXT DEFAULT "{}",
+    soap_json TEXT DEFAULT "{}",
+    mizaj_json TEXT DEFAULT "{}",
+    organ_axis_json TEXT DEFAULT "{}",
+    afaal_cascade_json TEXT DEFAULT "{}",
+    prescription_id TEXT,
+    status TEXT DEFAULT "IN_PROGRESS", -- IN_PROGRESS, LOCKED_AND_SIGNED, CANCELLED
+    signature_hash TEXT,
+    started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    signed_at DATETIME,
+    FOREIGN KEY(facility_id) REFERENCES facilities(id),
+    FOREIGN KEY(appointment_id) REFERENCES appointments(id),
+    FOREIGN KEY(prescription_id) REFERENCES prescriptions(id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_patients_facility ON patients(facility_id);
 CREATE INDEX IF NOT EXISTS idx_appointments_facility ON appointments(facility_id);
 CREATE INDEX IF NOT EXISTS idx_prescriptions_facility ON prescriptions(facility_id);
 CREATE INDEX IF NOT EXISTS idx_inventory_facility ON inventory(facility_id);
 CREATE INDEX IF NOT EXISTS idx_invoices_facility ON invoices(facility_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
+CREATE INDEX IF NOT EXISTS idx_encounters_mrn ON encounters(mrn);
+CREATE INDEX IF NOT EXISTS idx_encounters_facility ON encounters(facility_id);
+CREATE INDEX IF NOT EXISTS idx_encounters_apt ON encounters(appointment_id);
+
 

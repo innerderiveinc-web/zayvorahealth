@@ -172,6 +172,55 @@ def init_db():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, invoices)
 
+    # Seed Encounters (Phase 3 Core Clinical Continuum)
+    vitals_data = {"bp": "124/82", "pulse": "72", "temp": "98.4", "weight": "78", "spo2": "98", "hrv": "46.2"}
+    soap_data = {
+        "subjective": "Bilateral knee pain and morning stiffness (>45 min) aggravated by damp cold weather.",
+        "objective": "Nabz: Bat'ee, Layyin. Lisan: Rutubat-e-Ghaliba, whitish fur. Patellofemoral crepitus present.",
+        "assessment": "Waja-ul-Mafasil Barid Balghami (Osteoarthritis / Phlegmatic Arthropathy - ICD-11: FA00).",
+        "plan": "Stage 2 Tahleel: Majun Suranjan 5g bd + Roghan Balsan local application + Nutool Haar."
+    }
+    mizaj_data = {
+        "dominant": "Balghami (Cold & Moist)",
+        "secondary": "Damawi",
+        "su_e_mizaj": "Su-e-Mizaj Barid Balghami",
+        "dyscrasia_degree": 2
+    }
+    axis_data = {
+        "primary_axis": "Brain-Liver-Joint Triadic Axis",
+        "status": "IMPAIRED_DRAINAGE",
+        "rationale": "Phlegmatic humor congestion in synovial joints with sluggish systemic clearance."
+    }
+    afaal_data = {
+        "current_stage": "TAHLEEL",
+        "goals": ["Resolve morning knee stiffness to <15 min", "Reduce synovial fullness", "Achieve >40% VAS pain relief"],
+        "regimen": "Nutool Haar with warm decoction for 10 minutes daily"
+    }
+
+    cursor.execute("""
+    INSERT INTO encounters (id, encounter_number, mrn, patient_name, appointment_id, doctor_name, doctor_reg, facility_id, chief_complaint, examination_notes, vitals_json, soap_json, mizaj_json, organ_axis_json, afaal_cascade_json, prescription_id, status, signature_hash)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        "ENC-001",
+        "ENC-2026-0814",
+        "MRN-2026-0814",
+        "Hamza Farooqi",
+        "APT-104",
+        "Prof. (Dr.) Mansoor Alam",
+        "CCIM-U-1988-0412",
+        "FAC-HQ-01",
+        "Bilateral knee stiffness & joint ache in damp weather",
+        "Nabz: Bat'ee, Layyin. Lisan: Rutubat-e-Ghaliba. Joints: Mild crepitus, no acute erythema.",
+        json.dumps(vitals_data),
+        json.dumps(soap_data),
+        json.dumps(mizaj_data),
+        json.dumps(axis_data),
+        json.dumps(afaal_data),
+        "RX-001",
+        "LOCKED_AND_SIGNED",
+        "731f5cf53472e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495"
+    ))
+
     conn.commit()
     conn.close()
     print(f"Successfully initialized live database at {DB_PATH}")

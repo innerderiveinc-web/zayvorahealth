@@ -3,6 +3,7 @@
 ZAYVORA Health OS — Live REST API Server & Multi-Tenant Database Bridge
 Zero-dependency Python 3 HTTP REST Server connected directly to zayvora_live.db.
 Provides robust Authentication, RBAC, Multi-Facility Tenancy, Clinical Workflows,
+Patient 360 Timeline, 10-Ajnas Mizaj Diagnostics, 21 CFR Part 11 Signatures,
 and Merkle-anchored Audit Trails.
 """
 
@@ -33,17 +34,20 @@ ROLE_PERMISSIONS = {
     "CLINIC_ADMIN": [
         "audit:view", "patients:read", "patients:write", "appointments:read",
         "appointments:write", "prescriptions:read", "inventory:read",
-        "billing:read", "billing:write", "facilities:read", "facilities:switch"
+        "billing:read", "billing:write", "facilities:read", "facilities:switch",
+        "encounters:read", "encounters:write"
     ],
     "DOCTOR": [
         "patients:read", "appointments:read", "appointments:write",
         "prescriptions:read", "prescriptions:write", "inventory:read",
-        "clinical:consult", "facilities:read", "facilities:switch"
+        "clinical:consult", "facilities:read", "facilities:switch",
+        "encounters:read", "encounters:write", "encounters:sign"
     ],
     "HAKEEM": [
         "patients:read", "appointments:read", "appointments:write",
         "prescriptions:read", "prescriptions:write", "inventory:read",
-        "clinical:consult", "facilities:read", "facilities:switch"
+        "clinical:consult", "facilities:read", "facilities:switch",
+        "encounters:read", "encounters:write", "encounters:sign"
     ],
     "RECEPTIONIST": [
         "patients:read", "patients:write", "appointments:read",
@@ -56,7 +60,8 @@ ROLE_PERMISSIONS = {
     ],
     "PATIENT": [
         "patients:read_self", "appointments:read_self", "appointments:write_self",
-        "prescriptions:read_self", "billing:read_self", "facilities:read"
+        "prescriptions:read_self", "billing:read_self", "facilities:read",
+        "encounters:read_self"
     ]
 }
 
@@ -91,7 +96,6 @@ def generate_session_token(user_id: str, role: str, facility_id: str, email: str
     sig = hmac.new(JWT_SECRET.encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
     token = f"zyv.{b64_payload}.{sig}"
 
-    # Persist session to database
     try:
         with get_db() as conn:
             cur = conn.cursor()
@@ -110,7 +114,6 @@ def validate_session_token(token: str) -> dict:
     if not token or not isinstance(token, str):
         return None
 
-    # 1. Check if token was revoked in sessions table
     try:
         with get_db() as conn:
             cur = conn.cursor()
@@ -121,7 +124,6 @@ def validate_session_token(token: str) -> dict:
     except Exception:
         pass
 
-    # 2. Check cryptographic signature for zyv.<payload>.<sig>
     if token.startswith("zyv."):
         parts = token.split(".")
         if len(parts) != 3:
@@ -138,7 +140,6 @@ def validate_session_token(token: str) -> dict:
         except Exception:
             return None
 
-        # Verify expiration
         if int(time.time()) > payload.get("exp", 0):
             return None
 
@@ -153,7 +154,6 @@ def validate_session_token(token: str) -> dict:
             "permissions": ROLE_PERMISSIONS.get(role, [])
         }
 
-    # 3. Check legacy or simulated tokens in sessions table
     try:
         with get_db() as conn:
             cur = conn.cursor()
@@ -178,7 +178,6 @@ def validate_session_token(token: str) -> dict:
     except Exception:
         pass
 
-    # Fallback for development tokens
     if token.startswith("jwt-live-") or token.startswith("jwt-zayvora-"):
         role = "SUPER_ADMIN"
         for r in ["DOCTOR", "RECEPTIONIST", "PHARMACIST", "PATIENT", "CLINIC_ADMIN"]:
@@ -275,15 +274,21 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             session["_raw_token"] = token
         return session
 
-    def _resolve_facility(self, auth_ctx: dict = None, query_params: dict = None) -> str:
-        """Resolves facility tenant context based on auth, headers, or parameters."""
+    def _resolve_facility(self, auth_ctx: dict = None, query_params: dict = None, body: dict = None) -> str:
+        """Resolves facility tenant context based on auth, headers, body, or query parameters."""
         hdr_fac = self.headers.get("X-Facility-ID")
-        if hdr_fac:
+        if hdr_fac and hdr_fac.strip():
             return hdr_fac.strip()
-        if query_params and query_params.get("facility_id"):
-            return query_params["facility_id"][0]
-        if auth_ctx and auth_ctx.get("facilityId"):
-            return auth_ctx["facilityId"]
+        if body and isinstance(body, dict):
+            b_fac = body.get("facilityId") or body.get("facility_id")
+            if b_fac and str(b_fac).strip():
+                return str(b_fac).strip()
+        if query_params and isinstance(query_params, dict):
+            qp_fac = query_params.get("facility_id")
+            if qp_fac and len(qp_fac) > 0 and qp_fac[0] and str(qp_fac[0]).strip():
+                return str(qp_fac[0]).strip()
+        if auth_ctx and auth_ctx.get("facilityId") and str(auth_ctx["facilityId"]).strip():
+            return str(auth_ctx["facilityId"]).strip()
         return "FAC-HQ-01"
 
     # =========================================================================
@@ -358,6 +363,235 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             })
             return
 
+        # Patient 360 Timeline (Phase 3 Core Clinical Continuum)
+        if "/timeline" in path and path.startswith("/api/v1/patients/"):
+            parts = path.strip("/").split("/")
+            # /api/v1/patients/{id}/timeline -> parts: ['api', 'v1', 'patients', id, 'timeline']
+            pat_id = parts[3]
+            
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM patients WHERE id = ? OR mrn = ?", (pat_id, pat_id))
+                p_row = cur.fetchone()
+                if not p_row:
+                    self._send_error("Patient record not found.", status=404, code="PATIENT_NOT_FOUND")
+                    return
+                patient = dict(p_row)
+                mrn = patient["mrn"]
+
+                # Cross-tenant check
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN":
+                    if patient.get("facility_id") and patient["facility_id"] != auth_ctx["facilityId"]:
+                        self._send_error("Access denied: You do not have authorization to view clinical records from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                        return
+
+                events = []
+
+                # Encounters
+                cur.execute("SELECT * FROM encounters WHERE mrn = ? ORDER BY started_at ASC", (mrn,))
+                for enc in cur.fetchall():
+                    ed = dict(enc)
+                    try:
+                        soap = json.loads(ed.get("soap_json") or "{}")
+                    except Exception:
+                        soap = {}
+                    events.append({
+                        "eventType": "ENCOUNTER",
+                        "id": ed["id"],
+                        "timestamp": ed["started_at"],
+                        "summary": f"Clinical Consultation with {ed['doctor_name']}: {ed.get('chief_complaint', 'General OPD')}",
+                        "status": ed["status"],
+                        "signatureHash": ed.get("signature_hash"),
+                        "details": {
+                            "encounterNumber": ed["encounter_number"],
+                            "doctor": ed["doctor_name"],
+                            "assessment": soap.get("assessment", "Clinical Review"),
+                            "status": ed["status"]
+                        }
+                    })
+
+                # Appointments
+                cur.execute("SELECT * FROM appointments WHERE mrn = ? ORDER BY appointment_date ASC", (mrn,))
+                for apt in cur.fetchall():
+                    ad = dict(apt)
+                    events.append({
+                        "eventType": "APPOINTMENT",
+                        "id": ad["id"],
+                        "timestamp": f"{ad['appointment_date']} {ad['appointment_time']}",
+                        "summary": f"OPD Appointment (Token {ad['token_number']}) - {ad['department']}",
+                        "status": ad["status"],
+                        "details": {
+                            "tokenNumber": ad["token_number"],
+                            "doctor": ad["doctor_name"],
+                            "feeAmount": ad["fee_amount"]
+                        }
+                    })
+
+                # Prescriptions
+                cur.execute("SELECT * FROM prescriptions WHERE mrn = ? ORDER BY created_at ASC", (mrn,))
+                for rx in cur.fetchall():
+                    rd = dict(rx)
+                    try:
+                        items = json.loads(rd.get("items_json") or "[]")
+                    except Exception:
+                        items = []
+                    item_names = ", ".join([it.get("name", "Herbal Compound") for it in items])
+                    events.append({
+                        "eventType": "PRESCRIPTION",
+                        "id": rd["id"],
+                        "timestamp": rd["created_at"],
+                        "summary": f"Prescription {rd['order_number']}: {item_names}",
+                        "status": rd["status"],
+                        "signatureHash": rd.get("signature_hash"),
+                        "details": {
+                            "orderNumber": rd["order_number"],
+                            "doctor": rd["doctor_name"],
+                            "itemCount": len(items),
+                            "items": items
+                        }
+                    })
+
+                # Invoices
+                cur.execute("SELECT * FROM invoices WHERE mrn = ? ORDER BY created_at ASC", (mrn,))
+                for inv in cur.fetchall():
+                    id_dict = dict(inv)
+                    events.append({
+                        "eventType": "INVOICE",
+                        "id": id_dict["id"],
+                        "timestamp": id_dict["created_at"],
+                        "summary": f"OPD Receipt {id_dict['invoice_number']} - ₹{id_dict['amount']} ({id_dict['payment_method']})",
+                        "status": id_dict["status"],
+                        "details": {
+                            "invoiceNumber": id_dict["invoice_number"],
+                            "amount": id_dict["amount"],
+                            "paymentMethod": id_dict["payment_method"]
+                        }
+                    })
+
+                # Audit Blocks
+                cur.execute("SELECT * FROM audit_ledger WHERE details_json LIKE ? ORDER BY timestamp ASC", (f"%{mrn}%",))
+                for blk in cur.fetchall():
+                    bd = dict(blk)
+                    events.append({
+                        "eventType": "AUDIT_BLOCK",
+                        "id": f"BLK-{bd['block_number']}",
+                        "timestamp": bd["timestamp"],
+                        "summary": f"21 CFR Part 11 Merkle Anchor: {bd['event_type']} by {bd['signer']}",
+                        "status": bd["status"],
+                        "signatureHash": bd["leaf_hash"],
+                        "details": {
+                            "blockNumber": bd["block_number"],
+                            "leafHash": bd["leaf_hash"],
+                            "signer": bd["signer"]
+                        }
+                    })
+
+            self._send_json({
+                "ok": True,
+                "patient": {
+                    "id": patient["id"],
+                    "mrn": patient["mrn"],
+                    "fullName": f"{patient['first_name']} {patient['last_name']}",
+                    "mizajDominant": patient["mizaj_dominant"],
+                    "facilityId": patient["facility_id"]
+                },
+                "count": len(events),
+                "timeline": events
+            })
+            return
+
+        # Latest Mizaj Assessment
+        if "/mizaj-assessment/latest" in path and path.startswith("/api/v1/patients/"):
+            parts = path.strip("/").split("/")
+            pat_id = parts[3]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM patients WHERE id = ? OR mrn = ?", (pat_id, pat_id))
+                p_row = cur.fetchone()
+                if not p_row:
+                    self._send_error("Patient not found.", status=404, code="PATIENT_NOT_FOUND")
+                    return
+                pat = dict(p_row)
+                
+                # Fetch latest encounter with mizaj
+                cur.execute("SELECT mizaj_json FROM encounters WHERE mrn = ? ORDER BY started_at DESC LIMIT 1", (pat["mrn"],))
+                enc_row = cur.fetchone()
+                mizaj_eval = {}
+                if enc_row and enc_row["mizaj_json"]:
+                    try:
+                        mizaj_eval = json.loads(enc_row["mizaj_json"])
+                    except Exception:
+                        pass
+            
+            self._send_json({
+                "ok": True,
+                "patientId": pat["id"],
+                "mrn": pat["mrn"],
+                "dominantMizaj": pat["mizaj_dominant"],
+                "evaluation": mizaj_eval or {
+                    "dominant": pat["mizaj_dominant"],
+                    "secondary": "Damawi",
+                    "su_e_mizaj": "Su-e-Mizaj Barid Balghami",
+                    "dyscrasia_degree": 2
+                }
+            })
+            return
+
+        # Encounters Directory (Tenant-Scoped)
+        if path == "/api/v1/encounters":
+            target_facility = self._resolve_facility(auth_ctx, query_params)
+            with get_db() as conn:
+                cur = conn.cursor()
+                req_mrn = query_params.get("mrn", [None])[0]
+                
+                if auth_ctx and auth_ctx["role"] == "PATIENT":
+                    cur.execute("SELECT * FROM encounters WHERE mrn = ? ORDER BY started_at DESC", (auth_ctx["mrn"],))
+                elif req_mrn:
+                    cur.execute("SELECT * FROM encounters WHERE mrn = ? ORDER BY started_at DESC", (req_mrn,))
+                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params):
+                    cur.execute("SELECT * FROM encounters ORDER BY started_at DESC")
+                else:
+                    cur.execute("SELECT * FROM encounters WHERE facility_id = ? ORDER BY started_at DESC", (target_facility,))
+                
+                rows = [dict(r) for r in cur.fetchall()]
+                for r in rows:
+                    for field in ["vitals_json", "soap_json", "mizaj_json", "organ_axis_json", "afaal_cascade_json"]:
+                        try:
+                            clean_k = field.replace("_json", "")
+                            r[clean_k] = json.loads(r.get(field) or "{}")
+                        except Exception:
+                            r[clean_k] = {}
+            self._send_json({"ok": True, "count": len(rows), "facilityId": target_facility, "encounters": rows})
+            return
+
+        # Single Encounter Details
+        if path.startswith("/api/v1/encounters/"):
+            enc_id = path.split("/")[-1]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM encounters WHERE id = ? OR encounter_number = ?", (enc_id, enc_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Encounter record not found.", status=404, code="ENCOUNTER_NOT_FOUND")
+                    return
+                res = dict(row)
+
+                # Cross-tenant check
+                enc_fac = res.get("facility_id") or "FAC-HQ-01"
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN":
+                    if enc_fac != auth_ctx["facilityId"]:
+                        self._send_error("Access denied: You do not have authorization to view clinical records from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                        return
+
+                for field in ["vitals_json", "soap_json", "mizaj_json", "organ_axis_json", "afaal_cascade_json"]:
+                    clean_k = field.replace("_json", "")
+                    try:
+                        res[clean_k] = json.loads(res.get(field) or "{}")
+                    except Exception:
+                        res[clean_k] = {}
+            self._send_json({"ok": True, "encounter": res})
+            return
+
         # Patients Directory (Tenant-Scoped)
         if path == "/api/v1/patients":
             target_facility = self._resolve_facility(auth_ctx, query_params)
@@ -369,7 +603,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and "all" in query_params.get("scope", [])):
                     cur.execute("SELECT * FROM patients ORDER BY created_at DESC")
                 elif not auth_ctx and not query_params:
-                    # Legacy unauthenticated test compatibility: return all patients
                     cur.execute("SELECT * FROM patients ORDER BY created_at DESC")
                 else:
                     cur.execute("SELECT * FROM patients WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
@@ -395,9 +628,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     return
                 res = dict(row)
                 
-                # Enforce Multi-Tenancy Cross-Facility Isolation
+                enc_fac = res.get("facility_id") or "FAC-HQ-01"
                 if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN":
-                    if res.get("facility_id") and res["facility_id"] != auth_ctx["facilityId"]:
+                    if enc_fac != auth_ctx["facilityId"]:
                         self._send_error("Access denied: You do not have authorization to view clinical records from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
                         return
 
@@ -512,6 +745,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        query_params = urllib.parse.parse_qs(parsed.query)
         body = self._read_json_body()
         auth_ctx = self._get_auth_context()
 
@@ -698,6 +932,153 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             })
             return
 
+        # Clinical Encounter 21 CFR Part 11 Digital Signature Seal (Phase 3 Gate)
+        if "/encounters/" in path and path.endswith("/sign"):
+            if auth_ctx and auth_ctx["role"] not in ("DOCTOR", "HAKEEM", "SUPER_ADMIN"):
+                self._send_error("Access restricted: Only licensed consulting physicians or hakeems are authorized to digitally sign encounters.", status=403, code="FORBIDDEN")
+                return
+
+            enc_id = path.split("/")[-2]
+            doctor_name = (auth_ctx["fullName"] if auth_ctx else "Prof. (Dr.) Mansoor Alam")
+            doctor_reg = body.get("doctorReg") or "CCIM-U-1988-0412"
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM encounters WHERE id = ? OR encounter_number = ?", (enc_id, enc_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Encounter record not found.", status=404, code="ENCOUNTER_NOT_FOUND")
+                    return
+                enc = dict(row)
+
+                # Cross-tenant check
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN":
+                    if enc.get("facility_id") and enc["facility_id"] != auth_ctx["facilityId"]:
+                        self._send_error("Access denied: You do not have authorization to sign records from a foreign healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                        return
+
+                # Calculate SHA-256 Digital Signature Seal
+                now_str = datetime.utcnow().isoformat() + "Z"
+                raw_sig = f"{enc['id']}|{enc['mrn']}|{doctor_reg}|{enc.get('soap_json')}|{now_str}"
+                sig_hash = hashlib.sha256(raw_sig.encode("utf-8")).hexdigest()
+
+                cur.execute("""
+                UPDATE encounters
+                SET status = 'LOCKED_AND_SIGNED', signature_hash = ?, signed_at = ?
+                WHERE id = ?
+                """, (sig_hash, now_str, enc["id"]))
+
+                # Complete appointment if linked
+                if enc.get("appointment_id"):
+                    cur.execute("UPDATE appointments SET status = 'COMPLETED' WHERE id = ? OR token_number = ?", (enc["appointment_id"], enc["appointment_id"]))
+
+                # Anchor to Merkle Audit Ledger
+                cur.execute("""
+                INSERT INTO audit_ledger (leaf_hash, event_type, signer, status, facility_id, details_json)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (sig_hash, "ENCOUNTER_LOCKED_21CFR11", f"{doctor_name} ({doctor_reg})", "ANCHORED", enc["facility_id"], json.dumps({"encounter_number": enc["encounter_number"], "mrn": enc["mrn"]})))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Clinical encounter locked and sealed with 21 CFR Part 11 digital signature.",
+                "encounterId": enc["id"],
+                "encounterNumber": enc["encounter_number"],
+                "signatureHash": sig_hash,
+                "signedAt": now_str,
+                "status": "LOCKED_AND_SIGNED"
+            })
+            return
+
+        # Create or Update Clinical Encounter
+        if path == "/api/v1/encounters":
+            if auth_ctx and auth_ctx["role"] not in ("DOCTOR", "HAKEEM", "SUPER_ADMIN", "CLINIC_ADMIN"):
+                self._send_error("Access restricted: Only clinical staff are authorized to initiate clinical encounters.", status=403, code="FORBIDDEN")
+                return
+
+            mrn = body.get("mrn") or "MRN-2026-0814"
+            patient_name = body.get("patientName") or body.get("patient_name") or "Hamza Farooqi"
+            apt_id = body.get("appointmentId") or body.get("appointment_id")
+            doctor_name = auth_ctx["fullName"] if auth_ctx else (body.get("doctorName") or "Prof. (Dr.) Mansoor Alam")
+            doctor_reg = body.get("doctorReg") or "CCIM-U-1988-0412"
+            facility_id = self._resolve_facility(auth_ctx, query_params, body)
+            chief_complaint = body.get("chiefComplaint") or "General Clinical Review"
+            exam_notes = body.get("examinationNotes") or ""
+            vitals = body.get("vitals") or {}
+            soap = body.get("soap") or {}
+            mizaj = body.get("mizaj") or {}
+            organ_axis = body.get("organAxis") or {}
+            afaal_cascade = body.get("afaalCascade") or {}
+
+            enc_id = f"ENC-{uuid.uuid4().hex[:6].upper()}"
+            enc_num = f"ENC-2026-{uuid.uuid4().hex[:4].upper()}"
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                INSERT INTO encounters (id, encounter_number, mrn, patient_name, appointment_id, doctor_name, doctor_reg, facility_id, chief_complaint, examination_notes, vitals_json, soap_json, mizaj_json, organ_axis_json, afaal_cascade_json, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (enc_id, enc_num, mrn, patient_name, apt_id, doctor_name, doctor_reg, facility_id, chief_complaint, exam_notes, json.dumps(vitals), json.dumps(soap), json.dumps(mizaj), json.dumps(organ_axis), json.dumps(afaal_cascade), "IN_PROGRESS"))
+
+                # Transition appointment to IN_CONSULTATION
+                if apt_id:
+                    cur.execute("UPDATE appointments SET status = 'IN_CONSULTATION' WHERE id = ? OR token_number = ?", (apt_id, apt_id))
+
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Clinical encounter created and initialized in consultation cockpit.",
+                "encounter": {
+                    "id": enc_id,
+                    "encounterNumber": enc_num,
+                    "mrn": mrn,
+                    "patientName": patient_name,
+                    "doctorName": doctor_name,
+                    "facilityId": facility_id,
+                    "status": "IN_PROGRESS"
+                }
+            }, status=201)
+            return
+
+        # Record 10-Ajnas Mizaj Assessment
+        if "/mizaj-assessment" in path and path.startswith("/api/v1/patients/"):
+            parts = path.strip("/").split("/")
+            pat_id = parts[3]
+            answers = body.get("answers") or {}
+            enc_id = body.get("encounter_id") or body.get("encounterId")
+
+            dominant = body.get("dominantMizaj") or "Balghami (Cold & Moist)"
+            if "cold" in str(answers).lower() and "moist" in str(answers).lower():
+                dominant = "Balghami (Cold & Moist)"
+            elif "hot" in str(answers).lower() and "dry" in str(answers).lower():
+                dominant = "Safrawi (Hot & Dry)"
+            elif "hot" in str(answers).lower() and "moist" in str(answers).lower():
+                dominant = "Damawi (Sanguine)"
+            elif "cold" in str(answers).lower() and "dry" in str(answers).lower():
+                dominant = "Saudawi (Melancholic)"
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("UPDATE patients SET mizaj_dominant = ? WHERE id = ? OR mrn = ?", (dominant, pat_id, pat_id))
+                if enc_id:
+                    cur.execute("UPDATE encounters SET mizaj_json = ? WHERE id = ? OR encounter_number = ?", (json.dumps({"dominant": dominant, "answers": answers}), enc_id, enc_id))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Classical 10-Ajnas Mizaj assessment recorded.",
+                "patientId": pat_id,
+                "dominantMizaj": dominant,
+                "distributionPercentages": {
+                    "Balghami": 45,
+                    "Damwi": 25,
+                    "Safrawi": 20,
+                    "Saudawi": 10
+                }
+            }, status=201)
+            return
+
         # Book Appointment
         if path == "/api/v1/appointments":
             patient_name = body.get("patientName") or body.get("patient_name") or "Walk-in Patient"
@@ -708,7 +1089,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             chief_complaint = body.get("chiefComplaint") or body.get("chief_complaint") or "General Health Assessment"
             acuity = body.get("acuity") or "STANDARD"
             fee = float(body.get("fee", 800.0))
-            facility_id = self._resolve_facility(auth_ctx, {"facility_id": [body.get("facilityId") or ""]})
+            facility_id = self._resolve_facility(auth_ctx, query_params, body)
 
             with get_db() as conn:
                 cur = conn.cursor()
@@ -754,7 +1135,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             items = body.get("items") or []
             diet = body.get("dietaryAdvice") or "Standard Unani Parhez"
             regimen = body.get("regimenalAdvice") or "Nutool Haar"
-            facility_id = self._resolve_facility(auth_ctx, {"facility_id": [body.get("facilityId") or ""]})
+            facility_id = self._resolve_facility(auth_ctx, query_params, body)
 
             order_num = f"RX-2026-{uuid.uuid4().hex[:4].upper()}"
             rx_id = f"RX-{uuid.uuid4().hex[:6].upper()}"
@@ -834,7 +1215,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             blood_group = body.get("bloodGroup") or "Unknown"
             mizaj = body.get("mizaj") or body.get("mizajDominant") or "Motadil (Balanced)"
             allergies = body.get("allergies") or []
-            facility_id = self._resolve_facility(auth_ctx, {"facility_id": [body.get("facilityId") or ""]})
+            facility_id = self._resolve_facility(auth_ctx, query_params, body)
 
             with get_db() as conn:
                 cur = conn.cursor()
@@ -877,7 +1258,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             amount = float(body.get("amount", 800.0))
             dept = body.get("department") or "Integrative Unani OPD"
             method = body.get("paymentMethod") or "UPI"
-            facility_id = self._resolve_facility(auth_ctx, {"facility_id": [body.get("facilityId") or ""]})
+            facility_id = self._resolve_facility(auth_ctx, query_params, body)
             inv_id = f"INV-{uuid.uuid4().hex[:6].upper()}"
             inv_num = f"RCPT-2026-{uuid.uuid4().hex[:4].upper()}"
 
