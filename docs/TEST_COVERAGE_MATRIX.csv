@@ -12,4 +12,5 @@ SUITE-10,tests/test_live_api_integration.py,11,11,0,"Live SQLite DB Persistence,
 SUITE-11,tests/test_phase2_auth_rbac_tenancy.py,15,15,0,"Cryptographic HMAC Tokens, RBAC Route Guards, Multi-Tenancy Scoping",0.3,Auth & Multi-Tenancy,PASSED (100%)
 SUITE-12,tests/test_phase3_clinical_continuum.py,17,17,0,"Clinical Continuum: Registration, OPD Queue, Vitals, 10-Ajnas, 9-Axis, SOAP, 21 CFR Part 11, A4 Rx",0.4,Clinical Workflow E2E,PASSED (100%)
 SUITE-13,tests/test_phase4_pharmacy_fefo_billing.py,15,15,0,"Pharmacy FEFO Allocation, Schedule E(1) Mudabbar Gate, Atomic Dispensing, Billing & Invoicing",0.4,Pharmacy & Billing E2E,PASSED (100%)
+SUITE-14,tests/test_phase5_ai_rag_safety_cds.py,15,15,0,"AI Multi-Model Failover, Hybrid Classical RAG, Safety Firewall, ZAPE Posology & 5-Layer CDS",0.5,AI & Clinical Intelligence E2E,PASSED (100%)
 

@@ -169,6 +169,25 @@ CREATE TABLE IF NOT EXISTS encounters (
     FOREIGN KEY(prescription_id) REFERENCES prescriptions(id)
 );
 
+CREATE TABLE IF NOT EXISTS ai_consultations (
+    id TEXT PRIMARY KEY,
+    consultation_id TEXT UNIQUE NOT NULL,
+    mrn TEXT NOT NULL,
+    patient_name TEXT,
+    doctor_name TEXT,
+    chief_complaint TEXT NOT NULL,
+    organ_axis TEXT,
+    mizaj TEXT,
+    advisory_sections_json TEXT NOT NULL,
+    citations_json TEXT NOT NULL,
+    safety_verdict TEXT NOT NULL,
+    provider_used TEXT NOT NULL,
+    safe_to_lock INTEGER DEFAULT 0,
+    facility_id TEXT DEFAULT "FAC-HQ-01",
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(facility_id) REFERENCES facilities(id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_patients_facility ON patients(facility_id);
 CREATE INDEX IF NOT EXISTS idx_appointments_facility ON appointments(facility_id);
 CREATE INDEX IF NOT EXISTS idx_prescriptions_facility ON prescriptions(facility_id);
@@ -180,5 +199,8 @@ CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
 CREATE INDEX IF NOT EXISTS idx_encounters_mrn ON encounters(mrn);
 CREATE INDEX IF NOT EXISTS idx_encounters_facility ON encounters(facility_id);
 CREATE INDEX IF NOT EXISTS idx_encounters_apt ON encounters(appointment_id);
+CREATE INDEX IF NOT EXISTS idx_ai_consultations_mrn ON ai_consultations(mrn);
+CREATE INDEX IF NOT EXISTS idx_ai_consultations_facility ON ai_consultations(facility_id);
+
 
 

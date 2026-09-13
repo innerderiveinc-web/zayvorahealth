@@ -224,6 +224,46 @@ def init_db():
         "731f5cf53472e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495"
     ))
 
+    # Seed Baseline AI Consultation
+    ai_advisory = {
+        "CLINICAL SUMMARY": "62-year-old male with chronic knee joint stiffness (Waja-ul-Mafasil Barid Balghami).",
+        "WHAT IS KNOWN": "Known case of osteoarthritis with cold-moist humoral dyscrasia.",
+        "UNANI PERSPECTIVE": "Sluggish phlegmatic drainage along Mafasil-Asab triadic axis.",
+        "BIOMEDICAL PERSPECTIVE": "Bilateral knee osteoarthrosis, radiological Kellgren-Lawrence Grade II.",
+        "DIFFERENTIAL CONSIDERATIONS": "Waja-ul-Mafasil, Niqris (Gout), Osteoarthritis, Pseudogout.",
+        "RED FLAGS": "None reported in current presentation. No acute septic arthritis.",
+        "MISSING INFORMATION": "Recent serum uric acid and inflammatory markers (ESR/CRP).",
+        "EVIDENCE": "UPI Monograph Vol I: Majun Suranjan & Suranjan Talkh Mudabbar indicated for joint arthralgia.",
+        "SAFETY": "Schedule E(1) alkaloid (Colchicine). Mandatory Mudabbar certification required. Renal clearance monitoring advised.",
+        "POSSIBLE CARE OPTIONS": "Majun Suranjan 5g nocte, Roghan Suranjan local application, Dalak Layyin regimen.",
+        "MONITORING": "Follow-up at 14 days to assess VAS pain reduction and joint mobility.",
+        "UNCERTAINTY": "Low uncertainty. Presentation concordant with classical descriptions.",
+        "CLINICIAN REVIEW REQUIRED": "Yes — this AI advisory requires non-delegable clinician review before clinical action."
+    }
+    ai_citations = [
+        {"title": "Suranjan Talkh Monograph", "source": "Unani Pharmacopoeia of India (UPI) Vol 1", "part": "Dried corm", "schedule": "Schedule E(1)", "mudabbar": "Boiled in cow's milk (Sheer-e-Gao)"},
+        {"title": "Majun Suranjan Classical Formulation", "source": "National Formulary of Unani Medicine (NFUM) Part I", "dosage": "5g post-prandial"}
+    ]
+    cursor.execute("""
+    INSERT INTO ai_consultations (id, consultation_id, mrn, patient_name, doctor_name, chief_complaint, organ_axis, mizaj, advisory_sections_json, citations_json, safety_verdict, provider_used, safe_to_lock, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        "AIC-001",
+        "AI-CONSULT-001",
+        "MRN-2026-0814",
+        "Hamza Farooqi",
+        "Prof. (Dr.) Mansoor Alam",
+        "Bilateral knee stiffness & joint ache in damp weather",
+        "mafasil-asab",
+        "Balghami (Cold & Moist)",
+        json.dumps(ai_advisory),
+        json.dumps(ai_citations),
+        "CAUTION",
+        "Primary (Anthropic Claude 3.5 Sonnet)",
+        0,
+        "FAC-HQ-01"
+    ))
+
     conn.commit()
     conn.close()
     print(f"Successfully initialized live database at {DB_PATH}")

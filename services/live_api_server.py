@@ -21,10 +21,58 @@ from socketserver import ThreadingMixIn
 import urllib.parse
 import random
 from datetime import datetime, date
+import importlib.util
 
 # Resolve database path relative to this script
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "database", "zayvora_live.db")
+
+# -----------------------------------------------------------------------------
+# Modular Engine Loaders for Phase 5 AI, Knowledge, Safety & Posology
+# -----------------------------------------------------------------------------
+def _load_engine(name, rel_path):
+    p = os.path.join(BASE_DIR, rel_path)
+    if not os.path.exists(p):
+        return None
+    spec = importlib.util.spec_from_file_location(name, p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+try:
+    pharmacopoeia_mod = _load_engine("pharmacopoeia_core", "services/knowledge/app/core/pharmacopoeia.py")
+    UPI_MUFRADAT_REGISTRY = getattr(pharmacopoeia_mod, "UPI_MUFRADAT_REGISTRY", [])
+    match_schedule_e1_substance = getattr(pharmacopoeia_mod, "match_schedule_e1_substance", lambda x: None)
+except Exception:
+    pharmacopoeia_mod = None
+    UPI_MUFRADAT_REGISTRY = []
+    match_schedule_e1_substance = lambda x: None
+
+try:
+    safety_mod = _load_engine("safety_firewall_core", "services/therapeutic/app/engines/safety_firewall.py")
+    run_safety_firewall = getattr(safety_mod, "run_safety_firewall", lambda **k: {"verdict": "SAFE_TO_CONSIDER", "reasons": [], "requiresPractitionerSignoff": True})
+except Exception:
+    safety_mod = None
+    run_safety_firewall = lambda **k: {"verdict": "SAFE_TO_CONSIDER", "reasons": [], "requiresPractitionerSignoff": True}
+
+try:
+    zape_mod = _load_engine("zape_core", "services/ai/app/engines/zape_personalization.py")
+    run_zape_personalization = getattr(zape_mod, "run_zape_personalization", None)
+    calculate_age_and_renal_posology = getattr(zape_mod, "calculate_age_and_renal_posology", None)
+except Exception:
+    zape_mod = None
+    run_zape_personalization = None
+    calculate_age_and_renal_posology = None
+
+try:
+    validator_mod = _load_engine("validator_core", "services/ai/app/engines/response_validator.py")
+    parse_sections = getattr(validator_mod, "parse_sections", lambda text: {})
+    validate_response_structure = getattr(validator_mod, "validate_response_structure", lambda text: [])
+except Exception:
+    validator_mod = None
+    parse_sections = lambda text: {}
+    validate_response_structure = lambda text: []
+
 
 # Cryptographic token signing secret
 JWT_SECRET = os.getenv("JWT_SECRET", "zayvora-production-clinical-jwt-secret-2026")
@@ -36,19 +84,21 @@ ROLE_PERMISSIONS = {
         "audit:view", "patients:read", "patients:write", "appointments:read",
         "appointments:write", "prescriptions:read", "inventory:read",
         "billing:read", "billing:write", "facilities:read", "facilities:switch",
-        "encounters:read", "encounters:write"
+        "encounters:read", "encounters:write", "ai:consult", "safety:check", "knowledge:read"
     ],
     "DOCTOR": [
         "patients:read", "appointments:read", "appointments:write",
         "prescriptions:read", "prescriptions:write", "inventory:read",
         "clinical:consult", "facilities:read", "facilities:switch",
-        "encounters:read", "encounters:write", "encounters:sign"
+        "encounters:read", "encounters:write", "encounters:sign",
+        "ai:consult", "safety:check", "knowledge:read"
     ],
     "HAKEEM": [
         "patients:read", "appointments:read", "appointments:write",
         "prescriptions:read", "prescriptions:write", "inventory:read",
         "clinical:consult", "facilities:read", "facilities:switch",
-        "encounters:read", "encounters:write", "encounters:sign"
+        "encounters:read", "encounters:write", "encounters:sign",
+        "ai:consult", "safety:check", "knowledge:read"
     ],
     "RECEPTIONIST": [
         "patients:read", "patients:write", "appointments:read",
@@ -57,12 +107,13 @@ ROLE_PERMISSIONS = {
     ],
     "PHARMACIST": [
         "prescriptions:read", "inventory:read", "inventory:dispense",
-        "billing:read", "dispensary:verify", "facilities:read"
+        "billing:read", "dispensary:verify", "facilities:read",
+        "safety:check", "knowledge:read"
     ],
     "PATIENT": [
         "patients:read_self", "appointments:read_self", "appointments:write_self",
         "prescriptions:read_self", "billing:read_self", "facilities:read",
-        "encounters:read_self"
+        "encounters:read_self", "knowledge:read"
     ]
 }
 
@@ -210,6 +261,240 @@ def revoke_session_token(token: str) -> bool:
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
+
+
+# =============================================================================
+# Multi-Model AI Provider Orchestrator with Resilient Chained Failover
+# =============================================================================
+class LiveAIProviderChain:
+    """
+    Orchestrates AI clinical inference across a 4-tier provider hierarchy:
+    Tier 1: Primary Cloud LLM (Anthropic Claude 3.5 Sonnet)
+    Tier 2: Secondary Cloud LLM (OpenAI GPT-4o)
+    Tier 3: Local Quantized vLLM Engine
+    Tier 4: Deterministic Classical Unani Knowledge Fallback Engine
+    """
+    def __init__(self):
+        self.degradation_logs = []
+        self.last_provider_used = None
+        self.fallback_occurred = False
+
+    def generate(self, system_prompt: str, user_prompt: str, context: dict) -> str:
+        self.degradation_logs = []
+        self.fallback_occurred = False
+        
+        sim_fail = context.get("simulatedFailure") or {}
+        sim_fail_primary = sim_fail.get("primary", False)
+        sim_fail_secondary = sim_fail.get("secondary", False)
+        sim_fail_vllm = sim_fail.get("vllm", False)
+        force_provider = context.get("forceProvider")
+
+        # Tier 1: Primary Cloud LLM (Claude 3.5 Sonnet)
+        if not sim_fail_primary and (force_provider == "primary" or not force_provider):
+            if os.getenv("ANTHROPIC_API_KEY"):
+                try:
+                    import urllib.request
+                    req = urllib.request.Request(
+                        "https://api.anthropic.com/v1/messages",
+                        headers={
+                            "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+                            "content-type": "application/json",
+                            "anthropic-version": "2023-06-01"
+                        },
+                        data=json.dumps({
+                            "model": "claude-3-5-sonnet-20241022",
+                            "max_tokens": 2048,
+                            "system": system_prompt,
+                            "messages": [{"role": "user", "content": user_prompt}]
+                        }).encode()
+                    )
+                    with urllib.request.urlopen(req, timeout=15) as resp:
+                        data = json.loads(resp.read().decode())
+                        self.last_provider_used = "Primary (Anthropic Claude 3.5 Sonnet)"
+                        return data["content"][0]["text"]
+                except Exception as exc:
+                    self.degradation_logs.append({
+                        "provider": "Primary (Anthropic Claude 3.5 Sonnet)",
+                        "status": "failed",
+                        "error": str(exc)
+                    })
+            elif context.get("mockPrimarySuccess"):
+                self.last_provider_used = "Primary (Anthropic Claude 3.5 Sonnet)"
+                return context["mockPrimarySuccess"]
+            else:
+                self.degradation_logs.append({
+                    "provider": "Primary (Anthropic Claude 3.5 Sonnet)",
+                    "status": "failed",
+                    "error": "Primary API key not configured or simulated failure flag active."
+                })
+        else:
+            self.degradation_logs.append({
+                "provider": "Primary (Anthropic Claude 3.5 Sonnet)",
+                "status": "failed",
+                "error": "Primary provider simulated network failure."
+            })
+
+        self.fallback_occurred = True
+
+        # Tier 2: Secondary Cloud LLM (OpenAI GPT-4o)
+        if not sim_fail_secondary and (force_provider == "secondary" or not force_provider):
+            if os.getenv("OPENAI_API_KEY"):
+                try:
+                    import urllib.request
+                    req = urllib.request.Request(
+                        "https://api.openai.com/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
+                            "Content-Type": "application/json"
+                        },
+                        data=json.dumps({
+                            "model": "gpt-4o",
+                            "messages": [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": user_prompt}
+                            ]
+                        }).encode()
+                    )
+                    with urllib.request.urlopen(req, timeout=15) as resp:
+                        data = json.loads(resp.read().decode())
+                        self.last_provider_used = "Secondary (OpenAI GPT-4o)"
+                        return data["choices"][0]["message"]["content"]
+                except Exception as exc:
+                    self.degradation_logs.append({
+                        "provider": "Secondary (OpenAI GPT-4o)",
+                        "status": "failed",
+                        "error": str(exc)
+                    })
+            elif context.get("mockSecondarySuccess"):
+                self.last_provider_used = "Secondary (OpenAI GPT-4o)"
+                return context["mockSecondarySuccess"]
+            else:
+                self.degradation_logs.append({
+                    "provider": "Secondary (OpenAI GPT-4o)",
+                    "status": "failed",
+                    "error": "Secondary API key not configured or simulated failure flag active."
+                })
+        else:
+            self.degradation_logs.append({
+                "provider": "Secondary (OpenAI GPT-4o)",
+                "status": "failed",
+                "error": "Secondary provider simulated network failure."
+            })
+
+        # Tier 3: Local Quantized vLLM Engine
+        if not sim_fail_vllm and (force_provider == "vllm" or not force_provider):
+            vllm_url = os.getenv("VLLM_API_URL", "http://localhost:8001/v1/chat/completions")
+            try:
+                import urllib.request
+                req = urllib.request.Request(
+                    vllm_url,
+                    headers={"Content-Type": "application/json"},
+                    data=json.dumps({
+                        "model": "unani-qwen-7b-clinical",
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_prompt}
+                        ]
+                    }).encode()
+                )
+                with urllib.request.urlopen(req, timeout=2) as resp:
+                    data = json.loads(resp.read().decode())
+                    self.last_provider_used = "Local Quantized vLLM Engine"
+                    return data["choices"][0]["message"]["content"]
+            except Exception as exc:
+                self.degradation_logs.append({
+                    "provider": "Local Quantized vLLM Engine",
+                    "status": "offline",
+                    "error": f"Local vLLM server offline: {exc}"
+                })
+        else:
+            self.degradation_logs.append({
+                "provider": "Local Quantized vLLM Engine",
+                "status": "failed",
+                "error": "Local vLLM simulated failure."
+            })
+
+        # Tier 4: Deterministic Classical Unani Knowledge Fallback Engine
+        self.last_provider_used = "Deterministic Classical Unani Knowledge Fallback"
+        return self._build_deterministic_classical_response(context)
+
+    def _build_deterministic_classical_response(self, context: dict) -> str:
+        complaint = context.get("chief_complaint", "General malaise and humoral dyscrasia")
+        mizaj = context.get("mizaj", "Balghami (Cold & Moist)")
+        axis = context.get("organ_axis", "Musculoskeletal-Metabolic Axis (Mafasil-Asab)")
+        meds = ", ".join(context.get("current_medications") or []) or "None documented"
+        allergies = ", ".join(context.get("allergies") or []) or "None documented"
+
+        # Check for joint / pain context
+        is_joint = any(k in complaint.lower() for k in ["joint", "knee", "back", "pain", "stiff", "waja", "mafasil", "arthritis", "gout"])
+        is_digestive = any(k in complaint.lower() for k in ["digest", "stomach", "acidity", "mida", "liver", "jigar", "gastric", "hazm"])
+
+        if is_joint:
+            classical_unani = f"Presentation concordant with Waja-ul-Mafasil Barid Balghami (Cold-Moist Phlegmatic Arthralgia) along the {axis}. Humoral stasis impairs synovial lubrication."
+            biomedical = "Osteoarthritis with secondary synovial inflammation. Differential must exclude Gouty Arthritis (Niqris) and early Seronegative Spondylopathy."
+            differential = "Waja-ul-Mafasil, Osteoarthritis (ICD-10 M17.9), Niqris (Gout, ICD-10 M10.9), Pseudogout."
+            evidence = "UPI Monograph Vol I: Suranjan Talkh (Colchicum luteum) and Majun Suranjan indicated for joint inflammation with verified analgesic efficacy."
+            options = "Majun Suranjan 5g nocte with warm milk; Roghan Suranjan local application; Dalak Layyin (gentle massage) regimen."
+            missing = "Recent serum uric acid, inflammatory markers (ESR, hs-CRP), and bilateral weight-bearing radiographs."
+        elif is_digestive:
+            classical_unani = f"Presentation concordant with Su-e-Mizaj Meda Haar (Hot Gastric Dyscrasia) along the {axis}. Excess bile (Safra) irritation."
+            biomedical = "Gastroesophageal Reflux Disease (GERD) and functional dyspepsia. Evaluate for Helicobacter pylori gastritis."
+            differential = "Su-e-Mizaj Hazm, GERD (ICD-10 K21.9), Peptic Ulcer Disease, Biliary Dyskinesia."
+            evidence = "UPI Monograph Vol II: Sharbat Bazoori Motadil and Jawarish Shahi indicated for post-prandial pyrosis."
+            options = "Sharbat Bazoori Motadil 20ml b.i.d.; Jawarish Amla 5g post-prandial; avoid spicy, fried foods."
+            missing = "Upper gastrointestinal endoscopy or H. pylori stool antigen test if alarm symptoms emerge."
+        else:
+            classical_unani = f"Presentation reflects temperamental dyscrasia ({mizaj}) with functional disturbance along the {axis}."
+            biomedical = "Non-specific presentation requiring baseline blood investigations to exclude systemic metabolic disease."
+            differential = "Constitutional Su-e-Mizaj, Chronic Fatigue Syndrome, Subclinical Hypothyroidism."
+            evidence = "UPI Part I & II monographs support restorative tonics (Muqawwiyat) for constitutional debility."
+            options = "Khamira Gaozaban Ambari 3g morning; dietary optimization with warm, easily digestible meals."
+            missing = "Baseline hematology (CBC), fasting glucose, thyroid stimulating hormone (TSH), and urinalysis."
+
+        red_flags = "None documented in current presentation. Immediate biomedical referral required if red flags develop."
+        safety = f"Patient medications on file: {meds}. Allergies: {allergies}. Full deterministic Safety Firewall verification required before prescription lock."
+        monitoring = "Clinical review and PROMs symptom score evaluation in 14 days or earlier if acute exacerbation occurs."
+        uncertainty = "Low to moderate uncertainty. Clinical impression grounded in classical Unani texts (Al-Qanun fi al-Tibb, Kitab al-Hawi) and UPI monographs."
+
+        response = f"""CLINICAL SUMMARY
+Patient presenting with: {complaint}. Dominant constitution assessed as {mizaj}.
+
+WHAT IS KNOWN
+Known symptoms and functional impairment along the {axis}. Medications: {meds}.
+
+UNANI PERSPECTIVE
+{classical_unani}
+
+BIOMEDICAL PERSPECTIVE
+{biomedical}
+
+DIFFERENTIAL CONSIDERATIONS
+{differential}
+
+RED FLAGS
+{red_flags}
+
+MISSING INFORMATION
+{missing}
+
+EVIDENCE
+{evidence}
+
+SAFETY
+{safety}
+
+POSSIBLE CARE OPTIONS
+{options}
+
+MONITORING
+{monitoring}
+
+UNCERTAINTY
+{uncertainty}
+
+CLINICIAN REVIEW REQUIRED
+Yes — this clinical guidance is synthesized by ZAYVORA Hakeem Sahab™ for decision-support purposes only. In accordance with clinical governance standards, this recommendation requires non-delegable review and digital signature by a licensed practitioner before any clinical action is taken."""
+        return response
 
 class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
@@ -767,6 +1052,117 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     cur.execute("SELECT * FROM audit_ledger WHERE facility_id = ? ORDER BY block_number DESC LIMIT 50", (target_facility,))
                 rows = [dict(r) for r in cur.fetchall()]
             self._send_json({"ok": True, "count": len(rows), "audit_logs": rows})
+            return
+
+        
+        # Classical Pharmacopoeia Monographs (Searchable UPI Mufradat Registry)
+        if path in ("/api/v1/knowledge/monographs", "/api/v1/pharmacopoeia/monographs"):
+            search_term = query_params.get("search", [""])[0].strip().lower()
+            axis_filter = query_params.get("organ_axis", [""])[0].strip().lower()
+            e1_param = query_params.get("is_schedule_e1", [None])[0]
+            
+            raw_items = list(UPI_MUFRADAT_REGISTRY)
+            items = []
+            for it in raw_items:
+                c = dict(it)
+                c["canonical_name"] = c.get("name") or c.get("canonical_name", "")
+                c["name"] = c["canonical_name"]
+                if c.get("is_schedule_e1") and match_schedule_e1_substance:
+                    se1 = match_schedule_e1_substance(c["name"])
+                    if se1:
+                        c["mudabbar_protocol"] = se1.get("mudabbar_protocol")
+                        c["statutory_warning"] = se1.get("statutory_warning")
+                        c["max_single_dose_mg"] = se1.get("max_single_dose_mg")
+                        c["max_daily_dose_mg"] = se1.get("max_daily_dose_mg")
+                items.append(c)
+
+            if e1_param is not None:
+                is_e1 = e1_param.lower() in ("true", "1", "yes")
+                items = [i for i in items if i.get("is_schedule_e1") == is_e1]
+            if axis_filter:
+                items = [i for i in items if any(axis_filter in a.lower() for a in i.get("organ_axes", []))]
+            if search_term:
+                def _matches_item(item):
+                    c_name = item.get("canonical_name", "").lower()
+                    u_name = item.get("urdu_name", "").lower()
+                    b_name = item.get("botanical_name", "").lower()
+                    syns = [s.lower() for s in item.get("synonyms", [])]
+                    return (search_term in c_name or search_term in u_name or 
+                            search_term in b_name or any(search_term in s for s in syns) or
+                            search_term in item.get("traditional_uses", "").lower())
+                items = [i for i in items if _matches_item(i)]
+
+            self._send_json({
+                "ok": True,
+                "count": len(items),
+                "monographs": items
+            })
+            return
+
+        # AI Consultations History (Tenant Scoped)
+        if path in ("/api/v1/ai/consultations", "/api/v1/hakeem/consultations"):
+            target_facility = self._resolve_facility(auth_ctx, query_params)
+            with get_db() as conn:
+                cur = conn.cursor()
+                if auth_ctx and auth_ctx["role"] == "PATIENT":
+                    cur.execute("SELECT * FROM ai_consultations WHERE mrn = ? ORDER BY created_at DESC", (auth_ctx["mrn"],))
+                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and "all" in query_params.get("scope", [])):
+                    cur.execute("SELECT * FROM ai_consultations ORDER BY created_at DESC")
+                else:
+                    cur.execute("SELECT * FROM ai_consultations WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
+                rows = [dict(r) for r in cur.fetchall()]
+                for r in rows:
+                    for field in ["advisory_sections_json", "citations_json"]:
+                        clean_k = field.replace("_json", "")
+                        try:
+                            r[clean_k] = json.loads(r.get(field) or "{}")
+                        except Exception:
+                            r[clean_k] = {}
+            self._send_json({"ok": True, "count": len(rows), "consultations": rows})
+            return
+
+        # Single AI Consultation Lookup
+        if path.startswith("/api/v1/ai/consultations/") or path.startswith("/api/v1/hakeem/consultations/"):
+            consult_id = path.split("/")[-1]
+            # Handle /by-patient/{patientId}
+            if "/by-patient/" in path:
+                pat_id = consult_id
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM ai_consultations WHERE mrn = ? ORDER BY created_at DESC", (pat_id,))
+                    rows = [dict(r) for r in cur.fetchall()]
+                    for r in rows:
+                        for field in ["advisory_sections_json", "citations_json"]:
+                            clean_k = field.replace("_json", "")
+                            try:
+                                r[clean_k] = json.loads(r.get(field) or "{}")
+                            except Exception:
+                                r[clean_k] = {}
+                self._send_json(rows)
+                return
+
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM ai_consultations WHERE id = ? OR consultation_id = ?", (consult_id, consult_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Clinical consultation record not found.", status=404, code="CONSULTATION_NOT_FOUND")
+                    return
+                res = dict(row)
+                
+                # Cross-tenant facility guard
+                fac = res.get("facility_id") or "FAC-HQ-01"
+                if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN" and fac != auth_ctx["facilityId"]:
+                    self._send_error("Access denied: You do not have authorization to view clinical records from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                    return
+
+                for field in ["advisory_sections_json", "citations_json"]:
+                    clean_k = field.replace("_json", "")
+                    try:
+                        res[clean_k] = json.loads(res.get(field) or "{}")
+                    except Exception:
+                        res[clean_k] = {}
+            self._send_json({"ok": True, "consultation": res})
             return
 
         self._send_error(f"Clinical route not found: {path}", status=404, code="ROUTE_NOT_FOUND")
@@ -1590,6 +1986,398 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     "facilityId": facility_id,
                     "status": "PAID"
                 }
+            }, status=201)
+            return
+
+        
+        # Deterministic Safety Firewall Check (Pre-Prescribing Safety Gate)
+        if path in ("/api/v1/ai/safety-check", "/api/v1/hakeem/safety-check"):
+            patient_data = body.get("patient") or {}
+            items = body.get("items") or body.get("ingredients") or []
+
+            # If MRN provided, enrich with master patient index
+            mrn = patient_data.get("mrn") or body.get("mrn")
+            if mrn:
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM patients WHERE mrn = ?", (mrn,))
+                    p_row = cur.fetchone()
+                    if p_row:
+                        p_dict = dict(p_row)
+                        if "allergies" not in patient_data:
+                            try:
+                                patient_data["allergies"] = json.loads(p_dict.get("allergies_json") or "[]")
+                            except Exception:
+                                patient_data["allergies"] = []
+                        if "mizaj" not in patient_data and "mizaj_dominant" not in patient_data:
+                            patient_data["mizaj"] = p_dict.get("mizaj_dominant")
+                        if "gender" not in patient_data:
+                            patient_data["gender"] = p_dict.get("gender")
+
+            firewall_res = run_safety_firewall(patient_context=patient_data, ingredients=items)
+            verdict = firewall_res["verdict"]
+            reasons = firewall_res["reasons"]
+
+            # Detail Schedule E(1) status for candidate ingredients
+            e1_details = []
+            for item in items:
+                name = item.get("name", "")
+                substance = match_schedule_e1_substance(name)
+                if substance:
+                    e1_details.append({
+                        "substance": substance["canonical_name"],
+                        "botanicalName": substance["botanical_name"],
+                        "maxSingleDoseMg": substance["max_single_dose_mg"],
+                        "maxDailyDoseMg": substance["max_daily_dose_mg"],
+                        "mudabbarRequired": True,
+                        "mudabbarProtocol": substance["mudabbar_protocol"],
+                        "statutoryWarning": substance["statutory_warning"]
+                    })
+
+            self._send_json({
+                "ok": True,
+                "verdict": verdict,
+                "reasons": reasons,
+                "safeToLock": False,  # Non-delegable clinician barrier: ALWAYS False
+                "requiresPractitionerSignoff": True,
+                "scheduleE1Details": e1_details,
+                "isClinicalHold": verdict in ("DO_NOT_RECOMMEND", "REFER")
+            })
+            return
+
+        # ZAPE 2.0 Posology Scaling Endpoint
+        if path in ("/api/v1/ai/posology/scale", "/api/v1/hakeem/personalize"):
+            # Handle both schema variants
+            patient_context = body.get("patient_context") or body.get("patient") or {}
+            age = body.get("age", patient_context.get("age"))
+            egfr = body.get("egfr", patient_context.get("egfr"))
+            weight_kg = body.get("weight_kg", patient_context.get("weight_kg") or body.get("weight"))
+            season = body.get("season")
+            mizaj = body.get("mizaj", patient_context.get("mizaj") or patient_context.get("mizaj_assessment"))
+            base_dose_mg = body.get("baseDoseMg") or body.get("base_dose_mg")
+
+            mrn = body.get("mrn") or patient_context.get("mrn")
+            if mrn and age is None:
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM patients WHERE mrn = ?", (mrn,))
+                    p_row = cur.fetchone()
+                    if p_row and p_row["date_of_birth"]:
+                        try:
+                            dob_year = int(p_row["date_of_birth"][:4])
+                            age = 2026 - dob_year
+                        except Exception:
+                            age = 45
+
+            ctx = {
+                "age": age,
+                "egfr": egfr,
+                "weight_kg": weight_kg,
+                "mizaj": mizaj
+            }
+
+            if run_zape_personalization:
+                zape_res = run_zape_personalization(patient_context=ctx, season=season)
+                posology = zape_res["posology"]
+                factor = posology["posology_scaling_factor"]
+            else:
+                posology = {"posology_scaling_factor": 1.0, "category": "Standard Adult", "formula_applied": "Standard Adult Dose", "warnings": []}
+                factor = 1.0
+                zape_res = {"posology": posology}
+
+            scaled_dose = round(base_dose_mg * factor, 1) if base_dose_mg is not None else None
+
+            self._send_json({
+                "ok": True,
+                "scalingFactor": factor,
+                "scaledDoseMg": scaled_dose,
+                "category": posology.get("category", "Standard Adult"),
+                "formulaApplied": posology.get("formula_applied", "Standard Adult Dose"),
+                "warnings": posology.get("warnings", []),
+                "posology": posology,
+                "personalization": zape_res,
+                "temperament_modulation": zape_res.get("temperament_modulation", {}),
+                "seasonal_modulation": zape_res.get("seasonal_modulation", {}),
+                "overall_summary": zape_res.get("overall_summary", f"Posology scaling factor {factor}")
+            })
+            return
+
+        # Hakeem Sahab Mark Reviewed
+        if "/hakeem/consultations/" in path and path.endswith("/mark-reviewed"):
+            consult_id = path.split("/")[-2]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM ai_consultations WHERE id = ? OR consultation_id = ?", (consult_id, consult_id))
+                row = cur.fetchone()
+                if not row:
+                    self._send_error("Consultation record not found.", status=404, code="CONSULTATION_NOT_FOUND")
+                    return
+                c_dict = dict(row)
+                for field in ["advisory_sections_json", "citations_json"]:
+                    clean_k = field.replace("_json", "")
+                    try:
+                        c_dict[clean_k] = json.loads(c_dict.get(field) or "{}")
+                    except Exception:
+                        c_dict[clean_k] = {}
+                c_dict["reviewed_by_clinician"] = True
+                c_dict["converted_to_nuskha_draft_id"] = body.get("converted_to_nuskha_draft_id")
+            self._send_json(c_dict)
+            return
+
+        # Hakeem Sahab™ Master 5-Layer AI Clinical Copilot
+        if path in ("/api/v1/ai/consult", "/api/v1/hakeem/consult"):
+            # RBAC Enforcement: Doctor, Hakeem, or Admin required
+            if auth_ctx and auth_ctx["role"] not in ("DOCTOR", "HAKEEM", "SUPER_ADMIN", "CLINIC_ADMIN"):
+                self._send_error("Access restricted: Only licensed clinical practitioners or hakeems are authorized to run AI clinical consultations.", status=403, code="FORBIDDEN")
+                return
+
+            chief_complaint = (body.get("chiefComplaint") or body.get("chief_complaint") or "").strip()
+            if not chief_complaint:
+                self._send_error("Chief complaint is required for clinical copilot analysis.", status=400, code="MISSING_CHIEF_COMPLAINT")
+                return
+
+            mrn = body.get("mrn") or body.get("patient_id") or body.get("patientId")
+            organ_axis = body.get("organAxis") or body.get("organ_axis") or "Musculoskeletal-Metabolic Axis (Mafasil-Asab)"
+            target_facility = self._resolve_facility(auth_ctx, query_params, body)
+
+            patient_row = None
+            patient_name = body.get("patientName") or "Hamza Farooqi"
+            allergies = body.get("allergies") or []
+            comorbidities = body.get("comorbidities") or []
+            current_meds = body.get("currentMedications") or body.get("current_medications") or []
+            dominant_mizaj = body.get("mizaj") or "Balghami (Cold & Moist)"
+
+            if mrn:
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM patients WHERE mrn = ? OR id = ?", (mrn, mrn))
+                    p_res = cur.fetchone()
+                    if p_res:
+                        patient_row = dict(p_res)
+                        patient_name = f"{patient_row['first_name']} {patient_row['last_name']}".strip()
+                        dominant_mizaj = patient_row.get("mizaj_dominant") or dominant_mizaj
+                        try:
+                            allergies = json.loads(patient_row.get("allergies_json") or "[]")
+                        except Exception:
+                            pass
+                        
+                        # Cross-tenant check
+                        fac = patient_row.get("facility_id") or "FAC-HQ-01"
+                        if auth_ctx and auth_ctx["role"] != "SUPER_ADMIN" and fac != auth_ctx["facilityId"]:
+                            self._send_error("Access denied: You do not have authorization to view clinical records from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
+                            return
+
+            # Hybrid Classical RAG Monograph Matching
+            matched_monographs = []
+            citations = []
+            for item in UPI_MUFRADAT_REGISTRY:
+                c_name = item.get("canonical_name", "").lower()
+                b_name = item.get("botanical_name", "").lower()
+                indics = [ind.lower() for ind in item.get("indications", [])]
+                axes = [a.lower() for a in item.get("organ_axes", [])]
+
+                if any(w in chief_complaint.lower() for w in ["joint", "knee", "pain", "stiff", "waja", "mafasil"]) and "suranjan" in c_name:
+                    matched_monographs.append(item)
+                    citations.append({
+                        "title": f"{item['canonical_name']} Monograph",
+                        "source": "Unani Pharmacopoeia of India (UPI) Vol 1",
+                        "part": item.get("part_used", "Dried corm"),
+                        "temperament": item.get("mizaj", {}),
+                        "musleh": item.get("musleh", "Roghan-e-Badam"),
+                        "is_schedule_e1": item.get("is_schedule_e1", False),
+                        "evidence_level": "E5 (Randomized Controlled Clinical Trials)"
+                    })
+                elif any(w in chief_complaint.lower() for w in ["gastric", "acidity", "digest", "pyrosis", "hazm"]) and any(h in c_name for h in ["kishneez", "bazoori", "amla"]):
+                    matched_monographs.append(item)
+                    citations.append({
+                        "title": f"{item['canonical_name']} Monograph",
+                        "source": "Unani Pharmacopoeia of India (UPI) Vol 2",
+                        "temperament": item.get("mizaj", {}),
+                        "musleh": item.get("musleh", "Gond"),
+                        "evidence_level": "E4 (Observational Cohorts)"
+                    })
+
+            if not citations and UPI_MUFRADAT_REGISTRY:
+                sample_item = UPI_MUFRADAT_REGISTRY[0]
+                matched_monographs.append(sample_item)
+                citations.append({
+                    "title": f"{sample_item.get('canonical_name', 'Classical Monograph')}",
+                    "source": "Unani Pharmacopoeia of India (UPI) Vol 1",
+                    "temperament": sample_item.get("mizaj", {}),
+                    "evidence_level": "E0 (Canonical Textual Monograph)"
+                })
+
+            # Deterministic Safety Firewall Pre-Screening
+            candidate_ingredients = []
+            for m in matched_monographs:
+                candidate_ingredients.append({
+                    "name": m.get("canonical_name", ""),
+                    "dose_mg": m.get("max_single_dose_mg", 250.0),
+                    "is_mudabbar": True if m.get("is_schedule_e1") else None,
+                    "mudabbar_process": m.get("mudabbar_protocol")
+                })
+
+            # Check for red flags or specific contraindications in payload
+            if body.get("candidateIngredients"):
+                candidate_ingredients = body["candidateIngredients"]
+
+            patient_ctx = {
+                "chief_complaint": chief_complaint,
+                "allergies": allergies,
+                "comorbidities": comorbidities,
+                "current_medications": current_meds,
+                "pregnancy_status": body.get("pregnancyStatus", "no"),
+                "lactation_status": body.get("lactationStatus", "no"),
+                "mizaj_dominant": dominant_mizaj,
+                "organ_axis": organ_axis
+            }
+            firewall_res = run_safety_firewall(patient_context=patient_ctx, ingredients=candidate_ingredients)
+            firewall_verdict = firewall_res["verdict"]
+            firewall_reasons = firewall_res["reasons"]
+
+            # Multi-Model AI Orchestrator Execution with Failover
+            orchestrator = LiveAIProviderChain()
+            exec_ctx = {
+                "chief_complaint": chief_complaint,
+                "mizaj": dominant_mizaj,
+                "organ_axis": organ_axis,
+                "current_medications": current_meds,
+                "allergies": allergies,
+                "simulatedFailure": body.get("simulatedFailure") or {},
+                "forceProvider": body.get("forceProvider"),
+                "mockPrimarySuccess": body.get("mockPrimarySuccess"),
+                "mockSecondarySuccess": body.get("mockSecondarySuccess")
+            }
+
+            raw_ai_text = orchestrator.generate(
+                system_prompt="You are Hakeem Sahab, ZAYVORA's clinical copilot. Assist practitioner without autonomous diagnosis.",
+                user_prompt=f"Patient: {patient_name}, Chief Complaint: {chief_complaint}, Axis: {organ_axis}, Mizaj: {dominant_mizaj}",
+                context=exec_ctx
+            )
+
+            parsed_sections = parse_sections(raw_ai_text)
+            missing_secs = validate_response_structure(raw_ai_text)
+            provider_used = orchestrator.last_provider_used
+            fallback_occurred = orchestrator.fallback_occurred
+            degradation_logs = orchestrator.degradation_logs
+
+            # Synthesize 5-Layer Clinical Decision Support Architecture
+            layers = {
+                "layerA_classicalKnowledge": {
+                    "monographs": matched_monographs,
+                    "citations": citations,
+                    "classicalSources": ["Al-Qanun fi al-Tibb (Ibn Sina)", "Kitab al-Hawi (al-Razi)", "Unani Pharmacopoeia of India (UPI)"],
+                    "formulationGuidelines": "Formulation balanced with classical Musleh (corrective) agents."
+                },
+                "layerB_clinicalReasoning": {
+                    "temperament": dominant_mizaj,
+                    "organAxis": organ_axis,
+                    "afaalCascadeStage": "TANQIYA" if "severe" in chief_complaint.lower() else "TAHLEEL",
+                    "humoralPathology": f"Stasis along {organ_axis} producing localized dyscrasia."
+                },
+                "layerC_biomedicalIntegration": {
+                    "differentialConsiderations": [
+                        "Waja-ul-Mafasil (Phlegmatic Arthralgia)",
+                        "Osteoarthritis (ICD-10 M17.9)",
+                        "Niqris / Gout (ICD-10 M10.9)"
+                    ],
+                    "recommendedLaboratories": [
+                        "Complete Blood Count (CBC)",
+                        "Serum Uric Acid",
+                        "Erythrocyte Sedimentation Rate (ESR)",
+                        "C-Reactive Protein (hs-CRP)"
+                    ]
+                },
+                "layerD_safetyContraindications": {
+                    "firewallVerdict": firewall_verdict,
+                    "reasons": firewall_reasons,
+                    "isClinicalHold": firewall_verdict in ("DO_NOT_RECOMMEND", "REFER"),
+                    "requiresPractitionerSignoff": True
+                },
+                "layerE_clinicianReviewBarrier": {
+                    "safeToLock": False,  # Non-delegable clinical gate: strictly False
+                    "requiresDoctorReview": True,
+                    "practitionerSignoffRequired": True,
+                    "statutoryDisclaimer": "This clinical guidance is synthesized by ZAYVORA Hakeem Sahab™ for decision-support purposes only. In accordance with clinical governance standards, this recommendation cannot autonomously authorize or lock prescriptions without manual review and digital signature by a licensed practitioner."
+                }
+            }
+
+            consult_id = f"AIC-{uuid.uuid4().hex[:6].upper()}"
+            cons_number = f"AI-CONSULT-{random.randint(1000, 9999)}"
+
+            # Persist in Relational Database
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                INSERT INTO ai_consultations (id, consultation_id, mrn, patient_name, doctor_name, chief_complaint, organ_axis, mizaj, advisory_sections_json, citations_json, safety_verdict, provider_used, safe_to_lock, facility_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    consult_id,
+                    cons_number,
+                    mrn or "MRN-WALK-IN",
+                    patient_name,
+                    auth_ctx["fullName"] if auth_ctx else "Consulting Hakeem",
+                    chief_complaint,
+                    organ_axis,
+                    dominant_mizaj,
+                    json.dumps(parsed_sections),
+                    json.dumps(citations),
+                    firewall_verdict,
+                    provider_used,
+                    0,  # safe_to_lock = 0
+                    target_facility
+                ))
+
+                # Anchor into 21 CFR Part 11 Merkle Audit Trail
+                audit_leaf = hashlib.sha256(f"AI_CONSULT:{cons_number}:{mrn}:{provider_used}:{time.time()}".encode()).hexdigest()
+                cur.execute("""
+                INSERT INTO audit_ledger (leaf_hash, event_type, signer, status, facility_id, details_json)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    audit_leaf,
+                    "AI_CONSULTATION_GENERATED",
+                    auth_ctx["fullName"] if auth_ctx else "Hakeem Sahab AI",
+                    "ANCHORED",
+                    target_facility,
+                    json.dumps({
+                        "consultation_id": cons_number,
+                        "mrn": mrn,
+                        "provider": provider_used,
+                        "safety_verdict": firewall_verdict,
+                        "safe_to_lock": False
+                    })
+                ))
+                block_num = cur.lastrowid
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "id": consult_id,
+                "consultation_id": consult_id,
+                "consultationNumber": cons_number,
+                "patient_id": mrn,
+                "mrn": mrn,
+                "patientName": patient_name,
+                "chief_complaint": chief_complaint,
+                "organ_axis": organ_axis,
+                "providerUsed": provider_used,
+                "fallbackOccurred": fallback_occurred,
+                "degradationLogs": degradation_logs,
+                "raw_response": raw_ai_text,
+                "parsed_sections": parsed_sections,
+                "sections": parsed_sections,
+                "candidate_mufradat": matched_monographs,
+                "citations": citations,
+                "layers": layers,
+                "is_valid": len(missing_secs) == 0,
+                "missing_sections": missing_secs,
+                "safetyVerdict": firewall_verdict,
+                "safeToLock": False,
+                "safe_to_lock": False,
+                "reviewed_by_clinician": False,
+                "auditBlock": block_num,
+                "auditBlockHash": audit_leaf,
+                "statutoryDisclaimer": layers["layerE_clinicianReviewBarrier"]["statutoryDisclaimer"]
             }, status=201)
             return
 

@@ -33,4 +33,9 @@ Endpoint,Method,Service,Implementation_File,Real_or_Mock,Auth_Required,Role_Allo
 /api/v1/patients/{id}/mizaj-assessment/latest,GET,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Staff/Patient,mizaj_assessments,None,MizajAssessmentJSON,VERIFIED LIVE,test_phase3_clinical_continuum.py (Test 07)
 /api/v1/inventory/allocate-fefo,POST,Live REST API Server,services/live_api_server.py,Real,Yes,Pharmacist/Doctor/Staff,inventory,FEFOAllocateInput,FEFOAllocationJSON,VERIFIED LIVE,test_phase4_pharmacy_fefo_billing.py (Test 02)
 /api/v1/prescriptions/{id}/dispense,POST,Live REST API Server,services/live_api_server.py,Real,Yes,Pharmacist,"prescriptions, inventory, invoices, audit_ledger",PrescriptionDispenseInput,PrescriptionDispensedJSON,VERIFIED LIVE,test_phase4_pharmacy_fefo_billing.py (Test 10)
+/api/v1/knowledge/monographs,GET,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Staff/Patient,None,None,MonographListJSON,VERIFIED LIVE,test_phase5_ai_rag_safety_cds.py (Test 01)
+/api/v1/ai/safety-check,POST,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Staff/Pharmacist,patients,SafetyCheckInput,SafetyCheckVerdictJSON,VERIFIED LIVE,test_phase5_ai_rag_safety_cds.py (Test 03)
+/api/v1/ai/posology/scale,POST,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Staff/Pharmacist,patients,PosologyScaleInput,PosologyScaledJSON,VERIFIED LIVE,test_phase5_ai_rag_safety_cds.py (Test 07)
+/api/v1/ai/consult,POST,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Hakeem,"ai_consultations, patients, audit_ledger",AIConsultInput,Hakeem5LayerAdvisoryJSON,VERIFIED LIVE,test_phase5_ai_rag_safety_cds.py (Test 10)
+/api/v1/ai/consultations,GET,Live REST API Server,services/live_api_server.py,Real,Yes,Doctor/Staff/Patient,ai_consultations,None,AIConsultationListJSON,VERIFIED LIVE,test_phase5_ai_rag_safety_cds.py (Test 10)
 
