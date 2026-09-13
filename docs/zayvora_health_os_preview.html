@@ -1990,10 +1990,90 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
       `;
     }
 
+        // =========================================================================
+    // PUBLIC WEBSITE SHOWCASE (CANONICAL HOME & 25 PAGES DIRECTORY)
     // =========================================================================
-    // PUBLIC WEBSITE SHOWCASE (25 CANONICAL PAGES)
-    // =========================================================================
+    let activeWebsiteStage = 0;
+    let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', sleep: 'deep' };
+
+    function setWebsiteStage(idx) {
+      activeWebsiteStage = idx;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+    }
+
+    function setPreviewMizaj(question, value) {
+      previewMizajAnswers[question] = value;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+    }
+
+    function initWebsiteWaveform() {
+      setTimeout(() => {
+        const canvas = document.getElementById('preview-pulse-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let t = 0;
+        function draw() {
+          if (!document.getElementById('preview-pulse-canvas')) return;
+          t += 0.05;
+          const width = canvas.width;
+          const height = canvas.height;
+          ctx.fillStyle = "#0F172A";
+          ctx.fillRect(0, 0, width, height);
+
+          // Grid
+          ctx.strokeStyle = "rgba(51, 65, 85, 0.4)";
+          ctx.lineWidth = 1;
+          for (let x = 0; x < width; x += 30) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+          }
+          for (let y = 0; y < height; y += 20) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+          }
+
+          // Arterial PPG wave
+          ctx.strokeStyle = "#2DD4BF";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          const midY = height / 2;
+          for (let x = 0; x < width; x++) {
+            const cycle = ((x - t * 40) % 120 + 120) % 120;
+            let val = 0;
+            if (cycle >= 0 && cycle < 30) {
+              val = Math.sin((cycle / 30) * Math.PI) * 28;
+            } else if (cycle >= 30 && cycle < 60) {
+              val = Math.sin(((cycle - 30) / 30) * Math.PI) * 12;
+            } else {
+              val = Math.sin(((cycle - 60) / 60) * Math.PI * 0.5) * 4;
+            }
+            const y = midY - val;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          requestAnimationFrame(draw);
+        }
+        draw();
+      }, 50);
+    }
+
     function renderWebsiteApp(container) {
+      const clinicalStages = [
+        { num: "01", name: "KNOW", title: "Codified Knowledge & Evidence Retrieval", latin: "ZKB Pharmacopoeia Integration", desc: "Multi-hop traversal of UPI and NFUM classical monographs, Badal (substitutes), Musleh (correctives), and pharmacological affinities.", action: "Queried 1,280+ canonical botanical monographs with verified HPLC fingerprints." },
+        { num: "02", name: "ASSESS", title: "10-Ajnas Longitudinal Mizaj Evaluation", latin: "Al-Ajnas al-Ashrah", desc: "Rigorous objective quantification across the 10 classical pulse criteria (Miqdar, Kayfiyat, Zamanah, Qawam, etc.) and tongue chromametry.", action: "Evaluates hot/cold, moist/dry deviations against patient baseline." },
+        { num: "03", name: "DIFFERENTIATE", title: "Biomedical & Humoral Dual Assessment", latin: "Tashkheesh-e-Murakkab", desc: "Harmonizes classical Su-e-Mizaj humoral dyscrasias with modern ICD-10 diagnostic classifications, metabolic panels, and immunological markers.", action: "Cross-references biochemical lab results with humoral disharmonies." },
+        { num: "04", name: "VERIFY", title: "Spectral Lab & Acoustic Scribe Validation", latin: "Lisan & Nabz Hardware Verification", desc: "Multispectral tongue imaging at 415-850nm paired with 100 Hz arterial PPG waveform analysis to establish objective physical signs.", action: "Hardware-confirmed coating thickness, moisture, and arterial elasticity." },
+        { num: "05", name: "PERSONALIZE", title: "ZAPE Vitality & Posology Adaptation", latin: "ZAYVORA Adaptive Posology Engine", desc: "Calculates individual drug absorption, hepatic clearance, age, seasonal temperament (Fasl), and circadian timing (Anupan vehicle selection).", action: "Generates patient-specific dosing vectors with required correctives (Musleh)." },
+        { num: "06", name: "PLAN", title: "Tri-Modal Regimen Synthesis", latin: "Ilaj bil-Ghiza, Tadbeer, Dawa", desc: "Simultaneous formulation of dietary directives, non-pharmacological regimenal therapies (Hijama, Natool, Zimad), and tailored botanical compounds.", action: "Synthesizes multi-week Afaal treatment roadmap with dietary prohibitions." },
+        { num: "07", name: "TREAT", title: "21 CFR Part 11 Clinician Digital Signature", latin: "Statutory Clinician Discretion Barrier", desc: "Mandatory non-delegable clinical review. Prescriptions remain cryptographically locked until a credentialed Senior Tabeeb signs with cryptographic token.", action: "Zero automated autonomous prescribing; safe_to_lock=False strictly enforced." },
+        { num: "08", name: "MONITOR", title: "IoT Wearable Telemetry & Relapse Forecasting", latin: "Asbab-e-Sittah Sensor Stream", desc: "Continuous BLE telemetry tracking sleep architecture, heart rate variability, skin temperature, and activity to anticipate humoral relapse.", action: "Real-time relapse prediction score updated every 15 minutes." },
+        { num: "09", name: "MEASURE", title: "Longitudinal PROMs & Clinical Trajectory", latin: "Patient-Reported Outcomes (VAS / WOMAC)", desc: "Systematic tracking of functional mobility, pain attenuation curves, inflammatory marker reduction, and Meezan-e-Sehat 0-100 scores over time.", action: "Validates symptomatic and systemic recovery across weekly milestones." },
+        { num: "10", name: "LEARN", title: "Real-World Evidence (RWE) Aggregation", latin: "De-Identified Observational Registry", desc: "Secure aggregation of clinical response vectors into HIPAA/ABDM-compliant research cohorts for botanical efficacy benchmarking.", action: "1,240+ multi-center clinical subjects actively contributing RWE insights." },
+        { num: "11", name: "VALIDATE", title: "Academic Multi-Center Concordance", latin: "DSMB & University Consortium Review", desc: "Formal concordance analysis between traditional Unani diagnostics and blinded clinical specialist evaluations across 3 university hospitals.", action: "Maintains 94.2% diagnostic concordance across enrolled clinical trials." },
+        { num: "12", name: "IMPROVE", title: "Governance Board Quorum & Protocol Evolution", latin: "3/3 Senior Specialist Quorum", desc: "Continuous clinical protocol updates requiring unanimous signed approval from Chief Clinician, Pharmacognosist, and Medical Director.", action: "Auditable governance log with immutable cryptographic Merkle tree hashes." }
+      ];
+
       const publicPages = [
         { path: "/website", title: "Public Home", desc: "Hero, 6 Care Areas, 10 Formulations, Philosophy, 12-Step Care Loop" },
         { path: "/website/about", title: "About ZAYVORA", desc: "Foundational vision, leadership, and integrative mission" },
@@ -2023,41 +2103,351 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
         { path: "/website/shipping-refunds", title: "Shipping & Refunds", desc: "Dispensary courier, FEFO handling, and refund procedures" }
       ];
 
-      container.innerHTML = `
-        <div class="space-y-6">
-          <div class="bg-[var(--card)] p-6 rounded-2xl border border-[var(--border)]">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">ZAYVORA Public Web Ecosystem</span>
-                <h2 class="text-2xl font-bold text-white mt-1">25 Canonical Public Pages Showcase</h2>
-                <p class="text-xs text-[var(--muted)] mt-1">Built with Next.js App Router, Tailwind CSS, and PublicWebsiteShell under <code class="text-emerald-400">apps/web/app/website/</code>.</p>
+      // Tab: 25 Canonical Pages
+      if (state.tab === 'pages25') {
+        container.innerHTML = `
+          <div class="space-y-6">
+            <div class="bg-[var(--card)] p-6 rounded-2xl border border-[var(--border)]">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">ZAYVORA Public Web Ecosystem</span>
+                  <h2 class="text-2xl font-bold text-white mt-1">25 Canonical Public Pages Showcase</h2>
+                  <p class="text-xs text-[var(--muted)] mt-1">Built with Next.js App Router, Tailwind CSS, and PublicWebsiteShell under <code class="text-emerald-400">apps/web/app/website/</code>.</p>
+                </div>
+                <button onclick="switchTab('home')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition">
+                  ← View Public Home Page
+                </button>
               </div>
-              <a href="/website" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition">
-                Open Public Website (New Tab) ↗
-              </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${publicPages.map(p => `
+                <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)] hover:border-emerald-500/50 transition-colors flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="font-bold text-white text-sm">${p.title}</span>
+                      <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${p.path}</span>
+                    </div>
+                    <p class="text-xs text-[var(--muted)] mt-1.5 leading-relaxed">${p.desc}</p>
+                  </div>
+                  <div class="mt-3 pt-2 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
+                    <span class="text-emerald-400 font-semibold">✓ Generated & Active</span>
+                    <a href="${p.path}" target="_blank" class="text-white hover:text-emerald-400 font-bold">Open Route ↗</a>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Tab: Clinical Philosophy
+      if (state.tab === 'philosophy') {
+        container.innerHTML = `
+          <div class="max-w-4xl mx-auto space-y-6">
+            <div class="bg-[var(--card)] p-6 rounded-2xl border border-[var(--border)] space-y-3">
+              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Clinical Philosophy</span>
+              <h2 class="text-2xl font-bold text-white">The Greco-Arab Medical Paradigm & Modern Omics</h2>
+              <p class="text-xs text-[var(--muted)] leading-relaxed">
+                Classical Unani medicine posited by Hippocrates, Galen, and Ibn Sina (Avicenna) posits that human physiology is governed by four primary humors (Akhlat): Damm (Blood), Balgham (Phlegm), Safra (Yellow Bile), and Sawda (Black Bile). Health is defined by innate equilibrium (Mizaj-e-Adil), maintained by innate vitality (Tabi'at).
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-[var(--card)] p-5 rounded-xl border border-[var(--border)] space-y-2">
+                <h3 class="text-sm font-bold text-emerald-400">10-Ajnas Pulse Quantification</h3>
+                <p class="text-xs text-[var(--muted)]">Evaluating pulse magnitude (Miqdar), quality of stroke (Kayfiyat), speed (Zamanah), artery consistency (Qawam), fullness (Mala), and emptiness (Khalwa) through 100 Hz DSP streaming.</p>
+              </div>
+              <div class="bg-[var(--card)] p-5 rounded-xl border border-[var(--border)] space-y-2">
+                <h3 class="text-sm font-bold text-blue-400">Organ-Axis Cross-Talk</h3>
+                <p class="text-xs text-[var(--muted)]">Diseases originate not from localized tissue damage in isolation, but through multi-organ humoral dysregulation, such as Kabid-Mida (Liver-Stomach) and Dimagh-Qalb (Brain-Heart) axes.</p>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Default Tab: 'home' - Comprehensive Public Website Home Experience
+      const st = clinicalStages[activeWebsiteStage];
+      const calcMizajName = (previewMizajAnswers.temp === 'cold' && previewMizajAnswers.moisture === 'moist') ? "Balghami (Phlegmatic)" :
+                            (previewMizajAnswers.temp === 'hot' && previewMizajAnswers.moisture === 'moist') ? "Damawi (Sanguine)" :
+                            (previewMizajAnswers.temp === 'hot' && previewMizajAnswers.moisture === 'dry') ? "Safrawi (Choleric)" : "Sawdawi (Melancholic)";
+
+      container.innerHTML = `
+        <div class="space-y-12 pb-12">
+          
+          <!-- Hero Banner -->
+          <div class="relative overflow-hidden p-8 md:p-12 rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#0D1526] to-[#0A0F1D] border border-[#334155] text-center space-y-5">
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#0D9488]/15 border border-[#0D9488]/30 text-[#2DD4BF] text-xs font-semibold">
+              <span>✨ Codified Greco-Arab Science + Modern Biomedical Intelligence</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white max-w-4xl mx-auto leading-tight">
+              Ancient Wisdom. Modern Science. <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-emerald-400">Intelligent Healthcare.</span>
+            </h1>
+            <p class="text-xs sm:text-sm md:text-base text-[#94A3B8] max-w-2xl mx-auto leading-relaxed">
+              ZAYVORA Health OS™ unites 1,000 years of codified Unani medicine with state-of-the-art clinical AI, longitudinal Mizaj profiling, organ-axis cross-talk, and 21 CFR Part 11 medical governance.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <button onclick="switchRole('clinic')" class="px-6 py-3 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white font-bold text-xs shadow-xl transition">
+                Book Integrative Consultation
+              </button>
+              <button onclick="switchTab('philosophy')" class="px-6 py-3 rounded-xl border border-[#334155] bg-[#1E293B]/70 hover:bg-[#1E293B] text-white font-semibold text-xs transition">
+                Explore Clinical Philosophy →
+              </button>
+              <button onclick="switchRole('herbals')" class="px-6 py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 text-xs font-semibold transition">
+                View 10-Product Store
+              </button>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-6 pt-4 text-[11px] text-[#94A3B8]">
+              <span>✓ AYUSH GMP Certified</span>
+              <span>✓ HPLC Active Fingerprinted</span>
+              <span>✓ Schedule E(1) Mudabbar Verified</span>
+              <span>✓ ABDM & FHIR R4 Ready</span>
             </div>
           </div>
 
-          <!-- 25 Pages Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            ${publicPages.map(p => `
-              <div class="bg-[var(--card)] p-4 rounded-xl border border-[var(--border)] hover:border-emerald-500/50 transition-colors flex flex-col justify-between">
-                <div>
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-white text-sm">${p.title}</span>
-                    <span class="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${p.path}</span>
-                  </div>
-                  <p class="text-xs text-[var(--muted)] mt-1.5 leading-relaxed">${p.desc}</p>
+          <!-- Live Diagnostic Hardware Telemetry Bar -->
+          <div class="p-6 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#1E293B] pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <h3 class="text-sm font-bold text-white">Live Clinical Diagnostic Hardware & DSP Streams</h3>
+              </div>
+              <span class="px-3 py-1 rounded-lg bg-[#1E293B] text-emerald-400 font-mono font-bold text-[10px] border border-emerald-500/30">
+                100 Hz Streaming DSP • 12ms Latency
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+              <!-- Animated Canvas for Nabz PPG -->
+              <div class="lg:col-span-5 p-4 rounded-2xl bg-[#0A0F1D] border border-[#1E293B] space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-bold text-white flex items-center gap-1">
+                    <span class="text-teal-400">📊</span> Nabz 10-Ajnas Arterial PPG Wave
+                  </span>
+                  <span class="font-mono text-emerald-400 font-bold">72 BPM (Bat'ee)</span>
                 </div>
-                <div class="mt-3 pt-2 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
-                  <span class="text-emerald-400 font-semibold">✓ Generated & Routing</span>
-                  <a href="${p.path}" class="text-white hover:text-emerald-400 font-bold">View Page →</a>
+                <canvas id="preview-pulse-canvas" width="340" height="90" class="w-full h-24 rounded-lg bg-[#0F172A] border border-[#1E293B]"></canvas>
+                <div class="grid grid-cols-3 gap-2 text-[10px] text-[#94A3B8] font-mono text-center">
+                  <div class="p-1 rounded bg-[#1E293B]"><strong class="text-white block">Kayfiyat</strong>Layyin</div>
+                  <div class="p-1 rounded bg-[#1E293B]"><strong class="text-white block">Miqdar</strong>Azeem</div>
+                  <div class="p-1 rounded bg-[#1E293B]"><strong class="text-white block">Zamanah</strong>Bat'ee</div>
                 </div>
               </div>
-            `).join('')}
+
+              <!-- 3 Satellite Hardware Sensors -->
+              <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="p-3.5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
+                  <div class="flex justify-between items-center"><span class="text-lg">👅</span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">LISAN</span></div>
+                  <h4 class="font-bold text-white text-xs">Tongue Camera</h4>
+                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
+                    <div>Coating: <strong class="text-white">Saburra (White)</strong></div>
+                    <div>Moisture: <strong class="text-emerald-400">68% Rutubat</strong></div>
+                    <div>Humoral: <strong class="text-amber-400">Balghami</strong></div>
+                  </div>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
+                  <div class="flex justify-between items-center"><span class="text-lg">❄️</span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">COLD-CHAIN</span></div>
+                  <h4 class="font-bold text-white text-xs">Dispensary IoT</h4>
+                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
+                    <div>Temp: <strong class="text-emerald-400">19.4°C Safe</strong></div>
+                    <div>Humidity: <strong class="text-white">42% RH</strong></div>
+                    <div>FEFO: <strong class="text-emerald-400">Locked</strong></div>
+                  </div>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
+                  <div class="flex justify-between items-center"><span class="text-lg">📡</span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">BLE MESH</span></div>
+                  <h4 class="font-bold text-white text-xs">Wearables Gateway</h4>
+                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
+                    <div>Nodes: <strong class="text-purple-300">4 Active</strong></div>
+                    <div>SpO2: <strong class="text-emerald-400">98% Normal</strong></div>
+                    <div>Relapse: <strong class="text-emerald-400">0.04 (Low)</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Interactive 12-Stage Closed-Loop Clinical Continuum -->
+          <div class="space-y-6">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Clinical Framework</span>
+              <h2 class="text-2xl font-bold text-white">The 12-Stage Closed-Loop Clinical Continuum</h2>
+              <p class="text-xs text-[#94A3B8]">Click any stage below to inspect the verified clinical mechanics.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+              ${clinicalStages.map((stage, idx) => `
+                <button onclick="setWebsiteStage(${idx})" class="p-3 rounded-xl text-left border transition-all ${idx === activeWebsiteStage ? 'bg-[#0D9488]/20 border-[#2DD4BF] shadow-lg' : 'bg-[#1E293B] border-[#334155] hover:border-[#0D9488]/50'}">
+                  <div class="flex justify-between items-center text-[10px] font-mono font-bold">
+                    <span class="${idx === activeWebsiteStage ? 'text-[#2DD4BF]' : 'text-slate-500'}">${stage.num}.</span>
+                    <span class="${idx === activeWebsiteStage ? 'text-white' : 'text-slate-400'}">${stage.name}</span>
+                  </div>
+                  <div class="text-[10px] text-slate-200 mt-1 truncate font-semibold">${stage.title}</div>
+                </button>
+              `).join('')}
+            </div>
+
+            <!-- Detailed Stage Card -->
+            <div class="p-6 rounded-2xl bg-gradient-to-r from-[#1E293B] via-[#0F172A] to-[#1E293B] border border-[#2DD4BF]/40 space-y-3">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
+                <div>
+                  <span class="text-[10px] font-mono font-bold text-[#2DD4BF]">STAGE ${st.num} OF 12</span>
+                  <h3 class="text-lg font-bold text-white">${st.name}: ${st.title}</h3>
+                  <span class="text-xs text-emerald-400 italic">${st.latin}</span>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-[#0D9488]/20 border border-[#0D9488]/40 text-[#2DD4BF] text-[10px] font-semibold">
+                  Verified Protocol
+                </span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <strong class="text-slate-400 block mb-1 uppercase text-[10px]">Clinical Mechanism</strong>
+                  <p class="text-slate-300 leading-relaxed">${st.desc}</p>
+                </div>
+                <div class="bg-[#0A0F1D] p-3 rounded-xl border border-[#334155]">
+                  <strong class="text-teal-400 block mb-1 uppercase text-[10px]">Clinical Execution & Safety Output</strong>
+                  <p class="text-slate-400 font-mono text-[11px]">${st.action}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4-Stage Afaal Treatment Cascade -->
+          <div class="space-y-6">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Humoral Healing Protocol</span>
+              <h2 class="text-2xl font-bold text-white">The ZAYVORA Afaal Treatment Cascade</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
+                <div class="flex justify-between items-center"><span class="text-xs font-mono font-bold text-emerald-400">STAGE 01</span><span class="text-[10px] text-slate-500">Days 1 - 14</span></div>
+                <h4 class="text-base font-bold text-white">Tanqiya</h4>
+                <span class="text-xs text-[#2DD4BF] block font-semibold">Humoral Cleansing & Detox</span>
+                <p class="text-xs text-[#94A3B8] leading-relaxed">Concoction and elimination of accumulated cold, phlegmatic matter (Mawad-e-Fasida) via Munzaj-Mushil therapy and Hijama.</p>
+              </div>
+              <div class="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
+                <div class="flex justify-between items-center"><span class="text-xs font-mono font-bold text-blue-400">STAGE 02</span><span class="text-[10px] text-slate-500">Days 15 - 30</span></div>
+                <h4 class="text-base font-bold text-white">Tahleel</h4>
+                <span class="text-xs text-blue-400 block font-semibold">Resolution of Inflammation</span>
+                <p class="text-xs text-[#94A3B8] leading-relaxed">Dissolution of deep-seated peri-articular exudates and microvascular stasis via medicated warm fomentation (Natool) and Zimad.</p>
+              </div>
+              <div class="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
+                <div class="flex justify-between items-center"><span class="text-xs font-mono font-bold text-purple-400">STAGE 03</span><span class="text-[10px] text-slate-500">Days 31 - 60</span></div>
+                <h4 class="text-base font-bold text-white">Taqwiyaat</h4>
+                <span class="text-xs text-purple-400 block font-semibold">Organ Restoration</span>
+                <p class="text-xs text-[#94A3B8] leading-relaxed">Strengthening target organs and neural pathways (Muqawwiyat-e-A'za) to rebuild stamina and prevent relapse.</p>
+              </div>
+              <div class="p-5 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-2">
+                <div class="flex justify-between items-center"><span class="text-xs font-mono font-bold text-amber-400">STAGE 04</span><span class="text-[10px] text-slate-500">Lifelong</span></div>
+                <h4 class="text-base font-bold text-white">Hifz</h4>
+                <span class="text-xs text-amber-400 block font-semibold">Preservation & Homeostasis</span>
+                <p class="text-xs text-[#94A3B8] leading-relaxed">Long-term equilibrium via tailored dietetics (Ilaj bil-Ghiza) and adherence to the 6 Life Essentials (Asbab-e-Sittah).</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Mini Mizaj Self-Assessment -->
+          <div class="p-6 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-4">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Individualized Constitution</span>
+              <h3 class="text-xl font-bold text-white">Preliminary Mizaj Calculator</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="p-3 bg-[#1E293B] rounded-xl border border-[#334155] space-y-2">
+                <span class="text-[10px] font-bold text-teal-400 block uppercase">1. Thermal Sensation</span>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button onclick="setPreviewMizaj('temp', 'hot')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.temp === 'hot' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">🔥 Warm</button>
+                  <button onclick="setPreviewMizaj('temp', 'cold')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.temp === 'cold' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">❄️ Cold</button>
+                </div>
+              </div>
+              <div class="p-3 bg-[#1E293B] rounded-xl border border-[#334155] space-y-2">
+                <span class="text-[10px] font-bold text-teal-400 block uppercase">2. Skin Quality</span>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button onclick="setPreviewMizaj('moisture', 'moist')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.moisture === 'moist' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">💧 Moist</button>
+                  <button onclick="setPreviewMizaj('moisture', 'dry')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.moisture === 'dry' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">🍂 Dry</button>
+                </div>
+              </div>
+              <div class="p-3 bg-[#1E293B] rounded-xl border border-[#334155] space-y-2">
+                <span class="text-[10px] font-bold text-teal-400 block uppercase">3. Skeletal Frame</span>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button onclick="setPreviewMizaj('physique', 'broad')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.physique === 'broad' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">🛡️ Broad</button>
+                  <button onclick="setPreviewMizaj('physique', 'slender')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.physique === 'slender' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">⚡ Slender</button>
+                </div>
+              </div>
+              <div class="p-3 bg-[#1E293B] rounded-xl border border-[#334155] space-y-2">
+                <span class="text-[10px] font-bold text-teal-400 block uppercase">4. Sleep Depth</span>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button onclick="setPreviewMizaj('sleep', 'deep')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.sleep === 'deep' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">😴 Deep</button>
+                  <button onclick="setPreviewMizaj('sleep', 'light')" class="py-1.5 rounded text-xs font-semibold ${previewMizajAnswers.sleep === 'light' ? 'bg-[#0D9488] text-white' : 'bg-[#0F172A] text-slate-400'}">🌙 Light</button>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-[#1E293B] border border-[#2DD4BF]/40 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <div>
+                <span class="text-xs text-[#94A3B8]">Estimated Temperament: </span>
+                <strong class="text-white text-sm">${calcMizajName}</strong>
+                <span class="text-xs text-emerald-400 font-mono ml-2">Affinity: Digestive & Respiratory Axis</span>
+              </div>
+              <button onclick="switchRole('clinic')" class="px-5 py-2 bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold rounded-xl shadow">
+                Book Formal 10-Ajnas Pulse Exam →
+              </button>
+            </div>
+          </div>
+
+          <!-- 10 Formulations Store Showcase -->
+          <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-[#334155] pb-3">
+              <div>
+                <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Botanical Therapeutics</span>
+                <h3 class="text-2xl font-bold text-white">ZAYVORA Herbals Portfolio</h3>
+                <p class="text-xs text-[#94A3B8]">GMP manufactured, HPLC verified, Schedule E(1) Mudabbar purified.</p>
+              </div>
+              <button onclick="switchRole('herbals')" class="px-4 py-2 border border-[#334155] text-xs font-bold text-[#2DD4BF] hover:bg-[#1E293B] rounded-xl">
+                Open Cart & Dispensary (${herbalsCart.length} items) →
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+              ${herbalsProducts.map(p => `
+                <div class="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] flex flex-col justify-between space-y-3 hover:border-teal-500/50 transition">
+                  <div class="space-y-1.5">
+                    <div class="flex justify-between items-center">
+                      <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#0D9488]/20 text-[#2DD4BF]">${p.category}</span>
+                      <span class="text-xs font-bold text-white">₹${p.price}</span>
+                    </div>
+                    <h4 class="text-xs font-bold text-white">${p.name}</h4>
+                    <p class="text-[10px] text-[#94A3B8] line-clamp-2">${p.desc}</p>
+                  </div>
+                  <div class="pt-2 border-t border-[#334155] flex justify-between items-center">
+                    <button onclick="switchRole('herbals')" class="text-[10px] text-slate-400 hover:text-white">Monograph</button>
+                    <button onclick="addToHerbalsCart('${p.id}')" class="px-2.5 py-1 bg-[#0D9488] hover:bg-[#14B8A6] text-white text-[10px] font-bold rounded-lg transition">
+                      + Add
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Bottom Nav to 25 Pages -->
+          <div class="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+              <h4 class="font-bold text-white text-sm">Explore All 25 Canonical Web Pages</h4>
+              <p class="text-xs text-[#94A3B8]">Browse the complete public site structure including clinical programs, conditions, research, and ethics.</p>
+            </div>
+            <button onclick="switchTab('pages25')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-600 transition">
+              View 25 Canonical Pages Directory →
+            </button>
+          </div>
+
         </div>
       `;
+
+      initWebsiteWaveform();
     }
 
     // =========================================================================
@@ -2211,62 +2601,111 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
             <!-- Mobile Screen Body -->
             <div class="flex-1 overflow-y-auto p-4 space-y-4">
               ${mobileActiveScreen === 'home' ? `
-                <div class="bg-[#1E293B] p-4 rounded-2xl border border-slate-700 space-y-2">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <span class="text-[10px] text-emerald-400 font-bold uppercase">Welcome</span>
-                      <h4 class="text-lg font-bold text-white">Mohammad Tariq</h4>
-                      <p class="text-[10px] text-slate-400">MRN: ZAY-2026-8819 • Age: 44</p>
+                <div class="space-y-3">
+                  <!-- Patient Profile Card -->
+                  <div class="bg-[#1E293B] p-3.5 rounded-2xl border border-slate-700 space-y-2">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <span class="text-[9px] text-emerald-400 font-bold uppercase tracking-wider">Welcome</span>
+                        <h4 class="text-base font-bold text-white">Mohammad Tariq</h4>
+                        <p class="text-[9px] text-slate-400">MRN: ZAY-2026-8819 • Age: 44 • Blood: B+</p>
+                      </div>
+                      <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold border border-emerald-500/30">Balghami</span>
                     </div>
-                    <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">Balghami</span>
+                    <div class="bg-[#0F172A] p-2 rounded-xl border border-slate-800 text-[9px]">
+                      <span class="text-slate-400 block font-bold">PRIMARY ORGAN-AXIS:</span>
+                      <span class="text-white font-semibold">Kabid-Mida (Hepato-Gastric Cross-Talk)</span>
+                    </div>
                   </div>
-                  <div class="mt-2 bg-[#0F172A] p-2.5 rounded-xl border border-slate-800 text-[10px]">
-                    <span class="text-slate-400 block font-bold">PRIMARY ORGAN-AXIS:</span>
-                    <span class="text-white font-semibold">Kabid-Mida (Hepato-Gastric)</span>
+
+                  <!-- Bluetooth Sensor Mesh HUD -->
+                  <div class="bg-[#0F172A] p-2.5 rounded-xl border border-slate-800 text-[9px] space-y-1.5">
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="font-bold text-emerald-400">Sensor Mesh Live</span>
+                      </div>
+                      <span class="text-slate-400 font-mono">3 PAIRED</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 text-center font-mono">
+                      <div class="bg-[#1E293B] p-1 rounded"><strong class="text-white block">💍 Ring</strong>72 BPM</div>
+                      <div class="bg-[#1E293B] p-1 rounded"><strong class="text-white block">📡 BLE</strong>98% SpO2</div>
+                      <div class="bg-[#1E293B] p-1 rounded"><strong class="text-white block">💊 Box</strong>Synced</div>
+                    </div>
+                  </div>
+
+                  <!-- Asbab-e-Sittah & Meezan-e-Sehat 84/100 Score -->
+                  <div class="bg-[#1E293B] p-3 rounded-2xl border border-slate-700 space-y-2">
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <span class="text-[8px] text-teal-400 font-bold uppercase block">Asbab-e-Sittah</span>
+                        <strong class="text-xs text-white">Meezan-e-Sehat</strong>
+                      </div>
+                      <div class="w-10 h-10 rounded-full border-2 border-teal-400 bg-teal-500/20 flex flex-col items-center justify-center">
+                        <span class="text-xs font-bold text-white">84</span>
+                        <span class="text-[7px] text-teal-300">/100</span>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 text-[8px]">
+                      <div class="bg-[#0F172A] p-1 rounded text-center"><strong class="text-white block">Air (Hawa)</strong>88%</div>
+                      <div class="bg-[#0F172A] p-1 rounded text-center"><strong class="text-white block">Diet (Makul)</strong>82%</div>
+                      <div class="bg-[#0F172A] p-1 rounded text-center"><strong class="text-white block">Sleep (Naum)</strong>85%</div>
+                    </div>
+                  </div>
+
+                  <!-- Next Dose Countdown -->
+                  <div class="bg-[#0F172A] p-3 rounded-xl border border-emerald-500/40 text-[10px] space-y-1">
+                    <div class="flex justify-between items-center">
+                      <span class="text-emerald-400 font-bold uppercase text-[9px]">Next Regimen Dose</span>
+                      <span class="text-amber-400 font-mono font-bold">Due in 38m</span>
+                    </div>
+                    <p class="text-white font-bold">Qurs-e-Mafasil (2 tab) + Arq-e-Badiyan</p>
+                    <p class="text-slate-400 text-[9px]">Post-prandial intake with warm fennel distillate vehicle.</p>
+                  </div>
+
+                  <!-- Vernacular Voice Action -->
+                  <button onclick="setMobileScreen('rx')" class="w-full bg-emerald-500/15 border border-emerald-500/40 rounded-xl p-2.5 flex items-center gap-2.5 text-left">
+                    <span class="text-xl">🔊</span>
+                    <div class="flex-1">
+                      <span class="text-xs font-bold text-emerald-400 block">Sunein Apni Dawa Ki Khorak</span>
+                      <span class="text-[9px] text-slate-300">Audio instructions in Urdu, Hindi & English</span>
+                    </div>
+                    <span class="text-emerald-400 text-xs">→</span>
+                  </button>
+
+                  <!-- 4 Quick Actions -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setMobileScreen('rx')" class="bg-[#1E293B] p-2.5 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                      <span class="text-base block">💊</span>
+                      <span class="text-xs font-bold text-white block mt-0.5">E-Prescription</span>
+                      <span class="text-[8px] text-slate-400">Posology & Refills</span>
+                    </button>
+                    <button onclick="setMobileScreen('lifestyle')" class="bg-[#1E293B] p-2.5 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                      <span class="text-base block">🌿</span>
+                      <span class="text-xs font-bold text-white block mt-0.5">Asbab Tracker</span>
+                      <span class="text-[8px] text-slate-400">6 Life Essentials</span>
+                    </button>
+                    <button onclick="setMobileScreen('consult')" class="bg-[#1E293B] p-2.5 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                      <span class="text-base block">🩺</span>
+                      <span class="text-xs font-bold text-white block mt-0.5">Book Consult</span>
+                      <span class="text-[8px] text-slate-400">Tele-Video OPD</span>
+                    </button>
+                    <button onclick="setMobileScreen('doctor')" class="bg-[#1E293B] p-2.5 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
+                      <span class="text-base block">🛡️</span>
+                      <span class="text-xs font-bold text-white block mt-0.5">Doctor Mode</span>
+                      <span class="text-[8px] text-slate-400">Point of Care</span>
+                    </button>
+                  </div>
+
+                  <!-- Active Afaal Regimen -->
+                  <div class="bg-[#0F172A] p-3 rounded-xl border border-slate-800 text-[10px] space-y-1">
+                    <div class="flex justify-between items-center">
+                      <span class="text-emerald-400 font-bold uppercase text-[9px]">Afaal Stage 1: Tanqiya</span>
+                      <span class="text-amber-400 text-[9px] font-semibold">Day 9 of 14</span>
+                    </div>
+                    <p class="text-slate-300 leading-snug">Munzij-e-Balgham administered with Arq-e-Badiyan. Follow strict fasting schedule.</p>
                   </div>
                 </div>
-
-                <!-- 4 Quick Actions -->
-                <div class="grid grid-cols-2 gap-2.5">
-                  <button onclick="setMobileScreen('rx')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
-                    <span class="text-lg block">💊</span>
-                    <span class="text-xs font-bold text-white block mt-1">E-Prescription</span>
-                    <span class="text-[9px] text-slate-400">Audio Posology</span>
-                  </button>
-                  <button onclick="setMobileScreen('lifestyle')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
-                    <span class="text-lg block">🌿</span>
-                    <span class="text-xs font-bold text-white block mt-1">Asbab-e-Sittah</span>
-                    <span class="text-[9px] text-slate-400">6 Life Essentials</span>
-                  </button>
-                  <button onclick="setMobileScreen('consult')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
-                    <span class="text-lg block">🩺</span>
-                    <span class="text-xs font-bold text-white block mt-1">Book Consult</span>
-                    <span class="text-[9px] text-slate-400">Tele-Video OPD</span>
-                  </button>
-                  <button onclick="setMobileScreen('doctor')" class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 text-left hover:border-emerald-500 transition">
-                    <span class="text-lg block">🛡️</span>
-                    <span class="text-xs font-bold text-white block mt-1">Doctor Companion</span>
-                    <span class="text-[9px] text-slate-400">Point of Care</span>
-                  </button>
-                </div>
-
-                <!-- Active Afaal Regimen -->
-                <div class="bg-[#0F172A] p-3.5 rounded-xl border border-slate-800 text-[11px] space-y-1.5">
-                  <div class="flex justify-between items-center">
-                    <span class="text-emerald-400 font-bold uppercase text-[10px]">Afaal Stage 1: Tanqiya</span>
-                    <span class="text-amber-400 text-[10px] font-semibold">Day 9 of 14</span>
-                  </div>
-                  <p class="text-slate-300 leading-snug">Munzij-e-Balgham administered with Arq-e-Badiyan. Follow strict fasting schedule.</p>
-                </div>
-
-                <!-- Voice Alert -->
-                <button onclick="setMobileScreen('rx')" class="w-full bg-emerald-500/15 border border-emerald-500/40 rounded-xl p-3 flex items-center gap-3 text-left">
-                  <span class="text-2xl">🔊</span>
-                  <div>
-                    <span class="text-xs font-bold text-emerald-400 block">Sunein Apni Dawa Ki Khorak</span>
-                    <span class="text-[10px] text-slate-300">Spoken posology in Urdu, Hindi & English</span>
-                  </div>
-                </button>
               ` : mobileActiveScreen === 'rx' ? `
                 <div class="space-y-3">
                   <div class="flex items-center justify-between">
