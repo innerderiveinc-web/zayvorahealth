@@ -30,19 +30,19 @@ export default function PatientLoginPage() {
     }, 600);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setIsLoading(true);
 
     try {
       if (authMode === "password") {
-        AuthService.login(identifier, password || "password123");
+        await AuthService.loginAsync(identifier, password || "password123");
       } else {
         if (!otp || otp.length < 4) {
           throw new Error("Please enter the 6-digit OTP sent to your phone/email.");
         }
-        AuthService.login(identifier, "otp-verified");
+        await AuthService.loginAsync(identifier, "otp-verified");
       }
       router.push("/patient");
     } catch (err: any) {

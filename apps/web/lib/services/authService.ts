@@ -165,6 +165,46 @@ export class AuthService {
     return session;
   }
 
+  static async loginAsync(identifier: string, pass: string, requestedRole: UserRoleType = "PATIENT"): Promise<UserSession> {
+    const API_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
+    try {
+      const res = await fetch(`${API_URL}/api/v1/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier, password: pass })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok && data.user) {
+          const roleMeta = ROLE_DEFINITIONS[data.user.role as UserRoleType] || ROLE_DEFINITIONS.PATIENT;
+          const session: UserSession = {
+            token: data.token || ("sess-live-" + Date.now()),
+            user: {
+              id: data.user.id,
+              fullName: data.user.fullName,
+              email: data.user.email,
+              phone: data.user.phone || "",
+              role: data.user.role as UserRoleType,
+              roleDisplayName: roleMeta.displayName,
+              mrn: data.user.mrn,
+              facilityId: data.user.facilityId || "FAC-HQ-01",
+              facilityName: data.user.facilityName || roleMeta.defaultFacility,
+              permissions: roleMeta.permissions
+            },
+            expiresAt: Date.now() + 7200 * 1000
+          };
+          if (typeof window !== "undefined") {
+            localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+          }
+          return session;
+        }
+      }
+    } catch {
+      // Backend not running on port 8000 - fall back to local auth
+    }
+    return this.login(identifier, pass, requestedRole);
+  }
+
   static register(data: {
     fullName: string;
     email: string;
@@ -206,6 +246,67 @@ export class AuthService {
       localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
     }
     return session;
+  }
+
+  static async registerAsync(data: {
+    fullName: string;
+    email: string;
+    mobile: string;
+    age: number;
+    gender: string;
+    consent: boolean;
+    password?: string;
+  }): Promise<UserSession> {
+    const API_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
+    try {
+      const res = await fetch(`${API_URL}/api/v1/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password || "password123",
+          fullName: data.fullName,
+          phone: data.mobile,
+          role: "PATIENT"
+        })
+      });
+      if (res.ok) {
+        const resp = await res.json();
+        if (resp.ok && resp.user) {
+          const roleMeta = ROLE_DEFINITIONS.PATIENT;
+          const session: UserSession = {
+            token: resp.token || ("sess-live-" + Date.now()),
+            user: {
+              id: resp.user.id,
+              fullName: resp.user.fullName,
+              email: resp.user.email,
+              phone: resp.user.phone || data.mobile,
+              role: "PATIENT",
+              roleDisplayName: roleMeta.displayName,
+              mrn: resp.user.mrn,
+              facilityId: "FAC-HQ-01",
+              facilityName: "Jamia Hamdard AUTC - Outpatient Care",
+              permissions: roleMeta.permissions
+            },
+            expiresAt: Date.now() + 7200 * 1000
+          };
+          if (typeof window !== "undefined") {
+            localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+          }
+          return session;
+        }
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        if (errJson.error) {
+          throw new Error(errJson.error);
+        }
+      }
+    } catch (e: any) {
+      if (e.message && e.message !== "Failed to fetch") {
+        throw e;
+      }
+    }
+    return this.register(data);
   }
 
   static requestPasswordReset(identifier: string): boolean {

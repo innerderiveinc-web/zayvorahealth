@@ -83,13 +83,36 @@ export class AppointmentService {
     }
     this.bookedReferences.add(dedupeKey);
 
-    // 3. Generate Reference Code
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const refCode = `ZAY-APT-2026-${randomSuffix}`;
-    const tokenNumber = `T-${Math.floor(100 + Math.random() * 900)}`;
+    // 3. Generate Reference Code & Token Number
+    let refCode = `ZAY-APT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    let tokenNumber = `T-${Math.floor(100 + Math.random() * 900)}`;
 
-    // Simulate async network processing
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    // Submit to Live REST API and SQLite Database
+    const API_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
+    try {
+      const res = await fetch(`${API_URL}/api/v1/appointments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patientName: req.fullName,
+          date: req.preferredDate,
+          timeSlot: req.preferredTime,
+          doctorName: req.doctorPreference || "Prof. (Dr.) Mansoor Alam",
+          chiefComplaint: req.healthConcern || "General Health Assessment",
+          fee: 800.0
+        })
+      });
+      if (res.ok) {
+        const body = await res.json();
+        if (body.ok && body.appointment) {
+          tokenNumber = body.appointment.tokenNumber || tokenNumber;
+          refCode = body.appointment.id || refCode;
+        }
+      }
+    } catch {
+      // Backend not running on port 8000 - fall back to local generation
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    }
 
     return {
       success: true,

@@ -18,13 +18,13 @@ export default function PatientRegisterPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setIsLoading(true);
 
     try {
-      AuthService.register(formData);
+      await AuthService.registerAsync(formData);
       router.push("/patient");
     } catch (err: any) {
       setErrorMessage(err.message || "Registration failed. Please review your details.");
