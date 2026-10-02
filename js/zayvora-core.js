@@ -455,8 +455,8 @@
             <!-- Greeting Header -->
             <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h2 class="text-xl font-bold text-white">Good Morning, Hamza</h2>
-                <p class="text-xs text-[var(--muted)] mt-1">MRN: <span class="font-mono text-emerald-400 font-semibold">${state.patient.mrn}</span> • Active Care Plan: <span class="text-white font-medium">Osteoarthritis & Knee Stiffness</span></p>
+                <h2 class="text-xl font-bold text-white">Good Morning, ${(state.patient && state.patient.name) ? state.patient.name.split(' ')[0] : 'Patient'}</h2>
+                <p class="text-xs text-[var(--muted)] mt-1">MRN: <span class="font-mono text-emerald-400 font-semibold">${(state.patient && state.patient.mrn) || 'MRN-2026-LIVE'}</span> • Active Care Plan: <span class="text-white font-medium">${(state.patient && state.patient.primaryComplaint) || 'Integrative Health & Mizaj Equilibrium'}</span></p>
               </div>
               <div class="flex items-center gap-2">
                 <button onclick="switchTab('appointments')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors shadow-md">

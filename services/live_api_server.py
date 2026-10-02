@@ -25,9 +25,13 @@ from dataclasses import asdict
 import importlib.util
 import re
 
-# Resolve database path relative to this script
+# Resolve database path (supports persistent Railway Volume mounts)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "database", "zayvora_live.db")
+_persistent_dir = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH") or os.environ.get("PERSISTENT_DATA_DIR")
+if _persistent_dir and os.path.exists(_persistent_dir):
+    DB_PATH = os.path.join(_persistent_dir, "zayvora_live.db")
+else:
+    DB_PATH = os.path.join(BASE_DIR, "database", "zayvora_live.db")
 
 # Load .env file if present (zero-dependency loader)
 import pathlib
@@ -2416,8 +2420,12 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 cur = conn.cursor()
                 if auth_ctx and auth_ctx["role"] == "PATIENT":
                     cur.execute("SELECT * FROM patients WHERE mrn = ? OR user_id = ?", (auth_ctx["mrn"], auth_ctx["userId"]))
-                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and "all" in query_params.get("scope", [])):
+                elif auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", []):
                     cur.execute("SELECT * FROM patients ORDER BY created_at DESC")
+                elif auth_ctx:
+                    # Enforce strict multi-clinic facility isolation for doctors, nurses, clinics
+                    user_fac = auth_ctx.get("facilityId") or target_facility
+                    cur.execute("SELECT * FROM patients WHERE facility_id = ? ORDER BY created_at DESC", (user_fac,))
                 elif not auth_ctx and not query_params:
                     cur.execute("SELECT * FROM patients ORDER BY created_at DESC")
                 else:
