@@ -1,3 +1,11 @@
+providers = ["python"]
+
+[variables]
+PORT = "8000"
+
+[phases.setup]
+nixPkgs = ["python3"]
+
 [phases.build]
 cmds = []
 
