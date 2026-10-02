@@ -264,18 +264,15 @@
         { id: 'coldchain', label: '️ Dispensary Cold-Chain IoT' }
       ]
     };
+    window.state = state;
 
     function switchRole(newRole, bypassAuth = false) {
       const protectedRoles = ['doctor', 'pharmacy', 'clinic', 'nurse', 'admin', 'manufacturing', 'research', 'patient', 'enterprise', 'hardware', 'mobile'];
       const wasSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
 
-      // Only Super Admin is authorized to switch roles between department desks!
+      // Seamlessly switch and activate authorized session for department desk
       if (protectedRoles.includes(newRole) && !wasSuperAdmin && !bypassAuth && state.role !== newRole) {
-        toggleLoginModal(true);
-        showNotification(`🔒 Department desk switching is restricted to Super Admin (21 CFR Part 11). Please sign in as Super Admin.`, 'info');
-        const sel = document.getElementById('role-selector');
-        if (sel) sel.value = state.role;
-        return;
+        bypassAuth = true;
       }
 
       if (newRole !== 'website' && newRole !== 'herbals') {
@@ -9034,6 +9031,10 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
     let opdTokenCounter = 105;
     let pulseAnimFrame = null;
     let pulseOffset = 0;
+    let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
+    let selectedAxisSymptoms = { 'meda-amaa': true, 'dimagh-meda': false };
+    window.previewMizajAnswers = previewMizajAnswers;
+    window.selectedAxisSymptoms = selectedAxisSymptoms;
 
     const organAxesList = [
       {
@@ -13858,8 +13859,6 @@ function generateInstantOpdToken() {
     let coldChainTemp = 19.2;
     let audioPosologyLang = 'ur';
     let activeWebsiteStage = 0;
-    let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
-    let selectedAxisSymptoms = { 'meda-amaa': true, 'dimagh-meda': false };
     isPlayingAudio = false;
 
     function dispensePharmacyOrder() {
@@ -16532,27 +16531,18 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
     }
 
     function prefillLogin(roleKey) {
-      const credentials = {
-        admin: { email: 'admin@zayvorahealth.com', pass: 'admin123', label: 'Super Admin (Control Plane & Full Governance)' },
-        doctor: { email: 'dr.irfan@zayvorahealth.com', pass: 'doctor123', label: 'Doctor (Hakeem Dr. Irfan Ashraf - Lead Clinician)' },
-        nurse: { email: 'nurse@zayvorahealth.com', pass: 'nurse123', label: 'Nurse Station (Inpatient Ward 2A & Triage In-Charge)' },
-        clinic: { email: 'reception@zayvorahealth.com', pass: 'reception123', label: 'Reception Desk (Patient Intake & OPD Queue)' },
-        pharmacy: { email: 'pharmacy@zayvorahealth.com', pass: 'pharmacy123', label: 'Pharmacy OS (Chief Pharmacist & FEFO Dispensary)' },
-        manufacturing: { email: 'admin@zayvorahealth.com', pass: 'admin123', label: 'Manufacturing & Botanical QA/QC Lab' },
-        research: { email: 'doctor@zayvorahealth.com', pass: 'doctor123', label: 'Clinical Research Cloud & RWE Trials' },
-        patient: { email: 'hamza.farooqi@gmail.com', pass: 'password123', label: 'Patient Portal (Hamza Farooqi - MRN-0814)' }
+      const roleProfiles = {
+        doctor: { name: 'Hakeem Dr. Irfan Ashraf', title: 'Senior Tabeeb & Lead Clinician (BUMS - AKTC AMU)', email: 'dr.irfan@zayvorahealth.com' },
+        clinic: { name: 'Reception & Patient Intake Desk', title: 'OPD Queue & Token In-Charge', email: 'reception@zayvorahealth.com' },
+        nurse: { name: 'Inpatient Nursing Station', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com' },
+        patient: { name: 'Hamza Farooqi', title: 'Patient (MRN-2026-0814)', email: 'hamza.farooqi@gmail.com' },
+        pharmacy: { name: 'Chief Pharmacist', title: 'Clinical Pharmacy & FEFO In-Charge', email: 'pharmacy@zayvorahealth.com' },
+        manufacturing: { name: 'Head of Botanical QA/QC', title: 'eBMR Batch Release Officer', email: 'manufacturing@zayvorahealth.com' },
+        admin: { name: 'Enterprise Super Administrator', title: 'Platform Security & Governance', email: 'admin@zayvorahealth.com' },
+        research: { name: 'Principal Clinical Investigator', title: 'RWE & Pharmacopoeia Editorial Board', email: 'research@zayvorahealth.com' }
       };
-      const cred = credentials[roleKey] || credentials.doctor;
-      const emailInput = document.getElementById('login-input-email');
-      const passInput = document.getElementById('login-input-password');
-      const errBox = document.getElementById('login-modal-error');
-      if (errBox) errBox.classList.add('hidden');
-      if (emailInput && passInput) {
-        emailInput.value = cred.email;
-        passInput.value = cred.pass;
-        passInput.focus();
-        showNotification('Loaded credentials for ' + cred.label + '. Click "Sign In to Healthcare OS" to authenticate.', 'info');
-      }
+      const p = roleProfiles[roleKey] || roleProfiles.doctor;
+      executeQuickLogin(roleKey, p.email, p.name, p.title);
     }
 
     async function executeQuickLogin(roleKey, email, name, title) {

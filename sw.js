@@ -3,14 +3,14 @@
  * High-Reliability PWA Caching Strategy for Bedside & Mobile Clinics.
  */
 
-const CACHE_NAME = 'zayvora-health-os-v11.0-clean-live';
+const CACHE_NAME = 'zayvora-health-os-v12.5-live';
 const OFFLINE_URL = './index.html';
 
 const STATIC_PRECACHE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './apps/web/public/zayvora-logo.png'
+  './tailwind.min.js'
 ];
 
 // 1. Install: Precache Core App Shell
@@ -64,6 +64,24 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           return caches.match(OFFLINE_URL).then((cached) => cached || fetch(req));
+        })
+    );
+    return;
+  }
+
+  // JavaScript files: Network-First to guarantee fresh application logic
+  if (url.pathname.endsWith('.js')) {
+    event.respondWith(
+      fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(req);
         })
     );
     return;
