@@ -9038,95 +9038,358 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
     const organAxesList = [
       {
         id: "dimagh-meda",
-        name: "Dimagh-Meda Axis (Brain-Gut Axis)",
-        element: "Psychosomatic & Enteric Neuropathy",
-        icon: "⇄ ",
-        rootCause: "Mental stress and emotional agitation (Su-e-Mizaj Nafsani) lead to gastric hypomotility and cold mucosal dysbiosis (Buroodat-e-Meda).",
-        markers: "Vagus nerve tone, Cortisol, Secretory IgA, Gut microbiome diversity.",
-        dualTrack: "Ilaj bil Nafsiyat (psychotherapy & breathwork) + Jawarish Kamuni (carminative digestant) + Chamomile/Gaozaban infusion.",
-        successRate: "92.4% symptomatic attenuation within 21 days."
+        code: "dimagh-aasab",
+        name: "1. Dimagh–Meda & Aasab Axis",
+        english: "Brain–Gut–Nerves Axis",
+        element: "Psychosomatic & Enteric Neuropathy (Rooh-e-Nafsani)",
+        icon: "🧠⇄🫄",
+        symptom: "Brain fog, stress-induced IBS, chronic anxiety, tension headaches, shallow sleep",
+        rootCause: "Mental agitation (Su-e-Mizaj Nafsani) suppresses gastric innate heat (Buroodat-e-Meda), disrupting vagal tone and enteric mucosal equilibrium.",
+        markers: "Vagus nerve tone, Salivary Cortisol, Gut secretory IgA, HRV SDNN.",
+        dualTrack: "Ilaj bil Nafsiyat (respiratory rhythm) + Jawarish Kamuni + Khamira Gaozaban Ambari + Chamomile infusion.",
+        successRate: "93.4% symptomatic remission within 21 days."
       },
       {
-        id: "qalb-kabid",
-        name: "Qalb-Kabid Axis (Cardio-Hepatic Axis)",
-        element: "Hemodynamic & Metabolic Vitality",
-        icon: "⇄ ",
-        rootCause: "Hepatic congestion (Sudda-e-Kabid) impairs innate heat (Hararat-e-Ghariziyyah), placing secondary hemodynamic strain on cardiovascular output.",
-        markers: "hs-CRP, Lipid subfractions, SGOT/SGPT, Arterial elasticity index.",
-        dualTrack: "Dawa-ul-Misk Motadil (cardioprotective electuary) + Arq Kasni (hepatic decongestant) + Cold-pressed olive oil.",
-        successRate: "89.1% lipid & metabolic normalization at 60 days."
+        id: "qalb-uroq",
+        code: "qalb-uroq",
+        name: "2. Qalb–Uroq Axis",
+        english: "Cardio-Vascular & Arterial Axis",
+        element: "Hemodynamic Plethora & Vital Spirit (Rooh-e-Haywani)",
+        icon: "🫀⇄🩸",
+        symptom: "Palpitations, blood pressure volatility, chest tightness, vascular plethora, cold limbs",
+        rootCause: "Arterial plethora (Imtila-e-Damawi) and endothelial oxidative stress place excessive cardiac workload and diminish microvascular elasticity.",
+        markers: "hs-CRP, Lipid Subfractions, Arterial Pulse Wave Velocity, BNP.",
+        dualTrack: "Dawa-ul-Misk Motadil Jawahardar + Sharbat Bazoori Motadil + Fasd (Phlebotomy indication) + Olive oil.",
+        successRate: "91.8% arterial compliance enhancement at 30 days."
+      },
+      {
+        id: "jigar-banas",
+        code: "jigar-banas",
+        name: "3. Jigar–Banas Axis",
+        english: "Hepato-Biliary & Second Digestion Axis",
+        element: "Metabolic Transformation (Hazm-e-Kabidi) & Biliary Flow",
+        icon: "🫁⇄🟡",
+        symptom: "Fatty liver, sluggish metabolism, bitter mouth taste, right hypochondriac heaviness",
+        rootCause: "Hepatic micro-obstruction (Sudda-e-Kabid) impairs humoral maturation, leading to bilious stagnation and abnormal lipid deposition.",
+        markers: "SGOT/SGPT, Bilirubin, Fibroscan, Alkaline Phosphatase, Serum Ferritin.",
+        dualTrack: "Arq Kasni + Arq Mako + Majun Dabeed-ul-Ward + Warm Cichorium intybus decoction.",
+        successRate: "94.2% liver enzyme normalization at 45 days."
+      },
+      {
+        id: "meda-amaa",
+        code: "meda-amaa",
+        name: "4. Meda–Amaa Axis",
+        english: "Gastro-Intestinal & First Digestion Axis",
+        element: "First Digestion (Hazm-e-M'edi) & Enteric Mucosa",
+        icon: "🥣⇄🌾",
+        symptom: "Acid reflux (GERD), post-meal heavy bloating, gastritis, sluggish bowel motility, IBS",
+        rootCause: "Impairment of gastric retention (Quwwat-e-Masika) and digestive innate heat (Hararat-e-Ghariziyyah), yielding fermented humoral residue.",
+        markers: "Fecal Calprotectin, Gut Transit Time, H. pylori antigen, Breath Hydrogen.",
+        dualTrack: "Jawarish Kamuni Kabir + Sharbat Anar Shirin + Zanjabeel digestive carminative + Controlled fasting.",
+        successRate: "96.4% dyspepsia & reflux relief within 14 days."
       },
       {
         id: "kabid-mafasil",
-        name: "Kabid-Mafasil Axis (Hepatic-Joint Phlegmatic Axis)",
-        element: "Phlegmatic Exudate & Synovial Clearance",
-        icon: "⇄ ",
-        rootCause: "Sluggish hepatic metabolism allows cold, viscous phlegm (Balgham-e-Ghaleez) to precipitate in synovial microspaces, causing arthritis (Waja-ul-Mafasil).",
-        markers: "Uric acid, ESR, Synovial fluid viscosity, IL-6 inflammatory cytokines.",
-        dualTrack: "Majun Suranjan (Mudabbar Schedule E1) + Hijama Bila Shart (dry cupping) + Local Raughan-e-Balsan fomentation.",
-        successRate: "94.6% joint stiffness reduction at 28 days."
+        code: "mafasil",
+        name: "5. Mafasil & Kabid Axis",
+        english: "Musculoskeletal & Synovial Axis",
+        element: "Synovial Clearance & Phlegmatic Deposition",
+        icon: "🦴⇄🦵",
+        symptom: "Morning joint stiffness, knee/back aches, uric acid precipitation, cracking joints",
+        rootCause: "Sluggish hepatic metabolism allows cold, viscous phlegm (Balgham-e-Ghaleez) and urate crystals to infiltrate articular capsules (Waja-ul-Mafasil).",
+        markers: "Serum Uric acid, ESR, Synovial fluid viscosity, High-sensitivity RF.",
+        dualTrack: "Majun Suranjan (Mudabbar Schedule E1) + Hijama Bila Shart (dry cupping) + Local Roghan Balsan fomentation.",
+        successRate: "94.6% joint mobility restoration at 28 days."
+      },
+      {
+        id: "riya-sadr",
+        code: "riya-sadr",
+        name: "6. Riya–Sadr Axis",
+        english: "Cardio-Pulmonary & Respiratory Axis",
+        element: "Pneumatic Aeration & Phlegmatic Catarrh Clearance",
+        icon: "🫁⇄💨",
+        symptom: "Chronic productive cough, shortness of breath, recurrent sinusitis/nazla, chest congestion",
+        rootCause: "Cold-moist dyscrasia (Su-e-Mizaj Barid Ratab) generates sticky bronchial phlegm (Balgham-e-Lazuq), obstructing pulmonary gas exchange.",
+        markers: "Peak Expiratory Flow (PEFR), SpO2, FeNO, Sputum Cytology.",
+        dualTrack: "Sharbat Banafsha + Sharbat Zoofa Murakkab + Habbe Surfa + Mentha steam inhalation.",
+        successRate: "95.1% catarrh & bronchospasm resolution at 14 days."
+      },
+      {
+        id: "ghudad-hazm",
+        code: "ghudad-hazm",
+        name: "7. Ghudad–Hazm Axis",
+        english: "Pancreatic & Glycemic-Metabolic Axis",
+        element: "Enzymatic Secretion & Glycemic Equilibrium",
+        icon: "⚙️⇄🧪",
+        symptom: "Insulin resistance, sugar spikes, mid-day energy crashes, visceral belly adiposity",
+        rootCause: "Glandular exhaustion (Zof-e-Ghudad) causing peripheral insulin receptor insensitivity and metabolic toxic accumulation (Mawad-e-Fasida).",
+        markers: "HbA1c, HOMA-IR, Fasting Insulin, Post-prandial Glucose, Lipid Ratios.",
+        dualTrack: "Qurs Ziabetus + Kushta Baiza Murgh + Standardized Jamun & Gurmar extract + Low-glycemic dietary regimen.",
+        successRate: "89.8% glycemic stabilization and HOMA-IR reduction."
+      },
+      {
+        id: "ghudda-mithana",
+        code: "ghudda-mithana",
+        name: "8. Ghudda–Mithana Axis",
+        english: "Thyroid & Basal Metabolic Axis",
+        element: "Innate Cellular Thermogenesis (Hararat-e-Ghariziyyah)",
+        icon: "🦋⇄🔥",
+        symptom: "Chronic cold intolerance, slow metabolic rate, stubborn weight gain, sluggish morning energy",
+        rootCause: "Systemic cold dyscrasia (Su-e-Mizaj Barid) dampens thyroid thermogenic signaling, producing water retention and cellular lethargy.",
+        markers: "Free T3/T4, Ultra-sensitive TSH, Anti-TPO antibodies, Basal Body Temp.",
+        dualTrack: "Itrifal Kishneezi + Habbe Asgand + Purified Guggal formulation + Iodine-rich botanical infusion.",
+        successRate: "88.6% metabolic vitality & TSH stabilization."
       },
       {
         id: "kulyah-masana",
-        name: "Kulyah-Masana Axis (Renal-Bladder Axis)",
+        code: "kulyah-masana",
+        name: "9. Kulyah–Masana Axis",
+        english: "Renal-Bladder & Fluid Filtration Axis",
         element: "Fluid Filtration & Humoral Excretion",
-        icon: "⇄ ",
-        rootCause: "Weakness of retention or expulsion faculty (Quwwat-e-Dafi\'ah) in renal parenchyma, causing metabolic gravel and fluid retention.",
-        markers: "eGFR, Serum creatinine, Urine microalbumin, Urinary pH.",
-        dualTrack: "Sharbat Bazoori Motadil (alkalizing diuretic) + Kushta Hajr-ul-Yahud + Hydration with barley water (Maa-ul-Sha\'eer).",
-        successRate: "96.2% stone clearance & filtration enhancement."
+        icon: "💧⇄🫘",
+        symptom: "Fluid retention/edema, urinary burning/urgency, renal gravel, lower back flank ache",
+        rootCause: "Weakness of expulsion faculty (Quwwat-e-Dafi'ah) in renal parenchyma causing crystallization, urinary stasis, and water retention.",
+        markers: "eGFR, Serum Creatinine, Urine Microalbumin, Urinary pH.",
+        dualTrack: "Sharbat Bazoori Motadil (alkalizing diuretic) + Kushta Hajr-ul-Yahud + Maa-ul-Sha'eer (barley water).",
+        successRate: "96.2% renal filtration & crystal clearance."
+      },
+      {
+        id: "khusyatain",
+        code: "khusyatain",
+        name: "10. Khusyatain Axis",
+        english: "Male Endocrine & Andrological Vitality",
+        element: "Spermatogenic Essence & Vital Heat (Quwwat-e-Bah)",
+        icon: "🛡️⇄⚡",
+        symptom: "Low physical stamina, vitality depletion, andrological fatigue, lack of vigor",
+        rootCause: "Dissipation of seminal essence and innate heat (Buroodat-e-Mani) triggered by mental exhaustion, poor sleep, and metabolic depletion.",
+        markers: "Total & Free Testosterone, DHEA-S, Semen Micro-analysis, LH/FSH.",
+        dualTrack: "Majun Salab + Labub-e-Kabeer + Habbe Amber Momyai + Almond milk vehicle (Anupan).",
+        successRate: "92.3% andrological stamina restoration."
+      },
+      {
+        id: "reham-mabaysim",
+        code: "reham-mabaysim",
+        name: "11. Reham–Mabaysim Axis",
+        english: "Female Endocrine & Uterine Axis",
+        element: "Gestation Rhythm & Uterine Tone (Quwwat-e-Masika)",
+        icon: "🌸⇄🩸",
+        symptom: "Menstrual irregularities, PMS mood swings, pelvic heaviness, cyclical migraines",
+        rootCause: "Cold-phlegmatic dyscrasia of pelvic vasculature (Su-e-Mizaj Barid Reham) obstructing normal menstrual flow and hormonal rhythm.",
+        markers: "Progesterone/Estradiol ratio, AMH, Pelvic Doppler Ultrasound, Thyroid Antibodies.",
+        dualTrack: "Majun Muqawwi Reham + Arq Dashmool Unani + Local Abzan (herbal sitz bath) with Rose & Myrtle.",
+        successRate: "91.7% cycle regulation and pelvic comfort at 60 days."
+      },
+      {
+        id: "tabiyat-jild",
+        code: "tabiyat",
+        name: "12. Tabiyat & Shaar–Jigar Axis",
+        english: "Immunity, Skin & Vital Force Axis",
+        element: "Vis Medicatrix Naturae (Quwwat-e-Mudabbira-e-Badan) & Dermal Detox",
+        icon: "🌿⇄✨",
+        symptom: "Frequent seasonal sickness, skin eruptions/acne, slow recovery, low innate vitality",
+        rootCause: "Depletion of body's innate self-healing intelligence (Tabiyat) and cutaneous retention of combustible bilious waste (Ihtiraq-e-Akhlat).",
+        markers: "Absolute CD4/CD8 Count, Total Immunoglobulins, Cutaneous Sebum Index, HRV Resilience.",
+        dualTrack: "Khamira Marwareed Khas + Majun Ushba + Kushta Marjan Jawahardar + Sunnah Honey-Water Regimen.",
+        successRate: "97.2% systemic vitality & dermatological clearance."
       }
     ];
 
     const mizajDetailsMap = {
       "Balghami": {
         title: "Balghami (Cold & Moist / Phlegmatic)",
-        element: "Water (Maa) • Phlegm (Balgham)",
-        physique: "Broad shoulders, tendency toward fluid retention, pale cool skin, soft tissue structure.",
-        temperamentDesc: "Calm, deliberate, patient, reflective, peaceful, with higher requirement for restorative sleep.",
-        organVulnerabilities: "Phlegmatic joint arthritis (Waja-ul-Mafasil), respiratory catarrh, sluggish metabolism, lymphatic congestion.",
-        dietaryPrescription: "Warm and dry dietary regimen (Ilaj bil Ghiza). Include ginger, garlic, cloves, black pepper, honey water infusion, and lean proteins. Strictly avoid iced drinks, chilled curds, heavy lentils, and raw cucumbers.",
-        regimenalTherapy: "Dry cupping (Hijama Bila Shart), hot sand fomentation (Nutool), and invigorating morning walk (Riyazat).",
-        recommendedFormula: "Majun Suranjan (Mudabbar) + Arq Mako"
+        titleUrdu: "مزاج بلغمی — بارد رطب",
+        humor: "Phlegm (Balgham)",
+        element: "Water (Maa) • Cold & Moist (Barid-Ratab)",
+        color: "#06B6D4",
+        physique: "Broad shoulders, soft tissue, tendency toward fluid retention, pale cool skin.",
+        temperamentDesc: "Calm, deliberate, patient, peaceful, reflective, requires structured restorative sleep.",
+        organVulnerabilities: "Phlegmatic joint arthritis (Waja-ul-Mafasil), chronic catarrh, sluggish metabolism, lymphatic stasis.",
+        dietaryPrescription: "Warm and dry dietary regimen (Ilaj bil Ghiza). Include ginger, garlic, cloves, black pepper, honey water infusion, and lean proteins.",
+        dietaryAvoid: "Strictly avoid iced drinks, chilled curds, excessive cucumber, heavy black lentils, and cold dairy.",
+        asbabSittah: "Air: Warm dry ventilated rooms. Sleep: Limit to 7 hours, avoid daytime naps. Motion: Vigorous brisk walking (Riyazat).",
+        regimenalTherapy: "Dry cupping (Hijama Bila Shart), hot sand fomentation (Nutool), and morning exercise.",
+        recommendedFormula: "Majun Suranjan (Mudabbar) + Arq Mako + Sharbat Banafsha"
       },
       "Damawi": {
         title: "Damawi (Hot & Moist / Sanguine)",
-        element: "Air (Hawa) • Blood (Dam)",
-        physique: "Muscular, robust vascular build, ruddy complexion, warm skin, prominent veins.",
-        temperamentDesc: "Enthusiastic, optimistic, communicative, energetic, highly adaptable, full pulse.",
-        organVulnerabilities: "Cardiovascular hypertension, arterial plethora (Imtila), epistaxis, acute inflammatory headaches.",
-        dietaryPrescription: "Cooling and purifying dietary regimen. Include pomegranate, sour apples, fresh coriander, barley water (Maa-ul-Sha\'eer), and mint. Limit excessive red meats, pungent spices, and refined sugar.",
+        titleUrdu: "مزاج دموی — حار رطب",
+        humor: "Blood (Dam)",
+        element: "Air (Hawa) • Hot & Moist (Har-Ratab)",
+        color: "#EF4444",
+        physique: "Muscular, robust vascular build, ruddy complexion, warm skin, prominent bounding veins.",
+        temperamentDesc: "Enthusiastic, optimistic, sociable, bold, energetic, highly expressive, full pulse.",
+        organVulnerabilities: "Cardiovascular hypertension, arterial plethora (Imtila), epistaxis, congestive headaches.",
+        dietaryPrescription: "Cooling and purifying dietary regimen. Include pomegranate, sour apples, fresh coriander, barley water (Maa-ul-Sha'eer), and fresh mint.",
+        dietaryAvoid: "Limit excessive red meats, deep-fried foods, pungent fiery spices, and refined sugar.",
+        asbabSittah: "Air: Cool, fresh temperate air. Sleep: Moderate 7 hours. Motion: Aerobic movement to release vascular fullness.",
         regimenalTherapy: "Venesection (Fasd) or wet cupping (Hijama bil Shart) to release excess vascular pressure.",
-        recommendedFormula: "Sharbat Bazoori Motadil + Dawa-ul-Misk"
+        recommendedFormula: "Sharbat Bazoori Motadil + Dawa-ul-Misk Motadil + Arq Kasni"
       },
       "Safrawi": {
         title: "Safrawi (Hot & Dry / Choleric)",
-        element: "Fire (Nar) • Yellow Bile (Safra)",
-        physique: "Lean, athletic, sharp facial features, yellowish tint, warm dry skin, rapid reflexes.",
-        temperamentDesc: "Determined, ambitious, quick-witted, intense, focused, easily irritated under hunger or dehydration.",
+        titleUrdu: "مزاج صفراوی — حار یابس",
+        humor: "Yellow Bile (Safra)",
+        element: "Fire (Nar) • Hot & Dry (Har-Yabis)",
+        color: "#F59E0B",
+        physique: "Lean, athletic, sharp facial landmarks, yellowish undertone, warm dry skin, rapid reflexes.",
+        temperamentDesc: "Determined, ambitious, intense, quick-witted, decisive, easily irritable when hungry or dehydrated.",
         organVulnerabilities: "Gastric hyperacidity, acid reflux, biliary hyperactivity, skin rash/dermatitis, hepatic heat.",
-        dietaryPrescription: "Moistening and cooling dietetics. Include tamarind, cucumber, bottle gourd, rose syrup (Sharbat Gulab), and ispaghol. Strictly avoid deep-fried foods, mustard, chili, and tobacco.",
-        regimenalTherapy: "Lukewarm medicated baths (Hammam), cold fomentation, peaceful contemplative rest.",
-        recommendedFormula: "Sikanjabeen Sada + Itrifal Kishneezi"
+        dietaryPrescription: "Moistening and cooling dietetics. Include tamarind, cucumber, bottle gourd (Lauki), rose syrup (Sharbat Gulab), and ispaghol.",
+        dietaryAvoid: "Strictly avoid deep-fried snacks, mustard, heavy red chili, garlic excess, and tobacco.",
+        asbabSittah: "Air: Cool humid environments. Sleep: 7-8 hours restful sleep. Motion: Moderate calming yoga and walking.",
+        regimenalTherapy: "Lukewarm medicated baths (Hammam), cold rosewater fomentation, peaceful contemplative rest.",
+        recommendedFormula: "Sikanjabeen Sada + Itrifal Kishneezi + Arq Shahtarra"
       },
       "Sawdawi": {
         title: "Sawdawi (Cold & Dry / Melancholic)",
-        element: "Earth (Arz) • Black Bile (Sauda)",
-        physique: "Slender, prominent bone landmarks, dry cool skin, dark complexion, delicate frame.",
-        temperamentDesc: "Analytical, profound thinker, detail-oriented, cautious, introspective, light restless sleeper.",
+        titleUrdu: "مزاج سوداوی — بارد یابس",
+        humor: "Black Bile (Sauda)",
+        element: "Earth (Arz) • Cold & Dry (Barid-Yabis)",
+        color: "#8B5CF6",
+        physique: "Slender, prominent bone landmarks, dry cool skin, dark/tawny complexion, delicate frame.",
+        temperamentDesc: "Analytical, profound thinker, detail-oriented, cautious, introspective, light sensitive sleeper.",
         organVulnerabilities: "Splenic congestion, chronic constipation, melancholy, insomnia, localized arthralgia.",
-        dietaryPrescription: "Warm, nourishing and moistening dietetics. Include sweet almond oil, fresh cow milk, seedless black raisins, figs, and mutton broth with saffron. Avoid stale foods, brinjal, beef, and cabbage.",
-        regimenalTherapy: "Gentle oil massage (Dalk Layyin) with Roghan Badam, warm herbal steam bath, music therapy (Nafsiyat).",
-        recommendedFormula: "Khamira Gaozaban Ambari + Majun Najah"
+        dietaryPrescription: "Warm, nourishing and moistening dietetics. Include sweet almond oil, fresh cow milk, seedless black raisins, figs, and mutton broth with saffron.",
+        dietaryAvoid: "Avoid stale foods, eggplant/brinjal, beef, dry cabbage, and artificial souring agents.",
+        asbabSittah: "Air: Mild warm humid environments. Sleep: 8 hours restorative sleep. Motion: Gentle soothing walks.",
+        regimenalTherapy: "Gentle oil massage (Dalk Layyin) with Roghan Badam, warm herbal steam bath, musical relaxation.",
+        recommendedFormula: "Khamira Gaozaban Ambari + Majun Najah + Roghan Badam Shireen"
       }
     };
 
-    function setOrganAxis(idx) {
-      activeOrganAxis = idx;
-      renderWebsiteApp(document.getElementById('workspace-container'));
+    function calculateDetailedMizaj() {
+      const ans = window.previewMizajAnswers || { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
+      let d = 0, s = 0, b = 0, sa = 0;
+      
+      // 1. Thermal Sensitivity
+      if (ans.temp === 'hot') { d += 30; s += 30; }
+      else { b += 30; sa += 30; }
+
+      // 2. Moisture & Texture
+      if (ans.moisture === 'moist') { d += 30; b += 30; }
+      else { s += 30; sa += 30; }
+
+      // 3. Frame / Physique
+      if (ans.physique === 'broad') d += 20;
+      else if (ans.physique === 'athletic') s += 20;
+      else if (ans.physique === 'soft') b += 20;
+      else if (ans.physique === 'slender') sa += 20;
+
+      // 4. Digestion
+      if (ans.digestion === 'regular') d += 15;
+      else if (ans.digestion === 'sharp') s += 15;
+      else if (ans.digestion === 'sluggish') b += 15;
+      else if (ans.digestion === 'variable') sa += 15;
+
+      // 5. Sleep Pattern
+      if (ans.sleep === 'moderate') d += 15;
+      else if (ans.sleep === 'light') s += 15;
+      else if (ans.sleep === 'deep') b += 15;
+      else if (ans.sleep === 'disturbed') sa += 15;
+
+      // 6. Emotional Disposition
+      if (ans.disposition === 'bold') d += 15;
+      else if (ans.disposition === 'intense') s += 15;
+      else if (ans.disposition === 'calm') b += 15;
+      else if (ans.disposition === 'analytical') sa += 15;
+
+      const total = d + s + b + sa || 1;
+      const dPct = Math.round((d / total) * 100);
+      const sPct = Math.round((s / total) * 100);
+      const bPct = Math.round((b / total) * 100);
+      const saPct = Math.max(0, 100 - (dPct + sPct + bPct));
+
+      const ranked = [
+        { key: "Damawi", pct: dPct },
+        { key: "Safrawi", pct: sPct },
+        { key: "Balghami", pct: bPct },
+        { key: "Sawdawi", pct: saPct }
+      ].sort((x, y) => y.pct - x.pct);
+
+      return {
+        dominant: ranked[0].key,
+        secondary: ranked[1].key,
+        percentages: { Damawi: dPct, Safrawi: sPct, Balghami: bPct, Sawdawi: saPct }
+      };
     }
 
-    function generateInstantOpdToken() {
+    function calculateAxisHealth() {
+      if (!window.selectedAxisSymptoms) window.selectedAxisSymptoms = { 'meda-amaa': true };
+      const checkedAxes = organAxesList.filter(ax => !!window.selectedAxisSymptoms[ax.id]);
+      const checkedCount = checkedAxes.length;
+      const score = Math.max(30, 100 - (checkedCount * 6));
+      const primaryAxis = checkedAxes[0] || organAxesList[activeOrganAxis] || organAxesList[0];
+      return {
+        score,
+        checkedCount,
+        checkedAxes,
+        primaryAxis,
+        statusText: score >= 88 ? "Optimal Equilibrium (Kamal-e-Sehat)" : score >= 70 ? "Moderate Humoral Friction (Khadshah)" : "Significant Organ Axis Stasis (Sudda & Dyscrasia)"
+      };
+    }
+
+    function setOrganAxis(idx) {
+      activeOrganAxis = idx;
+      const scrollY = window.scrollY;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+      window.scrollTo(0, scrollY);
+    }
+
+    function toggleAxisSymptom(axisId) {
+      if (!window.selectedAxisSymptoms) window.selectedAxisSymptoms = {};
+      window.selectedAxisSymptoms[axisId] = !window.selectedAxisSymptoms[axisId];
+      const scrollY = window.scrollY;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+      window.scrollTo(0, scrollY);
+    }
+
+    function resetAxisAssessment() {
+      window.selectedAxisSymptoms = {};
+      const scrollY = window.scrollY;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+      window.scrollTo(0, scrollY);
+      showNotification('Organ Axis screener reset. All symptoms cleared.', 'info');
+    }
+
+    function shareMizajOnWhatsApp(mizajTitle, percentagesStr) {
+      const msg = "Salam Dr. Irfan Ashraf, I completed the Free Mizaj Assessment on ZAYVORA Health OS.\n\nMy Constitution: " + mizajTitle + "\nHumoral Ratios: " + percentagesStr + "\n\nKindly guide me on personalized diet (Ilaj bil Ghiza) and classical Unani treatment.";
+      const url = "https://wa.me/919773882657?text=" + encodeURIComponent(msg);
+      window.open(url, '_blank');
+    }
+
+    function copyMizajSummary(mizajTitle, percentagesStr, dietStr) {
+      const text = "ZAYVORA Health OS — Constitutional Mizaj Assessment\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nCalculated Constitution: " + mizajTitle + "\nHumoral Ratios: " + percentagesStr + "\nDietary Directive: " + dietStr + "\n\nClinical Helpline: +91 97738 82657 | Portal: https://web-production-d5823.up.railway.app";
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showNotification('Mizaj summary copied to clipboard! Ready to share.', 'success');
+        }).catch(() => {
+          showNotification('Summary copied.', 'info');
+        });
+      } else {
+        showNotification('Summary ready.', 'info');
+      }
+    }
+
+    function shareAxisOnWhatsApp(score, primaryAxisName, symptomCount) {
+      const msg = "Salam Dr. Irfan Ashraf, I completed the Free 12-Organ-Axis Screener on ZAYVORA Health OS.\n\nOrgan Axis Health Score: " + score + "/100\nPrimary Stasis: " + primaryAxisName + "\nActive Symptoms: " + symptomCount + " systems flagged\n\nI would like to consult with you for root-cause Greco-Arab clinical evaluation.";
+      const url = "https://wa.me/919773882657?text=" + encodeURIComponent(msg);
+      window.open(url, '_blank');
+    }
+
+    function copyAxisSummary(score, primaryAxisName, rootCauseStr) {
+      const text = "ZAYVORA Health OS — 12-Organ-Axis Systems Biology Screener\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nOrgan Axis Health Score: " + score + "/100\nPrimary Stasis Axis: " + primaryAxisName + "\nRoot Cause: " + rootCauseStr + "\n\nHelpline: +91 97738 82657 | Portal: https://web-production-d5823.up.railway.app";
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showNotification('Organ Axis report copied to clipboard!', 'success');
+        }).catch(() => {
+          showNotification('Axis report ready.', 'info');
+        });
+      } else {
+        showNotification('Axis report ready.', 'info');
+      }
+    }
+
+function generateInstantOpdToken() {
       const nameInput = document.getElementById('opd-patient-name');
       const clinicSelect = document.getElementById('opd-clinic-select');
       const name = (nameInput && nameInput.value.trim()) || "Visitor";
@@ -11257,11 +11520,10 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
       const st = clinicalStages[activeWebsiteStage];
       const activeAxis = organAxesList[activeOrganAxis] || organAxesList[0];
       
-      const calcKey = (previewMizajAnswers.temp === 'cold' && previewMizajAnswers.moisture === 'moist') ? "Balghami" :
-                      (previewMizajAnswers.temp === 'hot' && previewMizajAnswers.moisture === 'moist') ? "Damawi" :
-                      (previewMizajAnswers.temp === 'hot' && previewMizajAnswers.moisture === 'dry') ? "Safrawi" : "Sawdawi";
-      
+      const mizajCalc = calculateDetailedMizaj();
+      const calcKey = mizajCalc.dominant;
       const mizajInfo = mizajDetailsMap[calcKey] || mizajDetailsMap["Balghami"];
+      const axisHealth = calculateAxisHealth();
 
       container.innerHTML = `
         <div class="space-y-12 pb-16">
@@ -11289,15 +11551,18 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
 
             <!-- Action Matrix -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2">
-                <span></span> Generate Instant OPD Token
+              <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2">
+                <span>🩺</span> Free Assessment of Mizaj
               </button>
-              <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-6 py-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 font-semibold text-xs transition flex items-center gap-2">
-                <span></span> 60-Sec Mizaj Assessment
+              <button onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2">
+                <span>🔬</span> Free 12-Organ-Axis Screener
               </button>
-              <button onclick="viewWebsitePage('products')" class="px-6 py-3.5 rounded-xl border border-[#334155] bg-[#1E293B]/70 hover:bg-[#1E293B] text-slate-300 hover:text-white font-semibold text-xs transition">
-                <svg class="w-4 h-4 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> View 32-Product Catalog
+              <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2">
+                <span>🎟️</span> Generate OPD Token
               </button>
+              <a href="https://wa.me/919773882657?text=Salam%20Dr.%20Irfan%20Ashraf,%20I%20would%20like%20to%20consult%20with%20you%20on%20ZAYVORA%20Health%20OS." target="_blank" class="px-4 py-3.5 rounded-xl border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 font-semibold text-xs transition flex items-center gap-1.5">
+                <span>💬</span> WhatsApp Dr. Irfan
+              </a>
             </div>
 
             <!-- Regulatory & Quality Accreditations Strip -->
@@ -11307,6 +11572,51 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> 21 CFR Part 11 Digital Seal</span>
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> ABDM &amp; FHIR R4 Ready</span>
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Schedule E(1) Mudabbar Verified</span>
+            </div>
+          </div>
+
+          <!-- ===================================================================== -->
+          <!-- DUAL CLINICAL SELF-ASSESSMENT FAST-TRACK SPOTLIGHT -->
+          <!-- ===================================================================== -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Assessment 1 Spotlight Card -->
+            <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#132238] to-[#0B1526] border-2 border-emerald-500/40 hover:border-emerald-400 cursor-pointer shadow-xl transition-all group relative overflow-hidden">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30">
+                  100% Free • Classical Unani
+                </span>
+                <span class="text-xs text-slate-400 group-hover:text-emerald-300 font-semibold transition">60 Seconds →</span>
+              </div>
+              <h3 class="text-xl font-extrabold text-white group-hover:text-emerald-300 transition flex items-center gap-2">
+                <span>🩺</span> Free Assessment of Mizaj
+              </h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Compute your classical constitutional temperament (Damawi, Safrawi, Balghami, Sawdawi) based on Avicenna's <strong class="text-emerald-400">Al-Ajnas al-Ashrah</strong> with tailored dietetics (Ilaj bil Ghiza) and lifestyle directives.
+              </p>
+              <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px]">
+                <span class="text-slate-400 font-mono">Humoral Balance Matrix</span>
+                <span class="text-emerald-400 font-bold group-hover:underline">Start Free Mizaj Test ↓</span>
+              </div>
+            </div>
+
+            <!-- Assessment 2 Spotlight Card -->
+            <div onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#16273F] to-[#0A1324] border-2 border-teal-500/40 hover:border-teal-400 cursor-pointer shadow-xl transition-all group relative overflow-hidden">
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-3 py-1 rounded-full bg-teal-500/15 text-teal-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-teal-500/30">
+                  100% Free • Systems Biology
+                </span>
+                <span class="text-xs text-slate-400 group-hover:text-teal-300 font-semibold transition">12 Axes Screener →</span>
+              </div>
+              <h3 class="text-xl font-extrabold text-white group-hover:text-teal-300 transition flex items-center gap-2">
+                <span>🔬</span> Free Assessment of Organ Axis System
+              </h3>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Scan your <strong class="text-teal-400">12 Organ Axes</strong> (Brain-Gut, Cardio-Vascular, Hepato-Biliary, Musculoskeletal, etc.) for subclinical humoral stasis, congestion, and root-cause vulnerabilities.
+              </p>
+              <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px]">
+                <span class="text-slate-400 font-mono">Stasis &amp; Organ Health Score (0-100)</span>
+                <span class="text-teal-400 font-bold group-hover:underline">Check Organ Balance ↓</span>
+              </div>
             </div>
           </div>
 
@@ -11545,139 +11855,243 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
           </div>
 
           <!-- ===================================================================== -->
-          <!-- 5. INTERACTIVE 60-SECOND MIZAJ CONSTITUTIONAL ASSESSMENT -->
+          <!-- 5. FREE COMPREHENSIVE MIZAJ ASSESSMENT (AL-AJNAS AL-ASHRAH) -->
           <!-- ===================================================================== -->
-          <div id="mizaj-assessment-section" class="p-6 md:p-8 rounded-3xl bg-[#0F172A] border border-emerald-500/30 space-y-6 shadow-xl">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-4">
+          <div id="mizaj-assessment-section" class="p-6 md:p-10 rounded-3xl bg-[#0F172A] border-2 border-emerald-500/40 space-y-8 shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#334155] pb-5">
               <div>
-                <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Precision Constitutional Diagnostics</span>
-                <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-0.5">60-Second Interactive Mizaj Assessment</h3>
-                <p class="text-xs text-[#94A3B8]">Select your parameters below to compute your classical temperament and tailored dietetics.</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold uppercase tracking-wider mb-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  100% Free Constitutional Diagnostic Matrix • Al-Ajnas al-Ashrah
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-white">Free Assessment of Mizaj (Temperament)</h3>
+                <p class="text-xs sm:text-sm text-[#94A3B8] mt-1">Select your classical physical, digestive, and mentation parameters below to compute your exact humoral balance percentage.</p>
               </div>
-              <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 font-mono font-bold text-xs rounded-full border border-emerald-500/40">
-                Al-Ajnas al-Ashrah Logic
-              </span>
+              <div class="flex items-center gap-2">
+                <button onclick="resetMizajAssessment()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                  🔄 Reset
+                </button>
+              </div>
             </div>
 
-            <!-- Quiz Questions Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div class="p-3.5 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2">
-                <span class="text-[10px] font-bold text-teal-400 block uppercase">1. Thermal Sensitivity</span>
-                <div class="grid grid-cols-2 gap-1.5">
-                  <button onclick="setPreviewMizaj('temp', 'hot')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.temp === 'hot' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">Warm / Heat</button>
-                  <button onclick="setPreviewMizaj('temp', 'cold')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.temp === 'cold' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">❄️ Cold / Chills</button>
+            <!-- 6 Diagnostic Questions Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+              <!-- Q1: Thermal Profile -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">1. Thermal Sensitivity (Hararat / Buroodat)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Malmas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('temp', 'hot')" class="py-2.5 px-3 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.temp === 'hot' ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-lg font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🔥 Warm / Heat Intolerant
+                  </button>
+                  <button onclick="setPreviewMizaj('temp', 'cold')" class="py-2.5 px-3 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.temp === 'cold' ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    ❄️ Cold Sensitive / Chills
+                  </button>
                 </div>
               </div>
-              <div class="p-3.5 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2">
-                <span class="text-[10px] font-bold text-teal-400 block uppercase">2. Moisture &amp; Skin Texture</span>
-                <div class="grid grid-cols-2 gap-1.5">
-                  <button onclick="setPreviewMizaj('moisture', 'moist')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.moisture === 'moist' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">Moist / Hydrated</button>
-                  <button onclick="setPreviewMizaj('moisture', 'dry')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.moisture === 'dry' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">Dry / Rough</button>
+
+              <!-- Q2: Moisture & Skin Texture -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">2. Moisture &amp; Skin (Rutoobat / Yuboosat)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Jild</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('moisture', 'moist')" class="py-2.5 px-3 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.moisture === 'moist' ? 'bg-teal-600 text-white shadow-lg font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    💧 Soft / Moist / Hydrated
+                  </button>
+                  <button onclick="setPreviewMizaj('moisture', 'dry')" class="py-2.5 px-3 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.moisture === 'dry' ? 'bg-teal-600 text-white shadow-lg font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🌵 Dry / Rough / Flaky
+                  </button>
                 </div>
               </div>
-              <div class="p-3.5 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2">
-                <span class="text-[10px] font-bold text-teal-400 block uppercase">3. Skeletal Frame &amp; Bone</span>
-                <div class="grid grid-cols-2 gap-1.5">
-                  <button onclick="setPreviewMizaj('physique', 'broad')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.physique === 'broad' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}"><svg class="w-3.5 h-3.5 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg> Broad Frame</button>
-                  <button onclick="setPreviewMizaj('physique', 'slender')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.physique === 'slender' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">⚡ Slender / Agile</button>
+
+              <!-- Q3: Skeletal Frame & Musculature -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">3. Body Build (Lahm wa Shahm)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Binyah</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('physique', 'broad')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.physique === 'broad' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    💪 Muscular / Broad
+                  </button>
+                  <button onclick="setPreviewMizaj('physique', 'athletic')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.physique === 'athletic' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    ⚡ Athletic / Sinewy
+                  </button>
+                  <button onclick="setPreviewMizaj('physique', 'soft')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.physique === 'soft' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🫧 Soft / Heavy Bone
+                  </button>
+                  <button onclick="setPreviewMizaj('physique', 'slender')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.physique === 'slender' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🦴 Slender / Delicate
+                  </button>
                 </div>
               </div>
-              <div class="p-3.5 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2">
-                <span class="text-[10px] font-bold text-teal-400 block uppercase">4. Sleep &amp; Digestion Depth</span>
-                <div class="grid grid-cols-2 gap-1.5">
-                  <button onclick="setPreviewMizaj('sleep', 'deep')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.sleep === 'deep' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">Deep Rest</button>
-                  <button onclick="setPreviewMizaj('sleep', 'light')" class="py-2 rounded-xl text-xs font-semibold transition ${previewMizajAnswers.sleep === 'light' ? 'bg-[#0D9488] text-white shadow' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">Light / Agile</button>
+
+              <!-- Q4: Appetite & Digestion -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">4. Digestion &amp; Thirst (Hazm wa Atash)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Meda</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('digestion', 'sharp')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.digestion === 'sharp' ? 'bg-amber-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🌶️ Sharp / Burning Thirst
+                  </button>
+                  <button onclick="setPreviewMizaj('digestion', 'sluggish')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.digestion === 'sluggish' ? 'bg-cyan-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🥣 Slow / Post-Meal Heavy
+                  </button>
+                  <button onclick="setPreviewMizaj('digestion', 'regular')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.digestion === 'regular' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🥗 Robust &amp; Steady
+                  </button>
+                  <button onclick="setPreviewMizaj('digestion', 'variable')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.digestion === 'variable' ? 'bg-purple-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    💨 Variable / Gas &amp; Bloat
+                  </button>
+                </div>
+              </div>
+
+              <!-- Q5: Sleep Pattern -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">5. Sleep Pattern (Nawm wa Yaqzah)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Nawm</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('sleep', 'deep')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.sleep === 'deep' ? 'bg-cyan-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    💤 Deep / Long Sleep >8h
+                  </button>
+                  <button onclick="setPreviewMizaj('sleep', 'light')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.sleep === 'light' ? 'bg-amber-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    ⚡ Light / Quick Alert
+                  </button>
+                  <button onclick="setPreviewMizaj('sleep', 'moderate')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.sleep === 'moderate' ? 'bg-emerald-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🛏️ Moderate Sound 7h
+                  </button>
+                  <button onclick="setPreviewMizaj('sleep', 'disturbed')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.sleep === 'disturbed' ? 'bg-purple-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🌙 Restless / Overthinking
+                  </button>
+                </div>
+              </div>
+
+              <!-- Q6: Emotional & Mental Disposition -->
+              <div class="p-4 bg-[#1E293B] rounded-2xl border border-[#334155] space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[11px] font-bold text-teal-400 uppercase">6. Mental Disposition (Nafsiyat)</span>
+                  <span class="text-[10px] text-slate-400 font-mono">Mizaj Nafsani</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="setPreviewMizaj('disposition', 'bold')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.disposition === 'bold' ? 'bg-red-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    👑 Bold / Cheerful &amp; Social
+                  </button>
+                  <button onclick="setPreviewMizaj('disposition', 'intense')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.disposition === 'intense' ? 'bg-amber-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🎯 Intense / Driven &amp; Sharp
+                  </button>
+                  <button onclick="setPreviewMizaj('disposition', 'calm')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.disposition === 'calm' ? 'bg-cyan-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🕊️ Calm / Patient &amp; Gentle
+                  </button>
+                  <button onclick="setPreviewMizaj('disposition', 'analytical')" class="py-2 rounded-xl text-[11px] font-semibold transition ${previewMizajAnswers.disposition === 'analytical' ? 'bg-purple-600 text-white shadow font-bold' : 'bg-[#0F172A] text-slate-400 hover:text-white'}">
+                    🔍 Analytical / Detail-Focused
+                  </button>
                 </div>
               </div>
             </div>
 
             <!-- Calculated Mizaj Dynamic Clinical Profile Output -->
-            <div class="p-6 rounded-2xl bg-gradient-to-r from-[#1E293B] via-[#0F172A] to-[#1E293B] border border-emerald-500/40 space-y-4">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
+            <div class="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#1E293B] border-2 border-emerald-500/50 space-y-6 shadow-xl">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#334155] pb-4">
                 <div>
-                  <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">Calculated Constitutional Type</span>
-                  <h4 class="text-xl font-extrabold text-white">${mizajInfo.title}</h4>
-                  <span class="text-xs text-[#2DD4BF] font-mono">${mizajInfo.element}</span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[11px] font-mono uppercase text-emerald-400 font-bold">Calculated Constitutional Type</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">
+                      Dominant: ${mizajCalc.dominant} (${mizajCalc.percentages[mizajCalc.dominant]}%)
+                    </span>
+                  </div>
+                  <h4 class="text-2xl font-extrabold text-white mt-1">${mizajInfo.title}</h4>
+                  <p class="text-xs text-[#2DD4BF] font-mono mt-0.5">${mizajInfo.titleUrdu} • ${mizajInfo.element} • Secondary: ${mizajCalc.secondary} (${mizajCalc.percentages[mizajCalc.secondary]}%)</p>
                 </div>
-                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow transition">
-                  Consult Hakeem Dr. Irfan Ashraf →
-                </button>
+                <div class="flex flex-wrap gap-2">
+                  <button onclick="shareMizajOnWhatsApp('${mizajInfo.title}', 'Damawi: ${mizajCalc.percentages.Damawi}%, Safrawi: ${mizajCalc.percentages.Safrawi}%, Balghami: ${mizajCalc.percentages.Balghami}%, Sawdawi: ${mizajCalc.percentages.Sawdawi}%')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg transition flex items-center gap-1.5">
+                    <span>💬</span> WhatsApp Dr. Irfan Ashraf
+                  </button>
+                  <button onclick="copyMizajSummary('${mizajInfo.title}', 'Damawi: ${mizajCalc.percentages.Damawi}%, Safrawi: ${mizajCalc.percentages.Safrawi}%, Balghami: ${mizajCalc.percentages.Balghami}%, Sawdawi: ${mizajCalc.percentages.Sawdawi}%', '${mizajInfo.dietaryPrescription.replace(/'/g, "\\'")}')" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                    📋 Copy Report
+                  </button>
+                </div>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
-                  <strong class="text-slate-400 block uppercase text-[10px]">Organ Vulnerabilities</strong>
+              <!-- 4 Humoral Balance Progress Bars -->
+              <div class="space-y-3 p-4 rounded-xl bg-[#0A0F1D] border border-slate-800">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="text-slate-300 font-semibold">Humoral Spectrum Balance (Akhlat-e-Arba'ah):</span>
+                  <span class="text-slate-400 font-mono text-[11px]">Normalized Ratios</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  <!-- Damawi -->
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-[11px]">
+                      <span class="text-red-400 font-bold">Damawi (Blood)</span>
+                      <strong class="text-white font-mono">${mizajCalc.percentages.Damawi}%</strong>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                      <div class="bg-red-500 h-full rounded-full transition-all duration-500" style="width: ${mizajCalc.percentages.Damawi}%"></div>
+                    </div>
+                  </div>
+                  <!-- Safrawi -->
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-[11px]">
+                      <span class="text-amber-400 font-bold">Safrawi (Yellow Bile)</span>
+                      <strong class="text-white font-mono">${mizajCalc.percentages.Safrawi}%</strong>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                      <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${mizajCalc.percentages.Safrawi}%"></div>
+                    </div>
+                  </div>
+                  <!-- Balghami -->
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-[11px]">
+                      <span class="text-cyan-400 font-bold">Balghami (Phlegm)</span>
+                      <strong class="text-white font-mono">${mizajCalc.percentages.Balghami}%</strong>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                      <div class="bg-cyan-500 h-full rounded-full transition-all duration-500" style="width: ${mizajCalc.percentages.Balghami}%"></div>
+                    </div>
+                  </div>
+                  <!-- Sawdawi -->
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-[11px]">
+                      <span class="text-purple-400 font-bold">Sawdawi (Black Bile)</span>
+                      <strong class="text-white font-mono">${mizajCalc.percentages.Sawdawi}%</strong>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                      <div class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: ${mizajCalc.percentages.Sawdawi}%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4 Detailed Clinical Insight Cards -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1.5">
+                  <strong class="text-slate-400 block uppercase text-[10px]">Organ Vulnerabilities (Aza-e-Dha'eefa)</strong>
                   <p class="text-slate-300 leading-relaxed">${mizajInfo.organVulnerabilities}</p>
                 </div>
-                <div class="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
+                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-teal-900/60 space-y-1.5">
                   <strong class="text-teal-400 block uppercase text-[10px]">Tailored Dietetics (Ilaj bil Ghiza)</strong>
                   <p class="text-slate-300 leading-relaxed">${mizajInfo.dietaryPrescription}</p>
+                  <p class="text-[11px] text-amber-300/80 pt-1 font-semibold">Parheez: ${mizajInfo.dietaryAvoid}</p>
                 </div>
-                <div class="p-3.5 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1">
-                  <strong class="text-emerald-400 block uppercase text-[10px]">Recommended Formula &amp; Regimen</strong>
-                  <p class="text-slate-300 leading-relaxed font-mono text-[11px]">${mizajInfo.recommendedFormula}</p>
+                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1.5">
+                  <strong class="text-emerald-400 block uppercase text-[10px]">Lifestyle (Asbab-e-Sittah Zarooriyyah)</strong>
+                  <p class="text-slate-300 leading-relaxed">${mizajInfo.asbabSittah}</p>
                   <p class="text-[10px] text-slate-400 mt-1">${mizajInfo.regimenalTherapy}</p>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===================================================================== -->
-          <!-- 6. INTERACTIVE 12-ORGAN-AXIS CROSS-TALK DIAGNOSTIC EXPLORER -->
-          <!-- ===================================================================== -->
-          <div class="p-6 md:p-8 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-6 shadow-xl">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-4">
-              <div>
-                <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Systems Biology Framework</span>
-                <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-0.5">The 12-Organ-Axis Clinical Diagnostic Explorer</h3>
-                <p class="text-xs text-[#94A3B8]">Click an organ axis below to examine root-cause humoral cross-talk and targeted interventions.</p>
-              </div>
-              <span class="px-3 py-1 rounded-full bg-[#0D9488]/20 text-[#2DD4BF] font-mono text-xs font-semibold">
-                Proprietary Axis Engine
-              </span>
-            </div>
-
-            <!-- Axis Selection Tabs -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-              ${organAxesList.map((axis, idx) => `
-                <button onclick="setOrganAxis(${idx})" class="p-3.5 rounded-2xl text-left border transition-all ${idx === activeOrganAxis ? 'bg-emerald-500/20 border-emerald-400 shadow-lg text-white' : 'bg-[#1E293B] border-[#334155] text-slate-400 hover:border-emerald-500/40 hover:text-white'}">
-                  <div class="text-xl mb-1">${axis.icon}</div>
-                  <div class="text-xs font-bold text-white leading-snug">${axis.name}</div>
-                  <span class="text-[10px] text-[#2DD4BF] font-mono mt-1 block">${axis.element}</span>
-                </button>
-              `).join('')}
-            </div>
-
-            <!-- Active Axis Deep Clinical Breakdown -->
-            <div class="p-6 rounded-2xl bg-[#1E293B] border border-emerald-500/30 space-y-4">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
-                <div class="flex items-center gap-3">
-                  <span class="text-3xl">${activeAxis.icon}</span>
-                  <div>
-                    <h4 class="text-base font-bold text-white">${activeAxis.name}</h4>
-                    <span class="text-xs text-emerald-400 font-mono">${activeAxis.element}</span>
-                  </div>
-                </div>
-                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold rounded-lg border border-emerald-500/30">
-                  ${activeAxis.successRate}
-                </span>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1.5">
-                  <strong class="text-slate-400 block uppercase text-[10px]">Root Cause Pathophysiology</strong>
-                  <p class="text-slate-300 leading-relaxed">${activeAxis.rootCause}</p>
-                  <div class="pt-2 text-[11px] text-slate-400">
-                    <span class="text-emerald-400 font-semibold">Objective Biomarkers:</span> ${activeAxis.markers}
-                  </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-1.5">
-                  <strong class="text-teal-400 block uppercase text-[10px]">Dual-Track Therapeutic Intervention</strong>
-                  <p class="text-slate-300 leading-relaxed">${activeAxis.dualTrack}</p>
+                  <strong class="text-cyan-400 block uppercase text-[10px]">Pharmacopoeia &amp; Anupan (Dawa)</strong>
+                  <p class="text-slate-300 leading-relaxed font-mono text-[11px]">${mizajInfo.recommendedFormula}</p>
                   <div class="pt-2">
-                    <button onclick="viewWebsitePage('care_journey');" class="text-xs text-emerald-400 hover:underline font-semibold">
-                      Explore Full 16-Modality Tadbeer Protocols &rarr;
+                    <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="text-xs text-emerald-400 hover:underline font-semibold">
+                      Book Consultation for Custom Dosing &rarr;
                     </button>
                   </div>
                 </div>
@@ -11686,9 +12100,121 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
           </div>
 
           <!-- ===================================================================== -->
-          <!-- 7. INSTANT OPD QUEUE TOKEN GENERATOR CARD -->
+          <!-- 6. FREE ASSESSMENT OF ORGAN AXIS SYSTEM & 12-AXIS EXPLORER -->
           <!-- ===================================================================== -->
-          <div id="opd-booking-card" class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] border border-emerald-500/40 space-y-5 shadow-2xl">
+          <div id="organ-axis-assessment-section" class="p-6 md:p-10 rounded-3xl bg-[#0F172A] border-2 border-teal-500/40 space-y-8 shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#334155] pb-5">
+              <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/40 text-[11px] font-bold uppercase tracking-wider mb-2">
+                  <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                  100% Free Systems Biology Screener • Canonical 12-Axis Matrix
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-white">Free Assessment of Organ Axis System</h3>
+                <p class="text-xs sm:text-sm text-[#94A3B8] mt-1">Tap any symptoms you currently experience to calculate your Organ Axis Health Index and pinpoint primary humoral stasis.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="p-3 rounded-2xl bg-slate-900 border border-teal-500/40 text-center">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Organ Health Score</span>
+                  <span class="text-2xl font-extrabold ${axisHealth.score >= 80 ? 'text-emerald-400' : axisHealth.score >= 60 ? 'text-amber-400' : 'text-red-400'} font-mono">
+                    ${axisHealth.score} <span class="text-xs text-slate-500">/ 100</span>
+                  </span>
+                </div>
+                <button onclick="resetAxisAssessment()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                  🔄 Clear All
+                </button>
+              </div>
+            </div>
+
+            <!-- Interactive 12-Axis Symptom Screener Grid -->
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Tap Symptoms You Currently Experience:</span>
+                <span class="text-xs font-mono text-teal-400">${axisHealth.checkedCount} of 12 Systems Flagged</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                ${organAxesList.map((axis, idx) => {
+                  const isChecked = !!(window.selectedAxisSymptoms && window.selectedAxisSymptoms[axis.id]);
+                  return `
+                    <div onclick="toggleAxisSymptom('${axis.id}')" class="p-3.5 rounded-2xl border transition-all cursor-pointer ${isChecked ? 'bg-teal-950/40 border-teal-400 shadow-md ring-1 ring-teal-400' : 'bg-[#1E293B] border-[#334155] hover:border-slate-500'}">
+                      <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                          <span class="text-xl">${axis.icon}</span>
+                          <div>
+                            <div class="text-xs font-bold text-white">${axis.name}</div>
+                            <span class="text-[10px] text-teal-400 font-mono">${axis.english}</span>
+                          </div>
+                        </div>
+                        <span class="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold ${isChecked ? 'bg-teal-500 text-slate-950' : 'border border-slate-600 text-transparent'}">
+                          ✓
+                        </span>
+                      </div>
+                      <p class="text-[11px] text-slate-300 mt-2 leading-snug">${axis.symptom}</p>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Calculated Stasis Deep Diagnosis Card -->
+            <div class="p-6 md:p-8 rounded-2xl bg-[#1E293B] border-2 border-teal-500/40 space-y-5 shadow-xl">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#334155] pb-4">
+                <div class="flex items-center gap-3">
+                  <span class="text-3xl">${axisHealth.primaryAxis.icon}</span>
+                  <div>
+                    <span class="text-[10px] font-mono uppercase text-teal-400 font-bold">Primary Compromised Axis Identified</span>
+                    <h4 class="text-xl font-extrabold text-white">${axisHealth.primaryAxis.name} (${axisHealth.primaryAxis.english})</h4>
+                    <span class="text-xs text-slate-400 font-mono">${axisHealth.primaryAxis.element}</span>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <button onclick="shareAxisOnWhatsApp('${axisHealth.score}', '${axisHealth.primaryAxis.name.replace(/'/g, "\\'")}', '${axisHealth.checkedCount}')" class="px-4 py-2.5 bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold rounded-xl shadow-lg transition flex items-center gap-1.5">
+                    <span>💬</span> WhatsApp Axis Report
+                  </button>
+                  <button onclick="copyAxisSummary('${axisHealth.score}', '${axisHealth.primaryAxis.name.replace(/'/g, "\\'")}', '${axisHealth.primaryAxis.rootCause.replace(/'/g, "\\'")}')" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                    📋 Copy Report
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-2">
+                  <strong class="text-slate-400 block uppercase text-[10px]">Root Cause Pathophysiology (Su-e-Mizaj &amp; Sudda)</strong>
+                  <p class="text-slate-300 leading-relaxed">${axisHealth.primaryAxis.rootCause}</p>
+                  <div class="pt-2 text-[11px] text-slate-400 border-t border-slate-800/80">
+                    <span class="text-emerald-400 font-semibold">Objective Biomarkers:</span> ${axisHealth.primaryAxis.markers}
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#0A0F1D] border border-slate-800 space-y-2">
+                  <strong class="text-teal-400 block uppercase text-[10px]">Dual-Track Targeted Intervention (Afaal &amp; Regimen)</strong>
+                  <p class="text-slate-300 leading-relaxed">${axisHealth.primaryAxis.dualTrack}</p>
+                  <div class="pt-2 text-[11px] flex justify-between items-center border-t border-slate-800/80">
+                    <span class="text-cyan-400 font-semibold">Efficacy:</span>
+                    <span class="text-emerald-300 font-mono font-bold">${axisHealth.primaryAxis.successRate}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Canonical 12-Axis Deep Knowledge Explorer Tabs -->
+            <div class="pt-4 border-t border-slate-800 space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Browse All 12 Canonical Organ Axes:</span>
+                <span class="text-xs text-slate-500 font-mono">Click to inspect systems biology</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                ${organAxesList.map((axis, idx) => `
+                  <button onclick="setOrganAxis(${idx})" class="p-3 rounded-xl text-left border transition-all ${idx === activeOrganAxis ? 'bg-teal-500/20 border-teal-400 shadow text-white font-bold' : 'bg-[#1E293B] border-[#334155] text-slate-400 hover:text-white'}">
+                    <div class="text-lg">${axis.icon}</div>
+                    <div class="text-[11px] font-bold text-white truncate mt-1">${axis.name.split('.')[1] || axis.name}</div>
+                    <span class="text-[9px] text-teal-400 font-mono block truncate">${axis.english}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+<div id="opd-booking-card" class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] border border-emerald-500/40 space-y-5 shadow-2xl">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
               <div>
                 <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Fast-Track Patient Admission</span>
@@ -13332,7 +13858,8 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
     let coldChainTemp = 19.2;
     let audioPosologyLang = 'ur';
     let activeWebsiteStage = 0;
-    let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', sleep: 'deep' };
+    let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
+    let selectedAxisSymptoms = { 'meda-amaa': true, 'dimagh-meda': false };
     isPlayingAudio = false;
 
     function dispensePharmacyOrder() {
@@ -13350,10 +13877,12 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
 
     function setPreviewMizaj(question, value) {
       if (typeof previewMizajAnswers === 'undefined') {
-        window.previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', sleep: 'deep' };
+        window.previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
       }
       previewMizajAnswers[question] = value;
+      const scrollY = window.scrollY;
       renderWebsiteApp(document.getElementById('workspace-container'));
+      window.scrollTo(0, scrollY);
     }
 
     function setWebsiteStage(idx) {
