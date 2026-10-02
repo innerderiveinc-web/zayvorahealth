@@ -9035,6 +9035,48 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
     let previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
     let selectedAxisSymptoms = { 'meda-amaa': true, 'dimagh-meda': false };
     window.previewMizajAnswers = previewMizajAnswers;
+
+    window.filterArchitectureLive = function(query) {
+      query = (query || '').toLowerCase().trim();
+      const cards = document.querySelectorAll('.arch-module-card');
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const path = card.getAttribute('data-path') || '';
+        if (!query || title.includes(query) || desc.includes(query) || path.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      // Hide empty domain cards
+      document.querySelectorAll('.arch-domain-block').forEach(dom => {
+        const visible = dom.querySelectorAll('.arch-module-card[style*="display: flex"], .arch-module-card:not([style*="display: none"])');
+        dom.style.display = (visible.length === 0 && query) ? 'none' : 'block';
+      });
+    };
+
+    window.filterDomainCategory = function(domainId) {
+      const allBtns = ['all', 'clinical', 'botanical', 'research', 'philosophy', 'governance'];
+      allBtns.forEach(b => {
+        const el = document.getElementById('dom-filter-' + b);
+        if (el) {
+          if (b === domainId) {
+            el.className = 'px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] transition shadow-sm cursor-pointer';
+          } else {
+            el.className = 'px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer';
+          }
+        }
+      });
+      document.querySelectorAll('.arch-domain-block').forEach(dom => {
+        if (domainId === 'all' || dom.id === 'arch-domain-card-' + domainId) {
+          dom.style.display = 'block';
+        } else {
+          dom.style.display = 'none';
+        }
+      });
+    };
+
     window.selectedAxisSymptoms = selectedAxisSymptoms;
 
     const organAxesList = [
@@ -11208,8 +11250,11 @@ function generateInstantOpdToken() {
       if (state.tab === 'pages25') {
         const architectureDomains = [
           {
-            title: `Domain I: <svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Clinical Services & Care Continuum`,
+            id: "clinical",
+            title: "Domain I: Clinical Services & Care Continuum",
             badge: "Clinical Care",
+            accentColor: "emerald",
+            icon: "🩺",
             desc: "Full-spectrum integrative healthcare services unifying 10-Ajnas pulse evaluation, clinical decision support AI, ambient scribe, and certified manufacturing.",
             modules: [
               { key: "services", title: "Clinical Services Overview", path: "/services", desc: "Tele-consult, OPD, Regimenal Ilaj bil-Tadbeer, and In-Clinic Matab." },
@@ -11222,8 +11267,11 @@ function generateInstantOpdToken() {
             ]
           },
           {
-            title: `Domain II: <svg class="w-4 h-4 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Botanical Therapeutics & Dispensary`,
+            id: "botanical",
+            title: "Domain II: Botanical Therapeutics & Dispensary",
             badge: "Herbal Formulary",
+            accentColor: "teal",
+            icon: "🌿",
             desc: "AYUSH Schedule T compliant botanical formulations, classical Unani compounds, standardized extracts, and verified cold-chain dispatch protocols.",
             modules: [
               { key: "products", title: "32 Master Formulations Portfolio", path: "/products", desc: "Interactive herbal catalog with dosage, indications, cart, and batch COA." },
@@ -11234,8 +11282,11 @@ function generateInstantOpdToken() {
             ]
           },
           {
-            title: `Domain III: <svg class="w-4 h-4 inline-block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Research, Evidence & Knowledge Institute`,
+            id: "research",
+            title: "Domain III: Research, Evidence & Knowledge Institute",
             badge: "Empirical Science",
+            accentColor: "amber",
+            icon: "🔬",
             desc: "Empirical validation of Greco-Arab medicine through multi-center concordance trials, real-world evidence registries, and knowledge graphs.",
             modules: [
               { key: "research", title: "Research & Evidence Hub", path: "/research", desc: "Observational RWE registries, academic concordance, and clinical trial cohorts." },
@@ -11246,8 +11297,11 @@ function generateInstantOpdToken() {
             ]
           },
           {
+            id: "philosophy",
             title: "Domain IV: Greco-Arab Philosophy & Patient Journey",
             badge: "Clinical Doctrine",
+            accentColor: "sky",
+            icon: "🏛️",
             desc: "Classical foundational doctrine unifying the 4 humors (Akhlat), longitudinal Mizaj constitution, and the 12-stage closed-loop clinical continuum.",
             modules: [
               { key: "philosophy", title: "Four Humors (Akhlat) & Mizaj", path: "/philosophy", desc: "Damm, Balgham, Safra, and Sawda balance, 6 Essentials, and Afaal progression." },
@@ -11255,11 +11309,14 @@ function generateInstantOpdToken() {
             ]
           },
           {
-            title: `Domain V: <svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg> Healthcare Network, Faculty & Governance`,
+            id: "governance",
+            title: "Domain V: Healthcare Network, Faculty & Governance",
             badge: "Hospital & Governance",
+            accentColor: "purple",
+            icon: "⚖️",
             desc: "Accredited clinical facilities, board-certified senior clinicians, intellectual property stewardship, and statutory patient data protection.",
             modules: [
-              { key: "clinics", title: "14 Hospital & Matab Network", path: "/clinics", desc: "Flagship hospital in New Delhi and specialized Matabs across major cities." },
+              { key: "clinics", title: "Central Matab & Clinical Network", path: "/clinics", desc: "Flagship hospital in New Delhi and specialized Matabs across major cities." },
               { key: "doctors", title: "Board-Certified Faculty & Clinicians", path: "/doctors", desc: "Senior Tabeebs and integrative MDs with verified institutional credentials." },
               { key: "about", title: "About ZAYVORA & Founder IP", path: "/about", desc: "Institutional vision, governance board, and Hakeem Dr. Irfan Ashraf IP stewardship." },
               { key: "faqs", title: "Patient & Clinical FAQs", path: "/faq", desc: "Answers regarding treatment safety, consultation booking, and ABHA integration." },
@@ -11271,58 +11328,80 @@ function generateInstantOpdToken() {
         ];
 
         container.innerHTML = `
-          <div class="space-y-10 pb-16">
+          <div class="space-y-8 pb-16">
             
             <!-- Architecture Blueprint Header -->
-            <div class="bg-gradient-to-r from-[#0F172A] via-[#131D31] to-[#0A0F1D] p-8 rounded-3xl border border-emerald-500/30 space-y-4 shadow-xl">
+            <div class="bg-[var(--card)] p-6 md:p-8 rounded-3xl border border-[var(--border)] space-y-4 shadow-sm">
               <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">ZAYVORA Health OS™ Architecture</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">ZAYVORA Health OS™ Architecture</span>
                   </div>
-                  <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-1">Interactive System Architecture Map</h1>
-                  <p class="text-xs md:text-sm text-slate-300 mt-1.5 max-w-3xl leading-relaxed">
-                    Unified architectural blueprint organizing all 25 canonical pages into 5 interconnected clinical, botanical, research, and governance domains.
+                  <h1 class="text-2xl md:text-3xl font-extrabold text-[var(--foreground)] mt-1">Interactive System Architecture Map</h1>
+                  <p class="text-xs md:text-sm text-[var(--muted)] mt-1.5 max-w-3xl leading-relaxed">
+                    Unified architectural blueprint organizing all 25 canonical web pages into 5 interconnected clinical, botanical, research, and governance domains.
                   </p>
                 </div>
-                <button onclick="viewWebsitePage('home')" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition shrink-0 flex items-center gap-2">
+                <button onclick="viewWebsitePage('home')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl shadow transition shrink-0 flex items-center gap-2 cursor-pointer">
                   <span>←</span> Back to Flagship Home
                 </button>
               </div>
+
+              <!-- Quick Search and Category Filter Strip -->
+              <div class="pt-4 border-t border-[var(--border)] space-y-3">
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm">🔍</span>
+                  <input id="arch-search-input" oninput="filterArchitectureLive(this.value)" type="text" placeholder="Quick Search 25 canonical pages by service name, clinical keyword, or URL path..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] placeholder-[var(--muted)] text-xs focus:outline-none focus:border-emerald-500 transition shadow-inner" />
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                  <span class="text-[11px] font-semibold text-[var(--muted)] uppercase tracking-wider mr-1">Filter Domain:</span>
+                  <button onclick="filterDomainCategory('all')" id="dom-filter-all" class="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] transition shadow-sm cursor-pointer">All (25 Pages)</button>
+                  <button onclick="filterDomainCategory('clinical')" id="dom-filter-clinical" class="px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer">🩺 Clinical (7)</button>
+                  <button onclick="filterDomainCategory('botanical')" id="dom-filter-botanical" class="px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer">🌿 Botanical (5)</button>
+                  <button onclick="filterDomainCategory('research')" id="dom-filter-research" class="px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer">🔬 Research (5)</button>
+                  <button onclick="filterDomainCategory('philosophy')" id="dom-filter-philosophy" class="px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer">🏛️ Philosophy (2)</button>
+                  <button onclick="filterDomainCategory('governance')" id="dom-filter-governance" class="px-3 py-1 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium text-[11px] transition cursor-pointer">⚖️ Governance (7)</button>
+                </div>
+              </div>
             </div>
 
-            <!-- Domain Sections -->
-            <div class="space-y-10">
+            <!-- Domain Sections with Perfect Light & Dark Theme Balance -->
+            <div id="arch-domains-container" class="space-y-8">
               ${architectureDomains.map((dom, domIdx) => `
-                <div class="bg-[var(--card)] p-6 md:p-8 rounded-3xl border border-[var(--border)] space-y-5">
-                  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-slate-800">
-                    <div>
-                      <h2 class="text-lg md:text-xl font-bold text-white">${dom.title}</h2>
-                      <p class="text-xs text-[var(--muted)] mt-1">${dom.desc}</p>
+                <div id="arch-domain-card-${dom.id}" class="arch-domain-block bg-[var(--card)] p-6 md:p-8 rounded-3xl border border-[var(--border)] space-y-5 shadow-sm transition">
+                  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-[var(--border)]">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl shrink-0">
+                        ${dom.icon}
+                      </div>
+                      <div>
+                        <h2 class="text-base sm:text-lg font-bold text-[var(--foreground)]">${dom.title}</h2>
+                        <p class="text-xs text-[var(--muted)] mt-0.5">${dom.desc}</p>
+                      </div>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-xs font-bold border border-emerald-500/20 shrink-0">
-                      ${dom.modules.length} Connected Modules
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[11px] font-bold border border-emerald-500/20 shrink-0">
+                      ${dom.modules.length} Connected Pages
                     </span>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     ${dom.modules.map(m => `
-                      <div class="p-4 rounded-2xl bg-[#0F172A]/80 border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between space-y-3 group">
+                      <div onclick="viewWebsitePage('${m.key}')" class="arch-module-card p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-emerald-500/60 hover:-translate-y-0.5 hover:shadow-md transition-all flex flex-col justify-between space-y-3 group cursor-pointer" data-title="${m.title.toLowerCase()}" data-desc="${m.desc.toLowerCase()}" data-path="${m.path.toLowerCase()}">
                         <div>
                           <div class="flex justify-between items-start gap-2 mb-1.5">
-                            <span class="font-bold text-white text-xs group-hover:text-emerald-300 transition-colors">${m.title}</span>
-                            <span class="text-[9px] text-emerald-400 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded shrink-0">${m.path}</span>
+                            <span class="font-bold text-[var(--foreground)] text-xs group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">${m.title}</span>
+                            <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded shrink-0">${m.path}</span>
                           </div>
-                          <p class="text-[11px] text-slate-300 leading-relaxed">${m.desc}</p>
+                          <p class="text-[11px] text-[var(--muted)] leading-relaxed">${m.desc}</p>
                         </div>
-                        <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[11px]">
-                          <span class="text-emerald-400 font-medium flex items-center gap-1">
-                            <span>●</span> Active Module
+                        <div class="pt-2.5 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
+                          <span class="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active Page
                           </span>
-                          <button onclick="viewWebsitePage('${m.key}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition">
-                            Explore Module &rarr;
-                          </button>
+                          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                            Explore &rarr;
+                          </span>
                         </div>
                       </div>
                     `).join('')}
@@ -11336,8 +11415,6 @@ function generateInstantOpdToken() {
         return;
       }
 
-
-      // Subpage views
       if (state.tab.startsWith('services_')) {
         const sub = publicPages.find(p => p.key === state.tab) || { title: "Clinical Service Detail", desc: "Advanced healthcare module" };
         const subnav = getWebsiteHubSubnav(state.tab);
@@ -12313,595 +12390,113 @@ function generateInstantOpdToken() {
           <!-- ===================================================================== -->
           <!-- 11. LUXURY CLINICAL ARCHITECTURE & COMPLETE SITE DIRECTORY -->
           <!-- ===================================================================== -->
-          <div class="p-8 md:p-10 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#142033] to-[#0A0F1D] border-2 border-emerald-500/30 space-y-8 shadow-2xl">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-800 pb-6">
+          <div class="p-6 md:p-10 rounded-3xl bg-[var(--card)] border-2 border-emerald-500/30 space-y-8 shadow-md">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[var(--border)] pb-6">
               <div>
                 <div class="flex items-center gap-2 mb-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Canonical Clinical Architecture &bull; 25 Public Web Pages</span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Canonical Clinical Architecture &bull; 25 Public Web Pages</span>
                 </div>
-                <h3 class="text-2xl sm:text-3xl font-extrabold text-white">The ZAYVORA Clinical Knowledge Index</h3>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1 leading-relaxed">
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)]">The ZAYVORA Clinical Knowledge Index</h3>
+                <p class="text-xs sm:text-sm text-[var(--muted)] max-w-2xl mt-1 leading-relaxed">
                   Browse our complete 5-domain clinical framework — from outpatient matab protocols and analytical botanical pharmacopoeia to real-world evidence trials and statutory healthcare governance.
                 </p>
               </div>
-              <button onclick="viewWebsitePage('pages25')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/40 transition flex items-center gap-2 shrink-0 cursor-pointer">
+              <button onclick="viewWebsitePage('pages25')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/20 transition flex items-center gap-2 shrink-0 cursor-pointer">
                 <span>View Full 25-Page Architecture</span>
                 <span>&rarr;</span>
               </button>
             </div>
 
-            <!-- 5 Elegant Semantic Domain Cards -->
+            <!-- 5 Elegant Semantic Domain Cards with Crisp Light/Dark Contrast -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
               <!-- Domain 1 -->
-              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-emerald-500/50 transition-all space-y-3 flex flex-col justify-between group">
+              <div onclick="viewWebsitePage('services')" class="p-5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-emerald-500/60 hover:shadow-md transition-all space-y-3 flex flex-col justify-between group cursor-pointer">
                 <div class="space-y-2">
-                  <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg text-emerald-400">🩺</div>
-                  <h4 class="font-bold text-white text-sm group-hover:text-emerald-300 transition-colors">Clinical Services</h4>
-                  <p class="text-[11px] text-slate-400 leading-snug">In-clinic matab care, tele-consultation, and AI clinical decision support.</p>
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl text-emerald-600 dark:text-emerald-400">🩺</div>
+                  <h4 class="font-bold text-[var(--foreground)] text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Clinical Services</h4>
+                  <p class="text-[11px] text-[var(--muted)] leading-relaxed">In-clinic matab care, tele-consultation, and AI clinical decision support.</p>
                 </div>
-                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_clinical_care')" class="hover:text-emerald-400 block transition">&bull; In-Clinic Matab Care</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_digital_health')" class="hover:text-emerald-400 block transition">&bull; Digital Health &amp; Scribe</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 block transition">&bull; Hakeem Sahab™ AI</a></li>
+                <ul class="space-y-1.5 text-[11px] text-[var(--foreground-secondary)] border-t border-[var(--border)] pt-2.5">
+                  <li class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">&bull; In-Clinic Matab Care</li>
+                  <li class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">&bull; Digital Health &amp; Scribe</li>
+                  <li class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">&bull; Hakeem Sahab™ AI</li>
                 </ul>
               </div>
 
               <!-- Domain 2 -->
-              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-teal-500/50 transition-all space-y-3 flex flex-col justify-between group">
+              <div onclick="viewWebsitePage('products')" class="p-5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-teal-500/60 hover:shadow-md transition-all space-y-3 flex flex-col justify-between group cursor-pointer">
                 <div class="space-y-2">
-                  <div class="w-9 h-9 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-lg text-teal-400">🌿</div>
-                  <h4 class="font-bold text-white text-sm group-hover:text-teal-300 transition-colors">Botanical Formulations</h4>
-                  <p class="text-[11px] text-slate-400 leading-snug">Standardized extracts, classical Greco-Arab compounds, and COAs.</p>
+                  <div class="w-10 h-10 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-xl text-teal-600 dark:text-teal-400">🌿</div>
+                  <h4 class="font-bold text-[var(--foreground)] text-sm group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">Botanical Formulations</h4>
+                  <p class="text-[11px] text-[var(--muted)] leading-relaxed">Standardized extracts, classical Greco-Arab compounds, and COAs.</p>
                 </div>
-                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_unani_care')" class="hover:text-teal-400 block transition">&bull; Classical Unani Care</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_herbal_products')" class="hover:text-teal-400 block transition">&bull; Standardized Extracts</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_nutraceuticals')" class="hover:text-teal-400 block transition">&bull; Phyto-Nutraceuticals</a></li>
+                <ul class="space-y-1.5 text-[11px] text-[var(--foreground-secondary)] border-t border-[var(--border)] pt-2.5">
+                  <li class="hover:text-teal-600 dark:hover:text-teal-400 transition">&bull; Classical Unani Care</li>
+                  <li class="hover:text-teal-600 dark:hover:text-teal-400 transition">&bull; Standardized Extracts</li>
+                  <li class="hover:text-teal-600 dark:hover:text-teal-400 transition">&bull; Phyto-Nutraceuticals</li>
                 </ul>
               </div>
 
               <!-- Domain 3 -->
-              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-amber-500/50 transition-all space-y-3 flex flex-col justify-between group">
+              <div onclick="viewWebsitePage('research')" class="p-5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-amber-500/60 hover:shadow-md transition-all space-y-3 flex flex-col justify-between group cursor-pointer">
                 <div class="space-y-2">
-                  <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-lg text-amber-400">🔬</div>
-                  <h4 class="font-bold text-white text-sm group-hover:text-amber-300 transition-colors">Research &amp; Evidence</h4>
-                  <p class="text-[11px] text-slate-400 leading-snug">RWE clinical registries, analytical HPLC monographs, and academic trials.</p>
+                  <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl text-amber-600 dark:text-amber-400">🔬</div>
+                  <h4 class="font-bold text-[var(--foreground)] text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">Research &amp; Evidence</h4>
+                  <p class="text-[11px] text-[var(--muted)] leading-relaxed">RWE clinical registries, analytical HPLC monographs, and academic trials.</p>
                 </div>
-                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_clinical_research')" class="hover:text-amber-400 block transition">&bull; Clinical Trials &amp; RWE</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_knowledge_intelligence')" class="hover:text-amber-400 block transition">&bull; Pharmacopoeia Graph</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_evidence')" class="hover:text-amber-400 block transition">&bull; Phytochemical Evidence</a></li>
+                <ul class="space-y-1.5 text-[11px] text-[var(--foreground-secondary)] border-t border-[var(--border)] pt-2.5">
+                  <li class="hover:text-amber-600 dark:hover:text-amber-400 transition">&bull; Clinical Trials &amp; RWE</li>
+                  <li class="hover:text-amber-600 dark:hover:text-amber-400 transition">&bull; Pharmacopoeia Graph</li>
+                  <li class="hover:text-amber-600 dark:hover:text-amber-400 transition">&bull; Phytochemical Evidence</li>
                 </ul>
               </div>
 
               <!-- Domain 4 -->
-              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-blue-500/50 transition-all space-y-3 flex flex-col justify-between group">
+              <div onclick="viewWebsitePage('philosophy')" class="p-5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-sky-500/60 hover:shadow-md transition-all space-y-3 flex flex-col justify-between group cursor-pointer">
                 <div class="space-y-2">
-                  <div class="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-lg text-blue-400">🏛️</div>
-                  <h4 class="font-bold text-white text-sm group-hover:text-blue-300 transition-colors">Philosophy &amp; Care</h4>
-                  <p class="text-[11px] text-slate-400 leading-snug">Four Humors (Akhlat), 12-Step continuum, and multi-facility matabs.</p>
+                  <div class="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-xl text-sky-600 dark:text-sky-400">🏛️</div>
+                  <h4 class="font-bold text-[var(--foreground)] text-sm group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">Philosophy &amp; Care</h4>
+                  <p class="text-[11px] text-[var(--muted)] leading-relaxed">Four Humors (Akhlat), 12-Step continuum, and multi-facility matabs.</p>
                 </div>
-                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('philosophy')" class="hover:text-blue-400 block transition">&bull; Humoral Philosophy</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('care_journey')" class="hover:text-blue-400 block transition">&bull; 12-Stage Care Loop</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('doctors')" class="hover:text-blue-400 block transition">&bull; Faculty &amp; Clinicians</a></li>
+                <ul class="space-y-1.5 text-[11px] text-[var(--foreground-secondary)] border-t border-[var(--border)] pt-2.5">
+                  <li class="hover:text-sky-600 dark:hover:text-sky-400 transition">&bull; Humoral Philosophy</li>
+                  <li class="hover:text-sky-600 dark:hover:text-sky-400 transition">&bull; 12-Stage Care Loop</li>
+                  <li class="hover:text-sky-600 dark:hover:text-sky-400 transition">&bull; Faculty &amp; Clinicians</li>
                 </ul>
               </div>
 
               <!-- Domain 5 -->
-              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-purple-500/30 hover:border-purple-500/50 transition-all space-y-3 flex flex-col justify-between group">
+              <div onclick="viewWebsitePage('ethics')" class="p-5 rounded-2xl bg-[var(--background)] border border-[var(--border)] hover:border-purple-500/60 hover:shadow-md transition-all space-y-3 flex flex-col justify-between group cursor-pointer">
                 <div class="space-y-2">
-                  <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-lg text-purple-400">⚖️</div>
-                  <h4 class="font-bold text-white text-sm group-hover:text-purple-300 transition-colors">Governance &amp; Trust</h4>
-                  <p class="text-[11px] text-slate-400 leading-snug">21 CFR Part 11 records, patient privacy under DPDP, and clinical ethics.</p>
+                  <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-xl text-purple-600 dark:text-purple-400">⚖️</div>
+                  <h4 class="font-bold text-[var(--foreground)] text-sm group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Governance &amp; Trust</h4>
+                  <p class="text-[11px] text-[var(--muted)] leading-relaxed">21 CFR Part 11 records, patient privacy under DPDP, and clinical ethics.</p>
                 </div>
-                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('ethics')" class="hover:text-purple-400 block transition">&bull; Clinical Ethics Charter</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('privacy')" class="hover:text-purple-400 block transition">&bull; Privacy &amp; Data Security</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('terms')" class="hover:text-purple-400 block transition">&bull; Telemedicine Terms</a></li>
+                <ul class="space-y-1.5 text-[11px] text-[var(--foreground-secondary)] border-t border-[var(--border)] pt-2.5">
+                  <li class="hover:text-purple-600 dark:hover:text-purple-400 transition">&bull; Clinical Ethics Charter</li>
+                  <li class="hover:text-purple-600 dark:hover:text-purple-400 transition">&bull; Privacy &amp; Data Security</li>
+                  <li class="hover:text-purple-600 dark:hover:text-purple-400 transition">&bull; Telemedicine Terms</li>
                 </ul>
               </div>
             </div>
 
             <!-- Bottom interactive action strip -->
-            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-400">
+            <div class="pt-4 border-t border-[var(--border)] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-[var(--muted)]">
               <span class="flex items-center gap-1.5">
-                <span class="text-emerald-400">✓</span> All 25 canonical web pages are verified, responsive, and available in English, Hindi, and Urdu.
+                <span class="text-emerald-500 font-bold">✓</span> All 25 canonical web pages are verified, responsive, and available in English, Hindi, and Urdu.
               </span>
               <div class="flex items-center gap-2">
-                <button onclick="viewWebsitePage('faqs')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer">
+                <button onclick="viewWebsitePage('faqs')" class="px-3.5 py-1.5 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer font-medium">
                   Patient FAQs &rarr;
                 </button>
-                <button onclick="viewWebsitePage('contact')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer">
+                <button onclick="viewWebsitePage('contact')" class="px-3.5 py-1.5 rounded-lg bg-[var(--background)] hover:bg-[var(--card)] text-[var(--foreground-secondary)] hover:text-[var(--foreground)] border border-[var(--border)] transition cursor-pointer font-medium">
                   Direct Contact &amp; Triage &rarr;
                 </button>
               </div>
             </div>
           </div>
-
-        </div>
-      `;
-if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
-    }
-
-
-    // =========================================================================
-    // ZAYVORA HERBALS 32-PRODUCT PORTFOLIO & CART WORKSPACE
-    // =========================================================================
-    const herbalsProducts = [
-      {
-            "id": "zay-001",
-            "sku": "ZAY-001",
-            "name": "ZAYVORA TensioCalm™",
-            "unani_name": "Safoof-e-Tansiyat-ud-Dam",
-            "category": "Cerebrovascular",
-            "price": 1850,
-            "desc": "Essential Hypertension (Stage 1 & 2), Stress-induced systolic spikes, Zayt-e-Dam (blood tension). Safoof-e-Tansiyat-ud-Dam.",
-            "dosage": "3g twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
-            "indications": "Essential Hypertension (Stage 1 & 2), Stress-induced systolic spikes, Zayt-e-Dam (blood tension)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-002",
-            "sku": "ZAY-002",
-            "name": "ZAYVORA Glucovora™",
-            "unani_name": "Safoof-e-Qawi-e-Banas",
-            "category": "Pancreatic",
-            "price": 1450,
-            "desc": "Ziabetus Shakari (Type 2 Diabetes Mellitus), Impaired Fasting Glucose, Peripheral Insulin Resistance. Safoof-e-Qawi-e-Banas.",
-            "dosage": "3g to 5g twice daily 20 minutes before breakfast and dinner with warm water",
-            "indications": "Ziabetus Shakari (Type 2 Diabetes Mellitus), Impaired Fasting Glucose, Peripheral Insulin Resistance",
-            "is_hero_launch": true,
-            "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-003",
-            "sku": "ZAY-003",
-            "name": "ZAYVORA CardioVora™",
-            "unani_name": "Majoon-e-Muqawwi-e-Qalb",
-            "category": "Cardiovascular",
-            "price": 2200,
-            "desc": "Zof-e-Qalb (Cardiac weakness), Khafqan (Palpitations), Post-cardiac rehabilitation, Endothelial dysfunction. Majoon-e-Muqawwi-e-Qalb.",
-            "dosage": "5g in the morning on empty stomach with milk or Arq Gulab",
-            "indications": "Zof-e-Qalb (Cardiac weakness), Khafqan (Palpitations), Post-cardiac rehabilitation, Endothelial dysfunction",
-            "is_hero_launch": false,
-            "form": "Majoon Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-004",
-            "sku": "ZAY-004",
-            "name": "ZAYVORA LiverPrime™",
-            "unani_name": "Safoof-e-Muqawwi-e-Jigar",
-            "category": "Hepatobiliary",
-            "price": 1350,
-            "desc": "Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD), Sluggish bile clearance, Elevated transaminases. Safoof-e-Muqawwi-e-Jigar.",
-            "dosage": "3g twice daily 30 minutes after meals with warm water",
-            "indications": "Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD), Sluggish bile clearance, Elevated transaminases",
-            "is_hero_launch": true,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-005",
-            "sku": "ZAY-005",
-            "name": "ZAYVORA LipidoVora™",
-            "unani_name": "Safoof-e-Islah-e-Dam",
-            "category": "Metabolic",
-            "price": 1250,
-            "desc": "Dasaumat-ud-Dam (Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL). Safoof-e-Islah-e-Dam.",
-            "dosage": "2g to 3g twice daily after heavy meals with warm water",
-            "indications": "Dasaumat-ud-Dam (Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-006",
-            "sku": "ZAY-006",
-            "name": "ZAYVORA PulmoVora™",
-            "unani_name": "Lauq-e-Muqawwi-e-Sadr",
-            "category": "Pulmonary",
-            "price": 950,
-            "desc": "Zeequn-Nafs (Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion). Lauq-e-Muqawwi-e-Sadr.",
-            "dosage": "5g to 10g licked slowly from a spoon twice daily, followed by warm water or fennel tea",
-            "indications": "Zeequn-Nafs (Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion)",
-            "is_hero_launch": false,
-            "form": "Effervescent Micro-Granules (30 Sachets)"
-      },
-      {
-            "id": "zay-007",
-            "sku": "ZAY-007",
-            "name": "ZAYVORA SynovoFlex™",
-            "unani_name": "Safoof-e-Muhallil-e-Mafasil",
-            "category": "Musculoskeletal",
-            "price": 1650,
-            "desc": "Waja-ul-Mafasil (Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation). Safoof-e-Muhallil-e-Mafasil.",
-            "dosage": "3g twice daily with warm milk or lukewarm water after breakfast and dinner",
-            "indications": "Waja-ul-Mafasil (Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation)",
-            "is_hero_launch": true,
-            "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-008",
-            "sku": "ZAY-008",
-            "name": "ZAYVORA NeuroVora™",
-            "unani_name": "Majoon-e-Mufarrih-e-Arwah",
-            "category": "Neuropsychiatric",
-            "price": 1750,
-            "desc": "Malikhuliya (Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue). Majoon-e-Mufarrih-e-Arwah.",
-            "dosage": "5g twice daily in the morning and 1 hour before sleep with warm milk",
-            "indications": "Malikhuliya (Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-009",
-            "sku": "ZAY-009",
-            "name": "ZAYVORA NeuroShield-Rx™",
-            "unani_name": "Qurs-e-Taqwiyat-e-Quwwat-e-Baah",
-            "category": "Andrological",
-            "price": 3400,
-            "desc": "Severe Neuro-Vascular Erectile Dysfunction (Zof-e-Baah Shadeed), Loss of Penile Tumescence. Qurs-e-Taqwiyat-e-Quwwat-e-Baah.",
-            "dosage": "1 tablet at night with 250ml warm saffron milk 2 hours after meal. Maximum 3 tablets per week.",
-            "indications": "Severe Neuro-Vascular Erectile Dysfunction (Zof-e-Baah Shadeed), Loss of Penile Tumescence",
-            "is_hero_launch": false,
-            "form": "Habb / Coated Micro-Tablets (60 Tabs)"
-      },
-      {
-            "id": "zay-010",
-            "sku": "ZAY-010",
-            "name": "ZAYVORA SpermoPro™",
-            "unani_name": "Majoon-e-Taqwiyat-e-Mani-Shadeed",
-            "category": "Andrological",
-            "price": 3800,
-            "desc": "Severe Oligospermia (<10 million/ml), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume Deficit. Majoon-e-Taqwiyat-e-Mani-Shadeed.",
-            "dosage": "10g in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
-            "indications": "Severe Oligospermia (<10 million/ml), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume Deficit",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-011",
-            "sku": "ZAY-011",
-            "name": "ZAYVORA VigorVora™",
-            "unani_name": "Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal",
-            "category": "Andrological",
-            "price": 1150,
-            "desc": "General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion. Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal.",
-            "dosage": "3g or 2 capsules daily in the morning with water or milk",
-            "indications": "General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion",
-            "is_hero_launch": false,
-            "form": "Standardized Micro-Granules (30 Sachets)"
-      },
-      {
-            "id": "zay-012",
-            "sku": "ZAY-012",
-            "name": "ZAYVORA SomnoVora™",
-            "unani_name": "Safoof-e-Taskeen-e-Dimagh",
-            "category": "Neuropsychiatric",
-            "price": 1250,
-            "desc": "Sahar (Insomnia), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness. Safoof-e-Taskeen-e-Dimagh.",
-            "dosage": "3g in warm milk or chamomile water 45 minutes before bedtime",
-            "indications": "Sahar (Insomnia), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness",
-            "is_hero_launch": false,
-            "form": "Herbal Infusion / Decoction Elixir (200ml)"
-      },
-      {
-            "id": "zay-013",
-            "sku": "ZAY-013",
-            "name": "ZAYVORA VitalMani™",
-            "unani_name": "Safoof-e-Muwalid-e-Mani-Mutawassit",
-            "category": "Andrological",
-            "price": 1850,
-            "desc": "Moderate Oligospermia (10-15 million/ml), Decreased seminal volume, Semen liquefaction delay. Safoof-e-Muwalid-e-Mani-Mutawassit.",
-            "dosage": "5g twice daily with warm milk",
-            "indications": "Moderate Oligospermia (10-15 million/ml), Decreased seminal volume, Semen liquefaction delay",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-014",
-            "sku": "ZAY-014",
-            "name": "ZAYVORA DermaVora-Hair™",
-            "unani_name": "Safoof-e-Munbit-e-Sha'r",
-            "category": "Dermatological",
-            "price": 1100,
-            "desc": "Intisaar-ush-Sha'r (Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness). Safoof-e-Munbit-e-Sha'r.",
-            "dosage": "3g daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
-            "indications": "Intisaar-ush-Sha'r (Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness)",
-            "is_hero_launch": false,
-            "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-015",
-            "sku": "ZAY-015",
-            "name": "ZAYVORA LithoVora™",
-            "unani_name": "Safoof-e-Mufattit-e-Hisat",
-            "category": "Urological",
-            "price": 1350,
-            "desc": "Hisat-e-Kulya wa Masana (Kidney and bladder calculi <8mm), Crystalluria, Burning micturition (Sozish-e-Baul). Safoof-e-Mufattit-e-Hisat.",
-            "dosage": "3g twice daily with a full glass of water, minimum 3 liters daily fluid intake",
-            "indications": "Hisat-e-Kulya wa Masana (Kidney and bladder calculi <8mm), Crystalluria, Burning micturition (Sozish-e-Baul)",
-            "is_hero_launch": false,
-            "form": "Targeted Micro-Granules (30 x 5g Daily Sachets)"
-      },
-      {
-            "id": "zay-016",
-            "sku": "ZAY-016",
-            "name": "ZAYVORA GynaeVora-L™",
-            "unani_name": "Safoof-e-Qabiz-e-Reham",
-            "category": "Gynecological",
-            "price": 1150,
-            "desc": "Sailan-ur-Reham (Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion). Safoof-e-Qabiz-e-Reham.",
-            "dosage": "3g twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
-            "indications": "Sailan-ur-Reham (Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion)",
-            "is_hero_launch": false,
-            "form": "Micro-Calcified Tablets (60 Tabs)"
-      },
-      {
-            "id": "zay-017",
-            "sku": "ZAY-017",
-            "name": "ZAYVORA MetaboBurn-M™",
-            "unani_name": "Safoof-e-Tahleel-e-Shahm",
-            "category": "Metabolic",
-            "price": 1450,
-            "desc": "Shahm-e-Mufrit (Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess). Safoof-e-Tahleel-e-Shahm.",
-            "dosage": "3g twice daily 30 minutes before major meals with warm water",
-            "indications": "Shahm-e-Mufrit (Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-018",
-            "sku": "ZAY-018",
-            "name": "ZAYVORA ThyroMet-W™",
-            "unani_name": "Safoof-e-Islah-e-Ghudda-e-Darqiya",
-            "category": "Endocrine",
-            "price": 1550,
-            "desc": "Ghudda-e-Darqiya sluggishness (Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishness). Safoof-e-Islah-e-Ghudda-e-Darqiya.",
-            "dosage": "3g twice daily with warm ginger infusion or lukewarm water",
-            "indications": "Ghudda-e-Darqiya sluggishness (Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishness)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-019",
-            "sku": "ZAY-019",
-            "name": "ZAYVORA FemmeDaily™",
-            "unani_name": "Safoof-e-Nisa",
-            "category": "Gynecological",
-            "price": 1150,
-            "desc": "General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium. Safoof-e-Nisa.",
-            "dosage": "3g daily in the morning with milk or warm water",
-            "indications": "General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium",
-            "is_hero_launch": false,
-            "form": "Compressed Tablets (60 Tabs)"
-      },
-      {
-            "id": "zay-020",
-            "sku": "ZAY-020",
-            "name": "ZAYVORA GlucoBalance™",
-            "unani_name": "Safoof-e-Daf-e-Ziabetus-Mutawassit",
-            "category": "Pancreatic",
-            "price": 1250,
-            "desc": "Prediabetes (HbA1c 5.7–6.4%), Impaired fasting glucose, Postprandial glucose surges. Safoof-e-Daf-e-Ziabetus-Mutawassit.",
-            "dosage": "3g twice daily 15 minutes before lunch and dinner",
-            "indications": "Prediabetes (HbA1c 5.7–6.4%), Impaired fasting glucose, Postprandial glucose surges",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-021",
-            "sku": "ZAY-021",
-            "name": "ZAYVORA ImmunoVora™",
-            "unani_name": "Safoof-e-Muqawwi-e-Tabiyat",
-            "category": "Immunological",
-            "price": 950,
-            "desc": "Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia. Safoof-e-Muqawwi-e-Tabiyat.",
-            "dosage": "3g once or twice daily with warm water or green tea",
-            "indications": "Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia",
-            "is_hero_launch": false,
-            "form": "Purified Herbal Granules (30 Sachets)"
-      },
-      {
-            "id": "zay-022",
-            "sku": "ZAY-022",
-            "name": "ZAYVORA GastroVora™",
-            "unani_name": "Safoof-e-Islah-e-Amaa",
-            "category": "Gastrointestinal",
-            "price": 1150,
-            "desc": "Zalaq-ul-Amaa / Nafkh-e-Shikam (Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Flatulence). Safoof-e-Islah-e-Amaa.",
-            "dosage": "5g twice daily 20 minutes after food with fresh buttermilk or water",
-            "indications": "Zalaq-ul-Amaa / Nafkh-e-Shikam (Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Flatulence)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-023",
-            "sku": "ZAY-023",
-            "name": "ZAYVORA NeuroVigor-Rx™",
-            "unani_name": "Habb-e-Azaraqi Mudabbar (Majoon-e-Muhrik-e-Baah)",
-            "category": "Andrological",
-            "price": 1850,
-            "desc": "Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence. Habb-e-Azaraqi Mudabbar (Majoon-e-Muhrik-e-Baah).",
-            "dosage": "1 tablet at bedtime with 250ml full-cream milk. Maximum 3 times weekly. Strictly requires registered AYUSH practitioner prescription.",
-            "indications": "Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence",
-            "is_hero_launch": false,
-            "form": "Coated Micro-Tablets (Alu-Alu Blister, 60 Tabs)"
-      },
-      {
-            "id": "zay-024",
-            "sku": "ZAY-024",
-            "name": "ZAYVORA SpermoVora™",
-            "unani_name": "Safoof-e-Mujaddid-e-Nutfa-Shadeed",
-            "category": "Andrological",
-            "price": 2250,
-            "desc": "Severe Oligo-Astheno-Teratozoospermia (OAT Syndrome), Elevated DNA Fragmentation Index (DFI > 25%). Safoof-e-Mujaddid-e-Nutfa-Shadeed.",
-            "dosage": "1 sachet (7g paste) twice daily with milk or fresh pomegranate juice for 90 to 120 days",
-            "indications": "Severe Oligo-Astheno-Teratozoospermia (OAT Syndrome), Elevated DNA Fragmentation Index (DFI > 25%)",
-            "is_hero_launch": false,
-            "form": "Single-Serve Paste Sachets (30 x 7g)"
-      },
-      {
-            "id": "zay-025",
-            "sku": "ZAY-025",
-            "name": "ZAYVORA ManiVital Pro™",
-            "unani_name": "Safoof-e-Mumsik-e-Mani-Shadeed",
-            "category": "Andrological",
-            "price": 1950,
-            "desc": "Surat-e-Inzal (Premature Ejaculation, IELT < 1 minute), Riqat-e-Mani (Seminal hyperviscosity/thinness). Safoof-e-Mumsik-e-Mani-Shadeed.",
-            "dosage": "5g twice daily with lukewarm milk 1 hour before sleep",
-            "indications": "Surat-e-Inzal (Premature Ejaculation, IELT < 1 minute), Riqat-e-Mani (Seminal hyperviscosity/thinness)",
-            "is_hero_launch": true,
-            "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-026",
-            "sku": "ZAY-026",
-            "name": "ZAYVORA ProstaVora™",
-            "unani_name": "Safoof-e-Mulayyim-e-Ghudda-e-Baristeht",
-            "category": "Urological",
-            "price": 1850,
-            "desc": "Waram-e-Ghudda-e-Baristeht (Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesitancy). Safoof-e-Mulayyim-e-Ghudda-e-Baristeht.",
-            "dosage": "3g or 2 capsules twice daily after meals with water",
-            "indications": "Waram-e-Ghudda-e-Baristeht (Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesitancy)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-027",
-            "sku": "ZAY-027",
-            "name": "ZAYVORA AndroVora™",
-            "unani_name": "Majoon-e-Muqawwi-e-Khusyatain",
-            "category": "Andrological",
-            "price": 3600,
-            "desc": "Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone. Majoon-e-Muqawwi-e-Khusyatain.",
-            "dosage": "5g in the morning on empty stomach with warm milk",
-            "indications": "Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone",
-            "is_hero_launch": false,
-            "form": "Targeted HPMC Veg Capsules (60 Caps)"
-      },
-      {
-            "id": "zay-028",
-            "sku": "ZAY-028",
-            "name": "ZAYVORA LeucoVora™",
-            "unani_name": "Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed",
-            "category": "Gynecological",
-            "price": 1650,
-            "desc": "Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge. Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed.",
-            "dosage": "3g twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
-            "indications": "Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge",
-            "is_hero_launch": false,
-            "form": "Micro-Granules (30 x 3g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-029",
-            "sku": "ZAY-029",
-            "name": "ZAYVORA OvaSync-PCOS™",
-            "unani_name": "Safoof-e-Munazzim-e-Haiz",
-            "category": "Gynecological",
-            "price": 2400,
-            "desc": "Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham (PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, Insulin Resistance). Safoof-e-Munazzim-e-Haiz.",
-            "dosage": "4g (1 sachet) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
-            "indications": "Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham (PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, Insulin Resistance)",
-            "is_hero_launch": true,
-            "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-030",
-            "sku": "ZAY-030",
-            "name": "ZAYVORA MensoCalm™",
-            "unani_name": "Majoon-e-Muqawwi-e-Reham-Shadeed",
-            "category": "Gynecological",
-            "price": 1850,
-            "desc": "Zof-e-Reham (Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy). Majoon-e-Muqawwi-e-Reham-Shadeed.",
-            "dosage": "5g in the morning with warm milk",
-            "indications": "Zof-e-Reham (Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy)",
-            "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
-      },
-      {
-            "id": "zay-031",
-            "sku": "ZAY-031",
-            "name": "ZAYVORA MenoVora™",
-            "unani_name": "Safoof-e-Daf-e-Araz-e-Yas",
-            "category": "Gynecological",
-            "price": 1750,
-            "desc": "Sinn-e-Yas (Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone Demineralization). Safoof-e-Daf-e-Araz-e-Yas.",
-            "dosage": "3g twice daily with lukewarm water after breakfast and dinner",
-            "indications": "Sinn-e-Yas (Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone Demineralization)",
-            "is_hero_launch": false,
-            "form": "Micro-Granules (30 x 3g Daily Stick Sachets)"
-      },
-      {
-            "id": "zay-032",
-            "sku": "ZAY-032",
-            "name": "ZAYVORA ConceiveVora™",
-            "unani_name": "Safoof-e-Mualijat-e-Uqr-e-Nisa",
-            "category": "Gynecological",
-            "price": 3800,
-            "desc": "Uqr-e-Nisa (Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Lining). Safoof-e-Mualijat-e-Uqr-e-Nisa.",
-            "dosage": "5g twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
-            "indications": "Uqr-e-Nisa (Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Lining)",
-            "is_hero_launch": false,
-            "form": "Compressed Tablets (60 Tabs)"
-      }
-];
-
-    let herbalsCart = [];
-
-    function addToHerbalsCart(id) {
-      const prod = herbalsProducts.find(p => p.id === id);
-      if (prod) {
-        herbalsCart.push(prod);
-        showNotification(`Added ${prod.name} to Cart! Total items: ${herbalsCart.length}`);
-        renderHerbalsApp(document.getElementById('workspace-container'));
-      }
-    }
-
-    function clearHerbalsCart() {
-      herbalsCart = [];
-      showNotification('Cart cleared.');
-      renderHerbalsApp(document.getElementById('workspace-container'));
-    }
-
-    function checkoutHerbalsCart() {
-      if (herbalsCart.length === 0) {
-        showNotification('Your cart is empty. Please add products first.', 'error');
-        return;
-      }
-      showNotification(`Order Confirmed! ${herbalsCart.length} items queued for FEFO Dispensary Dispatch.`);
-      herbalsCart = [];
-      renderHerbalsApp(document.getElementById('workspace-container'));
-    }
-
-    function renderHerbalsApp(container) {
-      const activeTab = state.tab || 'catalog';
-      const totalAmount = herbalsCart.reduce((sum, item) => sum + item.price, 0);
-
-      const subnavItems = [
-        { key: 'catalog', label: '🌿 32-Formulation Catalog' },
-        { key: 'cart', label: `🛒 Cart (${herbalsCart.length} items)` },
-        { key: 'monographs', label: '🔬 HPLC Monographs' },
-        { key: 'fefo', label: '📦 FEFO Dispensary Queue' }
-      ];
-
-      const subnavHtml = `
-        <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-6 shadow-lg">
-          <div class="flex items-center justify-between gap-4 mb-2 pb-2 border-b border-slate-800/80">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">ZAYVORA Botanical Dispensary™</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">AYUSH GMP &amp; Mudabbar Certified</span>
-            </div>
-            <span class="text-xs font-medium text-slate-300">Master Pharmacopoeia (32 Compounds)</span>
-          </div>
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
-            ${subnavItems.map(it => `
-              <button onclick="switchTab('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${activeTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
-                ${it.label}
-              </button>
-            `).join('')}
-          </div>
+</div>
         </div>
       `;
 
