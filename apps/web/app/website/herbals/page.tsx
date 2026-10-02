@@ -51,7 +51,7 @@ export default function ProductsHerbalsPage() {
           ZAYVORA Standardized Formulations
         </h1>
         <p className="text-sm text-[#94A3B8] max-w-3xl leading-relaxed">
-          Statutory Unani botanical preparations manufactured under strict GMP conditions at the Jamia Hamdard AUTC cleanroom facility. Separated cleanly into clinical prescription formulations, classical retail preparations, and licensed nutraceuticals.
+          Statutory Unani botanical preparations manufactured under strict GMP conditions at the ZAYVORA Research & Manufacturing™ cleanroom facility. Separated cleanly into clinical prescription formulations, classical retail preparations, and licensed nutraceuticals.
         </p>
       </div>
 

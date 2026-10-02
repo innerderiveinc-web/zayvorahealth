@@ -22,7 +22,7 @@ export const TeleConsultRoom: React.FC<{ onEndCall: () => void }> = ({ onEndCall
       {/* Top Telehealth Status Bar */}
       <View style={styles.topBar}>
         <View style={styles.doctorInfo}>
-          <Text style={styles.doctorName}>Hakim Dr. Tariq Mansoor</Text>
+          <Text style={styles.doctorName}>Hakeem Dr. Irfan Ashraf</Text>
           <Text style={styles.callMeta}>Encrypted WebRTC • Room: ENC-2026-0814</Text>
         </View>
         <View style={styles.liveBadge}>
@@ -35,7 +35,7 @@ export const TeleConsultRoom: React.FC<{ onEndCall: () => void }> = ({ onEndCall
         <View style={styles.videoArea}>
           {/* Main Remote Video Stream (Doctor) */}
           <View style={styles.remoteVideo}>
-            <Text style={styles.videoPlaceholder}>🩺 Dr. Tariq Mansoor (Video Active)</Text>
+            <Text style={styles.videoPlaceholder}>🩺 Hakeem Dr. Irfan Ashraf (Video Active)</Text>
             <View style={styles.webrtcQuality}>
               <Text style={styles.qualityText}>HD 1080p • 24ms • TLS 1.3</Text>
             </View>

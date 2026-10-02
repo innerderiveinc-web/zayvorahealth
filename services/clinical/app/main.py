@@ -29,6 +29,7 @@ from app.routers import (
     timeline,
     wearables,
     afaal,
+    continuum,
 )
 from app.observability.telemetry import GLOBAL_TELEMETRY
 from fastapi.responses import PlainTextResponse
@@ -52,7 +53,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title="ZAYVORA Clinical Service",
         version="0.1.0-phase1",
         description="Patient 360, encounters, versioned clinical notes, prescriptions, "
-        "appointments, and the aggregated clinical timeline (Master Build Prompt v4.0 Phase 1).",
+        "appointments, and the aggregated clinical timeline (ZAYVORA Clinical Architecture Specification v4.0 Phase 1).",
         lifespan=lifespan,
     )
     app.add_middleware(
@@ -83,6 +84,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(payments.router)
     app.include_router(cron.router)
     app.include_router(afaal.router)
+    app.include_router(continuum.router)
 
     @app.get("/metrics", response_class=PlainTextResponse)
     def prometheus_metrics():

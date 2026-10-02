@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identifier) {
       setErrorMessage("Please enter your registered mobile or email.");
@@ -20,13 +20,11 @@ export default function ForgotPasswordPage() {
     setErrorMessage(null);
 
     try {
-      AuthService.requestPasswordReset(identifier);
-      setTimeout(() => {
-        setIsLoading(false);
-        setSubmitted(true);
-      }, 500);
+      await AuthService.requestPasswordResetAsync(identifier);
+      setIsLoading(false);
+      setSubmitted(true);
     } catch (err: any) {
-      setErrorMessage(err.message);
+      setErrorMessage(err.message || "Failed to send password reset OTP.");
       setIsLoading(false);
     }
   };

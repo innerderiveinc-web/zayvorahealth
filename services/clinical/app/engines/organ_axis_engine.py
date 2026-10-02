@@ -417,3 +417,180 @@ def run_complete_organ_axis_analysis(
         "biomarker_cross_talk": biomarkers,
     }
 
+
+
+# Integration with ZAYVORA Master Knowledge System
+try:
+    from services.knowledge.app.data.organ_axes_master import (
+        ORGAN_AXES_CATALOG as MASTER_12_AXES_CATALOG,
+        score_organ_axes as master_score_organ_axes,
+        get_all_axes as master_get_all_axes,
+        get_axis_by_id as master_get_axis_by_id,
+    )
+    from services.knowledge.app.data.protocols_master import (
+        get_protocol_for_axis as master_get_protocol_for_axis,
+        get_protocol_by_id as master_get_protocol_by_id,
+    )
+except ImportError:
+    MASTER_12_AXES_CATALOG = {}
+    master_score_organ_axes = None
+    master_get_all_axes = None
+    master_get_axis_by_id = None
+    master_get_protocol_for_axis = None
+    master_get_protocol_by_id = None
+
+
+def score_canonical_12_axes(scores: dict[str, int]) -> dict[str, Any]:
+    """
+    Scores patient condition against the 12 canonical organ axes (0-5 scale).
+    Determines Primary Axis (treated Phase 1) and Secondary Axis (treated Phase 2).
+    """
+    if master_score_organ_axes:
+        return master_score_organ_axes(scores)
+    return {"scores": scores, "error": "organ_axes_master not imported"}
+
+
+def get_canonical_axis_details(axis_id: str) -> dict[str, Any] | None:
+    """Returns detailed catalog data for a canonical organ axis."""
+    if master_get_axis_by_id:
+        return master_get_axis_by_id(axis_id)
+    return None
+
+
+# =====================================================================
+# CP-AFUM / AFUF 6-AXIS SYSTEMS BIOLOGY & 5 PRIORITY RULES
+# Source: Dr. Irfan Ashraf — CP-AFUM Textbook Chapter 2 & Table 2.1
+# =====================================================================
+
+CP_AFUM_6_AXES = {
+    "gut-liver": {
+        "id": "gut-liver",
+        "name": "Gut-Liver Axis",
+        "systems": "Intestinal microbiome -> Portal vein -> Hepatic Phase 1 & 2 detox",
+        "primary_conditions": ["PCOS (indirect)", "Acne", "Chronic Fatigue", "Fatty Liver / NAFLD", "IBS"],
+        "key_biomarkers": ["SGPT (ALT)", "GGT", "hs-CRP", "SGOT/SGPT (de Ritis ratio)"],
+        "hero_product": "LiverPrime Core™ (mandatory in ALL cases Phase 1)"
+    },
+    "liver-pancreas": {
+        "id": "liver-pancreas",
+        "name": "Liver-Pancreas Axis",
+        "systems": "Hepatic glucose output (HGO) <-> Pancreatic insulin secretion <-> AMPK signaling",
+        "primary_conditions": ["Type 2 Diabetes", "Obesity", "Insulin Resistance", "Metabolic Syndrome", "NAFLD"],
+        "key_biomarkers": ["HbA1c", "Fasting Insulin", "HOMA-IR", "SGPT", "TG/HDL ratio"],
+        "hero_product": "MetaboCore Elite™"
+    },
+    "gut-ovarian": {
+        "id": "gut-ovarian",
+        "name": "Gut-Ovarian Axis",
+        "systems": "Estrobolome (β-glucuronidase) -> Estrogen recycling -> GnRH -> LH/FSH -> Ovarian theca/granulosa cells",
+        "primary_conditions": ["PCOS", "Ovulatory dysfunction", "Estrogen dominance", "Infertility", "Cycle irregularity"],
+        "key_biomarkers": ["LH:FSH ratio", "AMH", "Estradiol", "SHBG", "Fasting Insulin"],
+        "hero_product": "OvaSync™"
+    },
+    "liver-testicular": {
+        "id": "liver-testicular",
+        "name": "Liver-Testicular Axis",
+        "systems": "Hepatic sex hormone metabolism (SHBG) -> Sertoli cell function -> Spermatogenesis / Leydig cell testosterone",
+        "primary_conditions": ["Male infertility", "Oligospermia", "Asthenozoospermia", "Low Testosterone", "High DFI"],
+        "key_biomarkers": ["Semen Analysis", "Total Testosterone", "SHBG", "SGPT", "FSH", "LH", "DFI"],
+        "hero_product": "ManiVital Pro™"
+    },
+    "thyroid-neuro": {
+        "id": "thyroid-neuro",
+        "name": "Thyroid-Neuro Axis",
+        "systems": "Hypothalamic TRH -> Pituitary TSH -> Thyroid T4 -> Hepatic T4->T3 conversion (60%) -> Neurological function",
+        "primary_conditions": ["Hypothyroidism", "Subclinical thyroid dysfunction", "Brain fog", "Metabolic slowness", "Hashimoto's"],
+        "key_biomarkers": ["TSH", "Free T3", "Free T4", "Anti-TPO", "Selenium"],
+        "hero_product": "ThyroMet Axis™"
+    },
+    "hpa-axis": {
+        "id": "hpa-axis",
+        "name": "HPA Axis",
+        "systems": "Hypothalamic CRH -> Pituitary ACTH -> Adrenal cortisol -> Autonomic NS -> Gut-brain feedback loop",
+        "primary_conditions": ["Anxiety", "Insomnia", "Burnout", "IBS", "Adrenal fatigue", "Stress-related infertility"],
+        "key_biomarkers": ["Cortisol AM/PM", "DHEA-S", "Cortisol:DHEAS ratio", "PSQI", "PHQ-9"],
+        "hero_product": "NeuroCalmX™"
+    }
+}
+
+
+def evaluate_five_axis_priority_rules(
+    sgpt: float,
+    hs_crp: float,
+    has_hpa_dysregulation: bool,
+    has_thyroid_dysfunction: bool,
+    active_axes: list[str]
+) -> dict[str, Any]:
+    """
+    Evaluates the 5 Non-Negotiable Axis Priority Rules from CP-AFUM Chapter 2:
+    - Rule 1: Gut-Liver Rule: SGPT >45 U/L or hs-CRP >3 mg/L mandates Phase 1 Gut-Liver treatment first.
+    - Rule 2: HPA-First Rule: HPA must be stabilized before gonadal, metabolic, or thyroid correction.
+    - Rule 3: Thyroid-HPA Rule: Thyroid dysfunction coexisting with HPA is treated after (not with) HPA.
+    - Rule 4: Two-Axis Limit: Maximum 2 primary axes addressed in Phase 2.
+    - Rule 5: Liver-Phase Rule: LiverPrime Core present in Phase 1 and 50% maintenance in Phase 2.
+    """
+    decisions = []
+    
+    # Rule 1: Gut-Liver Rule
+    gut_liver_mandatory = (sgpt > 45.0 or hs_crp > 3.0)
+    if gut_liver_mandatory:
+        decisions.append({
+            "rule": "Rule 1 (The Gut-Liver Rule)",
+            "status": "TRIGGERED",
+            "action": "Mandatory Phase 1 (LiverPrime Core) before any axis-specific correction. No exceptions.",
+            "rationale": f"SGPT={sgpt} U/L or hs-CRP={hs_crp} mg/L indicates hepatic/systemic inflammation that blocks Phase 2 bioactivation."
+        })
+    else:
+        decisions.append({
+            "rule": "Rule 1 (The Gut-Liver Rule)",
+            "status": "CLEARED",
+            "action": "Baseline hepatic and inflammatory markers within acceptable limits."
+        })
+
+    # Rule 2: HPA-First Rule
+    hpa_first = False
+    if has_hpa_dysregulation:
+        hpa_first = True
+        decisions.append({
+            "rule": "Rule 2 (The HPA-First Rule)",
+            "status": "TRIGGERED",
+            "action": "HPA axis must be stabilized (NeuroCalmX in Phase 1) before gonadal, metabolic, or thyroid axis correction.",
+            "rationale": "Cortisol suppresses LH/FSH, TSH, and insulin sensitivity simultaneously. Treating other axes first is filling a leaking bucket."
+        })
+
+    # Rule 3: Thyroid-HPA Rule
+    if has_thyroid_dysfunction and has_hpa_dysregulation:
+        decisions.append({
+            "rule": "Rule 3 (The Thyroid-HPA Rule)",
+            "status": "TRIGGERED",
+            "action": "Treat HPA axis FIRST. Re-evaluate thyroid after HPA stability; apparent subclinical hypothyroid may normalize.",
+            "rationale": "Elevated cortisol suppresses TSH directly via hypothalamic somatostatin."
+        })
+
+    # Rule 4: Two-Axis Limit
+    ranked_axes = active_axes[:2]
+    deferred_axes = active_axes[2:]
+    decisions.append({
+        "rule": "Rule 4 (The Two-Axis Limit)",
+        "status": "ENFORCED",
+        "phase_2_primary_axes": ranked_axes,
+        "deferred_tertiary_axes": deferred_axes,
+        "rationale": "No more than two primary axes should be addressed in Phase 2. Tertiary axes frequently resolve through cascade reversal."
+    })
+
+    # Rule 5: Liver-Phase Rule
+    decisions.append({
+        "rule": "Rule 5 (The Liver-Phase Rule)",
+        "status": "ENFORCED",
+        "phase_1": "LiverPrime Core at full therapeutic dose",
+        "phase_2": "LiverPrime Core continues at 50% maintenance dose alongside hero product",
+        "rationale": "The liver is the gateway for herbal bioavailability. Continuous liver support prevents metabolic rebound."
+    })
+
+    return {
+        "gut_liver_mandatory": gut_liver_mandatory,
+        "hpa_stabilization_first": hpa_first,
+        "priority_axes_phase_2": ranked_axes,
+        "deferred_axes": deferred_axes,
+        "rules_evaluation": decisions
+    }

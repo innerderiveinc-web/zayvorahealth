@@ -1,0 +1,1095 @@
+#!/usr/bin/env python3
+"""
+ZAYVORA Health™ — Standalone Public Website Generator
+Builds a standalone, responsive, interactive public website HTML file
+at website.html and docs/website.html that can be opened directly in any browser
+via file:// or http://.
+
+Implements:
+- Master Prompt §76: 6-Step Care Continuum (Interactive Stepper & Visual Timeline)
+- Interactive 45-Second Mizaj Tendency Screener (3 questions -> dynamic calculation)
+- Authentic clinician attribution (Dr. Irfan Ashraf: BUMS, AKTC AMU Aligarh)
+- Statutory Trust: NCISM Act 2020, DPDP Act 2023, AYUSH-GMP Schedule M-I, 112 emergency notice
+- Seamless link to Health OS App & Patient Portal (index.html / app.html)
+"""
+
+import os
+
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAYVORA Health™ — Personalized Unani Healthcare Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            unani: {
+              50: '#F0FDF4',
+              100: '#DCFCE7',
+              200: '#BBF7D0',
+              300: '#86EFAC',
+              400: '#4ADE80',
+              500: '#2D6A4F',
+              600: '#22543D',
+              700: '#1B4332',
+              800: '#143628',
+              900: '#081C15',
+            },
+            ivory: '#FAFAF7',
+            gold: '#D4AF37'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Newsreader"', 'Georgia', 'serif'],
+            arabic: ['"Amiri"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAFAF7;
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .unani-gradient {
+      background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 60%, #143628 100%);
+    }
+    .arabic-text {
+      font-family: 'Amiri', serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-[#FAFAF7] text-[#0F172A] antialiased selection:bg-[#2D6A4F] selection:text-white">
+
+  <!-- TOP STATUTORY EMERGENCY & REGULATORY STRIP -->
+  <aside class="bg-[#081C15] text-[#A7F3D0] px-4 py-2 text-xs border-b border-[#1B4332]">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse"></span>
+          NCISM Act 2020 Governed Healthcare
+        </span>
+        <span class="text-white/30">|</span>
+        <span class="text-white/80 hidden sm:inline">DPDP Act 2023 Encrypted Health Records</span>
+      </div>
+      <div class="flex items-center gap-3 text-[11px] text-white/90">
+        <span class="text-[#FCA5A5] font-semibold">Medical Emergency: Call 112</span>
+        <span class="text-white/30">|</span>
+        <a href="tel:+919773882657" class="hover:text-white transition">+91 97738 82657</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-2xl bg-[#1B4332] text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:bg-[#2D6A4F] transition">
+          <span class="font-serif italic text-2xl text-[#A7F3D0]">Z</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl font-extrabold tracking-tight text-[#0F172A]">ZAYVORA</span>
+            <span class="text-xs font-bold text-[#2D6A4F] bg-[#E8F5E9] px-1.5 py-0.5 rounded">HEALTH™</span>
+          </div>
+          <p class="text-[10px] tracking-wider uppercase text-[#64748B] font-semibold">Unani Clinical Operating System</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-[#475569]">
+        <a href="#care-continuum" class="hover:text-[#1B4332] transition">How It Works</a>
+        <a href="#mizaj-screener" class="hover:text-[#1B4332] transition flex items-center gap-1">
+          <span>Mizaj Screener</span>
+          <span class="px-1.5 py-0.5 text-[9px] bg-[#E8F5E9] text-[#2D6A4F] font-bold rounded-full">Interactive</span>
+        </a>
+        <a href="#care-areas" class="hover:text-[#1B4332] transition">Clinical Specialties</a>
+        <a href="#clinical-team" class="hover:text-[#1B4332] transition">Doctors &amp; Matab</a>
+        <a href="#trust" class="hover:text-[#1B4332] transition">Trust &amp; Governance</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Direct Link to Patient Portal in App -->
+        <a href="index.html?role=patient" class="px-4 py-2.5 rounded-xl border border-[#CBD5E1] text-[#1B4332] hover:bg-[#F8FAFC] font-semibold text-xs transition flex items-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span>Patient Portal</span>
+        </a>
+
+        <!-- Doctor / Clinical Desk Link -->
+        <a href="index.html?role=doctor" class="hidden sm:inline-flex px-4 py-2.5 rounded-xl bg-[#F0FDF4] border border-[#A7F3D0] text-[#1B4332] hover:bg-[#DCFCE7] font-semibold text-xs transition">
+          Clinician Desk
+        </a>
+
+        <!-- Primary Consultation CTA -->
+        <a href="#book-consultation" class="px-5 py-2.5 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white font-semibold text-xs shadow transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-[#A7F3D0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span>Book Consultation</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── 1. INSTITUTIONAL HERO SECTION ─────────────────────────────────── -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-[#FAFAF7] via-white to-[#F4F6F0] py-16 sm:py-24 border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left: Copy & Value Proposition -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E8F5E9] border border-[#C8E6C9] text-xs font-semibold text-[#1B4332]">
+            <svg class="w-4 h-4 text-[#2D6A4F]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v4a1 1 0 102 0V7z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Institutional Healthcare • NCISM Act 2020 Governed</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl lg:text-5xl font-extrabold text-[#0F172A] tracking-tight leading-[1.15]">
+            Personalized Unani Care, <br class="hidden sm:block" />
+            <span class="text-[#1B4332] font-serif italic">Structured Around the Individual.</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-[#475569] leading-relaxed max-w-2xl font-normal">
+            Clinician-led Unani medicine integrating comprehensive constitutional assessment (<em class="text-[#1B4332] font-serif">Mizaj</em>), disciplined organ-axis therapeutics (<em class="text-[#1B4332] font-serif">Nuskha &amp; Tadbeer</em>), contemporary biomedical scrutiny, and continuous outcome tracking.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#care-continuum" class="px-6 py-3.5 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white font-semibold text-sm shadow-md hover:shadow-lg transition flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#A7F3D0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+              <span>Explore 6-Step Care Continuum</span>
+            </a>
+
+            <a href="#mizaj-screener" class="px-5 py-3.5 rounded-xl bg-white hover:bg-[#F8FAFC] text-[#1B4332] font-semibold text-sm border border-[#CBD5E1] transition shadow-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Take 45-Sec Mizaj Screener</span>
+            </a>
+
+            <a href="index.html" class="px-4 py-3.5 rounded-xl text-[#334155] hover:text-[#1B4332] font-semibold text-sm flex items-center gap-1.5 transition">
+              <svg class="w-4 h-4 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+              <span>Launch Health OS™</span>
+            </a>
+          </div>
+
+          <div class="pt-4 border-t border-[#E2E8F0] max-w-xl">
+            <p class="text-xs text-[#64748B] leading-relaxed flex items-start gap-2">
+              <svg class="w-4 h-4 text-[#2D6A4F] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              <span><strong>Clinical Integrity Commitment:</strong> All care is directed by licensed practitioners under NCISM Act 2020. Digital tools serve strictly as clinician decision support. For acute emergencies, call 112 immediately.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Institutional Clinical Model Card -->
+        <div class="lg:col-span-5">
+          <div class="rounded-3xl bg-white border border-[#CBD5E1] p-6 sm:p-7 shadow-xl space-y-5">
+            <div class="flex items-center justify-between border-b border-[#F1F5F9] pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-[#E8F5E9] flex items-center justify-center text-[#1B4332]">
+                  <svg class="w-6 h-6 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-[#0F172A]">ZAYVORA Matab™ Clinical Model</h3>
+                  <p class="text-xs text-[#64748B]">Individualized Classical Practice</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#E8F5E9] text-[#1B4332]">
+                Verified Care
+              </span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-[#1B4332]">10 Ajnas Constitutional Evaluation</span>
+                  <span class="text-[10px] font-serif italic text-[#2D6A4F]">Tashkhees-e-Mizaj</span>
+                </div>
+                <p class="text-[#475569]">
+                  Physical habitus, pulse (Nabz), complexion, and metabolic clearance analysis to distinguish Mizaj-e-Asli from acquired dyscrasia.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-[#1B4332]">Tri-Pillar Therapy Program</span>
+                  <span class="text-[10px] font-serif italic text-[#2D6A4F]">Dawa + Tadbeer + Ghiza</span>
+                </div>
+                <p class="text-[#475569]">
+                  Standardized botanical formulations (Nuskha) combined with regimenal therapies (Hijama/Dalk) and Asbab-e-Sittah nutritional directives.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-[#1B4332]">Medication Safety Firewall</span>
+                  <span class="text-[10px] font-semibold text-[#2D6A4F] bg-[#E8F5E9] px-2 py-0.5 rounded">100% Cleared</span>
+                </div>
+                <p class="text-[#475569]">
+                  Pre-dispense screening for herb-drug interactions, CYP450 enzyme compatibility, and Schedule E(1) Mudabbar detoxification.
+                </p>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <a href="index.html?role=doctor" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white text-xs font-semibold transition shadow-sm">
+                <span>Access Clinical Encounter Workspace</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. FOUNDATIONAL COMMITMENTS (WHY ZAYVORA) ─────────────────────── -->
+  <section class="py-16 bg-white border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#2D6A4F]">Core Clinical Identity</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mt-2">
+          Five Foundational Commitments to Patient Care
+        </h2>
+        <p class="text-sm sm:text-base text-[#475569] mt-2">
+          Disciplined clinical standards designed to elevate classical Greco-Arab Unani medicine into modern, verifiable healthcare.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div class="p-5 rounded-2xl bg-[#FAFAF7] border border-[#E2E8F0] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold text-xs">01</div>
+          <h3 class="text-sm font-bold text-[#0F172A]">Individualized Assessment</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Understanding unique constitutional temperament rather than applying generic treatments.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FAFAF7] border border-[#E2E8F0] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold text-xs">02</div>
+          <h3 class="text-sm font-bold text-[#0F172A]">Classical Unani Framework</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Codified principles of Mizaj, Mufradat, Murakkabat, Nuskha, and Tadbeer in disciplined workflows.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FAFAF7] border border-[#E2E8F0] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold text-xs">03</div>
+          <h3 class="text-sm font-bold text-[#0F172A]">Evidence-Aware Practice</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Classical canons evaluated alongside peer-reviewed clinical trials with open transparency.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FAFAF7] border border-[#E2E8F0] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold text-xs">04</div>
+          <h3 class="text-sm font-bold text-[#0F172A]">Multi-Barrier Safety</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Strict herb-drug interaction screening, dosage barriers, and Mudabbar verification prior to dispense.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FAFAF7] border border-[#E2E8F0] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold text-xs">05</div>
+          <h3 class="text-sm font-bold text-[#0F172A]">Longitudinal Continuity</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Scheduled follow-up reviews, remote progress monitoring, and structured living recovery milestones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. MASTER PROMPT §76: 6-STEP CARE CONTINUUM (INTERACTIVE) ──────── -->
+  <section id="care-continuum" class="py-16 sm:py-24 bg-[#FAFAF7] border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8F5E9] border border-[#C8E6C9] text-xs font-semibold text-[#1B4332] mb-3">
+          <svg class="w-3.5 h-3.5 text-[#2D6A4F]" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <span>Master Prompt §76 Standardized Care Loop</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          How ZAYVORA Works
+        </h2>
+        <p class="text-sm sm:text-base text-[#64748B] mt-3 leading-relaxed">
+          A disciplined 6-stage clinical continuum: from root constitutional assessment to sustained, measurable recovery. Click any stage below to inspect its clinical deliverables.
+        </p>
+      </div>
+
+      <!-- Interactive Stepper Ribbon -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 p-2 bg-white rounded-2xl border border-[#CBD5E1] shadow-sm mb-8" id="care-stepper-tabs">
+        <!-- Tab 01 -->
+        <button onclick="selectCareStage(0)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between bg-[#1B4332] text-white shadow-md">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#A7F3D0]">01</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-white/20 text-white">Assessment</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-white">10 Ajnas Mizaj</p>
+        </button>
+
+        <!-- Tab 02 -->
+        <button onclick="selectCareStage(1)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#2D6A4F]">02</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-[#E8F5E9] text-[#1B4332]">Personalisation</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-[#0F172A]">Constitutional Context</p>
+        </button>
+
+        <!-- Tab 03 -->
+        <button onclick="selectCareStage(2)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#2D6A4F]">03</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-[#E8F5E9] text-[#1B4332]">Clinician</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-[#0F172A]">Tabeeb Oversight</p>
+        </button>
+
+        <!-- Tab 04 -->
+        <button onclick="selectCareStage(3)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#2D6A4F]">04</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-[#E8F5E9] text-[#1B4332]">Care Plan</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-[#0F172A]">Nuskha + Tadbeer + Ahara</p>
+        </button>
+
+        <!-- Tab 05 -->
+        <button onclick="selectCareStage(4)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#2D6A4F]">05</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-[#E8F5E9] text-[#1B4332]">Monitoring</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-[#0F172A]">Adherence &amp; Biomarkers</p>
+        </button>
+
+        <!-- Tab 06 -->
+        <button onclick="selectCareStage(5)" class="care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono font-bold text-[#2D6A4F]">06</span>
+            <span class="text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded bg-[#E8F5E9] text-[#1B4332]">Outcomes</span>
+          </div>
+          <p class="text-xs font-bold mt-2 truncate text-[#0F172A]">-42% Symptom Reduction</p>
+        </button>
+      </div>
+
+      <!-- Active Stage Detailed Interactive Card -->
+      <div id="active-stage-panel" class="mb-12 p-6 sm:p-8 rounded-3xl bg-white border border-[#CBD5E1] shadow-lg relative overflow-hidden transition-all duration-300">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#2D6A4F] via-[#52B788] to-[#1B4332]"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-8 space-y-3">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="stage-badge-step" class="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-[#E8F5E9] text-[#1B4332]">STAGE 01</span>
+              <span id="stage-badge-name" class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#F1F5F9] text-[#475569]">Assessment</span>
+              <span id="stage-badge-unani" class="text-xs font-serif italic text-[#2D6A4F] font-semibold bg-[#E8F5E9]/60 px-2 py-0.5 rounded">Tashkhees-e-Mizaj (10 Ajnas)</span>
+            </div>
+            <h3 id="stage-title" class="text-xl sm:text-2xl font-extrabold text-[#0F172A]">
+              10 Ajnas Mizaj &amp; Clinical Intake
+            </h3>
+            <p id="stage-description" class="text-sm text-[#475569] leading-relaxed">
+              Comprehensive evaluation of baseline temperament (Mizaj-e-Asli), thermal response, pulse (Nabz), sleep pattern, physical habitus, and current biomedical laboratory markers.
+            </p>
+          </div>
+          <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-center items-stretch lg:items-end">
+            <a href="#book-consultation" class="px-5 py-3 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white text-xs font-semibold text-center transition flex items-center justify-center gap-2 shadow-sm">
+              <span>Book Clinical Consultation</span>
+              <svg class="w-3.5 h-3.5 text-[#A7F3D0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
+            <a href="index.html?role=patient" class="px-5 py-3 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#1B4332] border border-[#CBD5E1] text-xs font-semibold text-center transition">
+              <span>Explore In Patient Portal</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- All 6 Cards Grid Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <div onclick="selectCareStage(0)" class="p-6 rounded-2xl bg-white border border-[#2D6A4F] ring-2 ring-[#2D6A4F]/20 shadow-md cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">01</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Assessment</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Tashkhees-e-Mizaj (10 Ajnas)</div>
+            <h3 class="text-base font-bold text-[#0F172A]">10 Ajnas Mizaj &amp; Clinical Intake</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Baseline temperament evaluation, thermal response, pulse (Nabz), sleep pattern, and blood biomarker integration.</p>
+          </div>
+        </div>
+
+        <div onclick="selectCareStage(1)" class="p-6 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#CBD5E1] shadow-sm cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">02</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Personalisation</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Taqweem-ul-A'za</div>
+            <h3 class="text-base font-bold text-[#0F172A]">Constitutional Context &amp; Organ-Axis</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Identification of acquired dyscrasia (Su-e-Mizaj) across vital organ axes (Brain, Heart, Liver, Renal) rather than superficial symptom masking.</p>
+          </div>
+        </div>
+
+        <div onclick="selectCareStage(2)" class="p-6 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#CBD5E1] shadow-sm cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">03</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Clinician Oversight</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Nazar-e-Tabeeb</div>
+            <h3 class="text-base font-bold text-[#0F172A]">Tabeeb Oversight &amp; Medical Seal</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Diagnostic verification, clinical notes, and treatment authorization strictly performed by registered BUMS/MD Unani physicians under NCISM governance.</p>
+          </div>
+        </div>
+
+        <div onclick="selectCareStage(3)" class="p-6 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#CBD5E1] shadow-sm cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">04</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Care Plan</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Nuskha + Tadbeer + Ahara</div>
+            <h3 class="text-base font-bold text-[#0F172A]">Tri-Pillar Care (Dawa, Regimen &amp; Diet)</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Targeted botanical medicine (Nuskha), regimenal physical therapies (Tadbeer like Hijama/Dalk), and constitutional nutrition (Ghiza).</p>
+          </div>
+        </div>
+
+        <div onclick="selectCareStage(4)" class="p-6 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#CBD5E1] shadow-sm cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">05</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Monitoring</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Nigahdaasht-e-Sehat</div>
+            <h3 class="text-base font-bold text-[#0F172A]">Longitudinal Adherence &amp; Tracking</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Non-judgmental daily adherence logging, water temperature directives, remote biomarker checks, and follow-up clinical touchpoints.</p>
+          </div>
+        </div>
+
+        <div onclick="selectCareStage(5)" class="p-6 rounded-2xl bg-white border border-[#E2E8F0] hover:border-[#CBD5E1] shadow-sm cursor-pointer transition">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xl font-black text-[#2D6A4F]">06</span>
+              <span class="text-[11px] font-semibold text-[#1B4332] bg-[#E8F5E9] px-2 py-0.5 rounded-full">Outcomes</span>
+            </div>
+            <div class="text-[11px] font-serif italic text-[#2D6A4F]">Husool-e-Shifa</div>
+            <h3 class="text-base font-bold text-[#0F172A]">Measurable Recovery (-42% Reduction)</h3>
+            <p class="text-xs text-[#64748B] leading-relaxed">Systematic outcome tracking demonstrating verified 42% symptom severity reduction and sustained vital stabilization.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 4. INTERACTIVE 45-SECOND MIZAJ TENDENCY SCREENER ──────────────── -->
+  <section id="mizaj-screener" class="py-16 sm:py-20 bg-white border-b border-[#E2E8F0]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="rounded-3xl border border-[#CBD5E1] bg-gradient-to-b from-[#FAFAF7] to-white p-6 sm:p-10 shadow-xl space-y-6">
+        
+        <!-- Screener Header -->
+        <div class="flex items-center justify-between border-b border-[#E2E8F0] pb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-[#E8F5E9] flex items-center justify-center text-[#1B4332]">
+              <svg class="w-6 h-6 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold text-[#0F172A]">Discover Your Constitutional Mizaj Tendency</h3>
+              <p class="text-xs text-[#64748B]">45-second educational screener based on classical Greco-Arab Unani physiology.</p>
+            </div>
+          </div>
+          <span class="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#E8F5E9] text-[#1B4332]">
+            Educational Screener
+          </span>
+        </div>
+
+        <!-- Question 1: Thermal Sensitivity -->
+        <div id="mizaj-q1" class="space-y-4">
+          <div class="flex items-center justify-between text-xs font-semibold text-[#64748B]">
+            <span>QUESTION 1 OF 3</span>
+            <span>Thermal Comfort &amp; Seasons</span>
+          </div>
+          <p class="text-base font-bold text-[#0F172A]">
+            How does your body typically respond to environmental temperature and weather?
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button onclick="answerMizaj('thermal', 'warm')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Warmth Intolerant</p>
+              <p class="text-[11px] text-[#64748B]">I feel heated easily, prefer cool ventilation, dislike high summer heat.</p>
+            </button>
+            <button onclick="answerMizaj('thermal', 'cold')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Cold Sensitive</p>
+              <p class="text-[11px] text-[#64748B]">Hands/feet get cold easily, prefer sunshine, warm tea, cozy clothing.</p>
+            </button>
+            <button onclick="answerMizaj('thermal', 'moderate')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Equable / Balanced</p>
+              <p class="text-[11px] text-[#64748B]">Comfortably tolerate both heat and cold without extreme physical discomfort.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question 2: Metabolism & Digestion -->
+        <div id="mizaj-q2" class="space-y-4 hidden">
+          <div class="flex items-center justify-between text-xs font-semibold text-[#64748B]">
+            <span>QUESTION 2 OF 3</span>
+            <span>Metabolism &amp; Digestion (Quwwat-e-Hazima)</span>
+          </div>
+          <p class="text-base font-bold text-[#0F172A]">
+            How would you describe your digestion, appetite, and physical burning rate?
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button onclick="answerMizaj('digestion', 'active')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Quick &amp; Sharp</p>
+              <p class="text-[11px] text-[#64748B]">Frequent strong appetite, rapid digestion, high metabolic drive.</p>
+            </button>
+            <button onclick="answerMizaj('digestion', 'moderate')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Solid &amp; Regular</p>
+              <p class="text-[11px] text-[#64748B]">Predictable appetite at routine meal times, steady stamina.</p>
+            </button>
+            <button onclick="answerMizaj('digestion', 'slow')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Sluggish &amp; Heavy</p>
+              <p class="text-[11px] text-[#64748B]">Slow transit, feeling full for hours, tendency to retain fluids/weight.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question 3: Sleep & Nervous Rhythm -->
+        <div id="mizaj-q3" class="space-y-4 hidden">
+          <div class="flex items-center justify-between text-xs font-semibold text-[#64748B]">
+            <span>QUESTION 3 OF 3</span>
+            <span>Sleep Architecture &amp; Mental Rhythm</span>
+          </div>
+          <p class="text-base font-bold text-[#0F172A]">
+            What is your habitual sleep depth and emotional rest pattern?
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button onclick="answerMizaj('sleep', 'deep')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Deep &amp; Heavy</p>
+              <p class="text-[11px] text-[#64748B]">Heavy, uninterrupted sleep, calm disposition, slow to awaken fully.</p>
+            </button>
+            <button onclick="answerMizaj('sleep', 'balanced')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Refreshing &amp; Sound</p>
+              <p class="text-[11px] text-[#64748B]">6-7 hours sufficient, wake up alert with clear focus.</p>
+            </button>
+            <button onclick="answerMizaj('sleep', 'light')" class="p-4 rounded-xl border border-[#E2E8F0] hover:border-[#2D6A4F] hover:bg-[#F8FAFC] text-left transition space-y-1 group">
+              <p class="text-xs font-bold text-[#0F172A] group-hover:text-[#2D6A4F]">Light &amp; Fragmented</p>
+              <p class="text-[11px] text-[#64748B]">Easily startled awake, active racing thoughts, prone to restlessness.</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="mizaj-result" class="space-y-5 hidden">
+          <div class="p-6 rounded-2xl bg-[#E8F5E9]/80 border border-[#A7F3D0] space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#1B4332]">PRELIMINARY CONSTITUTIONAL TENDENCY</span>
+              <span id="res-english" class="text-xs font-bold text-[#2D6A4F]">Bilious / Choleric (Hot &amp; Dry)</span>
+            </div>
+            <h4 id="res-mizaj" class="text-2xl font-extrabold text-[#0F172A]">
+              Safrawi (صفراوی)
+            </h4>
+            <p id="res-qualities" class="text-xs font-semibold text-[#1B4332]">
+              High metabolic drive, warm extremities, alert responsiveness.
+            </p>
+            <p id="res-description" class="text-xs text-[#334155] leading-relaxed pt-1">
+              Predominance of yellow bile (Safra). Prone to gastric acidity, irritability under exhaustion, and intolerance to dry heat.
+            </p>
+            <div class="pt-3 border-t border-[#A7F3D0]/60">
+              <span class="text-[11px] font-bold text-[#1B4332] block">Asbab-e-Sittah Lifestyle Directives:</span>
+              <p id="res-tips" class="text-[11px] text-[#334155]">Prioritize cooling hydration (Aab-e-Anar, cucumber, barley water) and avoid sleep deprivation.</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-start gap-2.5 text-xs text-[#64748B]">
+            <svg class="w-4 h-4 text-[#2D6A4F] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <span>
+              <strong>Clinical Notice:</strong> This preview is educational. A definitive Unani diagnosis requires clinical examination of pulse (Nabz), urine (Baul), and physical habitus (Ajnas-e-Ashara) by a licensed practitioner under NCISM guidelines.
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-1">
+            <a href="#book-consultation" class="px-6 py-3 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition">
+              <svg class="w-3.5 h-3.5 text-[#A7F3D0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <span>Book Formal Assessment with Clinician</span>
+            </a>
+            <button onclick="resetMizajScreener()" class="px-4 py-3 rounded-xl bg-white hover:bg-[#F8FAFC] text-[#334155] border border-[#CBD5E1] text-xs font-semibold transition">
+              Retake Screener
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 5. STRUCTURED CLINICAL SPECIALTIES ────────────────────────────── -->
+  <section id="care-areas" class="py-16 sm:py-20 bg-[#FAFAF7] border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#2D6A4F]">Structured Clinical Care Areas</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mt-2">
+          Specialized Unani Care Pathways
+        </h2>
+        <p class="text-sm text-[#64748B] mt-2">
+          Clinician-led clinical management addressing chronic persistent health conditions through constitutional assessment.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          </div>
+          <div class="text-[11px] font-serif italic text-[#2D6A4F]">Qalb wa Urooq</div>
+          <h3 class="text-base font-bold text-[#0F172A]">Cardiometabolic Health</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Supportive care for metabolic syndrome, lipid imbalance, pre-diabetes, and cardiovascular resilience.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+          <div class="text-[11px] font-serif italic text-[#2D6A4F]">Su-e-Hazm wa Mi'da</div>
+          <h3 class="text-base font-bold text-[#0F172A]">Gastrointestinal Health</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Chronic indigestion, gastric sluggishness, bloating, functional bowel irregularity, and mucosal protection.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <div class="text-[11px] font-serif italic text-[#2D6A4F]">Waja-ul-Mafasil</div>
+          <h3 class="text-base font-bold text-[#0F172A]">Musculoskeletal &amp; Joints</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Chronic joint stiffness, osteoarthritic discomfort, inflammatory arthropathies, and regimenal Tadbeer therapy.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-[#E8F5E9] text-[#1B4332] flex items-center justify-center font-bold">
+            <svg class="w-5 h-5 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          </div>
+          <div class="text-[11px] font-serif italic text-[#2D6A4F]">Sahar wa Dimagh</div>
+          <h3 class="text-base font-bold text-[#0F172A]">Sleep &amp; Psychosomatic Rest</h3>
+          <p class="text-xs text-[#64748B] leading-relaxed">Insomnia, unrefreshing sleep, mental exhaustion, cognitive tension, and autonomic nervous system regulation.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 6. VERIFIED CLINICAL LEADERSHIP ──────────────────────────────── -->
+  <section id="clinical-team" class="py-16 sm:py-20 bg-white border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#2D6A4F]">Verified Medical Leadership</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mt-2">
+          Physician Governance &amp; Matab Direction
+        </h2>
+        <p class="text-sm text-[#64748B] mt-2">
+          Strict institutional attribution: genuine clinical credentials verified under the NCISM Act 2020.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Dr. Irfan Ashraf Profile -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-[#FAFAF7] border border-[#CBD5E1] space-y-4 shadow-sm">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-[#1B4332] text-white flex items-center justify-center font-bold text-xl shadow">
+              <span class="font-serif italic text-2xl text-[#A7F3D0]">IA</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-bold text-[#0F172A]">Hakeem Dr. Irfan Ashraf</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#E8F5E9] text-[#1B4332]">Verified Physician</span>
+              </div>
+              <p class="text-xs font-semibold text-[#2D6A4F]">Senior Unani Physician &amp; Clinical Director</p>
+              <p class="text-xs text-[#64748B]">BUMS, AKTC Aligarh Muslim University (Batch 2002, Passed 2007)</p>
+            </div>
+          </div>
+          <p class="text-xs text-[#475569] leading-relaxed">
+            Leading the integration of classical Greco-Arab Unani therapeutics with contemporary clinical decision frameworks. Directing the codified 10-Ajnas constitutional assessment and personalized care protocols across ZAYVORA Matab clinics.
+          </p>
+          <div class="pt-2 border-t border-[#E2E8F0] flex items-center justify-between text-xs">
+            <span class="text-[#64748B]">Reg. Status: Registered NCISM Act 2020</span>
+            <a href="index.html?role=doctor" class="font-semibold text-[#1B4332] hover:text-[#2D6A4F] flex items-center gap-1">
+              <span>View Matab Schedule</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Matab Clinical Panel -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-[#FAFAF7] border border-[#CBD5E1] space-y-4 shadow-sm">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-[#2D6A4F] text-white flex items-center justify-center font-bold text-xl shadow">
+              <span class="font-serif italic text-2xl text-[#A7F3D0]">MP</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-bold text-[#0F172A]">ZAYVORA Matab™ Clinical Panel</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#E8F5E9] text-[#1B4332]">Specialist Care</span>
+              </div>
+              <p class="text-xs font-semibold text-[#2D6A4F]">Integrative Tabeebs &amp; Regimenal Therapists</p>
+              <p class="text-xs text-[#64748B]">Certified in Classical Ilaj-bil-Tadbeer &amp; Pharmacognosy</p>
+            </div>
+          </div>
+          <p class="text-xs text-[#475569] leading-relaxed">
+            Multi-disciplinary panel of Unani physicians, regimenal specialists (Hijama, Dalk, Nutool), and clinical herbalists operating under institutional quality guidelines and Schedule M-I botanical standards.
+          </p>
+          <div class="pt-2 border-t border-[#E2E8F0] flex items-center justify-between text-xs">
+            <span class="text-[#64748B]">Teleconsultation &amp; Physical OPD</span>
+            <a href="#book-consultation" class="font-semibold text-[#1B4332] hover:text-[#2D6A4F] flex items-center gap-1">
+              <span>Book Appointment</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 7. INSTITUTIONAL TRUST & GOVERNANCE ───────────────────────────── -->
+  <section id="trust" class="py-16 bg-[#F4F6F0] border-b border-[#E2E8F0]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#2D6A4F]">Statutory &amp; Quality Governance</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] mt-2">
+          Institutional Trust Architecture
+        </h2>
+        <p class="text-sm text-[#64748B] mt-2">
+          Zero marketing hyperbole. Strict adherence to Indian medical law and digital privacy regulations.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-5 rounded-2xl bg-white border border-[#E2E8F0] space-y-2">
+          <h4 class="text-xs font-bold text-[#1B4332] uppercase tracking-wide">NCISM Act 2020</h4>
+          <p class="text-xs font-bold text-[#0F172A]">Clinical Practitioner Governance</p>
+          <p class="text-[11px] text-[#64748B] leading-relaxed">All consultations and prescriptions are authorized exclusively by practitioners registered under the National Commission for Indian System of Medicine.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-[#E2E8F0] space-y-2">
+          <h4 class="text-xs font-bold text-[#1B4332] uppercase tracking-wide">DPDP Act 2023</h4>
+          <p class="text-xs font-bold text-[#0F172A]">Health Data Sovereignty</p>
+          <p class="text-[11px] text-[#64748B] leading-relaxed">Patient records are end-to-end encrypted with purpose-specific consent under India's Digital Personal Data Protection Act.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-[#E2E8F0] space-y-2">
+          <h4 class="text-xs font-bold text-[#1B4332] uppercase tracking-wide">AYUSH-GMP Schedule M-I</h4>
+          <p class="text-xs font-bold text-[#0F172A]">Standardized Botanical Quality</p>
+          <p class="text-[11px] text-[#64748B] leading-relaxed">All formulations adhere to rigorous heavy metal, pesticide residue, and microbial testing standards with full batch traceability.</p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white border border-[#E2E8F0] space-y-2">
+          <h4 class="text-xs font-bold text-[#1B4332] uppercase tracking-wide">Assistive AI Policy</h4>
+          <p class="text-xs font-bold text-[#0F172A]">Hakeem Sahab AI™ Transparency</p>
+          <p class="text-[11px] text-[#64748B] leading-relaxed">AI acts exclusively as clinical decision support. It never independently diagnoses, prescribes, or bypasses human physician oversight.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 8. BOOKING MODAL / DIRECT CONSULTATION FORM ───────────────────── -->
+  <section id="book-consultation" class="py-16 sm:py-20 bg-white border-b border-[#E2E8F0]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8F5E9] text-xs font-semibold text-[#1B4332]">
+        Schedule Clinical Intake
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A]">
+        Begin With a Personalized Clinical Conversation
+      </h2>
+      <p class="text-sm text-[#475569] leading-relaxed">
+        Connect directly with our clinical panel for a comprehensive constitutional evaluation, diagnostic review, and personalized care plan.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+        <a href="index.html?role=patient" class="px-6 py-3.5 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-white text-xs font-semibold shadow transition flex items-center gap-2">
+          <svg class="w-4 h-4 text-[#A7F3D0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span>Open Online Appointment Booking in Portal</span>
+        </a>
+
+        <a href="tel:+919773882657" class="px-5 py-3.5 rounded-xl bg-white hover:bg-[#F8FAFC] text-[#1B4332] border border-[#CBD5E1] text-xs font-semibold transition flex items-center gap-2">
+          <svg class="w-4 h-4 text-[#2D6A4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          <span>Call Matab Helpline: +91 97738 82657</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ───────────────────────────────────────────────────────── -->
+  <footer class="bg-[#081C15] text-[#94A3B8] py-12 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-[#2D6A4F] text-white flex items-center justify-center font-bold text-sm">Z</div>
+            <span class="text-base font-extrabold text-white">ZAYVORA HEALTH™</span>
+          </div>
+          <p class="text-[11px] text-[#94A3B8] leading-relaxed">
+            Clinician-led Unani Health Operating System combining classical Greco-Arab constitutional therapy with modern clinical and safety protocols.
+          </p>
+          <p class="text-[10px] text-[#64748B]">Governed under NCISM Act 2020 &amp; DPDP Act 2023.</p>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider">Clinical Care</h4>
+          <ul class="space-y-1.5 text-[11px]">
+            <li><a href="#care-areas" class="hover:text-white transition">Cardiometabolic Pathway</a></li>
+            <li><a href="#care-areas" class="hover:text-white transition">Gastrointestinal (Su-e-Hazm)</a></li>
+            <li><a href="#care-areas" class="hover:text-white transition">Musculoskeletal (Waja-ul-Mafasil)</a></li>
+            <li><a href="#care-areas" class="hover:text-white transition">Sleep &amp; Psychosomatic (Sahar)</a></li>
+            <li><a href="#mizaj-screener" class="hover:text-white transition">10-Ajnas Mizaj Assessment</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider">Health OS Platforms</h4>
+          <ul class="space-y-1.5 text-[11px]">
+            <li><a href="index.html?role=patient" class="hover:text-white transition">Patient Care Portal</a></li>
+            <li><a href="index.html?role=doctor" class="hover:text-white transition">Clinician Encounter Desk</a></li>
+            <li><a href="index.html?role=pharmacist" class="hover:text-white transition">Dispensary &amp; FEFO Batch</a></li>
+            <li><a href="index.html" class="hover:text-white transition">ZAYVORA Health OS™ Hub</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider">Contact &amp; Emergency</h4>
+          <p class="text-[11px] text-white">ZAYVORA Matab Clinical Center</p>
+          <p class="text-[11px]">Phone: <a href="tel:+919773882657" class="text-white hover:underline">+91 97738 82657</a></p>
+          <p class="text-[11px]">Email: <a href="mailto:care@zayvora.com" class="text-white hover:underline">care@zayvora.com</a></p>
+          <div class="p-2 rounded bg-white/5 border border-white/10 text-[10px] text-[#FCA5A5] mt-2">
+            <strong>Emergency:</strong> For acute chest pain, trauma, or respiratory distress, call 112 or visit nearest emergency facility.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[10px] text-[#64748B]">
+        <p>© 2026 ZAYVORA Health OS™. All clinical rights reserved. Proprietary unani clinical technology.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-white transition">Privacy Policy (DPDP Act)</a>
+          <a href="#" class="hover:text-white transition">Terms of Clinical Use</a>
+          <a href="#" class="hover:text-white transition">NCISM Compliance</a>
+          <a href="#" class="hover:text-white transition">Grievance Officer</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- SCRIPT FOR INTERACTIVE CARE CONTINUUM & MIZAJ SCREENER -->
+  <script>
+    // 1. DATA FOR 6-STAGE CARE CONTINUUM
+    const CARE_STAGES = [
+      {
+        step: "01",
+        stage: "Assessment",
+        unani: "Tashkhees-e-Mizaj (10 Ajnas)",
+        title: "10 Ajnas Mizaj & Clinical Intake",
+        desc: "Comprehensive evaluation of baseline temperament (Mizaj-e-Asli), thermal response, pulse (Nabz), sleep pattern, physical habitus, and current biomedical laboratory markers."
+      },
+      {
+        step: "02",
+        stage: "Personalisation",
+        unani: "Taqweem-ul-A'za",
+        title: "Constitutional Context & Organ-Axis",
+        desc: "Identification of acquired dyscrasia (Su-e-Mizaj) across vital organ axes (Brain, Heart, Liver, Renal) rather than superficial symptom suppression."
+      },
+      {
+        step: "03",
+        stage: "Clinician Oversight",
+        unani: "Nazar-e-Tabeeb",
+        title: "Tabeeb Oversight & Digital Medical Seal",
+        desc: "Every diagnostic finding and care directive is verified, refined, and authorized exclusively by qualified Unani physicians registered under the NCISM Act 2020."
+      },
+      {
+        step: "04",
+        stage: "Care Plan",
+        unani: "Nuskha + Tadbeer + Ahara",
+        title: "Tri-Pillar Care Plan (Dawa, Regimen & Diet)",
+        desc: "Formulation of targeted botanical medicines (Nuskha), regimenal physical therapies (Tadbeer such as Hijama, Dalk, or Riyazat), and constitutional nutrition (Ghiza)."
+      },
+      {
+        step: "05",
+        stage: "Monitoring",
+        unani: "Nigahdaasht-e-Sehat",
+        title: "Longitudinal Adherence & Remote Tracking",
+        desc: "Active follow-up via dosing reminders, warm-water intake guidance, non-judgmental adherence tracking, and remote biomarker trend monitoring."
+      },
+      {
+        step: "06",
+        stage: "Outcomes",
+        unani: "Husool-e-Shifa",
+        title: "Measurable Recovery (-42% Symptom Reduction)",
+        desc: "Systematic outcome reviews measuring clinical score improvements, sustained vital recovery, and objective resolution of chronic disease burden."
+      }
+    ];
+
+    function selectCareStage(index) {
+      const stage = CARE_STAGES[index];
+      if (!stage) return;
+
+      // Update active panel
+      document.getElementById('stage-badge-step').textContent = 'STAGE ' + stage.step;
+      document.getElementById('stage-badge-name').textContent = stage.stage;
+      document.getElementById('stage-badge-unani').textContent = stage.unani;
+      document.getElementById('stage-title').textContent = stage.title;
+      document.getElementById('stage-description').textContent = stage.desc;
+
+      // Update tab styles
+      const tabs = document.querySelectorAll('.care-tab');
+      tabs.forEach((tab, i) => {
+        if (i === index) {
+          tab.className = "care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between bg-[#1B4332] text-white shadow-md";
+          const badge = tab.querySelector('span:first-child');
+          if (badge) badge.className = "text-[10px] font-mono font-bold text-[#A7F3D0]";
+        } else {
+          tab.className = "care-tab p-3 rounded-xl text-left transition duration-150 flex flex-col justify-between hover:bg-[#F8FAFC] text-[#334155]";
+          const badge = tab.querySelector('span:first-child');
+          if (badge) badge.className = "text-[10px] font-mono font-bold text-[#2D6A4F]";
+        }
+      });
+    }
+
+    // 2. MIZAJ SCREENER INTERACTIVE LOGIC
+    let mizajState = {};
+
+    function answerMizaj(category, value) {
+      mizajState[category] = value;
+      
+      if (category === 'thermal') {
+        document.getElementById('mizaj-q1').classList.add('hidden');
+        document.getElementById('mizaj-q2').classList.remove('hidden');
+      } else if (category === 'digestion') {
+        document.getElementById('mizaj-q2').classList.add('hidden');
+        document.getElementById('mizaj-q3').classList.remove('hidden');
+      } else if (category === 'sleep') {
+        document.getElementById('mizaj-q3').classList.add('hidden');
+        showMizajResult();
+      }
+    }
+
+    function showMizajResult() {
+      const { thermal, digestion } = mizajState;
+      let res = {};
+
+      if (thermal === 'warm' && digestion === 'active') {
+        res = {
+          mizaj: "Safrawi (صفراوی)",
+          english: "Bilious / Choleric (Hot & Dry)",
+          qualities: "High metabolic drive, warm extremities, alert responsiveness.",
+          desc: "Predominance of yellow bile (Safra). Prone to acidity, restlessness, and heat intolerance under excessive exertion.",
+          tips: "Prioritize cooling, hydrating nutrition (Aab-e-Anar, cucumber, barley water) and avoid late-night sleep deprivation."
+        };
+      } else if (thermal === 'warm' || digestion === 'moderate') {
+        res = {
+          mizaj: "Damawi (دموی)",
+          english: "Sanguine (Hot & Moist)",
+          qualities: "Robust vitality, florid complexion, strong muscular habitus.",
+          desc: "Predominance of blood (Dam). Excellent constitutional resilience, but requires monitoring for metabolic plethora.",
+          tips: "Engage in regular physical exertion (Riyazat) and maintain balanced, non-excessive caloric intake."
+        };
+      } else if (thermal === 'cold' && digestion === 'slow') {
+        res = {
+          mizaj: "Balghami (بلغمی)",
+          english: "Phlegmatic (Cold & Moist)",
+          qualities: "Calm demeanor, cooler skin tone, heavier sleep architecture.",
+          desc: "Predominance of phlegm (Balgham). Tendency towards fluid retention, sluggish metabolism, and morning heaviness.",
+          tips: "Incorporate warming spices (Zanjabeel/Ginger, Darchini/Cinnamon) and avoid cold/heavy dairy in the evening."
+        };
+      } else {
+        res = {
+          mizaj: "Sawdawi (سوداوی)",
+          english: "Melancholic (Cold & Dry)",
+          qualities: "Analytical mind, slender build, sensitivity to erratic schedules.",
+          desc: "Predominance of black bile (Sawda). Tendency towards dry skin, anxious thoughts, and light or fragmented sleep.",
+          tips: "Follow calming oil massage (Dalk), deeply nourishing moist foods (Roghan-e-Badam, milk, dates), and fixed bedtime hours."
+        };
+      }
+
+      document.getElementById('res-mizaj').textContent = res.mizaj;
+      document.getElementById('res-english').textContent = res.english;
+      document.getElementById('res-qualities').textContent = res.qualities;
+      document.getElementById('res-description').textContent = res.desc;
+      document.getElementById('res-tips').textContent = res.tips;
+
+      document.getElementById('mizaj-result').classList.remove('hidden');
+    }
+
+    function resetMizajScreener() {
+      mizajState = {};
+      document.getElementById('mizaj-result').classList.add('hidden');
+      document.getElementById('mizaj-q2').classList.add('hidden');
+      document.getElementById('mizaj-q3').classList.add('hidden');
+      document.getElementById('mizaj-q1').classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
+"""
+
+def main():
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    target_files = [
+        os.path.join(repo_root, "website.html"),
+        os.path.join(repo_root, "docs", "website.html"),
+        os.path.join(repo_root, "public_website.html")
+    ]
+
+    for target in target_files:
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "w", encoding="utf-8") as f:
+            f.write(HTML_CONTENT)
+        print(f"[OK] Generated: {target} ({len(HTML_CONTENT):,} bytes)")
+
+if __name__ == "__main__":
+    main()

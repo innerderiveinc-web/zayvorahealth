@@ -12,8 +12,8 @@ interface AmbientScribeGovernanceCockpitProps {
 
 const SAMPLE_TRANSCRIPTS = [
   {
-    label: "Urdu (Nastaliq) - Joint & Gastric",
-    text: "مریض نے بتایا کہ پچھلے دو ہفتوں سے گھٹنوں میں شدید درد اور صبح کی سختی رہتی ہے۔ سینے میں جلن اور تیزابیت کی شکایت بھی ہے۔ قبض اور رات کو نیند نہ آنا بھی بڑھ گیا ہے۔",
+    label: "Urdu (Roman Transliteration) - Joint & Gastric",
+    text: "Mareez ne bataya ke pichhle do hafton se ghutno me shadeed dard aur subah ki sakhti rehti hai. Seenay me jalan aur tezaabiyat ki shikayat bhi hai. Qabz aur raat ko neend na aana bhi barh gaya hai.",
   },
   {
     label: "Roman Urdu / Hinglish - Sciatica & Acidity",

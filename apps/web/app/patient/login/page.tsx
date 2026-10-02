@@ -8,15 +8,16 @@ import { AuthService } from "@/lib/services/authService";
 export default function PatientLoginPage() {
   const router = useRouter();
   const [authMode, setAuthMode] = useState<"password" | "otp">("password");
-  const [identifier, setIdentifier] = useState("hamza.farooqi@gmail.com");
-  const [password, setPassword] = useState("••••••••");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identifier) {
       setErrorMessage("Please enter your registered mobile number or email address.");
@@ -24,10 +25,16 @@ export default function PatientLoginPage() {
     }
     setIsLoading(true);
     setErrorMessage(null);
-    setTimeout(() => {
+    setSuccessMessage(null);
+    try {
+      const res = await AuthService.requestOtpAsync(identifier);
       setIsLoading(false);
       setOtpSent(true);
-    }, 600);
+      setSuccessMessage(res.message || "A 6-digit verification OTP has been dispatched.");
+    } catch (err: any) {
+      setErrorMessage(err.message || "Failed to dispatch verification code. Please check your details.");
+      setIsLoading(false);
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -37,14 +44,22 @@ export default function PatientLoginPage() {
 
     try {
       if (authMode === "password") {
-        await AuthService.loginAsync(identifier, password || "password123");
-      } else {
-        if (!otp || otp.length < 4) {
-          throw new Error("Please enter the 6-digit OTP sent to your phone/email.");
+        if (!password) {
+          throw new Error("Password is required. Please enter your password.");
         }
-        await AuthService.loginAsync(identifier, "otp-verified");
+        await AuthService.loginAsync(identifier, password, "PATIENT");
+        router.push("/patient");
+      } else {
+        if (!otp || otp.length < 6) {
+          throw new Error("Please enter the 6-digit numeric OTP sent to your phone/email.");
+        }
+        const verifyResult = await AuthService.verifyOtpAsync(identifier, otp);
+        if ("is_registered" in verifyResult && verifyResult.is_registered === false) {
+          router.push(`/patient/register?identifier=${encodeURIComponent(identifier)}&token=${encodeURIComponent(verifyResult.verification_token)}`);
+          return;
+        }
+        router.push("/patient");
       }
-      router.push("/patient");
     } catch (err: any) {
       setErrorMessage(err.message || "Invalid credentials. Please verify and try again.");
       setIsLoading(false);
@@ -57,7 +72,7 @@ export default function PatientLoginPage() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10 space-y-3">
-        <Link href="/website" className="inline-flex items-center gap-2.5 text-xl font-bold text-white tracking-wide group">
+        <Link href="/" className="inline-flex items-center gap-2.5 text-xl font-bold text-white tracking-wide group">
           <span className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-400 flex items-center justify-center text-white text-lg shadow-lg shadow-teal-900/30 group-hover:scale-105 transition">
             🌿
           </span>
@@ -67,7 +82,7 @@ export default function PatientLoginPage() {
           Patient Portal Login
         </h2>
         <p className="text-xs text-slate-400">
-          Access your digital health record, active prescriptions, and care plan
+          Access your personal health record, active prescriptions, and care plan
         </p>
       </div>
 
@@ -78,7 +93,7 @@ export default function PatientLoginPage() {
           <div className="grid grid-cols-2 gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 text-xs">
             <button
               type="button"
-              onClick={() => { setAuthMode("password"); setErrorMessage(null); }}
+              onClick={() => { setAuthMode("password"); setErrorMessage(null); setSuccessMessage(null); }}
               className={`py-2 rounded-lg font-semibold transition ${
                 authMode === "password"
                   ? "bg-teal-600 text-white shadow-sm"
@@ -89,7 +104,7 @@ export default function PatientLoginPage() {
             </button>
             <button
               type="button"
-              onClick={() => { setAuthMode("otp"); setErrorMessage(null); }}
+              onClick={() => { setAuthMode("otp"); setErrorMessage(null); setSuccessMessage(null); }}
               className={`py-2 rounded-lg font-semibold transition ${
                 authMode === "otp"
                   ? "bg-teal-600 text-white shadow-sm"
@@ -104,6 +119,13 @@ export default function PatientLoginPage() {
             <div className="p-3 rounded-xl bg-rose-950/70 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
               <span>⚠</span>
               <span>{errorMessage}</span>
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="p-3 rounded-xl bg-emerald-950/70 border border-emerald-800 text-emerald-300 text-xs flex items-center gap-2">
+              <span>✓</span>
+              <span>{successMessage}</span>
             </div>
           )}
 
@@ -175,8 +197,8 @@ export default function PatientLoginPage() {
                       className="w-full text-center tracking-widest text-lg font-mono px-4 py-2 rounded-xl bg-slate-900 border border-teal-500 text-white focus:outline-none"
                       required
                     />
-                    <p className="text-[10px] text-emerald-400 text-center">
-                      Demo OTP: Enter any 6 digits (e.g. 123456)
+                    <p className="text-[10px] text-slate-400 text-center">
+                      A 6-digit one-time code will be dispatched to your registered mobile or email.
                     </p>
                   </div>
                 )}
@@ -225,14 +247,14 @@ export default function PatientLoginPage() {
             <span>•</span>
             <span>ABDM Ayushman Bharat Linked</span>
             <span>•</span>
-            <span>HIPAA Compliant</span>
+            <span>DPDP Act 2023 Compliant</span>
           </div>
 
         </div>
 
         {/* Back Link */}
         <div className="text-center mt-6">
-          <Link href="/website" className="text-xs text-slate-500 hover:text-slate-300 transition">
+          <Link href="/" className="text-xs text-slate-500 hover:text-slate-300 transition">
             ← Return to ZAYVORA Public Website
           </Link>
         </div>

@@ -1,5 +1,5 @@
 """
-Master Build Prompt v4.0 §50 AI Governance: every AI recommendation
+ZAYVORA Clinical Architecture Specification v4.0 §50 AI Governance: every AI recommendation
 needs an audit trail (Patient Data -> Retrieved Knowledge -> Reasoning ->
 Safety -> Recommendation -> Clinician Decision -> Final Action). This
 table is that trail's storage — every Hakeem Sahab consultation is

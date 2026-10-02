@@ -34,8 +34,8 @@ def require_permission(permission_code: str):
     """Dependency factory: require_permission('patient.create') gates a
     route to only users whose role grants that specific permission.
 
-    This is the RBAC enforcement point referenced across Master Build
-    Prompt v4.0 (§2 human clinical authority, §49 security). Every
+    This is the RBAC enforcement point referenced across
+    ZAYVORA Clinical Architecture Specification v4.0 (§2 human clinical authority, §49 security). Every
     state-changing route in every service should be gated like this —
     no route should rely on the frontend hiding a button as its only
     protection.

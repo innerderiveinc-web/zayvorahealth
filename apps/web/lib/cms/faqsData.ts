@@ -22,13 +22,13 @@ export const FAQS_DATA: FaqItem[] = [
     id: "faq-3",
     category: "Consultations",
     question: "How does an appointment with a ZAYVORA physician work?",
-    answer: "You can book an Online Video Consultation or an In-Clinic OPD visit at Jamia Hamdard AUTC - Main Hospital. After completing your health history, our certified Tabeeb assesses your constitution, reviews any existing lab reports, and creates a tailored 4-phase care plan with follow-up milestones."
+    answer: "You can book an Online Video Consultation or an In-Clinic OPD visit at ZAYVORA Matab™ Central Care Centre. After completing your health history, our certified Tabeeb assesses your constitution, reviews any existing lab reports, and creates a tailored 4-phase care plan with follow-up milestones."
   },
   {
     id: "faq-4",
     category: "Consultations",
     question: "Can I consult for chronic conditions like PCOS, Fatty Liver, or Joint Pain?",
-    answer: "Yes. Our clinical team specializes in multi-week structured reversal programs for metabolic disorders, musculoskeletal complaints (Waja-ul-Mafasil), female hormonal imbalances (PCOS), and male reproductive health."
+    answer: "Yes. Our clinical team specializes in multi-week structured clinical management and stabilization programs for metabolic disorders, musculoskeletal complaints (Waja-ul-Mafasil), female hormonal imbalances (PCOS), and male reproductive health."
   },
   {
     id: "faq-5",

@@ -1,0 +1,41 @@
+food_name,classical_name,mizaj,primary_quality,degree,digestibility,chyme_quality,humor_produced,nafa_khas,muzir,musleh,classical_authority
+barley,Sha'eer,Barid 1 Yabis 1,Barid,1,Latif,Salih-ul-Kaimus,Balgham,Cooling febrifuge and liver cleanser; reduces morbid heat,Coldness in elderly,Honey (Asal) or Sugar,Al-Qanun fi al-Tibb Vol II
+wheat,Hintah,Motadil Haar 1 Ratab 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Supreme body nourisher and natural muscle tissue builder,Intestinal flatulence if unrefined,Zanjabeel (Ginger) or Anisoon,Al-Qanun fi al-Tibb Vol II
+mutton,Lahm Ghanam,Haar 1 Ratab 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Best animal protein for replenishing innate heat and blood,Slow digestion in sedentary,Filfil Siyah (Black Pepper) & Sirka,Kitab al-Aghziya (Ibn Zuhr)
+chicken,Lahm Dajaj,Haar 1 Ratab 1,Haar,1,Latif,Salih-ul-Kaimus,Dam,Convalescent nourishment; easily digested by weak stomach,None in moderate quantity,Kishneez (Coriander),Kitab al-Aghziya (Ibn Zuhr)
+beef,Lahm Baqar,Barid 2 Yabis 2,Barid,2,Kaseef,Radi-ul-Kaimus,Sauda,Produces dense melancholic blood; promotes heavy body mass,Aggravates Sauda; varicose veins,Sirka (Vinegar) & Garam Masala,Makhzan-ul-Adwiya
+fish,Samak,Barid 2 Ratab 2,Barid,2,Latif,Salih-ul-Kaimus,Balgham,Quenches thirst; cools burning stomach and liver,Excess phlegm and sluggishness,Zanjabeel & Mustard (Khardal),Al-Qanun fi al-Tibb Vol II
+honey,Asal,Haar 2 Yabis 2,Haar,2,Latif,Salih-ul-Kaimus,Safra,Cleanses visceral organs; dissolves thick viscous phlegm,Aggravates hot choleric states,Sirka (Oxymel preparation) or Lemon,Al-Qanun fi al-Tibb Vol II
+milk,Laban,Barid 1 Ratab 2,Barid,1,Motadil,Salih-ul-Kaimus,Dam,Moistens body tissues and relieves cerebral dryness,Produces gas and stones in hot liver,Honey or Ginger infusion,Kitab al-Hawi (Al-Razi)
+curd,Mast / Dahi,Barid 2 Ratab 2,Barid,2,Kaseef,Salih-ul-Kaimus,Balgham,Appetizer; quenches bile heat and relieves tenesmus,Obstruction in liver and spleen,Zeera Siyah & Black Salt,Makhzan-ul-Adwiya
+whey,Maa-ul-Jubn,Barid 1 Ratab 1,Barid,1,Latif,Salih-ul-Kaimus,Dam,Supreme alterative; purges burnt black and yellow bile,None in moderate quantity,Sikanjabeen,Al-Qanun fi al-Tibb Vol II
+ginger,Zanjabeel,Haar 3 Yabis 2,Haar,3,Latif,Salih-ul-Kaimus,Hararat,Kindles gastric fire; carminative for cold stomach,Irritates throat and bladder in excess,Honey or Roghan Badaam,Al-Qanun fi al-Tibb Vol II
+garlic,Seer / Saum,Haar 3 Yabis 3,Haar,3,Kaseef,Salih-ul-Kaimus,Hararat,Powerful deobstruent; expels phlegm and dissolves clots,Headache in hot temperament,Sirka or Boiling in water,Makhzan-ul-Adwiya
+onion,Basal,Haar 3 Yabis 2,Haar,3,Latif,Radi-ul-Kaimus,Hararat,Aphrodisiac and appetite stimulant; liquefies humors,Flatulence and bad breath,Sirka or Washing with salt water,Kitab al-Aghziya
+cucumber,Khiyar,Barid 2 Ratab 2,Barid,2,Latif,Salih-ul-Kaimus,Balgham,Cools fevers and quenches burning liver thirst,Slow digestion in cold stomach,Namak (Salt) or Badiyan,Al-Qanun fi al-Tibb Vol II
+watermelon,Tarbuz / Battikh,Barid 2 Ratab 2,Barid,2,Latif,Salih-ul-Kaimus,Balgham,Diuretic; cleanses urinary tract and purges yellow bile,Gastric fermentation if taken after meals,Zanjabeel or Honey,Kitab al-Hawi
+almond,Badaam Shirin,Haar 1 Ratab 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Restores brain substance; strengthens memory and vision,Slight heaviness in weak digestion,Sugar or Peeling outer skin,Al-Qanun fi al-Tibb Vol II
+walnut,Jouz / Akhrot,Haar 2 Yabis 2,Haar,2,Kaseef,Salih-ul-Kaimus,Hararat,Strengthens brain and kidneys; expels coldness,Mouth aphthae if taken excessively,Fig (Injeer) or Rue (Sadab),Makhzan-ul-Adwiya
+fig,Injeer,Haar 1 Ratab 1,Haar,1,Latif,Salih-ul-Kaimus,Dam,Cleanses kidney gravel; softens bowel and nourishes lungs,Produces lice if consumed in huge excess,Walnut or Anisoon,Al-Qanun fi al-Tibb Vol II
+grapes,Inab / Angoor,Haar 1 Ratab 1,Haar,1,Latif,Salih-ul-Kaimus,Dam,Generates pure sanguine blood; easily digested,Flatulence if skin/seeds swallowed,Pomegranate or Almond,Kitab al-Aghziya
+pomegranate,Rumman Shirin,Barid 1 Ratab 1,Barid,1,Latif,Salih-ul-Kaimus,Dam,Strengthens stomach and quenches cardiac flutter,Slight gas in weak bowel,Zanjabeel,Al-Qanun fi al-Tibb Vol II
+sour pomegranate,Rumman Hamiz,Barid 2 Yabis 2,Barid,2,Latif,Radi-ul-Kaimus,Safra,Suppresses bilious vomiting and quells yellow bile,Harms chest and cough,Sugar or Honey,Al-Qanun fi al-Tibb Vol II
+apple,Tuffah,Motadil Haar 1 Ratab 1,Haar,1,Latif,Salih-ul-Kaimus,Dam,Cardiac exhilarant (Mufarreh Qalb); dispels melancholy,Excess intake causes flatulence,Zanjabeel or Rose water,Kitab al-Aghziya
+dates,Khuma / Tamr,Haar 2 Yabis 2,Haar,2,Kaseef,Salih-ul-Kaimus,Dam,Rich systemic energy; strengthens back and muscles,Obstruction in liver/teeth damage,Almonds or Poppy seeds (Khashkhash),Al-Qanun fi al-Tibb Vol II
+spinach,Isfanakh,Barid 1 Ratab 2,Barid,1,Latif,Salih-ul-Kaimus,Balgham,Laxative and chest soother; clears biliary irritation,Weakens gastric retention power,Darchini (Cinnamon) or Pepper,Makhzan-ul-Adwiya
+coriander,Kishneez,Barid 2 Yabis 2,Barid,2,Latif,Salih-ul-Kaimus,Safra,Sedates heart palpitations and prevents hot vapor ascent,Excess dampens sexual vigor,Sugar or Honey,Al-Qanun fi al-Tibb Vol II
+mint,Pudina / Na'na,Haar 2 Yabis 2,Haar,2,Latif,Salih-ul-Kaimus,Hararat,Stomachic tonic; stops vomiting and expels intestinal gas,Burning sensation in hot gastritis,Rose water or Vinegar,Makhzan-ul-Adwiya
+fennel,Badiyan / Razianaj,Haar 2 Yabis 1,Haar,2,Latif,Salih-ul-Kaimus,Hararat,Deobstruent in liver and eyes; carminative and galactagogue,Headache in hot temperaments,Sandal Safed,Al-Qanun fi al-Tibb Vol II
+fenugreek,Hulba / Methi,Haar 2 Yabis 1,Haar,2,Latif,Salih-ul-Kaimus,Hararat,Dissolves hard visceral swellings and expels phlegm,Nausea in bilious temperaments,Spinach or Chicory (Kasni),Al-Qanun fi al-Tibb Vol II
+chickpea,Himmis / Chana,Haar 1 Yabis 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Nourishes lung tissue and stimulates innate heat and semen,Severe flatulence and heaviness,Poppy seed oil or Cumin (Zeera),Al-Qanun fi al-Tibb Vol II
+lentil,Adas / Masoor,Barid 1 Yabis 2,Barid,1,Kaseef,Radi-ul-Kaimus,Sauda,Dries body moisture; causes heavy dark blood,Produces nightmares and melancholia,Roghan Badaam and Beets (Silq),Al-Qanun fi al-Tibb Vol II
+olive oil,Roghan Zaitoon,Haar 1 Ratab 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Dissolves gallstones; softens bowels and preserves tissue vitality,Nausea in weak stomach,Lemon juice or Vinegar,Al-Qanun fi al-Tibb Vol II
+mustard oil,Roghan Sarshaf,Haar 3 Yabis 3,Haar,3,Latif,Radi-ul-Kaimus,Hararat,Deep counter-irritant and analgesic in joint pain,Internal burning if taken raw,Camphor or Milk,Makhzan-ul-Adwiya
+sesame oil,Roghan Kunjad,Haar 1 Ratab 1,Haar,1,Motadil,Salih-ul-Kaimus,Dam,Emollient and laxative; relieves dry skin and nervous spasms,Nausea in excess,Honey or Lemon,Makhzan-ul-Adwiya
+vinegar,Sirka,Barid 2 Yabis 2,Barid,2,Latif,Radi-ul-Kaimus,Safra,Powerful deobstruent; cuts through thick sticky phlegm and bile,Harms nervous tissue and joints,Honey (Sikanjabeen preparation),Al-Qanun fi al-Tibb Vol II
+saffron,Zafran,Haar 2 Yabis 1,Haar,2,Latif,Salih-ul-Kaimus,Dam,Premier cardiac exhilarant; opens cerebral microcirculation,Sedating narcosis in extreme dose,Anisoon or Violet (Banafsha),Al-Qanun fi al-Tibb Vol II
+cinnamon,Darchini,Haar 3 Yabis 2,Haar,3,Latif,Salih-ul-Kaimus,Hararat,Strengthens stomach and liver; dispels cold visceral phlegm,Irritates urinary tract in high dose,Kateera (Tragacanth),Al-Qanun fi al-Tibb Vol II
+cardamom,Ilaichi / Qaqila,Haar 2 Yabis 2,Haar,2,Latif,Salih-ul-Kaimus,Hararat,Deodorizes breath; tones cardiac and gastric sphincters,Harms lungs in dry temperaments,Kateera,Makhzan-ul-Adwiya
+clove,Qaranfal / Laung,Haar 3 Yabis 3,Haar,3,Latif,Salih-ul-Kaimus,Hararat,Local analgesic; invigorates nervous system and liver,Produces dry thirst in hot bodies,Banafsha,Al-Qanun fi al-Tibb Vol II
+black pepper,Filfil Siyah,Haar 3 Yabis 3,Haar,3,Latif,Radi-ul-Kaimus,Hararat,Accelerates gastric digestion; burns cold thick phlegm,Aggravates gastritis and ulcers,Roghan Badaam,Al-Qanun fi al-Tibb Vol II
+cumin,Zeera Siyah / Kamoon,Haar 2 Yabis 3,Haar,2,Latif,Salih-ul-Kaimus,Hararat,Dispels abdominal flatulence and dries excess stomach dampness,Paleness if taken habitually,Sirka or Lemon,Makhzan-ul-Adwiya

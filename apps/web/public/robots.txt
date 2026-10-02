@@ -1,0 +1,56 @@
+# ==============================================================================
+# ZAYVORA Health OS™ & Public Web Portal — Robots Exclusion Standard (RFC 9309)
+# ==============================================================================
+# Public Website (www.zayvorahealth.com): Permitted for public indexing.
+# ZAYVORA Health OS (app.zayvorahealth.com / os.zayvorahealth.com): Strict Private Intranet.
+# ==============================================================================
+
+User-agent: *
+
+# Strictly Prohibit Clinical OS, EHR Records, Patient PHR, and Admin Workspaces
+Disallow: /doctor
+Disallow: /doctor/
+Disallow: /patient
+Disallow: /patient/
+Disallow: /pharmacy
+Disallow: /pharmacy/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /clinic
+Disallow: /clinic/
+Disallow: /receptionist
+Disallow: /receptionist/
+Disallow: /reception
+Disallow: /reception/
+Disallow: /research
+Disallow: /research/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /cockpit
+Disallow: /settings/
+Disallow: /maintenance/
+
+# Allow Public Website Pages (Consumer Front Door)
+Allow: /
+Allow: /about
+Allow: /care
+Allow: /products
+Allow: /programs
+Allow: /doctors
+Allow: /clinics
+Allow: /book
+Allow: /contact
+Allow: /faq
+Allow: /careers
+Allow: /trust
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+Allow: /medical-disclaimer
+Allow: /accessibility
+Allow: /shipping-policy
+Allow: /refund-policy
+
+# Sitemap Index
+Sitemap: https://www.zayvorahealth.com/sitemap.xml

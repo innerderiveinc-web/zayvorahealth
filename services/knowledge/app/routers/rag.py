@@ -5,17 +5,17 @@ from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel, Field
 
 from app.core.auth_dependency import CurrentUser, get_current_user
-from app.core.hybrid_rag import HybridRAGEngine
+from app.core.hybrid_rag import ZAYVORAIntelligenceEngine
 
 router = APIRouter(prefix="/api/v1/knowledge/rag", tags=["hybrid-rag"])
 
-_ENGINE_INSTANCE: HybridRAGEngine | None = None
+_ENGINE_INSTANCE: ZAYVORAIntelligenceEngine | None = None
 
 
-def get_rag_engine() -> HybridRAGEngine:
+def get_rag_engine() -> ZAYVORAIntelligenceEngine:
     global _ENGINE_INSTANCE
     if _ENGINE_INSTANCE is None:
-        engine = HybridRAGEngine()
+        engine = ZAYVORAIntelligenceEngine()
         engine.load_canonical_corpus()
         _ENGINE_INSTANCE = engine
     return _ENGINE_INSTANCE

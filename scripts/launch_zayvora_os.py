@@ -60,7 +60,7 @@ class PlatformDatabase:
             {
                 "id": "DOC-1001",
                 "full_name": "Hakim Dr. Tariq Mansoor",
-                "medical_council_reg_no": "CCIM-BUMS-2004-9841",
+                "medical_council_reg_no": "NCISM-BUMS-2004-9841",
                 "role": "ROLE_SENIOR_TABEEB",
                 "specialty": "Unani Rheumatology & Musculoskeletal Disorders",
                 "verification_status": "VERIFIED_ACTIVE"
@@ -92,7 +92,7 @@ class PlatformDatabase:
                 "status": "LOCKED_AUTHORIZED",
                 "digital_signature": {
                     "format": "21_CFR_PART_11",
-                    "signer": "Hakim Dr. Tariq Mansoor (CCIM-BUMS-2004-9841)",
+                    "signer": "Hakim Dr. Tariq Mansoor (NCISM-BUMS-2004-9841)",
                     "merkle_leaf_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                     "timestamp": "2026-09-12T17:30:00Z"
                 }
@@ -170,9 +170,12 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(HTTPStatus.NO_CONTENT)
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Correlation-ID")
         self.end_headers()
+
+    def do_HEAD(self):
+        self.do_GET()
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -276,8 +279,10 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
     def _serve_web_cockpit(self):
         """Serves the complete interactive ZAYVORA Health OS Web Application."""
         html_candidates = [
+            os.path.join(BASE_DIR, "index.html"),
             os.path.join(BASE_DIR, "docs/zayvora_health_os_preview.html"),
-            "/Users/irfanashraf/.gemini/antigravity/brain/aef53974-5787-48a1-b0a4-20feaf895e12/zayvora_health_os_preview.html"
+            os.path.join(BASE_DIR, "zayvora_preview_dashboard.html"),
+            os.path.join(BASE_DIR, "docs/index.html")
         ]
         
         content = None
@@ -376,7 +381,7 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
         })
 
     def _handle_doctor_verify(self, body: dict):
-        reg_no = body.get("medical_council_reg_no", "CCIM-BUMS-2004-9841")
+        reg_no = body.get("medical_council_reg_no", "NCISM-BUMS-2004-9841")
         name = body.get("full_name", "Hakim Dr. Tariq Mansoor")
         DB.add_audit("DOCTOR_VERIFIED", f"Doctor credentials verified: {reg_no}")
         self._send_json({
@@ -741,7 +746,7 @@ class ZayvoraOSHandler(BaseHTTPRequestHandler):
     def _handle_prescription_lock(self, body: dict):
         rx_payload = body.get("prescription", {})
         doctor_id = body.get("doctor_id", "DOC-1001")
-        reg_no = body.get("medical_council_reg_no", "CCIM-BUMS-2004-9841")
+        reg_no = body.get("medical_council_reg_no", "NCISM-BUMS-2004-9841")
 
         payload_bytes = json.dumps(rx_payload, sort_keys=True).encode("utf-8")
         merkle_leaf = hashlib.sha256(payload_bytes).hexdigest()

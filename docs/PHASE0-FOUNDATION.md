@@ -1,6 +1,6 @@
 # ZAYVORA Platform — Phase 0: Foundation
 
-This is a **new, parallel build** started from the "ZAYVORA Master Build Prompt v4.0"
+This is a **new, parallel build** started from the "ZAYVORA ZAYVORA Clinical Architecture Specification v4.0"
 architecture (Next.js + FastAPI microservices + PostgreSQL + Neo4j + Redis), separate
 from the existing v8.0 monolithic FastAPI codebase.
 

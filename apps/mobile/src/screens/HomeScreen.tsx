@@ -6,6 +6,13 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: string) => void }> = ({
   const [activePersona, setActivePersona] = useState<"doctor" | "patient">("doctor");
   const [aiQuery, setAiQuery] = useState("");
   const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [adherence, setAdherence] = useState<{ [key: string]: "taken" | "not_yet" | "skipped" }>({
+    morning: "taken",
+    afternoon: "not_yet",
+    evening: "not_yet",
+  });
+  const [audioLang, setAudioLang] = useState<"urdu" | "hindi" | "english">("urdu");
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   const kpis = [
     { label: "Total Patients", value: "1,248", change: "+12%", color: "#10B981" },
@@ -72,7 +79,7 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: string) => void }> = ({
         <View style={styles.rowBetween}>
           <View>
             <Text style={styles.greeting}>
-              {activePersona === "doctor" ? "Good Morning, Dr. Irfan" : "Marhaban, Mohammad Tariq"}
+              {activePersona === "doctor" ? "Good Morning, Hakeem Dr. Irfan" : "Marhaban, Mohammad Tariq"}
             </Text>
             <Text style={styles.subGreeting}>
               {activePersona === "doctor"
@@ -88,7 +95,7 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: string) => void }> = ({
         <View style={styles.metaRow}>
           <Text style={styles.metaItem}>📅 Sunday, 13 Sep 2026</Text>
           <Text style={styles.metaItem}>🕒 09:00 AM - 06:00 PM</Text>
-          <Text style={styles.metaItem}>🏥 Jamia Hamdard AUTC</Text>
+          <Text style={styles.metaItem}>🏥 ZAYVORA Matab™ Central Care Centre</Text>
         </View>
 
         {/* Quick Action Matrix */}
@@ -112,144 +119,211 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: string) => void }> = ({
         </View>
       </View>
 
-      {/* 6 KPI Cards Grid */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Operational & Clinical KPIs</Text>
-        <View style={styles.kpiGrid}>
-          {kpis.map((kpi, idx) => (
-            <View key={idx} style={styles.kpiBox}>
-              <View style={styles.rowBetween}>
-                <Text style={styles.kpiLabel}>{kpi.label}</Text>
-                <Text style={[styles.kpiChange, { color: kpi.color }]}>{kpi.change}</Text>
-              </View>
-              <Text style={styles.kpiValue}>{kpi.value}</Text>
+      {/* ============================================================= */}
+      {/* DOCTOR VIEW                                                   */}
+      {/* ============================================================= */}
+      {activePersona === "doctor" && (
+        <>
+          {/* 6 KPI Cards Grid */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Operational & Clinical KPIs</Text>
+            <View style={styles.kpiGrid}>
+              {kpis.map((kpi, idx) => (
+                <View key={idx} style={styles.kpiBox}>
+                  <View style={styles.rowBetween}>
+                    <Text style={styles.kpiLabel}>{kpi.label}</Text>
+                    <Text style={[styles.kpiChange, { color: kpi.color }]}>{kpi.change}</Text>
+                  </View>
+                  <Text style={styles.kpiValue}>{kpi.value}</Text>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-      </View>
+          </View>
 
-      {/* Clinical Safety Alerts Banner */}
-      <View style={styles.alertCard}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.alertHeader}>⚠️ CLINICAL SAFETY ALERTS (2 ACTIVE)</Text>
-          <Text style={styles.alertBadge}>Mandatory Review</Text>
-        </View>
-        <Text style={styles.alertTitle}>Azaraqi + Sedative Co-administration Warning</Text>
-        <Text style={styles.alertDesc}>
-          Patient Hamza Farooqi: Mudabbar Schedule E(1) check required. 6h spacing mandatory.
-        </Text>
-      </View>
+          {/* Clinical Safety Alerts Banner */}
+          <View style={styles.alertCard}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.alertHeader}>⚠️ CLINICAL SAFETY ALERTS (2 ACTIVE)</Text>
+              <Text style={styles.alertBadge}>Mandatory Review</Text>
+            </View>
+            <Text style={styles.alertTitle}>Azaraqi + Sedative Co-administration Warning</Text>
+            <Text style={styles.alertDesc}>
+              Patient Hamza Farooqi: Mudabbar Schedule E(1) check required. 6h spacing mandatory.
+            </Text>
+          </View>
 
-      {/* Today's Appointments */}
-      <View style={styles.card}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.cardTitle}>Today's Appointments</Text>
-          <TouchableOpacity onPress={() => onNavigate("appointments")}>
-            <Text style={styles.linkText}>View All →</Text>
-          </TouchableOpacity>
-        </View>
+          {/* Today's Appointments */}
+          <View style={styles.card}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.cardTitle}>Today's OPD Consultations</Text>
+              <TouchableOpacity onPress={() => onNavigate("appointments")}>
+                <Text style={styles.linkText}>View All →</Text>
+              </TouchableOpacity>
+            </View>
 
-        <View style={styles.aptList}>
-          {todayAppointments.map((apt) => (
-            <View key={apt.id} style={styles.aptItem}>
+            <View style={styles.aptList}>
+              {todayAppointments.map((apt) => (
+                <View key={apt.id} style={styles.aptItem}>
+                  <View>
+                    <Text style={styles.aptName}>{apt.name}</Text>
+                    <Text style={styles.aptSub}>{apt.time} • {apt.type}</Text>
+                  </View>
+                  <View style={styles.aptActionGroup}>
+                    <Text style={[
+                      styles.aptStatus,
+                      apt.status === "In Consultation" ? styles.statusAmber :
+                      apt.status === "Waiting" ? styles.statusBlue : styles.statusGreen
+                    ]}>
+                      {apt.status}
+                    </Text>
+                    <TouchableOpacity
+                      style={styles.btnStart}
+                      onPress={() => onNavigate(apt.type === "Online" ? "teleconsult" : "appointments")}
+                    >
+                      <Text style={styles.btnStartText}>Consult</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          {/* Hakeem Sahab AI Doctor Copilot */}
+          <View style={styles.aiCard}>
+            <View style={styles.rowBetween}>
+              <View style={styles.rowCenter}>
+                <Text style={styles.aiIcon}>🤖</Text>
+                <Text style={styles.aiTitle}>Hakeem Sahab AI Copilot</Text>
+              </View>
+              <Text style={styles.aiActiveBadge}>Active</Text>
+            </View>
+
+            <View style={styles.aiInputRow}>
+              <TextInput
+                style={styles.aiInput}
+                value={aiQuery}
+                onChangeText={setAiQuery}
+                placeholder="Ask symptoms, herbs, or interaction..."
+                placeholderTextColor="#64748B"
+              />
+              <TouchableOpacity style={styles.aiBtn} onPress={handleAskAi}>
+                <Text style={styles.aiBtnText}>Ask</Text>
+              </TouchableOpacity>
+            </View>
+
+            {aiResponse && (
+              <View style={styles.aiResult}>
+                <Text style={styles.aiResultText}>{aiResponse}</Text>
+              </View>
+            )}
+
+            <Text style={styles.aiDisclaimer}>
+              Statutory: AI is for decision support only. Prescriptions require licensed clinician signature.
+            </Text>
+          </View>
+        </>
+      )}
+
+      {/* ============================================================= */}
+      {/* PATIENT VIEW                                                  */}
+      {/* ============================================================= */}
+      {activePersona === "patient" && (
+        <>
+          {/* Action-First Regimen: What do I do today? */}
+          <View style={styles.actionRegimenCard}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.cardHeader}>TODAY'S CARE • NEXT ACTION</Text>
+              <Text style={styles.badgeActionHeader}>What do I do today?</Text>
+            </View>
+            <Text style={styles.regimenMainTask}>Hab-e-Suranjan (2 pills) + Roghan Massage</Text>
+            <Text style={styles.regimenSub}>Scheduled for: After Lunch &amp; Bedtime</Text>
+
+            <View style={styles.adherenceList}>
+              {[
+                { id: "morning", label: "Morning Dose", item: "Majun Suranjan 5g with lukewarm water", time: "8:00 AM" },
+                { id: "afternoon", label: "Afternoon Regimen", item: "Arq-e-Badiyan 25ml post-lunch", time: "1:30 PM" },
+                { id: "evening", label: "Bedtime Regimen", item: "Roghan-e-Balsan local joint massage", time: "9:00 PM" }
+              ].map((task) => (
+                <View key={task.id} style={styles.adherenceItem}>
+                  <View style={styles.rowBetween}>
+                    <Text style={styles.adherenceTaskName}>{task.label} ({task.time})</Text>
+                    <Text style={[
+                      styles.adherenceBadge,
+                      adherence[task.id] === "taken" ? styles.adherenceBadgeTaken :
+                      adherence[task.id] === "skipped" ? styles.adherenceBadgeSkipped : styles.adherenceBadgePending
+                    ]}>
+                      {adherence[task.id] === "taken" ? "✓ Taken" :
+                       adherence[task.id] === "skipped" ? "✕ Skipped" : "⏳ Pending"}
+                    </Text>
+                  </View>
+                  <Text style={styles.adherenceTaskDetail}>{task.item}</Text>
+                  <View style={styles.adherenceBtnRow}>
+                    <TouchableOpacity
+                      style={[styles.adherenceBtn, adherence[task.id] === "taken" && styles.adherenceBtnActive]}
+                      onPress={() => setAdherence(prev => ({ ...prev, [task.id]: "taken" }))}
+                    >
+                      <Text style={[styles.adherenceBtnText, adherence[task.id] === "taken" && styles.adherenceBtnTextActive]}>✓ Taken</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.adherenceBtn, adherence[task.id] === "not_yet" && styles.adherenceBtnActive]}
+                      onPress={() => setAdherence(prev => ({ ...prev, [task.id]: "not_yet" }))}
+                    >
+                      <Text style={[styles.adherenceBtnText, adherence[task.id] === "not_yet" && styles.adherenceBtnTextActive]}>⏳ Not Yet</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.adherenceBtn, adherence[task.id] === "skipped" && styles.adherenceBtnActive]}
+                      onPress={() => setAdherence(prev => ({ ...prev, [task.id]: "skipped" }))}
+                    >
+                      <Text style={[styles.adherenceBtnText, adherence[task.id] === "skipped" && styles.adherenceBtnTextActive]}>✕ Skipped</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          {/* Next Dose & Vernacular Voice */}
+          <View style={styles.rxCard}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.rxHeader}>Next Scheduled Dose</Text>
+              <Text style={styles.rxCountdown}>Due in 38 mins</Text>
+            </View>
+            <Text style={styles.rxDrugName}>Qurs-e-Mafasil (2 tab) + Arq-e-Badiyan</Text>
+            <TouchableOpacity style={styles.audioBtn} onPress={() => onNavigate("prescriptions")}>
+              <Text style={styles.audioBtnIcon}>🔊</Text>
+              <Text style={styles.audioBtnText}>Sunein Apni Dawa Ki Khorak (Audio Posology)</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Asbab-e-Sittah & Meezan-e-Sehat Health Radar */}
+          <View style={styles.card}>
+            <View style={styles.rowBetween}>
               <View>
-                <Text style={styles.aptName}>{apt.name}</Text>
-                <Text style={styles.aptSub}>{apt.time} • {apt.type}</Text>
+                <Text style={styles.cardEyebrow}>Asbab-e-Sittah Zarooriyyah</Text>
+                <Text style={styles.cardTitle}>Meezan-e-Sehat Equilibrium</Text>
               </View>
-              <View style={styles.aptActionGroup}>
-                <Text style={[
-                  styles.aptStatus,
-                  apt.status === "In Consultation" ? styles.statusAmber :
-                  apt.status === "Waiting" ? styles.statusBlue : styles.statusGreen
-                ]}>
-                  {apt.status}
-                </Text>
-                <TouchableOpacity
-                  style={styles.btnStart}
-                  onPress={() => onNavigate(apt.type === "Online" ? "teleconsult" : "appointments")}
-                >
-                  <Text style={styles.btnStartText}>Consult</Text>
-                </TouchableOpacity>
+              <View style={styles.scoreCircle}>
+                <Text style={styles.scoreNumber}>84</Text>
+                <Text style={styles.scoreSub}>/ 100</Text>
               </View>
             </View>
-          ))}
-        </View>
-      </View>
 
-      {/* Hakeem Sahab AI Doctor Copilot */}
-      <View style={styles.aiCard}>
-        <View style={styles.rowBetween}>
-          <View style={styles.rowCenter}>
-            <Text style={styles.aiIcon}>🤖</Text>
-            <Text style={styles.aiTitle}>Hakeem Sahab AI Copilot</Text>
-          </View>
-          <Text style={styles.aiActiveBadge}>Active</Text>
-        </View>
-
-        <View style={styles.aiInputRow}>
-          <TextInput
-            style={styles.aiInput}
-            value={aiQuery}
-            onChangeText={setAiQuery}
-            placeholder="Ask symptoms, herbs, or interaction..."
-            placeholderTextColor="#64748B"
-          />
-          <TouchableOpacity style={styles.aiBtn} onPress={handleAskAi}>
-            <Text style={styles.aiBtnText}>Ask</Text>
-          </TouchableOpacity>
-        </View>
-
-        {aiResponse && (
-          <View style={styles.aiResult}>
-            <Text style={styles.aiResultText}>{aiResponse}</Text>
-          </View>
-        )}
-
-        <Text style={styles.aiDisclaimer}>
-          Statutory: AI is for decision support only. Prescriptions require licensed clinician signature.
-        </Text>
-      </View>
-
-      {/* Asbab-e-Sittah & Meezan-e-Sehat Health Radar */}
-      <View style={styles.card}>
-        <View style={styles.rowBetween}>
-          <View>
-            <Text style={styles.cardEyebrow}>Asbab-e-Sittah الضرورية</Text>
-            <Text style={styles.cardTitle}>Meezan-e-Sehat Equilibrium</Text>
-          </View>
-          <View style={styles.scoreCircle}>
-            <Text style={styles.scoreNumber}>84</Text>
-            <Text style={styles.scoreSub}>/ 100</Text>
-          </View>
-        </View>
-
-        <View style={styles.asbabGrid}>
-          {asbabFactors.map((f) => (
-            <View key={f.name} style={styles.asbabItem}>
-              <View style={styles.rowBetween}>
-                <Text style={styles.asbabName}>{f.name}</Text>
-                <Text style={[styles.asbabScore, { color: f.color }]}>{f.score}%</Text>
-              </View>
-              <View style={styles.progressBarBg}>
-                <View style={[styles.progressBarFill, { width: `${f.score}%`, backgroundColor: f.color }]} />
-              </View>
+            <View style={styles.asbabGrid}>
+              {asbabFactors.map((f) => (
+                <View key={f.name} style={styles.asbabItem}>
+                  <View style={styles.rowBetween}>
+                    <Text style={styles.asbabName}>{f.name}</Text>
+                    <Text style={[styles.asbabScore, { color: f.color }]}>{f.score}%</Text>
+                  </View>
+                  <View style={styles.progressBarBg}>
+                    <View style={[styles.progressBarFill, { width: `${f.score}%`, backgroundColor: f.color }]} />
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-      </View>
-
-      {/* Next Dose & Vernacular Voice */}
-      <View style={styles.rxCard}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.rxHeader}>Next Scheduled Dose</Text>
-          <Text style={styles.rxCountdown}>Due in 38 mins</Text>
-        </View>
-        <Text style={styles.rxDrugName}>Qurs-e-Mafasil (2 tab) + Arq-e-Badiyan</Text>
-        <TouchableOpacity style={styles.audioBtn} onPress={() => onNavigate("prescriptions")}>
-          <Text style={styles.audioBtnIcon}>🔊</Text>
-          <Text style={styles.audioBtnText}>Sunein Apni Dawa Ki Khorak (Audio Posology)</Text>
-        </TouchableOpacity>
-      </View>
+          </View>
+        </>
+      )}
 
       {/* Professional Mobile Footer */}
       <View style={styles.footerContainer}>
@@ -368,5 +442,24 @@ const styles = StyleSheet.create({
   footerBullet: { color: "#334155", fontSize: 9 },
   footerStatusRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 8 },
   pulseDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#10B981" },
-  footerStatus: { color: "#10B981", fontSize: 9, fontWeight: "600" }
+  footerStatus: { color: "#10B981", fontSize: 9, fontWeight: "600" },
+
+  // Action Regimen Styles
+  actionRegimenCard: { backgroundColor: "#0C1B2A", padding: 14, borderRadius: 16, borderWidth: 1, borderColor: "#0284C7", marginBottom: 14, gap: 6 },
+  badgeActionHeader: { color: "#38BDF8", fontSize: 9, fontWeight: "700", backgroundColor: "rgba(56, 189, 248, 0.15)", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
+  regimenMainTask: { color: "#F0F9FF", fontSize: 14, fontWeight: "800", marginTop: 2 },
+  regimenSub: { color: "#7DD3FC", fontSize: 10, marginBottom: 4 },
+  adherenceList: { gap: 6 },
+  adherenceItem: { backgroundColor: "#0F172A", padding: 8, borderRadius: 8, borderWidth: 1, borderColor: "#1E293B", gap: 3 },
+  adherenceTaskName: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
+  adherenceBadge: { fontSize: 8, fontWeight: "700", paddingHorizontal: 5, paddingVertical: 1, borderRadius: 4 },
+  adherenceBadgeTaken: { color: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.15)" },
+  adherenceBadgeSkipped: { color: "#EF4444", backgroundColor: "rgba(239, 68, 68, 0.15)" },
+  adherenceBadgePending: { color: "#F59E0B", backgroundColor: "rgba(245, 158, 11, 0.15)" },
+  adherenceTaskDetail: { color: "#94A3B8", fontSize: 10 },
+  adherenceBtnRow: { flexDirection: "row", gap: 4, marginTop: 3 },
+  adherenceBtn: { flex: 1, paddingVertical: 5, borderRadius: 5, backgroundColor: "#1E293B", alignItems: "center" },
+  adherenceBtnActive: { backgroundColor: "#0D9488" },
+  adherenceBtnText: { color: "#94A3B8", fontSize: 9, fontWeight: "700" },
+  adherenceBtnTextActive: { color: "#FFFFFF" },
 });

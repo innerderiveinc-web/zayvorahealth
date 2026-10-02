@@ -336,21 +336,21 @@ class TestClinicalHardwareAndEcosystem(unittest.TestCase):
             self.assertIn("/api/v1/hardware/tongue/analyze", lcontent)
             self.assertIn("/api/v1/hardware/botanical/qc-scan", lcontent)
 
-        # Check PlatformHeader.tsx hardware badges
+        # Check PlatformHeader.tsx hardware status
         header_path = os.path.join(BASE_DIR, "apps/web/components/PlatformHeader.tsx")
         self.assertTrue(os.path.exists(header_path))
         with open(header_path, "r", encoding="utf-8") as f:
             hcontent = f.read()
-            self.assertIn("Nabz: 100Hz", hcontent)
-            self.assertIn("Lisan Cam", hcontent)
-            self.assertIn("19.4°C (FEFO)", hcontent)
+            self.assertIn("Hardware Integration Architecture", hcontent)
+            self.assertIn("Connected Devices: 0", hcontent)
 
-        # Check docs/zayvora_health_os_preview.html Hardware Lab tab
+        # Check docs/zayvora_health_os_preview.html Hardware Architecture
         preview_path = os.path.join(BASE_DIR, "docs/zayvora_health_os_preview.html")
         self.assertTrue(os.path.exists(preview_path))
         with open(preview_path, "r", encoding="utf-8") as f:
             pcontent = f.read()
-            self.assertIn("Clinical Hardware & IoT Lab", pcontent)
+            self.assertIn("Hardware Integration Architecture", pcontent)
+            self.assertIn("Connected Devices: 0", pcontent)
             self.assertIn("renderHardwareApp", pcontent)
             self.assertIn("Arterial PPG", pcontent)
             self.assertIn("10-Ajnas Nabz", pcontent)

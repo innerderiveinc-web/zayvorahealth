@@ -18,7 +18,7 @@ export const PrescriptionsScreen: React.FC<{ onBack: () => void }> = ({ onBack }
       audioGuideAvailable: true,
       audioPosologyText: {
         en: "Take one teaspoon twice daily after breakfast and dinner with lukewarm milk. Avoid cold drinks.",
-        ur: "ایک چمچ صبح اور شام کھانے کے بعد نیم گرم دودھ کے ساتھ لیں۔ ٹھنڈے مشروبات اور کھٹی چیزوں سے پرہیز کریں۔",
+        ur: "Ek chamach subah aur sham khane ke baad neem garam doodh ke sath lein. Thande mashroobat aur khatti cheezon se parhez karein.",
         hi: "एक चम्मच सुबह और शाम खाना खाने के बाद गुनगुने दूध के साथ लें। ठंडी चीजों और खट्टी चीजों से परहेज करें।"
       }
     },
@@ -32,14 +32,14 @@ export const PrescriptionsScreen: React.FC<{ onBack: () => void }> = ({ onBack }
       audioGuideAvailable: true,
       audioPosologyText: {
         en: "Take 3 grams early morning on an empty stomach with 60ml Arq-e-Badiyan.",
-        ur: "صبح نہار منہ تین گرام سفوف ساٹھ ملی لیٹر عرق بادیان کے ساتھ پئیں۔",
-        hi: "सुबह खाली पेट तीन ग्राम चूर्ण साठ मिलीलीटर सौंफ के अर्क के साथ लें।"
+        ur: "Subah nahar munh teen gram safoof 60 ml araq-e-badiyan ke sath piyein.",
+        hi: "सुबह खाली पेट तीन ग्राम चूर्ण साठ मिलीलीटर सौंफ के अर्क के साथ लें。"
       }
     }
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Text style={styles.backText}>← Back</Text>
@@ -55,7 +55,7 @@ export const PrescriptionsScreen: React.FC<{ onBack: () => void }> = ({ onBack }
             style={[styles.langBtn, selectedLang === "ur" && styles.langBtnActive]}
             onPress={() => setSelectedLang("ur")}
           >
-            <Text style={[styles.langBtnText, selectedLang === "ur" && styles.langBtnTextActive]}>اردو (Urdu)</Text>
+            <Text style={[styles.langBtnText, selectedLang === "ur" && styles.langBtnTextActive]}>Urdu (Roman)</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.langBtn, selectedLang === "hi" && styles.langBtnActive]}

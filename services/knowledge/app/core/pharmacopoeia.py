@@ -716,16 +716,143 @@ def match_schedule_e1_substance(name: str) -> dict[str, Any] | None:
     return None
 
 
+_EXPANDED_MUFRADAT_CACHE: list[dict[str, Any]] | None = None
+
+
+def _build_expanded_mufradat_catalog() -> list[dict[str, Any]]:
+    global _EXPANDED_MUFRADAT_CACHE
+    if _EXPANDED_MUFRADAT_CACHE is not None:
+        return _EXPANDED_MUFRADAT_CACHE
+
+    items = list(UPI_MUFRADAT_REGISTRY)
+    existing_ids = {m["id"].lower() for m in items}
+    existing_names = {m["name"].lower() for m in items}
+
+    try:
+        from services.knowledge.app.data.mufradat_gold_batch_monographs import GOLD_BENCHMARK_25_MONOGRAPHS
+    except ImportError:
+        try:
+            from app.data.mufradat_gold_batch_monographs import GOLD_BENCHMARK_25_MONOGRAPHS
+        except ImportError:
+            GOLD_BENCHMARK_25_MONOGRAPHS = {}
+
+    for zid, mono in GOLD_BENCHMARK_25_MONOGRAPHS.items():
+        c_ident = mono.get("canonical_identity", {})
+        c_prof = mono.get("classical_profile", {})
+        s_fire = mono.get("safety_firewall", {})
+        m_evid = mono.get("modern_evidence", {})
+
+        canonical_name = c_ident.get("canonical_unani_name", zid)
+        if zid.lower() in existing_ids or canonical_name.lower() in existing_names:
+            continue
+
+        # Parse temperament & quality
+        mizaj_raw = c_prof.get("mizaj", "Muaddil")
+        daraja_raw = str(c_prof.get("daraja", "1"))
+        m_lower = mizaj_raw.lower()
+        if "garm" in m_lower or "hot" in m_lower:
+            if "khushk" in m_lower or "dry" in m_lower:
+                temp, qual = "Safrawi", "Hot & Dry"
+            else:
+                temp, qual = "Damwi", "Hot & Wet"
+        elif "sard" in m_lower or "cold" in m_lower:
+            if "khushk" in m_lower or "dry" in m_lower:
+                temp, qual = "Saudawi", "Cold & Dry"
+            else:
+                temp, qual = "Balghami", "Cold & Wet"
+        else:
+            temp, qual = "Damwi", "Moderate (Muaddil)"
+
+        deg = 1
+        for char in daraja_raw:
+            if char.isdigit():
+                deg = int(char)
+                break
+
+        axes = []
+        for aff in mono.get("organ_axis_affinity", []):
+            aff_l = aff.lower()
+            if "jigar" in aff_l or "hepato" in aff_l:
+                axes.append("jigar-banas")
+            elif "dimagh" in aff_l or "neuro" in aff_l:
+                axes.append("dimagh-aasab")
+            elif "qalb" in aff_l or "cardio" in aff_l:
+                axes.append("qalb-uroq")
+            elif "riya" in aff_l or "pulmonary" in aff_l or "broncho" in aff_l:
+                axes.append("riya-sadr")
+            elif "meda" in aff_l or "gastro" in aff_l:
+                axes.append("meda-amaa")
+            elif "kulyatain" in aff_l or "nephro" in aff_l:
+                axes.append("ghudad-hazm")
+            elif "khusyatain" in aff_l or "male" in aff_l:
+                axes.append("khusyatain")
+            elif "reham" in aff_l or "female" in aff_l:
+                axes.append("reham-mabaysim")
+            elif "mafasil" in aff_l or "joint" in aff_l or "musculo" in aff_l:
+                axes.append("mafasil")
+            elif "jild" in aff_l or "dermato" in aff_l or "skin" in aff_l:
+                axes.append("shaar-jigar")
+            elif "tihal" in aff_l or "spleno" in aff_l or "thyroid" in aff_l:
+                axes.append("ghudda-mithana")
+            elif "vital" in aff_l or "longevity" in aff_l or "tabiyat" in aff_l:
+                axes.append("tabiyat")
+        if not axes:
+            axes.append("tabiyat")
+
+        musleh_val = c_prof.get("musleh", "")
+        musleh_str = ", ".join(musleh_val) if isinstance(musleh_val, list) else str(musleh_val or "")
+        badal_val = c_prof.get("badal", "")
+        badal_str = ", ".join(badal_val) if isinstance(badal_val, list) else str(badal_val or "")
+
+        contra_val = s_fire.get("contraindications", [])
+        contra_str = "; ".join(contra_val) if isinstance(contra_val, list) else str(contra_val or "None listed")
+
+        synonyms = list(c_ident.get("synonyms", []))
+        if c_ident.get("urdu_name") and c_ident.get("urdu_name") not in synonyms:
+            synonyms.append(c_ident.get("urdu_name"))
+        if c_ident.get("arabic_name") and c_ident.get("arabic_name") not in synonyms:
+            synonyms.append(c_ident.get("arabic_name"))
+
+        items.append({
+            "id": zid,
+            "name": canonical_name,
+            "botanical_name": c_ident.get("botanical_name", ""),
+            "part_used": c_ident.get("part_used", ""),
+            "synonyms": synonyms,
+            "afal": c_prof.get("afaal", []),
+            "mizaj": {
+                "temperament": temp,
+                "quality": qual,
+                "hc_degree": deg,
+                "wd_degree": deg,
+            },
+            "organ_axes": axes,
+            "traditional_uses": f"Classical indication: {', '.join(c_prof.get('afaal', [])[:4])}.",
+            "contraindications": contra_str,
+            "musleh": musleh_str,
+            "badal": badal_str,
+            "dose": c_prof.get("dosage_context", "3g to 5g daily"),
+            "is_schedule_e1": s_fire.get("is_schedule_e1", False),
+            "modern_pharmacology": f"Constituents: {', '.join(m_evid.get('primary_constituents', [])[:3])}. Evidence: {m_evid.get('evidence_grade', 'MODERATE')}.",
+        })
+        existing_ids.add(zid.lower())
+        existing_names.add(canonical_name.lower())
+
+    _EXPANDED_MUFRADAT_CACHE = items
+    return _EXPANDED_MUFRADAT_CACHE
+
+
 def get_upi_mufradat() -> list[dict[str, Any]]:
-    return UPI_MUFRADAT_REGISTRY
+    return _build_expanded_mufradat_catalog()
 
 
 def get_mufrad_by_name(name: str) -> dict[str, Any] | None:
+    catalog = _build_expanded_mufradat_catalog()
     target = name.strip().lower()
-    for item in UPI_MUFRADAT_REGISTRY:
-        if item["name"].lower() == target or item["id"] == target:
+    for item in catalog:
+        if item["name"].lower() == target or item["id"].lower() == target:
             return item
-        if any(s.lower() == target for s in item["synonyms"]):
+        if any(s.lower() == target for s in item.get("synonyms", [])):
             return item
         if target in item["name"].lower() or item["name"].lower() in target:
             return item
@@ -733,12 +860,24 @@ def get_mufrad_by_name(name: str) -> dict[str, Any] | None:
 
 
 def get_compound_formulations() -> list[dict[str, Any]]:
-    return NFUM_COMPOUND_REGISTRY
+    compounds_map = {comp["id"]: comp for comp in NFUM_COMPOUND_REGISTRY}
+    try:
+        try:
+            from services.knowledge.app.data.murakkabat_50_classical_formulary import CLASSICAL_MURAKKABAT_50
+        except ImportError:
+            from app.data.murakkabat_50_classical_formulary import CLASSICAL_MURAKKABAT_50
+        for comp in CLASSICAL_MURAKKABAT_50:
+            if comp["id"] not in compounds_map:
+                compounds_map[comp["id"]] = comp
+    except Exception:
+        pass
+    return list(compounds_map.values())
 
 
 def get_compound_by_name(name: str) -> dict[str, Any] | None:
     target = name.strip().lower()
-    for comp in NFUM_COMPOUND_REGISTRY:
+    all_compounds = get_compound_formulations()
+    for comp in all_compounds:
         if comp["name"].lower() == target or comp["id"] == target:
             return comp
         if target in comp["name"].lower() or comp["name"].lower() in target:

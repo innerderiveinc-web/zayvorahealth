@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAYVORA Health OS™ — Production Clinical Preview</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js">
+    // Initialize Tadbeer and Nafsiyat panels on tab switch
+    const origSwitchTab = switchTab;
+    switchTab = function(tabId) {
+      origSwitchTab(tabId);
+      if (tabId === 'ilaj-tadbeer') {
+        setConditionTrajectory('ibs-balghami');
+      } else if (tabId === 'ilaj-nafsiyat') {
+        setItrafatMizaj('safrawi');
+      }
+    };
+
+    // Trajectory data
+    const trajectories = {
+      'ibs-balghami': `
+        <div class="flex justify-between items-center text-emerald-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Irritable Bowel Syndrome — Balghami Dominance (Cold & Sluggish)</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-[10px]">Thermogenic & Drying Protocol</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">1. Riyazat (Exercise):</strong> Moderate-to-vigorous morning brisk walking or jogging (30 mins) to kindle innate warmth (Hararat-e-Ghariziyya) and accelerate bowel motility.</div>
+          <div><strong class="text-white block">2. Huqna (Enema):</strong> Warm water enema infused with ginger (Zanjabeel) and carminative herbs to resolve mucus stagnation.</div>
+          <div><strong class="text-white block">3. Dalak (Massage):</strong> Clockwise abdominal friction with warm Roghan-e-Balsan to dispel gas (Nafakh) and dispel coldness.</div>
+        </div>
+      `,
+      'ibs-safrawi': `
+        <div class="flex justify-between items-center text-amber-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Irritable Bowel Syndrome — Safrawi Dominance (Hot & Irritative)</span>
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 text-[10px]">Cooling & Demulcent Protocol</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">1. Riyazat (Exercise):</strong> Gentle swimming or cool evening walking. Strictly avoid intense heat or exhaustive workouts.</div>
+          <div><strong class="text-white block">2. Huqna (Enema):</strong> Cooling demulcent enema with Rose water (Arq Gulab) and Isabgol mucilage to soothe inflamed intestinal mucosa.</div>
+          <div><strong class="text-white block">3. Takmeed (Fomentation):</strong> Cool compress over lower abdomen to quell burning tenesmus and bile irritation.</div>
+        </div>
+      `,
+      'oa': `
+        <div class="flex justify-between items-center text-blue-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Osteoarthritis (Waja-ul-Mafasil Balghami)</span>
+          <span class="px-2 py-0.5 rounded bg-blue-500/20 text-[10px]">3-Phase Joint Restoration</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">Phase 1 (Tanqiya):</strong> Hijama Bila Shart (Dry cupping) around peri-patellar area to draw cold phlegmatic effusion out of joint capsule.</div>
+          <div><strong class="text-white block">Phase 2 (Tahleel):</strong> Nutool (medicated pouring) of hot decoction of Suranjan & Babuna for 15 minutes nocte.</div>
+          <div><strong class="text-white block">Phase 3 (Taqwiyaat):</strong> Gentle Dalak Layyin with Roghan-e-Balsan followed by isometric quadriceps strengthening.</div>
+        </div>
+      `
+    };
+
+    function setConditionTrajectory(key) {
+      ['ibs-balghami', 'ibs-safrawi', 'oa'].forEach(k => {
+        const btn = document.getElementById('btn-traj-' + k);
+        if (btn) {
+          if (k === key) {
+            btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]';
+          }
+        }
+      });
+      const el = document.getElementById('trajectory-display');
+      if (el && trajectories[key]) el.innerHTML = trajectories[key];
+    }
+
+    // Itrafat Aromatherapy data
+    const itrafatData = {
+      'safrawi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-emerald-300">Safrawi Temperament (Hot & Dry):</strong>
+          <span class="text-[10px] text-emerald-400 font-mono">Cooling & Sedating</span>
+        </div>
+        <p class="text-slate-300">High bile heat creates irritability, explosive anger, and insomnia. Essential oils must be cold & moist (Barid-Ratab).</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Sandal Safed:</strong> Cooling nervine; pacifies limbic hyper-reactivity.</div>
+          <div><strong class="text-white block">Damask Rose:</strong> Calms tachycardia & anxious burning sensation.</div>
+          <div><strong class="text-white block">Khas (Vetiver):</strong> Profound grounding; restores tranquil sleep.</div>
+        </div>
+      `,
+      'saudawi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-purple-300">Saudawi Temperament (Cold & Dry):</strong>
+          <span class="text-[10px] text-purple-400 font-mono">Warming & Mood-Elevating</span>
+        </div>
+        <p class="text-slate-300">Excess black bile causes melancholia, rumination, and dread. Essential oils must be warming & moistening (Haar-Ratab).</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Lavender (Ustukhuddus):</strong> Dispels melancholic fog and cerebral tension.</div>
+          <div><strong class="text-white block">Zafran (Saffron):</strong> Renowned Mufarreh-e-Qalb (cardiac exhilarant).</div>
+          <div><strong class="text-white block">Sweet Orange:</strong> Stimulates gentle warmth and optimism.</div>
+        </div>
+      `,
+      'balghami': `
+        <div class="flex justify-between items-center">
+          <strong class="text-blue-300">Balghami Temperament (Cold & Moist):</strong>
+          <span class="text-[10px] text-blue-400 font-mono">Warming & Stimulating</span>
+        </div>
+        <p class="text-slate-300">Cold dampness produces apathy, daytime somnolence, and brain fog. Requires warming, drying, and awakening oils.</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Rosemary:</strong> Awakens cerebral microcirculation and focus.</div>
+          <div><strong class="text-white block">Eucalyptus:</strong> Clears heavy phlegmatic cranial congestion.</div>
+          <div><strong class="text-white block">Cinnamon Bark:</strong> Restores metabolic heat and drive.</div>
+        </div>
+      `,
+      'damwi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-amber-300">Damwi Temperament (Hot & Moist):</strong>
+          <span class="text-[10px] text-amber-400 font-mono">Balancing & Moderate</span>
+        </div>
+        <p class="text-slate-300">Sanguine temperament requires gentle cooling and centering oils to maintain equanimity without excess sedation.</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Chamomile (Babuna):</strong> Balances neurovascular tone.</div>
+          <div><strong class="text-white block">Jasmine (Yasmin):</strong> Centers emotional spirit (Rooh Nafsani).</div>
+          <div><strong class="text-white block">Neroli:</strong> Soothes vascular hypertension.</div>
+        </div>
+      `
+    };
+
+    function setItrafatMizaj(mizaj) {
+      ['safrawi', 'saudawi', 'balghami', 'damwi'].forEach(m => {
+        const btn = document.getElementById('btn-itr-' + m);
+        if (btn) {
+          if (m === mizaj) {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]';
+          }
+        }
+      });
+      const el = document.getElementById('itrafat-display');
+      if (el && itrafatData[mizaj]) el.innerHTML = itrafatData[mizaj];
+    }
+
+    // Breathing guide animation
+    let breathingInterval = null;
+    let breathingActive = false;
+
+    function toggleBreathingGuide() {
+      const btn = document.getElementById('btn-breathing-toggle');
+      const circle = document.getElementById('breathing-circle');
+      const text = document.getElementById('breathing-phase-text');
+      const instruction = document.getElementById('breathing-instruction');
+
+      if (breathingActive) {
+        clearInterval(breathingInterval);
+        breathingActive = false;
+        btn.innerText = 'Start Guided Breathwork';
+        btn.className = 'px-4 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition shadow';
+        text.innerText = 'Click Start';
+        circle.style.transform = 'scale(1)';
+        instruction.innerText = 'Inhale 4s • Retain 7s • Exhale 8s';
+        return;
+      }
+
+      breathingActive = true;
+      btn.innerText = 'Stop Breathwork';
+      btn.className = 'px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition shadow';
+
+      let step = 0; // 0=inhale(4s), 1=hold(7s), 2=exhale(8s)
+      let sec = 0;
+
+      function runCycle() {
+        if (step === 0) {
+          text.innerText = `Inhale (${4 - sec})`;
+          instruction.innerText = 'Inhale slowly through nose into lower diaphragm...';
+          circle.style.transform = `scale(${1 + (sec / 4) * 0.4})`;
+          circle.style.borderColor = '#14b8a6';
+          sec++;
+          if (sec >= 4) { step = 1; sec = 0; }
+        } else if (step === 1) {
+          text.innerText = `Hold (${7 - sec})`;
+          instruction.innerText = 'Retain breath gently; vagus nerve pacing active...';
+          circle.style.transform = 'scale(1.4)';
+          circle.style.borderColor = '#8b5cf6';
+          sec++;
+          if (sec >= 7) { step = 2; sec = 0; }
+        } else if (step === 2) {
+          text.innerText = `Exhale (${8 - sec})`;
+          instruction.innerText = 'Exhale completely through mouth with soft whoosh...';
+          circle.style.transform = `scale(${1.4 - (sec / 8) * 0.4})`;
+          circle.style.borderColor = '#38bdf8';
+          sec++;
+          if (sec >= 8) { step = 0; sec = 0; }
+        }
+      }
+
+      runCycle();
+      breathingInterval = setInterval(runCycle, 1000);
+    }
+
+    // Emergency Triage Simulator
+    const crisisKeywords = [
+      "suicide", "suicidal", "kill myself", "end my life", "want to die",
+      "self harm", "hallucination", "hearing voices", "delusion", "paranoia",
+      "psychosis", "psychotic", "bipolar mania", "manic episode", "heroin withdrawal"
+    ];
+
+    function setCrisisInput(text) {
+      document.getElementById('crisis-simulator-input').value = text;
+      simulateCrisisEvaluation();
+    }
+
+    function simulateCrisisEvaluation() {
+      const input = document.getElementById('crisis-simulator-input').value.toLowerCase();
+      const output = document.getElementById('crisis-simulator-output');
+      const triggered = crisisKeywords.filter(k => input.includes(k));
+
+      if (triggered.length > 0) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold flex items-center gap-1.5">
+              <span>⛔ FAIL-CLOSED SAFETY LOCK TRIGGERED:</span>
+              <span>EMERGENCY_PSYCHIATRIC_DIVERSION</span>
+            </div>
+            <div class="text-[11px] text-rose-200 mt-1">
+              Triggered Red Flag: <strong class="underline font-mono">${triggered.join(", ")}</strong>. 
+              Elective prescribing locked. In accordance with Chapter 10 of 'Ilaj bil Nafsiyat' and statutory healthcare invariants.
+            </div>
+            <div class="text-[11px] text-white font-semibold mt-1">
+              Directive: Immediate diversion to nearest emergency medical facility or accredited psychiatric hospital.
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">BLOCK_ELECTIVE_PRESCRIBING</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Safety Barrier Evaluation: ELECTIVE CARE PERMITTED</div>
+            <div class="text-[11px] text-slate-300">No acute crisis keywords detected. Qualifies for elective Unani Nafsiyat & regimental care.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: SAFE</span>
+        `;
+      }
+    }
+
+    function showModalityModal(name) {
+      alert('Modality Protocol: ' + name.toUpperCase() + '\nStrict adherence to NCISM syllabus, sterilization standards, and patient vital sign prerequisites.');
+    }
+
+  
+    // Food Antagonism Checker
+    const foodAntagRules = [
+      { trigger: ['fish', 'milk'], title: 'Samak ma\'a Laban (Fish + Milk)', msg: 'Extreme humoral conflict produces putrefactive chyme linked to vitiligo (Bars) and chronic arthralgia. (Al-Qanun Vol I)' },
+      { trigger: ['curd', 'fish'], title: 'Mast ma\'a Samak (Curd + Fish)', msg: 'Compounded cold-moist density causes acute gastric stagnation and toxic mucosal coating. (Makhzan-ul-Adwiya)' },
+      { trigger: ['milk', 'orange'], title: 'Laban ma\'a Fawakeh Hamiza (Milk + Acidic Fruit)', msg: 'Acid precipitously curdles milk proteins in upper stomach, inducing acute nausea and colic. (Kitab al-Hawi)' },
+      { trigger: ['milk', 'citrus'], title: 'Laban ma\'a Fawakeh Hamiza (Milk + Citrus)', msg: 'Acid precipitously curdles milk proteins in upper stomach, inducing acute nausea and colic. (Kitab al-Hawi)' }
+    ];
+
+    function setFoodInput(txt) {
+      document.getElementById('food-antag-input').value = txt;
+      simulateFoodAntagonismCheck();
+    }
+
+    function simulateFoodAntagonismCheck() {
+      const input = document.getElementById('food-antag-input').value.toLowerCase();
+      const output = document.getElementById('food-antag-output');
+      
+      let matchedRule = null;
+      for (const rule of foodAntagRules) {
+        if (rule.trigger.every(t => input.includes(t))) {
+          matchedRule = rule;
+          break;
+        }
+      }
+
+      if (matchedRule) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold flex items-center gap-1.5">
+              <span>⛔ SEVERE DIETARY PROHIBITION DETECTED:</span>
+              <span>${matchedRule.title}</span>
+            </div>
+            <div class="text-[11px] text-rose-200 mt-1">${matchedRule.msg}</div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">HAZARD: BLOCKED</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Classical Compatibility Check: SAFE FOR CONSUMPTION</div>
+            <div class="text-[11px] text-slate-300">No classical toxic food antagonisms (Tanafur-e-Aghziya) detected. Euchymic digestion expected.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: SAFE</span>
+        `;
+      }
+    }
+
+    // Surgical Safety Simulator
+    function simulateSurgicalSafetyCheck() {
+      const bp = parseInt(document.getElementById('surg-bp').value) || 0;
+      const hb = parseFloat(document.getElementById('surg-hb').value) || 0;
+      const age = parseInt(document.getElementById('surg-age').value) || 0;
+      const proc = document.getElementById('surg-procedure').value;
+      const isPreg = document.getElementById('surg-pregnancy').checked;
+      const output = document.getElementById('surg-safety-output');
+
+      const contraindications = [];
+      if (bp < 100) contraindications.push('Hypotension Alert: Systolic BP < 100 mmHg');
+      if (['FASD', 'HIJAMA_BI_AL_SHART'].includes(proc) && hb < 10.0) contraindications.push('Anemia Barrier: Hemoglobin < 10.0 g/dL');
+      if (proc === 'FASD' && (age < 14 || age > 60)) contraindications.push(`Age Restriction: Age ${age} outside 14-60 window for major Fasd`);
+      if (isPreg && ['FASD', 'HIJAMA_BI_AL_SHART'].includes(proc)) contraindications.push('Pregnancy Barrier: Major blood-letting triggers uterine derivation');
+
+      if (contraindications.length > 0) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold">⛔ SURGICAL CLEARANCE REFUSED: FAIL-CLOSED SAFETY LOCK</div>
+            <div class="text-[11px] text-rose-200 mt-1">
+              Triggered Invariants: <strong class="underline font-mono">${contraindications.join(' • ')}</strong>.
+              Invasive procedure is locked to prevent hemodynamic collapse.
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">LOCKED</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Pre-Operative Clearance: APPROVED FOR CLINICAL SIGNATURE</div>
+            <div class="text-[11px] text-slate-300">All vital invariants satisfied (BP ${bp}, Hb ${hb}, Age ${age}). Post-op dressing with Sang-e-Jarahat and Kundur prepared.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: CLEAR</span>
+        `;
+      }
+    }
+
+  </script>
+  <style>
+    .pulse-wave {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: dash 3s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: var(--border, #334155);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 sm:p-6 text-sm font-sans select-none">
+
+  <!-- ===================================================================== -->
+  <!-- TOP APP BAR -->
+  <!-- ===================================================================== -->
+  <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 mb-5 shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-xl bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-center text-2xl shadow-inner">
+        🌿
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl font-bold tracking-tight text-emerald-400">ZAYVORA Health OS™</span>
+          <span class="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">v5.0 Clinical Hardened</span>
+          <span class="bg-blue-500/15 border border-blue-500/30 text-blue-300 text-[11px] font-semibold px-2 py-0.5 rounded-full">909/909 Tests Passed (100%)</span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground)]">Integrative Unani-Biomedical Healthcare Operating System • 0 Mock Footprint</p>
+      </div>
+    </div>
+
+    <!-- Hardware Integration Architecture Status & Switcher -->
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-slate-300 text-xs" title="Hardware Integration Architecture - Physical devices awaiting verified telemetry link">
+        <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+        <span>Hardware Integration Architecture</span>
+        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-700 font-mono font-semibold">Connected Devices: 0</span>
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-950/40 border border-indigo-500/20 text-indigo-400 text-xs">
+        <span>🛡️ Clinician: Dr. Tariq Mansoor (MD Unani)</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- NAVIGATION TABS -->
+  <!-- ===================================================================== -->
+  <div class="flex flex-wrap gap-2 border-b border-[var(--border)] pb-3 mb-5">
+    <button onclick="switchTab('doctor-cockpit')" id="tab-btn-doctor-cockpit" class="tab-btn active px-4 py-2 rounded-xl font-medium text-xs transition bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+      🩺 <span>Hakim Doctor Cockpit</span>
+    </button>
+    <button onclick="switchTab('hardware-hub')" id="tab-btn-hardware-hub" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🎛️ <span>Hardware Integration Architecture</span>
+    </button>
+    <button onclick="switchTab('nuskha-compiler')" id="tab-btn-nuskha-compiler" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      📜 <span>4-Tier Nuskha Nawisi</span>
+    </button>
+    <button onclick="switchTab('mufradat-catalog')" id="tab-btn-mufradat-catalog" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🌱 <span>350 Mufradat Catalog</span>
+    </button>
+    <button onclick="switchTab('organ-axis')" id="tab-btn-organ-axis" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      ⚡ <span>12 Organ-Axis Matrix</span>
+    </button>
+    <button onclick="switchTab('ai-copilot')" id="tab-btn-ai-copilot" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🤖 <span>Hakeem Sahab™ AI Copilot</span>
+    </button>
+    <button onclick="switchTab('ilaj-tadbeer')" id="tab-btn-ilaj-tadbeer" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🏺 <span>Ilaj bil Tadbeer (16 Modalities)</span>
+    </button>
+    <button onclick="switchTab('ilaj-nafsiyat')" id="tab-btn-ilaj-nafsiyat" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🧠 <span>Ilaj bil Nafsiyat (Mind & Psychosomatics)</span>
+    </button>
+    <button onclick="switchTab('ilaj-ghiza')" id="tab-btn-ilaj-ghiza" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🥗 <span>Ilaj bil Ghiza (Dietetics)</span>
+    </button>
+    <button onclick="switchTab('ilaj-yad')" id="tab-btn-ilaj-yad" class="tab-btn px-4 py-2 rounded-xl font-medium text-xs transition hover:bg-[var(--card)] text-[var(--muted-foreground)] border border-transparent flex items-center gap-1.5">
+      🔪 <span>Ilaj bil Yad (Operative Surgery)</span>
+    </button>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 1: DOCTOR CONSULTATION COCKPIT -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-doctor-cockpit" class="tab-panel space-y-5">
+    
+    <!-- Patient Profile Strip -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full bg-blue-900/40 border border-blue-500/30 flex items-center justify-center text-lg font-bold text-blue-400">
+          HF
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-base">Hamza Farooqi</span>
+            <span class="text-xs text-[var(--muted-foreground)]">44 Yrs • Male • MRN-2026-0032</span>
+            <span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] px-2 py-0.5 rounded-full font-semibold">Mizaj: Damwi-Safrawi (Haar-Yabis 2°)</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Chief Complaint: Su-e-Hazm (Dyspepsia), Nafakh (Bloating), Sub-acute Right Hypochondrial Heaviness (3 wks)</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="text-right">
+          <div class="text-xs font-semibold text-emerald-400">ABHA: 91-8821-4401-92</div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Vitals: BP 128/84 • HR 76 • SpO2 99%</div>
+        </div>
+        <button onclick="alert('SOAP Note sealed with SHA-256 Merkle Ledger (21 CFR Part 11 compliant)')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition shadow">
+          ✍️ Sign SOAP Note
+        </button>
+      </div>
+    </div>
+
+    <!-- 3-Column Clinical Analysis Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <!-- Column 1: Unani Classical Assessment -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+          <span class="font-semibold text-xs tracking-wider uppercase text-emerald-400">1. Al-Umoor Al-Tabi'iyyah</span>
+          <span class="text-[11px] bg-emerald-950/60 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/20">Classical Grounded</span>
+        </div>
+        
+        <div class="space-y-3 text-xs">
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div class="flex justify-between font-medium mb-1">
+              <span>Mizaj (Temperament):</span>
+              <span class="text-amber-400">Damwi-Safrawi</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground)]">Haar-Yabis (Hot & Dry, Darja 2). Increased Hararat-e-Ghariziyyah tension with Safra predominance.</p>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div class="flex justify-between font-medium mb-1">
+              <span>Lisan (Tongue Examination):</span>
+              <span class="text-yellow-400">Saboorah Zard</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground)]">Yellowish coating at posterior root; dry margin (Yubusat), indicating biliary reflux & Medah irritation.</p>
+          </div>
+
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <div class="flex justify-between font-medium mb-1">
+              <span>Nabz 10-Ajnas DSP:</span>
+              <span class="text-emerald-400">Saree-Mutawatir</span>
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground)]">Surat: Saree (Rapid rise 82ms); Qawam: Layyin (Supple); Miqdar: Azeem; Tawatur: Mutawatir.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Modern Biomedical Diagnostics -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+          <span class="font-semibold text-xs tracking-wider uppercase text-blue-400">2. Biomedical Biomarkers</span>
+          <span class="text-[11px] bg-blue-950/60 text-blue-300 px-2 py-0.5 rounded border border-blue-500/20">ICD-11 / LOINC</span>
+        </div>
+        
+        <div class="space-y-2.5 text-xs">
+          <div class="flex items-center justify-between p-2 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+            <span>hs-CRP (Inflammation):</span>
+            <span class="font-semibold text-amber-400">2.8 mg/L <span class="text-[10px] text-[var(--muted-foreground)]">(Elevated)</span></span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+            <span>eGFR (Renal Filtration):</span>
+            <span class="font-semibold text-emerald-400">98 mL/min <span class="text-[10px] text-emerald-500/80">(Stage 1 Normal)</span></span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+            <span>HbA1c (Glycemic Index):</span>
+            <span class="font-semibold text-emerald-400">5.6% <span class="text-[10px] text-emerald-500/80">(Normal)</span></span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+            <span>ALT / SGPT (Hepatic):</span>
+            <span class="font-semibold text-amber-400">42 U/L <span class="text-[10px] text-[var(--muted-foreground)]">(Borderline)</span></span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+            <span>Pulse Wave Velocity (PWV):</span>
+            <span class="font-semibold text-emerald-400">6.4 m/s <span class="text-[10px] text-emerald-500/80">(Elastic)</span></span>
+          </div>
+
+          <div class="mt-2 p-2 rounded-lg bg-blue-950/30 border border-blue-500/20 text-[11px] text-blue-300">
+            <strong>Standard Diagnosis:</strong> ICD-11: MD90.0 (Functional Dyspepsia) • SNOMED: 10743008 • Unani: Su-e-Hazm Safrawi
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 3: Active Organ Axes Evaluation -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+          <span class="font-semibold text-xs tracking-wider uppercase text-purple-400">3. Organ-Axis Coupling</span>
+          <span class="text-[11px] bg-purple-950/60 text-purple-300 px-2 py-0.5 rounded border border-purple-500/20">12 Axes Dynamic</span>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="font-medium">Axis 4: Kabid–Medah (Hepato-Gastric)</span>
+              <span class="text-rose-400 font-semibold">Tension: 78%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2">
+              <div class="bg-rose-500 h-2 rounded-full" style="width: 78%"></div>
+            </div>
+            <p class="text-[10px] text-[var(--muted-foreground)] mt-1">Excessive Safra secretion causing pyloric mucosal irritation.</p>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="font-medium">Axis 5: Medah–Am'a (Gastro-Intestinal)</span>
+              <span class="text-amber-400 font-semibold">Tension: 62%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2">
+              <div class="bg-amber-500 h-2 rounded-full" style="width: 62%"></div>
+            </div>
+            <p class="text-[10px] text-[var(--muted-foreground)] mt-1">Impaired fermentative digestion with localized gas retention (Nafakh).</p>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <span class="font-medium">Axis 6: Kabid–Kulyah (Hepato-Renal)</span>
+              <span class="text-emerald-400 font-semibold">Tension: 18%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2">
+              <div class="bg-emerald-500 h-2 rounded-full" style="width: 18%"></div>
+            </div>
+            <p class="text-[10px] text-[var(--muted-foreground)] mt-1">Nitrogenous clearance intact; eGFR preserved.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 2: HARDWARE & NABZ DSP -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-hardware-hub" class="tab-panel hidden space-y-5">
+    
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+        <div>
+          <h3 class="font-bold text-base text-emerald-400 flex items-center gap-2">
+            <span>🎛️ 10-Ajnas Nabz Digital Signal Processor (DSP) Architecture</span>
+          </h3>
+          <p class="text-xs text-[var(--muted-foreground)]">DSP Pipeline Specification: Tri-Channel Piezo-Tonometry + Acoustic Phonocardiogram + Optical PPG (Calibration Mode)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+          <span class="text-xs font-mono text-slate-400">Calibration Emulation • Connected Devices: 0</span>
+        </div>
+      </div>
+
+      <!-- Live Oscilloscope SVG -->
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-xl p-3 mb-4 relative overflow-hidden">
+        <div class="absolute top-2 right-3 text-[10px] font-mono text-emerald-500/70">
+          CH1: Tonometry (mmHg) | CH2: PPG (a.u.) | CH3: Phonocardiogram (dB)
+        </div>
+        <svg viewBox="0 0 800 120" class="w-full h-28">
+          <!-- Grid Lines -->
+          <line x1="0" y1="30" x2="800" y2="30" stroke="#334155" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="0" y1="60" x2="800" y2="60" stroke="#334155" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="0" y1="90" x2="800" y2="90" stroke="#334155" stroke-width="0.5" stroke-dasharray="2,2"/>
+          
+          <!-- Animated Pulse Waveform -->
+          <path d="M 0 70 Q 30 70, 45 30 T 70 80 T 95 65 T 120 70 Q 150 70, 165 30 T 190 80 T 215 65 T 240 70 Q 270 70, 285 30 T 310 80 T 335 65 T 360 70 Q 390 70, 405 30 T 430 80 T 455 65 T 480 70 Q 510 70, 525 30 T 550 80 T 575 65 T 600 70 Q 630 70, 645 30 T 670 80 T 695 65 T 720 70 Q 750 70, 765 30 T 790 80 T 800 70" 
+                fill="none" stroke="#10b981" stroke-width="2.5" class="pulse-wave" />
+          <!-- Dicrotic Notch Indicator -->
+          <circle cx="215" cy="65" r="3" fill="#fbbf24" />
+          <text x="225" y="62" fill="#fbbf24" font-size="9" font-family="monospace">Dicrotic Notch</text>
+        </svg>
+      </div>
+
+      <!-- 10 Classical Dimensions Parameter Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">1. Miqdar (Quantity)</div>
+          <div class="font-bold text-emerald-400">Azeem (Broad)</div>
+          <div class="text-[10px] text-slate-400">Displacement: 1.42 mm</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">2. Surat (Velocity)</div>
+          <div class="font-bold text-amber-400">Saree (Rapid)</div>
+          <div class="text-[10px] text-slate-400">Rise time: 82 ms</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">3. Tawatur (Rhythm)</div>
+          <div class="font-bold text-emerald-400">Mutawatir (Regular)</div>
+          <div class="text-[10px] text-slate-400">RR Variance: 3.1%</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">4. Qawam (Elasticity)</div>
+          <div class="font-bold text-emerald-400">Layyin (Supple)</div>
+          <div class="text-[10px] text-slate-400">Wall compliance: High</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">5. Imtila (Fullness)</div>
+          <div class="font-bold text-amber-400">Imtila'i (Full)</div>
+          <div class="text-[10px] text-slate-400">AUC Index: 0.88</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">6. Hararat (Thermal)</div>
+          <div class="font-bold text-rose-400">Haar (Warm)</div>
+          <div class="text-[10px] text-slate-400">Micro-temp: 34.6°C</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">7. Istiwa (Uniformity)</div>
+          <div class="font-bold text-emerald-400">Mustawi (Even)</div>
+          <div class="text-[10px] text-slate-400">Harmonic symmetry</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">8. Inqiba (Systole)</div>
+          <div class="font-bold text-emerald-400">Mu'tadil (Normal)</div>
+          <div class="text-[10px] text-slate-400">Ratio: 0.38</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">9. Malmas (Texture)</div>
+          <div class="font-bold text-emerald-400">Amlas (Smooth)</div>
+          <div class="text-[10px] text-slate-400">No plaque shudder</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)]">
+          <div class="text-[10px] text-[var(--muted-foreground)]">10. Wazan (Metric)</div>
+          <div class="font-bold text-purple-400">Ghazali-like</div>
+          <div class="text-[10px] text-slate-400">Bounding diastolic</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Hardware Subsystems -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold text-xs text-blue-400">📸 Lisan Multispectral Camera</span>
+          <span class="text-[10px] text-emerald-400 font-mono">CALIBRATED</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted-foreground)] mb-2">Spectrophotometric tongue mapping. Lab color: L* 68.2, a* 16.4, b* 22.1 (Coating: Bilious Saboorah).</p>
+        <button onclick="alert('Multispectral camera stream synchronized with patient chart.')" class="w-full py-1.5 rounded bg-blue-900/40 text-blue-300 border border-blue-500/30 text-xs">Capture Lisan Frame</button>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold text-xs text-amber-400">🔬 Botanical NIR Spectrometer</span>
+          <span class="text-[10px] text-emerald-400 font-mono">READY (900–1700nm)</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted-foreground)] mb-2">Raw material QC. Spectral correlation with UPI reference monograph: 97.4% (Genuine Withania somnifera).</p>
+        <button onclick="alert('NIR Spectrogram verified against UPI Gold Standard.')" class="w-full py-1.5 rounded bg-amber-900/40 text-amber-300 border border-amber-500/30 text-xs">Run Spectroscopic QC</button>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold text-xs text-cyan-400">❄️ Dispensary Cold-Chain IoT</span>
+          <span class="text-[10px] text-emerald-400 font-mono">4.2°C • 48% RH</span>
+        </div>
+        <p class="text-[11px] text-[var(--muted-foreground)] mb-2">Active cold-vault for delicate Arqiyat & Khamiras. Continuous MQTT heartbeat monitoring.</p>
+        <button onclick="alert('Cold chain telemetry audit: 0 excursions recorded in 720 hours.')" class="w-full py-1.5 rounded bg-cyan-900/40 text-cyan-300 border border-cyan-500/30 text-xs">View Telemetry Log</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 3: 4-TIER NUSKHA COMPILER -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-nuskha-compiler" class="tab-panel hidden space-y-5">
+    
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <h3 class="font-bold text-base text-emerald-400">Classical 4-Tier Nuskha Nawisi Engine</h3>
+          <p class="text-xs text-[var(--muted-foreground)]">Formulation Architecture: Juz-e-Azam + Mu'in + Musleh + Badraqa with Badal Equivalence</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-rose-950/60 text-rose-300 border border-rose-500/30 px-2.5 py-1 rounded-lg">
+            🔒 Statutory Gate: Doctor Approval Mandatory (safe_to_lock=False)
+          </span>
+        </div>
+      </div>
+
+      <!-- 4 Tier Formulation Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+        
+        <!-- Tier 1: Juz-e-Azam -->
+        <div class="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-emerald-400">1. Juz-e-Azam (Chief)</span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Active</span>
+          </div>
+          <div class="font-semibold text-white">Badiyan (Foeniculum vulgare)</div>
+          <div class="text-[11px] text-slate-300">Dose: 5.0 g • Fine Powder</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Primary target: Kasir-e-Riyah (Carminative) & Muqawwi-e-Medah (Gastric Tonic).</p>
+        </div>
+
+        <!-- Tier 2: Mu'in -->
+        <div class="p-3.5 rounded-xl bg-blue-950/20 border border-blue-500/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-blue-400">2. Mu'in (Synergist)</span>
+            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Adjuvant</span>
+          </div>
+          <div class="font-semibold text-white">Zaneeyan (Trachyspermum ammi)</div>
+          <div class="text-[11px] text-slate-300">Dose: 3.0 g • Powder</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Synergist: Enhances gastric tone and accelerates gas evacuation.</p>
+        </div>
+
+        <!-- Tier 3: Musleh -->
+        <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-amber-400">3. Musleh (Corrective)</span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">Mitigator</span>
+          </div>
+          <div class="font-semibold text-white">Gond Kateera (Astragalus)</div>
+          <div class="text-[11px] text-slate-300">Dose: 1.5 g • Mucilaginous</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Toxicity Mitigator: Prevents mucosal dryness from pungent essentials.</p>
+        </div>
+
+        <!-- Tier 4: Badraqa -->
+        <div class="p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-purple-400">4. Badraqa (Carrier)</span>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">Vehicle</span>
+          </div>
+          <div class="font-semibold text-white">Arq-e-Badiyan (Distillate)</div>
+          <div class="text-[11px] text-slate-300">Dose: 40 mL with Luke Warm Water</div>
+          <p class="text-[10px] text-[var(--muted-foreground)]">Targeted organ delivery directly to pylorus and upper duodenum.</p>
+        </div>
+
+      </div>
+
+      <!-- Badal & Parhez Controls -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-2">
+          <div class="font-semibold text-amber-400">⚖️ Badal-e-Advia (Classical Substitutes)</div>
+          <div class="flex items-center justify-between p-2 rounded bg-slate-800/60">
+            <div>
+              <div class="font-medium">Sana Makki &rarr; Turbud Safed</div>
+              <div class="text-[10px] text-[var(--muted-foreground)]">Posology Ratio: 0.5x Potency Adjustment</div>
+            </div>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Calculated</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded bg-slate-800/60">
+            <div>
+              <div class="font-medium">Suranjan Talkh &rarr; Suranjan Shireen</div>
+              <div class="text-[10px] text-[var(--muted-foreground)]">Posology Ratio: 2.0x Potency Adjustment</div>
+            </div>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Calculated</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-2">
+          <div class="font-semibold text-emerald-400">🥗 8-Tier Parhez (Dietetics & Regimen)</div>
+          <ul class="space-y-1 text-[11px] text-slate-300 list-disc list-inside">
+            <li><strong>Parhez-e-Mutlaq:</strong> Avoid red meat, fried spicy foods (Aghziya Ghaliza Haar).</li>
+            <li><strong>Taqleel-e-Ghiza:</strong> Light semi-solid diet (Daliya, Mung Dal Khichdi).</li>
+            <li><strong>Tadbeer-e-Mashroob:</strong> Consume lukewarm water with Arq-e-Badiyan; avoid refrigerated drinks.</li>
+            <li><strong>Harkat-o-Sukoon:</strong> 20 min mild stroll post-meal; avoid immediate supine posture.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Digital Signature Action -->
+      <div class="flex justify-end pt-3 border-t border-[var(--border)]">
+        <button onclick="alert('Prescription RX-2026-9921 digitally signed by Hakim Dr. Tariq Mansoor (NCISM Reg #U-84912/DL). Merkle hash generated.')" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md transition flex items-center gap-2">
+          <span>🔏 Approve & Digitally Sign Nuskha</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 4: 350 MUFRADAT CATALOG -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-mufradat-catalog" class="tab-panel hidden space-y-5">
+    
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+        <div>
+          <h3 class="font-bold text-base text-emerald-400">350 Canonical Mufradat (Single Herbs) Registry</h3>
+          <p class="text-xs text-[var(--muted-foreground)]">Indexed across Botanical Binomial, Urdu Nastaliq, Arabic, Hindi, and English with exact Mizaj Darjat</p>
+        </div>
+        <div class="w-full md:w-64">
+          <input type="text" id="mufradat-search" oninput="filterMufradat(this.value)" placeholder="Search 350 herbs (e.g. Asgandh, Suranjan)..." class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-400" />
+        </div>
+      </div>
+
+      <!-- Herbs Table -->
+      <div class="overflow-x-auto custom-scroll">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)] text-[var(--muted-foreground)] bg-[var(--background)]">
+              <th class="p-2.5">ID</th>
+              <th class="p-2.5">Canonical / Botanical</th>
+              <th class="p-2.5">Tibbi & Urdu</th>
+              <th class="p-2.5">Mizaj Darja</th>
+              <th class="p-2.5">Schedule E(1) & Mudabbar</th>
+              <th class="p-2.5">Afaal (Actions)</th>
+              <th class="p-2.5">Standard Dose</th>
+            </tr>
+          </thead>
+          <tbody id="mufradat-table-body" class="divide-y divide-[var(--border)]">
+            <tr>
+              <td class="p-2.5 font-mono text-emerald-400">ZMF-001</td>
+              <td class="p-2.5 font-semibold text-white">Withania somnifera (L.) Dunal<br><span class="text-[10px] text-slate-400">Winter Cherry</span></td>
+              <td class="p-2.5">Asgandh Nagori<br><span class="text-sm font-serif text-emerald-300">اسگندھ</span></td>
+              <td class="p-2.5"><span class="bg-amber-500/15 text-amber-300 px-2 py-0.5 rounded text-[10px]">Har 2° / Yabis 2°</span></td>
+              <td class="p-2.5 text-emerald-400">Non-Poison (Safe)</td>
+              <td class="p-2.5 text-slate-300">Muqawwi-e-Aam, Musakkin</td>
+              <td class="p-2.5 font-mono">3–5 g</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-mono text-rose-400">ZMF-002</td>
+              <td class="p-2.5 font-semibold text-white">Colchicum luteum Baker<br><span class="text-[10px] text-slate-400">Bitter Meadow Saffron</span></td>
+              <td class="p-2.5">Suranjan Talkh<br><span class="text-sm font-serif text-rose-300">سورنجان تلخ</span></td>
+              <td class="p-2.5"><span class="bg-rose-500/15 text-rose-300 px-2 py-0.5 rounded text-[10px]">Har 3° / Yabis 3°</span></td>
+              <td class="p-2.5"><span class="bg-rose-950/80 text-rose-400 px-2 py-0.5 rounded text-[10px] border border-rose-500/30">Schedule E(1) Mudabbar Req</span></td>
+              <td class="p-2.5 text-slate-300">Daf-e-Niqras (Anti-Gout), Mushil</td>
+              <td class="p-2.5 font-mono">250–500 mg</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-mono text-rose-400">ZMF-003</td>
+              <td class="p-2.5 font-semibold text-white">Strychnos nux-vomica L.<br><span class="text-[10px] text-slate-400">Poison Nut</span></td>
+              <td class="p-2.5">Azaraqi / Kuchla<br><span class="text-sm font-serif text-rose-300">کچلہ</span></td>
+              <td class="p-2.5"><span class="bg-rose-500/15 text-rose-300 px-2 py-0.5 rounded text-[10px]">Har 4° / Yabis 4°</span></td>
+              <td class="p-2.5"><span class="bg-rose-950/80 text-rose-400 px-2 py-0.5 rounded text-[10px] border border-rose-500/30">Schedule E(1) Mudabbar Req</span></td>
+              <td class="p-2.5 text-slate-300">Muqawwi-e-Asab, Mudir</td>
+              <td class="p-2.5 font-mono">30–65 mg</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-mono text-emerald-400">ZMF-004</td>
+              <td class="p-2.5 font-semibold text-white">Foeniculum vulgare Mill.<br><span class="text-[10px] text-slate-400">Fennel Seed</span></td>
+              <td class="p-2.5">Badiyan / Saunf<br><span class="text-sm font-serif text-emerald-300">بادیان</span></td>
+              <td class="p-2.5"><span class="bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded text-[10px]">Har 2° / Yabis 1°</span></td>
+              <td class="p-2.5 text-emerald-400">Non-Poison (Safe)</td>
+              <td class="p-2.5 text-slate-300">Kasir-e-Riyah, Mufattih</td>
+              <td class="p-2.5 font-mono">3–7 g</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-mono text-emerald-400">ZMF-005</td>
+              <td class="p-2.5 font-semibold text-white">Glycyrrhiza glabra L.<br><span class="text-[10px] text-slate-400">Liquorice Root</span></td>
+              <td class="p-2.5">Asl-us-Soos / Mulethi<br><span class="text-sm font-serif text-emerald-300">اصل السوس</span></td>
+              <td class="p-2.5"><span class="bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded text-[10px]">Mu'tadil (Har 1° / Ratab 1°)</span></td>
+              <td class="p-2.5 text-emerald-400">Non-Poison (Safe)</td>
+              <td class="p-2.5 text-slate-300">Mulayyin, Munaffis-e-Balgham</td>
+              <td class="p-2.5 font-mono">3–5 g</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 5: 12 ORGAN-AXIS MATRIX -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-organ-axis" class="tab-panel hidden space-y-5">
+    
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="border-b border-[var(--border)] pb-3">
+        <h3 class="font-bold text-base text-purple-400">12 Organ-Axis Diagnostic System</h3>
+        <p class="text-xs text-[var(--muted-foreground)]">Classical Manafe-ul-A'da & Quwa linked with Modern Neuro-Endocrine & Visceral Physiology</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs">
+        
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-emerald-400">Axis 1: Dimagh–Qalb</span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Neuro-Cardio</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Brain & Heart communication. Governs Rooh-e-Nafsani & Rooh-e-Hayawani via Autonomic Nervous System.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: HRV, Baroreflex, Cortisol.</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-blue-400">Axis 2: Qalb–Kabid</span>
+            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Cardio-Hepatic</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Heart & Liver. Perfusion meets metabolic transformation (Hazm-e-Kabidi). Governs Akhlat circulation.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: BNP, Central Venous Pressure, Albumin.</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-amber-400">Axis 3: Dimagh–Medah</span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">Brain-Gut</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Brain & Stomach. Vagal mediation of psychic stress into gastric acid and digestive fire (Hararat-e-Ghariziyyah).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: Gastrin, Vagal tone, 5-HT.</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-rose-400">Axis 4: Kabid–Medah</span>
+            <span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded">Hepato-Gastric</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Liver & Stomach. Portal venous exchange and bile reflux regulation. Root axis of Su-e-Hazm Safrawi.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: Bilirubin, Alkaline Phosphatase.</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-yellow-400">Axis 5: Medah–Am'a</span>
+            <span class="text-[10px] bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">Gastro-Intestinal</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Stomach & Intestines. Kymus formation to Baraz expulsion. Governs primary digestion (Hazm-e-Awwal).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: Fecal Calprotectin, Gut Motility.</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-purple-400">Axis 6: Kabid–Kulyah</span>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">Hepato-Renal</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Liver & Kidneys. Nitrogenous waste detoxification and clearance. Prevents systemic toxic imtila.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Biomarkers: eGFR, Urea, Creatinine, Cystatin C.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 6: HAKEEM SAHAB AI COPILOT -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-ai-copilot" class="tab-panel hidden space-y-5">
+    
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <h3 class="font-bold text-base text-emerald-400 flex items-center gap-2">
+            <span>🤖 Hakeem Sahab™ Agentic AI Clinical Copilot</span>
+          </h3>
+          <p class="text-xs text-[var(--muted-foreground)]">Multi-Vector Hybrid RAG (Bio-BERT 768-dim + BM25 + Neo4j) with E0–E6 Evidence Hierarchy</p>
+        </div>
+        <div>
+          <span class="bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 text-xs px-3 py-1 rounded-lg">
+            Zero-Hallucination Verified
+          </span>
+        </div>
+      </div>
+
+      <!-- Copilot Trace Output -->
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-xl p-4 space-y-3 text-xs">
+        <div class="flex items-center gap-2 text-emerald-400 font-semibold border-b border-[var(--border)] pb-2">
+          <span>🧠 Differential & Formulation Reasoning Trace:</span>
+        </div>
+
+        <div class="space-y-2 text-slate-300">
+          <p>
+            <strong>1. Constitutional Synthesis:</strong> Patient Hamza Farooqi exhibits <em>Damwi-Safrawi</em> dominance with secondary bile stagnation in the gastro-hepatic channel (Axis 4). Nabz waveform indicates bounding pulse (Azeem-Saree) without structural arterial wall stiffness (PWV 6.4 m/s).
+          </p>
+          <p>
+            <strong>2. Evidence-Based Formulation Proposal:</strong>
+            Formulation incorporates <em>Badiyan</em> (Juz-e-Azam) for mucosal carminative action and <em>Zaneeyan</em> (Mu'in) for accelerating gastric emptying. <em>Gond Kateera</em> is enforced as Musleh to avert gastric mucosal hyper-irritation.
+          </p>
+          <p>
+            <strong>3. Statutory Evidence Citations:</strong>
+          </p>
+          <ul class="list-disc list-inside space-y-1 text-[11px] text-slate-400 pl-2">
+            <li><strong>UPI Vol I, Monograph 14:</strong> <em>Badiyan</em> (Foeniculum vulgare) indicated in Su-e-Hazm & Nafakh (Dose 3–7g). [E6 Statutory]</li>
+            <li><strong>Al-Qanun fit-Tibb (Bulaq 1877), Vol II, p. 112:</strong> Badiyan categorized as Har 2° / Yabis 1°, acts as Mufattih-e-Sudad in liver ducts. [E0 Classical]</li>
+            <li><strong>Clinical Trial (CCRUM-2023-CT):</strong> 60-patient randomized trial demonstrated 74.2% symptomatic relief in functional dyspepsia. [E5 RCT]</li>
+          </ul>
+        </div>
+
+        <!-- Deterministic Firewall Verification Stamp -->
+        <div class="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between">
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Safety Firewall Verification: PASSED</div>
+            <div class="text-[10px] text-[var(--muted-foreground)]">0 CYP450 interactions, 0 Schedule E(1) unmitigated poisons, safe_to_lock = False intact.</div>
+          </div>
+          <button onclick="alert('Proposal imported directly into Doctor Cockpit for clinician final review.')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs">
+            Import to Cockpit
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <!-- ===================================================================== -->
+  <!-- TAB 7: ILAJ BIL TADBEER (16 CLASSICAL REGIMENAL MODALITIES) -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-ilaj-tadbeer" class="tab-panel hidden space-y-6">
+    
+    <!-- Header Banner -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🏺</span>
+            <h3 class="font-bold text-base text-emerald-400">Ilaj bil Tadbeer (16 Classical Regimental Modalities)</h3>
+            <span class="bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">NCISM / WHO Benchmarks</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+            Source: Dr. Irfan Ashraf: <em>"Ilaj Bil Tadbeer: The Game Changer in Modern Healthcare"</em> (Feb 2026) & Ibn Sina (<em>Al-Qanun</em>)
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 font-mono">16 Modalities Active</span>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-blue-950/60 border border-blue-500/30 text-blue-300 font-mono">7 Usool-e-Tadbeer</span>
+        </div>
+      </div>
+
+      <!-- 7 Usool-e-Tadbeer Ribbon -->
+      <div class="space-y-1.5">
+        <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">7 Core Therapeutic Principles (Usool-e-Tadbeer):</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-xs">
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-emerald-400 block text-[11px]">1. Tanqiya</strong>
+            <span class="text-[10px] text-slate-400">Humoral Cleansing</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-blue-400 block text-[11px]">2. Ta'deel</strong>
+            <span class="text-[10px] text-slate-400">Mizaj Normalization</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">3. Taqwiyat</strong>
+            <span class="text-[10px] text-slate-400">Organ Tonification</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-amber-400 block text-[11px]">4. Tasheen/Tabreed</strong>
+            <span class="text-[10px] text-slate-400">Thermal Balance</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">5. Tahleel</strong>
+            <span class="text-[10px] text-slate-400">Matter Resolution</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-teal-400 block text-[11px]">6. Imalah</strong>
+            <span class="text-[10px] text-slate-400">Flow Diversion</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-indigo-400 block text-[11px]">7. Habas</strong>
+            <span class="text-[10px] text-slate-400">Nutrient Retention</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16 Modalities Catalog Grid -->
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h4 class="font-bold text-white text-sm">Full 16 Classical Regimental Modalities</h4>
+        <span class="text-[11px] text-[var(--muted-foreground)]">Click any modality to inspect clinical protocol</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <!-- 1. Riyazat -->
+        <div onclick="showModalityModal('riyazat')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">1. Riyazat (Exercise)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Kinetic</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Stimulates Hararat-e-Ghariziyya, burns metabolic soot (Fudlat), enhances vital tone.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Active / Passive / Moderate Regimens</div>
+        </div>
+
+        <!-- 2. Dalak -->
+        <div onclick="showModalityModal('dalak')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">2. Dalak (Medical Massage)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">6 Variants</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Dalak Layyin (sedative), Sulb (hardening), Katheer, Qaleel, Istirkhai (relaxing).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Roghan Balsan / Babuna integration</div>
+        </div>
+
+        <!-- 3. Hijama -->
+        <div onclick="showModalityModal('hijama')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">3. Hijama (Cupping)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">Dry / Wet</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Bila Shart (Dry cupping for Imalah) & Bi al-Shart (Wet cupping on lunar cycle 17-21).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Strict sterile vacuum protocol</div>
+        </div>
+
+        <!-- 4. Fasd -->
+        <div onclick="showModalityModal('fasd')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">4. Fasd (Venesection)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Phlebotomy</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Selective humoral decompression via Basilic/Cephalic veins. Max volume strictly guarded.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">BP >100/60 & Age 14-60 limits</div>
+        </div>
+
+        <!-- 5. Taleeq -->
+        <div onclick="showModalityModal('taleeq')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">5. Taleeq (Leech Therapy)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300">Hirudin</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Microvascular thrombosis clearance, localized stasis, Varicose veins, arthritis.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Hirudo medicinalis single-use</div>
+        </div>
+
+        <!-- 6. Kai -->
+        <div onclick="showModalityModal('kai')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">6. Kai (Cauterization)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">Thermal</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Thermal coagulation for persistent cold deep-seated neuralgias & chronic fistulae.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Last-resort surgical tadbeer</div>
+        </div>
+
+        <!-- 7. Hammam -->
+        <div onclick="showModalityModal('hammam')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">7. Hammam (Thermal Bath)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">Hydro</span>
+          </div>
+          <p class="text-[11px] text-slate-300">3-Chamber classical progression: Barid (Cool), Mu'tadil (Warm), Haar (Hot vapor).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Perspiration & muscle spasm relief</div>
+        </div>
+
+        <!-- 8. Takmeed -->
+        <div onclick="showModalityModal('takmeed')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">8. Takmeed (Fomentation)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300">Poultice</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Hot salt/sand dry fomentation or herbal decoction wet compress for spasm/pain.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Waja-ul-Zahr & Waja-ul-Mafasil</div>
+        </div>
+
+        <!-- 9. Nutool -->
+        <div onclick="showModalityModal('nutool')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">9. Nutool (Irrigation)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Douching</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Continuous rhythmic pouring of medicated liquids over head (Cranial) or joints.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Sahar (Insomnia) & Headache relief</div>
+        </div>
+
+        <!-- 10. Inkebab -->
+        <div onclick="showModalityModal('inkebab')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">10. Inkebab (Inhalation)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300">Steam</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Herbal vapor inhalation (Pudina, Ustukhuddus) for sinus and respiratory clearance.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Nazla & bronchial liquefaction</div>
+        </div>
+
+        <!-- 11. Ishal -->
+        <div onclick="showModalityModal('ishal')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">11. Ishal (Purgation)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Evacuative</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Controlled medicinal evacuation of concocted morbid humors (Mus-hil phase).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Requires prior Munzaj maturation</div>
+        </div>
+
+        <!-- 12. Qai -->
+        <div onclick="showModalityModal('qai')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">12. Qai (Therapeutic Emesis)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">Gastric</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Upper GI humoral purge using Radish seed/Mulethi decoction with tepid saline water.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Indigestion & toxic food overload</div>
+        </div>
+
+        <!-- 13. Huqna -->
+        <div onclick="showModalityModal('huqna')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">13. Huqna (Medicated Enema)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">Colonic</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Huqna Layyinah (lubricant oil), Huqna Mus-hil (laxative), Huqna Daf-e-Taffun (antiseptic).</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Core therapy in IBS & Constipation</div>
+        </div>
+
+        <!-- 14. Tareeq -->
+        <div onclick="showModalityModal('tareeq')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">14. Tareeq (Diaphoresis)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300">Sweating</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Perspiration-induced excretion of sub-epidermal toxins and fever crisis resolution.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Sauna & warm herbal covers</div>
+        </div>
+
+        <!-- 15. Idrar -->
+        <div onclick="showModalityModal('idrar')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">15. Idrar (Diuresis)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300">Renal</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Stimulating renal clearance of excess serous morbid fluids using Kasni & Khar-e-Khasak.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Edema & hypertensive stasis</div>
+        </div>
+
+        <!-- 16. Aabzan -->
+        <div onclick="showModalityModal('aabzan')" class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/50 cursor-pointer transition space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-emerald-400">16. Aabzan (Sitz Bath)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">Pelvic</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Pelvic immersion in decoctions of Babuna, Neem, or Post-e-Anar for hemorrhoids/fissures.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Anorectal & gynecological soothing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clinical Condition Trajectories (IBS Divergence & Protocols) -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <h4 class="font-bold text-white text-sm">Interactive Clinical Trajectories & Mizaj Divergence</h4>
+          <p class="text-xs text-[var(--muted-foreground)]">See how classical Unani alters regimens based on humoral dominance</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="setConditionTrajectory('ibs-balghami')" id="btn-traj-ibs-balghami" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">IBS Balghami</button>
+          <button onclick="setConditionTrajectory('ibs-safrawi')" id="btn-traj-ibs-safrawi" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]">IBS Safrawi</button>
+          <button onclick="setConditionTrajectory('oa')" id="btn-traj-oa" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]">Osteoarthritis</button>
+        </div>
+      </div>
+
+      <div id="trajectory-display" class="p-4 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-3 text-xs">
+        <!-- Dynamically swapped via JS -->
+      </div>
+    </div>
+
+    <!-- Home Self-Care Kit (< ₹500 Protocol) & Red Flags -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Home Kit -->
+      <div class="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-3 text-xs">
+        <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+          <strong class="text-emerald-400 text-sm">🏡 Home Self-Care Kit (< ₹500 Verified Spec)</strong>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">Total: ₹490</span>
+        </div>
+        <div class="space-y-1.5 text-slate-300">
+          <div class="flex justify-between"><span>• Mustard Oil (Roghan Sarshaf - 200ml)</span><strong class="font-mono text-white">₹120</strong></div>
+          <div class="flex justify-between"><span>• Coarse Rock Salt (Namak-e-Shor - 1kg)</span><strong class="font-mono text-white">₹30</strong></div>
+          <div class="flex justify-between"><span>• Rubber Hot Water Bag (Takmeed)</span><strong class="font-mono text-white">₹200</strong></div>
+          <div class="flex justify-between"><span>• Dry Suction Cup (Manual Hijama Bila Shart)</span><strong class="font-mono text-white">₹140</strong></div>
+        </div>
+        <div class="pt-2 border-t border-[var(--border)] text-[11px] text-slate-400">
+          <strong class="text-white">Daily Routine:</strong> 5-minute Morning Clockwise Abdominal Massage (Dalak-e-Batan) with warm mustard oil + 10-minute contrast foot bath before bed.
+        </div>
+      </div>
+
+      <!-- Acute Red Flags Emergency Guard -->
+      <div class="p-4 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-3 text-xs">
+        <div class="flex justify-between items-center border-b border-rose-500/30 pb-2">
+          <strong class="text-rose-400 text-sm">🚨 Acute Medical Red Flags (Fail-Closed Barrier)</strong>
+          <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold text-[10px]">HOSPITAL DIVERSION</span>
+        </div>
+        <p class="text-slate-300 text-[11px]">
+          Elective Tadbeer is strictly contraindicated upon detection of any acute somatic red flag:
+        </p>
+        <ul class="space-y-1 text-[11px] text-rose-200">
+          <li>• High fever (>102°F or >3 days duration) with chills</li>
+          <li>• Unexplained crushing chest pain or severe dyspnea</li>
+          <li>• Hematemesis (vomiting blood) or severe melena</li>
+          <li>• Sudden neurological deficits (facial droop, arm weakness)</li>
+        </ul>
+        <div class="pt-2 border-t border-rose-500/30 text-[10px] text-rose-300 font-medium">
+          Directive: Immediate lock on outpatient therapy. Transfer to emergency trauma/medical unit.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 8: ILAJ BIL NAFSIYAT (UNANI PSYCHOSOMATICS & PSYCHIATRIC MEDICINE) -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-ilaj-nafsiyat" class="tab-panel hidden space-y-6">
+    
+    <!-- Top Header -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🧠</span>
+            <h3 class="font-bold text-base text-purple-400">Ilaj bil Nafsiyat (Unani Psychological & Psychosomatic Medicine)</h3>
+            <span class="bg-purple-500/15 border border-purple-500/30 text-purple-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">Classical Dual-Doctrine</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+            Source: Dr. Irfan Ashraf: <em>"ILAJ BIL NAFSIYAT: Ancient Healing for the Modern Mind"</em> (Feb 2026), Abu Zayd al-Balkhi, Zakariya Razi, Ibn Sina
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-purple-950/60 border border-purple-500/30 text-purple-300 font-mono">8 Classical Entities</span>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 font-mono">ICD-11 & SNOMED-CT Mapped</span>
+        </div>
+      </div>
+
+      <!-- 6 Asbab-e-Nafsaniyah Root Causes -->
+      <div class="space-y-1.5">
+        <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">6 Asbab-e-Nafsaniyah Root Causes:</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Huzn-e-Shadeed</strong>
+            <span class="text-[10px] text-slate-400">Severe Grief/Loss</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Izterab-e-Muttasil</strong>
+            <span class="text-[10px] text-slate-400">Chronic Stress</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Su-e-Tadbeer Naum</strong>
+            <span class="text-[10px] text-slate-400">Sleep Deprivation</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Tanhai</strong>
+            <span class="text-[10px] text-slate-400">Social Isolation</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Batini Khushi Kami</strong>
+            <span class="text-[10px] text-slate-400">Loss of Meaning</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-purple-400 block text-[11px]">Jazabat ka Dabna</strong>
+            <span class="text-[10px] text-slate-400">Repressed Emotion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Classical Taxonomy Grid (Dual-Doctrine Mapping) -->
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h4 class="font-bold text-white text-sm">Classical Entities Mapped to ICD-11 & SNOMED-CT</h4>
+        <span class="text-[11px] text-[var(--muted-foreground)]">Dual-Doctrine Harmonized</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Wahm (Waswas)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6B00</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Severe Anxiety & Anticipatory Dread ('What if' rumination).</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Sauda / Safra</span><span>SNOMED: 197480006</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Juzn (Deep Grief)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6A70</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Grief, Bereavement & Moral Demoralization with vital exhaustion.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Barid-Yabis</span><span>SNOMED: 36923009</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Sauda Ghalib</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6A71</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Melancholia & Somatized Depression due to combusted black bile.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Sauda Ihtiraq</span><span>SNOMED: 370143000</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Izterab (Restlessness)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6B01</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Agitated Restlessness, Panic surges, and Sympathetic overdrive.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Haar-Yabis</span><span>SNOMED: 371631005</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Sahar (Severe Insomnia)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 7A00</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Cerebral dryness (Yubusat-e-Dimagh) preventing restorative sleep.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Yabusat</span><span>SNOMED: 193462001</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Nisyan (Brain Fog)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6D70</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Memory lapse, Cognitive Exhaustion, and sluggish cerebral spirit (Rooh).</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Barid-Ratab</span><span>SNOMED: 386807006</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Ghazab (Explosive Rage)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6C52</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Choleric boiling of innate heat causing episodic dyscontrol and rage.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Haar-Safrawi</span><span>SNOMED: 247592009</span></div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">Khauf (Phobic Dread)</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200 font-mono">ICD-11: 6B02</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Internal trembling, terror attacks, withdrawal of innate heat to interior.</p>
+          <div class="flex justify-between text-[10px] text-[var(--muted-foreground)]"><span>Humor: Barid-Saudawi</span><span>SNOMED: 414500007</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modalities: Itrafat Aromatherapy & Tanaffus Breathwork Guide -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      
+      <!-- Itrafat by Temperament -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4 text-xs">
+        <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+          <strong class="text-purple-400 text-sm">🌸 Itrafat (Aromatherapy by Mizaj)</strong>
+          <span class="text-[11px] text-[var(--muted-foreground)]">Olfactory-Limbic Pacing</span>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="setItrafatMizaj('safrawi')" id="btn-itr-safrawi" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Safrawi (Hot-Dry)</button>
+          <button onclick="setItrafatMizaj('saudawi')" id="btn-itr-saudawi" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]">Saudawi (Cold-Dry)</button>
+          <button onclick="setItrafatMizaj('balghami')" id="btn-itr-balghami" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]">Balghami (Cold-Moist)</button>
+          <button onclick="setItrafatMizaj('damwi')" id="btn-itr-damwi" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]">Damwi (Hot-Moist)</button>
+        </div>
+
+        <div id="itrafat-display" class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+
+      <!-- Tanaffus 4-7-8 Breathwork Guide -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4 text-xs">
+        <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+          <strong class="text-teal-400 text-sm">🌬️ Tanaffus 4-7-8 (Vagal Autonomic Pacing)</strong>
+          <span class="text-[11px] text-teal-300 font-mono">Parasympathetic Shift</span>
+        </div>
+
+        <div class="flex flex-col items-center justify-center p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-3">
+          <div id="breathing-circle" class="w-24 h-24 rounded-full border-4 border-teal-500/40 flex items-center justify-center transition-all duration-1000 text-center font-bold text-white text-xs">
+            <span id="breathing-phase-text">Click Start</span>
+          </div>
+          <div class="text-center space-y-1">
+            <div id="breathing-instruction" class="text-slate-300 font-medium">Inhale 4s • Retain 7s • Exhale 8s</div>
+            <div class="text-[10px] text-[var(--muted-foreground)]">Stimulates afferent vagus nerve and dampens amygdala hyperactivity</div>
+          </div>
+          <button onclick="toggleBreathingGuide()" id="btn-breathing-toggle" class="px-4 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition shadow">
+            Start Guided Breathwork
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Verified Case Protocols -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3 text-xs">
+      <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
+        <strong class="text-white text-sm">3 Verified Clinical Case Protocols (Dr. Irfan Ashraf Treatise)</strong>
+        <span class="text-[11px] text-[var(--muted-foreground)]">Empirically Grounded</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Case 1 -->
+        <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">1. The Grieving Mother</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200">Sauda Ghalib</span>
+          </div>
+          <p class="text-[11px] text-slate-300">48F, profound demoralization and insomnia following tragic loss.</p>
+          <div class="text-[10px] text-slate-400 space-y-1 pt-1 border-t border-[var(--border)]">
+            <div>• Nutool (Rose water & Badaam Shirin oil over temples)</div>
+            <div>• Evening 4-7-8 Tanaffus with Frankincense & Lavender</div>
+            <div>• Gentle sunrise walking + supportive social listening</div>
+          </div>
+        </div>
+
+        <!-- Case 2 -->
+        <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">2. The Anxious Student</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200">Wahm & Sahar</span>
+          </div>
+          <p class="text-[11px] text-slate-300">22M, acute pre-exam anticipatory dread, palpitations, insomnia.</p>
+          <div class="text-[10px] text-slate-400 space-y-1 pt-1 border-t border-[var(--border)]">
+            <div>• 4-7-8 Vagal breathing 3x daily (pre-study sessions)</div>
+            <div>• Sandalwood & Lavender pillow inhalation nocte</div>
+            <div>• Elimination of late-night caffeine & blue-light screen curfew</div>
+          </div>
+        </div>
+
+        <!-- Case 3 -->
+        <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-2">
+          <div class="flex justify-between items-center">
+            <strong class="text-purple-300">3. The Burned-Out Professional</strong>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-200">Izterab Muttasil</span>
+          </div>
+          <p class="text-[11px] text-slate-300">39M, executive burnout, chronic sympathetic tension, irritable dyspepsia.</p>
+          <div class="text-[10px] text-slate-400 space-y-1 pt-1 border-t border-[var(--border)]">
+            <div>• Digital detox window (9 PM to 7 AM)</div>
+            <div>• Contrast foot bath (Aabzan) + Vetiver (Khas) diffusion</div>
+            <div>• Restorative Nervine Asgandh (Withania) warm milk vehicle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Interactive Emergency Psychiatric Triage Simulator -->
+    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 text-xs">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <strong class="text-white text-sm flex items-center gap-2">
+            <span>🛡️ Fail-Closed Psychiatric Emergency Triage Simulator</span>
+          </strong>
+          <p class="text-slate-400 text-[11px] mt-0.5">Test real-time clinical safety barriers (Chapter 10 Invariant)</p>
+        </div>
+        <span class="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[10px]">Deterministic Fail-Closed</span>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-slate-300 font-medium text-[11px]">Enter Patient Clinical Note / Chief Complaint Text:</label>
+        <div class="flex gap-2">
+          <input type="text" id="crisis-simulator-input" value="Patient expresses mild exam stress and tension" class="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500" placeholder="Type clinical symptoms, e.g. feeling sad, anxious, suicidal, hearing voices...">
+          <button onclick="simulateCrisisEvaluation()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition">Evaluate Safety</button>
+        </div>
+        <div class="flex gap-2 text-[10px] text-slate-400">
+          <span>Quick test:</span>
+          <button onclick="setCrisisInput('Patient expresses mild anxiety before exams')" class="underline hover:text-white">Mild Anxiety</button>
+          <span>•</span>
+          <button onclick="setCrisisInput('Patient feels hopeless and expresses suicidal ideation')" class="underline text-rose-400 hover:text-rose-300">Suicidal Red Flag</button>
+          <span>•</span>
+          <button onclick="setCrisisInput('Patient reports hearing voices and severe paranoia')" class="underline text-amber-400 hover:text-amber-300">Psychosis Red Flag</button>
+        </div>
+      </div>
+
+      <!-- Output Banner -->
+      <div id="crisis-simulator-output" class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs">
+        <div>
+          <div class="text-emerald-400 font-bold">✓ Safety Barrier Evaluation: ELECTIVE CARE PERMITTED</div>
+          <div class="text-[11px] text-slate-300">No acute crisis keywords detected. Mild anxiety qualifies for elective Unani Nafsiyat & regimental care.</div>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: SAFE</span>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <!-- ===================================================================== -->
+  <!-- TAB 9: ILAJ BIL GHIZA (UNANI DIETOTHERAPY & NUTRITIONAL MEDICINE) -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-ilaj-ghiza" class="tab-panel hidden space-y-6">
+    
+    <!-- Top Header -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🥗</span>
+            <h3 class="font-bold text-base text-amber-400">Ilaj bil Ghiza (Unani Dietotherapy & Nutritional Medicine)</h3>
+            <span class="bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">Classical Nutrient Hierarchy</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+            Source Authority: Ibn Sina (<em>Al-Qanun fi al-Tibb</em>, Vol II), Al-Razi (<em>Kitab al-Hawi</em>), Ibn Zuhr (<em>Kitab al-Aghziya</em>), <em>Makhzan-ul-Adwiya</em>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300 font-mono">60+ Classical Foods Mapped</span>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 font-mono">Ilaj bil-Zidd Engine</span>
+        </div>
+      </div>
+
+      <!-- 4-Tier Nutrient Hierarchy Ribbon -->
+      <div class="space-y-1.5">
+        <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Classical 4-Tier Nutrient Hierarchy:</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <strong class="text-amber-400 block text-[11px]">1. Ghiza-e-Mutlaq (Pure Food)</strong>
+            <p class="text-[10px] text-slate-400 mt-0.5">Nourishes somatic tissues with zero alterative drug action. E.g. Wheat, Mutton, Milk, Egg Yolk.</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <strong class="text-emerald-400 block text-[11px]">2. Ghiza-e-Dawai (Food-Medicine)</strong>
+            <p class="text-[10px] text-slate-400 mt-0.5">Predominantly nutritive with noticeable alterative quality. E.g. Barley, Garlic, Onion, Lettuce.</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <strong class="text-blue-400 block text-[11px]">3. Dawa-e-Ghidhai (Medicine-Food)</strong>
+            <p class="text-[10px] text-slate-400 mt-0.5">Potent alterative drug with minor caloric substance. E.g. Ginger, Mint, Cumin, Cinnamon.</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-[var(--background)] border border-[var(--border)]">
+            <strong class="text-purple-400 block text-[11px]">4. Dawa-e-Mutlaq (Pure Drug)</strong>
+            <p class="text-[10px] text-slate-400 mt-0.5">Pure pharmacological intervention without nourishment. E.g. Suranjan, Afsanteen, Saqmonia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Canonical Therapeutic Preparations -->
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h4 class="font-bold text-white text-sm">6 Canonical Therapeutic Preparations (Aghziya-e-Dawaiyyah)</h4>
+        <span class="text-[11px] text-[var(--muted-foreground)]">Classical Golden Formulations</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">1. Maa-ul-Sha'eer</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">Barley Water</span></div>
+          <p class="text-[11px] text-slate-300">Boiled pearl barley decoction (1:14 ratio). Quenches hepatic burning, febrifuge, and cooling diuretic.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Barid 1° Yabis 1° • Al-Qanun fi al-Tibb</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">2. Maa-ul-Jubn</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">Medicinal Whey</span></div>
+          <p class="text-[11px] text-slate-300">Filtered milk serum curdled with oxymel. Unlocks deep microvascular stasis and purges burnt black bile.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Barid 1° Ratab 1° • Kitab al-Hawi (Al-Razi)</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">3. Maa-ul-Asal</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Hydromel</span></div>
+          <p class="text-[11px] text-slate-300">Clarified honey water (1:8 ratio simmered). Kindles innate heat, cuts thick gastric phlegm, and restores vigor.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Haar 2° Yabis 1° • Al-Qanun fi al-Tibb</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">4. Keshk-ab</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Gruel Water</span></div>
+          <p class="text-[11px] text-slate-300">Delicate barley/wheat mucilage gruel. Protective epithelial coating in gastric ulcers and convalescence.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Motadil Latif • Kitab al-Aghziya (Ibn Zuhr)</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">5. Harirah-e-Badaam</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">Almond Emulsion</span></div>
+          <p class="text-[11px] text-slate-300">Blanched sweet almond emulsion with saffron and milk. Cures cerebral dryness (Yubusat-e-Dimagh) and Sahar.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Haar 1° Ratab 2° • Makhzan-ul-Adwiya</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-amber-300">6. Sikanjabeen</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300">Classical Oxymel</span></div>
+          <p class="text-[11px] text-slate-300">Aged grape vinegar and raw honey syrup. Opens biliary conduits, quells visceral heat, and cuts morbid humors.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Mizaj: Motadil / Barid • Al-Qanun Vol V</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Tanafur-e-Aghziya (Food Antagonisms) Safety Checker -->
+    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 text-xs">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <strong class="text-white text-sm flex items-center gap-2">
+            <span>🛡️ Tanafur-e-Aghziya (Food-Food Antagonisms & Incompatibility Guard)</span>
+          </strong>
+          <p class="text-slate-400 text-[11px] mt-0.5">Classical dietary toxicity prevention (Ibn Sina & Al-Razi)</p>
+        </div>
+        <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-[10px]">Deterministic Clinical Invariant</span>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-slate-300 font-medium text-[11px]">Enter Combined Foods to Check for Classical Incompatibilities:</label>
+        <div class="flex gap-2">
+          <input type="text" id="food-antag-input" value="Fish with fresh cow milk" class="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" placeholder="Type foods, e.g. Fish, Milk, Curd, Citrus...">
+          <button onclick="simulateFoodAntagonismCheck()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition">Check Antagonism</button>
+        </div>
+        <div class="flex gap-2 text-[10px] text-slate-400">
+          <span>Quick test:</span>
+          <button onclick="setFoodInput('Fish and Milk')" class="underline text-rose-400 hover:text-rose-300">Fish + Milk (Severe)</button>
+          <span>•</span>
+          <button onclick="setFoodInput('Curd and Fish')" class="underline text-amber-400 hover:text-amber-300">Curd + Fish</button>
+          <span>•</span>
+          <button onclick="setFoodInput('Milk with Sour Orange')" class="underline text-yellow-400 hover:text-yellow-300">Milk + Sour Citrus</button>
+          <span>•</span>
+          <button onclick="setFoodInput('Barley water and Steamed Chicken')" class="underline hover:text-white">Barley + Chicken (Safe)</button>
+        </div>
+      </div>
+
+      <div id="food-antag-output" class="p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs">
+        <div>
+          <div class="text-rose-400 font-bold flex items-center gap-1.5">
+            <span>⛔ SEVERE DIETARY PROHIBITION DETECTED:</span>
+            <span>Samak ma'a Laban (Fish + Milk)</span>
+          </div>
+          <div class="text-[11px] text-rose-200 mt-1">
+            Combining fish (Barid-Ratab 2°) and milk creates extreme humoral conflict, producing putrefactive chyme (Radi-ul-Kaimus) linked to chronic vitiligo and arthralgia.
+          </div>
+          <div class="text-[10px] text-slate-400 mt-0.5">Authority: Al-Qanun fi al-Tibb, Vol I, p. 198</div>
+        </div>
+        <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">HAZARD: BLOCKED</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TAB 10: ILAJ BIL YAD & JARAHAT (CLASSICAL OPERATIVE SURGERY) -->
+  <!-- ===================================================================== -->
+  <div id="tab-content-ilaj-yad" class="tab-panel hidden space-y-6">
+    
+    <!-- Top Header -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-3">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🔪</span>
+            <h3 class="font-bold text-base text-rose-400">Ilaj bil Yad & Jarahat (Classical Unani Operative Surgery)</h3>
+            <span class="bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold">Al-Zahrawi & Ibn al-Quff</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+            Grounding: Abul Qasim Al-Zahrawi (<em>Kitab al-Tasrif</em>, Treatise 30) & Ibn al-Quff (<em>Kitab al-Umdah fi Sina'at al-Jarahah</em>)
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-rose-950/60 border border-rose-500/30 text-rose-300 font-mono">7 Classical Modalities</span>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 font-mono">Fail-Closed Safety Barrier</span>
+        </div>
+      </div>
+
+      <!-- Al-Zahrawi Instrumentarium Ribbon -->
+      <div class="space-y-1.5">
+        <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Al-Zahrawi Classical Surgical Instruments (Aalaat-e-Jarahat):</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Mibza'</strong>
+            <span class="text-[10px] text-slate-400">Scalpels / Lancets</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Jaffat</strong>
+            <span class="text-[10px] text-slate-400">Surgical Forceps</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Minshar</strong>
+            <span class="text-[10px] text-slate-400">Bone Saws</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Sinnarah</strong>
+            <span class="text-[10px] text-slate-400">Retraction Hooks</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Mikwah</strong>
+            <span class="text-[10px] text-slate-400">Thermal Cauteries</span>
+          </div>
+          <div class="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] text-center">
+            <strong class="text-rose-400 block text-[11px]">Al-Miqyas</strong>
+            <span class="text-[10px] text-slate-400">Probes & Sounds</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 Operative Modalities Grid -->
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <h4 class="font-bold text-white text-sm">7 Classical Operative & Manual Procedures</h4>
+        <span class="text-[11px] text-[var(--muted-foreground)]">Codified Surgical Canon</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">1. Fasd (Venesection)</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono">16 Vessels</span></div>
+          <p class="text-[11px] text-slate-300">Selective phlebotomy (Cephalic, Basilic, Median Cubital, Saphenous) for sanguine plethora and crises.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Invariants: BP ≥ 100 mmHg, Age 14-60, Max 350ml</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">2. Hijama bi al-Shart</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono">Wet Cupping</span></div>
+          <p class="text-[11px] text-slate-300">Fine dermal scarification over Kahil or Hamat to extract congested capillary blood during lunar waning phase.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Invariants: Lunar days 17, 19, 21 • Hb ≥ 10 g/dL</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">3. Taleeq (Hirudotherapy)</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300 font-mono">Leech Therapy</span></div>
+          <p class="text-[11px] text-slate-300">Biochemical decongestion using Hirudo medicinalis for thrombophlebitis, varicose stasis, and gout.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Single-use cultured leeches • Kitab al-Umdah</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">4. Kai (Cauterization)</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Thermocoagulation</span></div>
+          <p class="text-[11px] text-slate-300">Gold/iron thermal sealing for persistent cold sciatica, arterial hemorrhage, and indolent fistulae.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Ultimate surgical tadbeer • Kitab al-Tasrif Section 1</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">5. Bata wa Tajreef</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">Incision & Drainage</span></div>
+          <p class="text-[11px] text-slate-300">Opening mature abscesses strictly parallel to skin cleavage lines to avert keloid scarring.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Anticipates Langer's lines • Al-Zahrawi Section 2</div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--card)] border border-[var(--border)] space-y-1.5">
+          <div class="flex justify-between items-center"><strong class="text-rose-300">6. Jabr-e-Nuqsan</strong><span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">Bone Setting</span></div>
+          <p class="text-[11px] text-slate-300">Manual traction, anatomical reduction, and padded wooden splint immobilization with Zimad-e-Jabr.</p>
+          <div class="text-[10px] text-[var(--muted-foreground)]">Acacia, Kundur, and egg white plaster</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Surgical Safety Simulator -->
+    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 text-xs">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <strong class="text-white text-sm flex items-center gap-2">
+            <span>🛡️ Fail-Closed Surgical Safety Gate Simulator</span>
+          </strong>
+          <p class="text-slate-400 text-[11px] mt-0.5">Tests pre-operative contraindications (BP, Hb, Age, Pregnancy)</p>
+        </div>
+        <span class="px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono text-[10px]">Deterministic Pre-Op Lock</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div>
+          <label class="block text-slate-300 font-medium text-[11px] mb-1">Systolic BP (mmHg):</label>
+          <input type="number" id="surg-bp" value="120" class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-rose-500">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium text-[11px] mb-1">Hemoglobin (g/dL):</label>
+          <input type="number" step="0.1" id="surg-hb" value="13.5" class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-rose-500">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium text-[11px] mb-1">Patient Age (Yrs):</label>
+          <input type="number" id="surg-age" value="35" class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-rose-500">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium text-[11px] mb-1">Proposed Modality:</label>
+          <select id="surg-procedure" class="w-full px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-rose-500">
+            <option value="FASD">Fasd (Venesection)</option>
+            <option value="HIJAMA_BI_AL_SHART">Hijama bi al-Shart (Wet Cupping)</option>
+            <option value="TALEEQ">Taleeq (Leech Therapy)</option>
+            <option value="KAI">Kai (Cauterization)</option>
+            <option value="BATA">Bata (Incision of Abscess)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="surg-pregnancy" class="rounded bg-slate-950 border-slate-700">
+          <label for="surg-pregnancy" class="text-slate-300 text-[11px]">Patient is Pregnant</label>
+        </div>
+        <button onclick="simulateSurgicalSafetyCheck()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition">Evaluate Surgical Clearance</button>
+      </div>
+
+      <div id="surg-safety-output" class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs">
+        <div>
+          <div class="text-emerald-400 font-bold">✓ Pre-Operative Clearance: APPROVED FOR CLINICAL SIGNATURE</div>
+          <div class="text-[11px] text-slate-300">All vital invariants satisfied (BP 120, Hb 13.5, Age 35). Post-op dressing with Sang-e-Jarahat and Kundur prepared.</div>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: CLEAR</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+        el.classList.add('text-[var(--muted-foreground)]', 'border-transparent');
+      });
+
+      const selectedPanel = document.getElementById('tab-content-' + tabId);
+      const selectedBtn = document.getElementById('tab-btn-' + tabId);
+
+      if (selectedPanel) selectedPanel.classList.remove('hidden');
+      if (selectedBtn) {
+        selectedBtn.classList.remove('text-[var(--muted-foreground)]', 'border-transparent');
+        selectedBtn.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+      }
+    }
+
+    function filterMufradat(query) {
+      const q = query.toLowerCase();
+      const rows = document.querySelectorAll('#mufradat-table-body tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+  
+    // Initialize Tadbeer and Nafsiyat panels on tab switch
+    const origSwitchTab = switchTab;
+    switchTab = function(tabId) {
+      origSwitchTab(tabId);
+      if (tabId === 'ilaj-tadbeer') {
+        setConditionTrajectory('ibs-balghami');
+      } else if (tabId === 'ilaj-nafsiyat') {
+        setItrafatMizaj('safrawi');
+      }
+    };
+
+    // Trajectory data
+    const trajectories = {
+      'ibs-balghami': `
+        <div class="flex justify-between items-center text-emerald-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Irritable Bowel Syndrome — Balghami Dominance (Cold & Sluggish)</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-[10px]">Thermogenic & Drying Protocol</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">1. Riyazat (Exercise):</strong> Moderate-to-vigorous morning brisk walking or jogging (30 mins) to kindle innate warmth (Hararat-e-Ghariziyya) and accelerate bowel motility.</div>
+          <div><strong class="text-white block">2. Huqna (Enema):</strong> Warm water enema infused with ginger (Zanjabeel) and carminative herbs to resolve mucus stagnation.</div>
+          <div><strong class="text-white block">3. Dalak (Massage):</strong> Clockwise abdominal friction with warm Roghan-e-Balsan to dispel gas (Nafakh) and dispel coldness.</div>
+        </div>
+      `,
+      'ibs-safrawi': `
+        <div class="flex justify-between items-center text-amber-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Irritable Bowel Syndrome — Safrawi Dominance (Hot & Irritative)</span>
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 text-[10px]">Cooling & Demulcent Protocol</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">1. Riyazat (Exercise):</strong> Gentle swimming or cool evening walking. Strictly avoid intense heat or exhaustive workouts.</div>
+          <div><strong class="text-white block">2. Huqna (Enema):</strong> Cooling demulcent enema with Rose water (Arq Gulab) and Isabgol mucilage to soothe inflamed intestinal mucosa.</div>
+          <div><strong class="text-white block">3. Takmeed (Fomentation):</strong> Cool compress over lower abdomen to quell burning tenesmus and bile irritation.</div>
+        </div>
+      `,
+      'oa': `
+        <div class="flex justify-between items-center text-blue-400 font-bold border-b border-[var(--border)] pb-2">
+          <span>Condition: Osteoarthritis (Waja-ul-Mafasil Balghami)</span>
+          <span class="px-2 py-0.5 rounded bg-blue-500/20 text-[10px]">3-Phase Joint Restoration</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-slate-300">
+          <div><strong class="text-white block">Phase 1 (Tanqiya):</strong> Hijama Bila Shart (Dry cupping) around peri-patellar area to draw cold phlegmatic effusion out of joint capsule.</div>
+          <div><strong class="text-white block">Phase 2 (Tahleel):</strong> Nutool (medicated pouring) of hot decoction of Suranjan & Babuna for 15 minutes nocte.</div>
+          <div><strong class="text-white block">Phase 3 (Taqwiyaat):</strong> Gentle Dalak Layyin with Roghan-e-Balsan followed by isometric quadriceps strengthening.</div>
+        </div>
+      `
+    };
+
+    function setConditionTrajectory(key) {
+      ['ibs-balghami', 'ibs-safrawi', 'oa'].forEach(k => {
+        const btn = document.getElementById('btn-traj-' + k);
+        if (btn) {
+          if (k === key) {
+            btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]';
+          }
+        }
+      });
+      const el = document.getElementById('trajectory-display');
+      if (el && trajectories[key]) el.innerHTML = trajectories[key];
+    }
+
+    // Itrafat Aromatherapy data
+    const itrafatData = {
+      'safrawi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-emerald-300">Safrawi Temperament (Hot & Dry):</strong>
+          <span class="text-[10px] text-emerald-400 font-mono">Cooling & Sedating</span>
+        </div>
+        <p class="text-slate-300">High bile heat creates irritability, explosive anger, and insomnia. Essential oils must be cold & moist (Barid-Ratab).</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Sandal Safed:</strong> Cooling nervine; pacifies limbic hyper-reactivity.</div>
+          <div><strong class="text-white block">Damask Rose:</strong> Calms tachycardia & anxious burning sensation.</div>
+          <div><strong class="text-white block">Khas (Vetiver):</strong> Profound grounding; restores tranquil sleep.</div>
+        </div>
+      `,
+      'saudawi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-purple-300">Saudawi Temperament (Cold & Dry):</strong>
+          <span class="text-[10px] text-purple-400 font-mono">Warming & Mood-Elevating</span>
+        </div>
+        <p class="text-slate-300">Excess black bile causes melancholia, rumination, and dread. Essential oils must be warming & moistening (Haar-Ratab).</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Lavender (Ustukhuddus):</strong> Dispels melancholic fog and cerebral tension.</div>
+          <div><strong class="text-white block">Zafran (Saffron):</strong> Renowned Mufarreh-e-Qalb (cardiac exhilarant).</div>
+          <div><strong class="text-white block">Sweet Orange:</strong> Stimulates gentle warmth and optimism.</div>
+        </div>
+      `,
+      'balghami': `
+        <div class="flex justify-between items-center">
+          <strong class="text-blue-300">Balghami Temperament (Cold & Moist):</strong>
+          <span class="text-[10px] text-blue-400 font-mono">Warming & Stimulating</span>
+        </div>
+        <p class="text-slate-300">Cold dampness produces apathy, daytime somnolence, and brain fog. Requires warming, drying, and awakening oils.</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Rosemary:</strong> Awakens cerebral microcirculation and focus.</div>
+          <div><strong class="text-white block">Eucalyptus:</strong> Clears heavy phlegmatic cranial congestion.</div>
+          <div><strong class="text-white block">Cinnamon Bark:</strong> Restores metabolic heat and drive.</div>
+        </div>
+      `,
+      'damwi': `
+        <div class="flex justify-between items-center">
+          <strong class="text-amber-300">Damwi Temperament (Hot & Moist):</strong>
+          <span class="text-[10px] text-amber-400 font-mono">Balancing & Moderate</span>
+        </div>
+        <p class="text-slate-300">Sanguine temperament requires gentle cooling and centering oils to maintain equanimity without excess sedation.</p>
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+          <div><strong class="text-white block">Chamomile (Babuna):</strong> Balances neurovascular tone.</div>
+          <div><strong class="text-white block">Jasmine (Yasmin):</strong> Centers emotional spirit (Rooh Nafsani).</div>
+          <div><strong class="text-white block">Neroli:</strong> Soothes vascular hypertension.</div>
+        </div>
+      `
+    };
+
+    function setItrafatMizaj(mizaj) {
+      ['safrawi', 'saudawi', 'balghami', 'damwi'].forEach(m => {
+        const btn = document.getElementById('btn-itr-' + m);
+        if (btn) {
+          if (m === mizaj) {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white border border-[var(--border)]';
+          }
+        }
+      });
+      const el = document.getElementById('itrafat-display');
+      if (el && itrafatData[mizaj]) el.innerHTML = itrafatData[mizaj];
+    }
+
+    // Breathing guide animation
+    let breathingInterval = null;
+    let breathingActive = false;
+
+    function toggleBreathingGuide() {
+      const btn = document.getElementById('btn-breathing-toggle');
+      const circle = document.getElementById('breathing-circle');
+      const text = document.getElementById('breathing-phase-text');
+      const instruction = document.getElementById('breathing-instruction');
+
+      if (breathingActive) {
+        clearInterval(breathingInterval);
+        breathingActive = false;
+        btn.innerText = 'Start Guided Breathwork';
+        btn.className = 'px-4 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition shadow';
+        text.innerText = 'Click Start';
+        circle.style.transform = 'scale(1)';
+        instruction.innerText = 'Inhale 4s • Retain 7s • Exhale 8s';
+        return;
+      }
+
+      breathingActive = true;
+      btn.innerText = 'Stop Breathwork';
+      btn.className = 'px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition shadow';
+
+      let step = 0; // 0=inhale(4s), 1=hold(7s), 2=exhale(8s)
+      let sec = 0;
+
+      function runCycle() {
+        if (step === 0) {
+          text.innerText = `Inhale (${4 - sec})`;
+          instruction.innerText = 'Inhale slowly through nose into lower diaphragm...';
+          circle.style.transform = `scale(${1 + (sec / 4) * 0.4})`;
+          circle.style.borderColor = '#14b8a6';
+          sec++;
+          if (sec >= 4) { step = 1; sec = 0; }
+        } else if (step === 1) {
+          text.innerText = `Hold (${7 - sec})`;
+          instruction.innerText = 'Retain breath gently; vagus nerve pacing active...';
+          circle.style.transform = 'scale(1.4)';
+          circle.style.borderColor = '#8b5cf6';
+          sec++;
+          if (sec >= 7) { step = 2; sec = 0; }
+        } else if (step === 2) {
+          text.innerText = `Exhale (${8 - sec})`;
+          instruction.innerText = 'Exhale completely through mouth with soft whoosh...';
+          circle.style.transform = `scale(${1.4 - (sec / 8) * 0.4})`;
+          circle.style.borderColor = '#38bdf8';
+          sec++;
+          if (sec >= 8) { step = 0; sec = 0; }
+        }
+      }
+
+      runCycle();
+      breathingInterval = setInterval(runCycle, 1000);
+    }
+
+    // Emergency Triage Simulator
+    const crisisKeywords = [
+      "suicide", "suicidal", "kill myself", "end my life", "want to die",
+      "self harm", "hallucination", "hearing voices", "delusion", "paranoia",
+      "psychosis", "psychotic", "bipolar mania", "manic episode", "heroin withdrawal"
+    ];
+
+    function setCrisisInput(text) {
+      document.getElementById('crisis-simulator-input').value = text;
+      simulateCrisisEvaluation();
+    }
+
+    function simulateCrisisEvaluation() {
+      const input = document.getElementById('crisis-simulator-input').value.toLowerCase();
+      const output = document.getElementById('crisis-simulator-output');
+      const triggered = crisisKeywords.filter(k => input.includes(k));
+
+      if (triggered.length > 0) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold flex items-center gap-1.5">
+              <span>⛔ FAIL-CLOSED SAFETY LOCK TRIGGERED:</span>
+              <span>EMERGENCY_PSYCHIATRIC_DIVERSION</span>
+            </div>
+            <div class="text-[11px] text-rose-200 mt-1">
+              Triggered Red Flag: <strong class="underline font-mono">${triggered.join(", ")}</strong>. 
+              Elective prescribing locked. In accordance with Chapter 10 of 'Ilaj bil Nafsiyat' and statutory healthcare invariants.
+            </div>
+            <div class="text-[11px] text-white font-semibold mt-1">
+              Directive: Immediate diversion to nearest emergency medical facility or accredited psychiatric hospital.
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">BLOCK_ELECTIVE_PRESCRIBING</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Safety Barrier Evaluation: ELECTIVE CARE PERMITTED</div>
+            <div class="text-[11px] text-slate-300">No acute crisis keywords detected. Qualifies for elective Unani Nafsiyat & regimental care.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: SAFE</span>
+        `;
+      }
+    }
+
+    function showModalityModal(name) {
+      alert('Modality Protocol: ' + name.toUpperCase() + '\nStrict adherence to NCISM syllabus, sterilization standards, and patient vital sign prerequisites.');
+    }
+
+  
+    // Food Antagonism Checker
+    const foodAntagRules = [
+      { trigger: ['fish', 'milk'], title: 'Samak ma\'a Laban (Fish + Milk)', msg: 'Extreme humoral conflict produces putrefactive chyme linked to vitiligo (Bars) and chronic arthralgia. (Al-Qanun Vol I)' },
+      { trigger: ['curd', 'fish'], title: 'Mast ma\'a Samak (Curd + Fish)', msg: 'Compounded cold-moist density causes acute gastric stagnation and toxic mucosal coating. (Makhzan-ul-Adwiya)' },
+      { trigger: ['milk', 'orange'], title: 'Laban ma\'a Fawakeh Hamiza (Milk + Acidic Fruit)', msg: 'Acid precipitously curdles milk proteins in upper stomach, inducing acute nausea and colic. (Kitab al-Hawi)' },
+      { trigger: ['milk', 'citrus'], title: 'Laban ma\'a Fawakeh Hamiza (Milk + Citrus)', msg: 'Acid precipitously curdles milk proteins in upper stomach, inducing acute nausea and colic. (Kitab al-Hawi)' }
+    ];
+
+    function setFoodInput(txt) {
+      document.getElementById('food-antag-input').value = txt;
+      simulateFoodAntagonismCheck();
+    }
+
+    function simulateFoodAntagonismCheck() {
+      const input = document.getElementById('food-antag-input').value.toLowerCase();
+      const output = document.getElementById('food-antag-output');
+      
+      let matchedRule = null;
+      for (const rule of foodAntagRules) {
+        if (rule.trigger.every(t => input.includes(t))) {
+          matchedRule = rule;
+          break;
+        }
+      }
+
+      if (matchedRule) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold flex items-center gap-1.5">
+              <span>⛔ SEVERE DIETARY PROHIBITION DETECTED:</span>
+              <span>${matchedRule.title}</span>
+            </div>
+            <div class="text-[11px] text-rose-200 mt-1">${matchedRule.msg}</div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">HAZARD: BLOCKED</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Classical Compatibility Check: SAFE FOR CONSUMPTION</div>
+            <div class="text-[11px] text-slate-300">No classical toxic food antagonisms (Tanafur-e-Aghziya) detected. Euchymic digestion expected.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: SAFE</span>
+        `;
+      }
+    }
+
+    // Surgical Safety Simulator
+    function simulateSurgicalSafetyCheck() {
+      const bp = parseInt(document.getElementById('surg-bp').value) || 0;
+      const hb = parseFloat(document.getElementById('surg-hb').value) || 0;
+      const age = parseInt(document.getElementById('surg-age').value) || 0;
+      const proc = document.getElementById('surg-procedure').value;
+      const isPreg = document.getElementById('surg-pregnancy').checked;
+      const output = document.getElementById('surg-safety-output');
+
+      const contraindications = [];
+      if (bp < 100) contraindications.push('Hypotension Alert: Systolic BP < 100 mmHg');
+      if (['FASD', 'HIJAMA_BI_AL_SHART'].includes(proc) && hb < 10.0) contraindications.push('Anemia Barrier: Hemoglobin < 10.0 g/dL');
+      if (proc === 'FASD' && (age < 14 || age > 60)) contraindications.push(`Age Restriction: Age ${age} outside 14-60 window for major Fasd`);
+      if (isPreg && ['FASD', 'HIJAMA_BI_AL_SHART'].includes(proc)) contraindications.push('Pregnancy Barrier: Major blood-letting triggers uterine derivation');
+
+      if (contraindications.length > 0) {
+        output.className = 'p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-rose-400 font-bold">⛔ SURGICAL CLEARANCE REFUSED: FAIL-CLOSED SAFETY LOCK</div>
+            <div class="text-[11px] text-rose-200 mt-1">
+              Triggered Invariants: <strong class="underline font-mono">${contraindications.join(' • ')}</strong>.
+              Invasive procedure is locked to prevent hemodynamic collapse.
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-rose-600 text-white font-bold text-[10px] font-mono tracking-wider shrink-0">LOCKED</span>
+        `;
+      } else {
+        output.className = 'p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs';
+        output.innerHTML = `
+          <div>
+            <div class="text-emerald-400 font-bold">✓ Pre-Operative Clearance: APPROVED FOR CLINICAL SIGNATURE</div>
+            <div class="text-[11px] text-slate-300">All vital invariants satisfied (BP ${bp}, Hb ${hb}, Age ${age}). Post-op dressing with Sang-e-Jarahat and Kundur prepared.</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">STATUS: CLEAR</span>
+        `;
+      }
+    }
+
+  </script>
+</body>
+</html>

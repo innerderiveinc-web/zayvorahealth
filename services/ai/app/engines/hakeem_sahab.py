@@ -1,5 +1,5 @@
 """
-Hakeem Sahab™ Clinical Copilot (Master Build Prompt v4.0 §30).
+Hakeem Sahab™ Clinical Copilot (ZAYVORA Clinical Architecture Specification v4.0 §30).
 
 Orchestration flow:
     Patient Data (services/clinical) + Knowledge (services/knowledge)
@@ -26,7 +26,7 @@ from app.engines.zape_personalization import run_zape_personalization
 from app.providers.base import AIProvider
 
 
-SYSTEM_PROMPT = """You are Hakeem Sahab, ZAYVORA's clinical copilot. You assist a qualified \
+SYSTEM_PROMPT = """You are Hakeem Sahab, ZAYVORA's clinical copilot and scholar-physician assistant. You assist a qualified \
 Unani/integrative practitioner — you do not replace their judgment, diagnose \
 autonomously, or prescribe.
 
@@ -40,6 +40,7 @@ do not blur these into unqualified assertions.
 3. Never present a Unani/Mizaj-based impression as a substitute for necessary \
 biomedical diagnosis, investigation, or emergency care.
 4. Always end by stating this output requires clinician review before any action is taken.
+5. HUMAN CLINICAL VOICE & PROFESSIONAL BEDSIDE MANNER: Maintain an authentic, warm, dignified, and scholarly clinician tone (Hakeem-e-Hazik). Write with clinical empathy, scientific precision, and collegiate respect. Never use robotic AI clichés (such as 'As an AI language model...', 'Certainly!', 'I would be glad to help', 'As an assistant...'). Speak with the natural authority and humanity of an experienced medical colleague advising at the bedside.
 
 Respond using EXACTLY this structure, with each of these as a line by itself \
 followed by its content:
@@ -182,6 +183,16 @@ def run_hakeem_consultation(
             "requiresClinicianReview": True,
         }
 
+    evidence_grounding = None
+    try:
+        from services.knowledge.app.engines.evidence_claim_grounding_engine import EvidenceClaimGroundingEngine
+        evidence_grounding = EvidenceClaimGroundingEngine.ground_ai_response(
+            response_text=raw_response,
+            claims=[]
+        )
+    except Exception:
+        pass
+
     return {
         "valid": True,
         "missingSections": [],
@@ -189,6 +200,7 @@ def run_hakeem_consultation(
         "sections": parse_sections(raw_response),
         "candidateMufradat": candidate_mufradat,
         "zapePersonalization": zape,
+        "evidence_grounding": evidence_grounding,
         "requiresClinicianReview": True,
     }
 

@@ -1,70 +1,205 @@
-# ZAYVORA Health OS — 10-Phase Master Implementation & Delivery Roadmap
-**Document ID**: `ZAY-PLAN-001`  
-**Classification**: Strategic Product Architecture Plan  
-**Date**: September 2026  
-**Status**: APPROVED & ACTIVE  
+# ZAYVORA Health OS™ — MASTER IMPLEMENTATION PLAN
+## Phase 1 → Phase 8 Execution Roadmap
+**Document Date:** September 15, 2026  
+**Based On:** Phase 0 Full Repository Audit  
+**Status:** APPROVED FOR EXECUTION
 
 ---
 
-## 1. Lifecycle Overview
+## Phase 1 — Critical Blocker Resolution & Design System Consolidation
+**Goal:** Zero P0 blockers. Real auth tokens everywhere. Brand names corrected.  
+**Estimated Effort:** 3–5 days
 
-This 10-phase roadmap governs the complete evolution of ZAYVORA Health OS from audited codebase to a production-grade, clinically governed operating system.
+### 1.1 Fix P0 Security Blockers
 
-```mermaid
-graph TD
-    P1["Phase 1: Complete Repository Audit & Gap Reports (DONE)"] --> P2["Phase 2: Auth, RBAC, Multi-Tenancy & Contracts"]
-    P2 --> P3["Phase 3: Core Clinical Continuum (Patient 360 to Rx PDF)"]
-    P3 --> P4["Phase 4: Pharmacy FEFO, Batches, Dispensing & Billing"]
-    P4 --> P5["Phase 5: AI Provider, RAG, Knowledge Graph & Citations"]
-    P5 --> P6["Phase 6: QSURA Communication & Multi-Channel Notifications"]
-    P6 --> P7["Phase 7: Mobile Authentication, Sync & Workflows"]
-    P7 --> P8["Phase 8: Security, Compliance, Observability & DR"]
-    P8 --> P9["Phase 9: Full E2E, Clinical Safety & Accessibility QA"]
-    P9 --> P10["Phase 10: Closed Pilot Release & Institutional Handover"]
+| Task | File | Change |
+|---|---|---|
+| Replace `SESSION_MOCK_TOKEN` | `HakeemReviewDrawer.tsx:698`, `NuskhaBuilder.tsx:949` | Use `authService.getToken()` via React context |
+| Fix hardcoded patient | `app/doctor/page.tsx:43` | Fetch patient list from `/api/v1/patients` on load |
+| Fix hardcoded encounter | `app/doctor/page.tsx:108` | Create encounter dynamically on workspace open |
+| Replace hardcoded API URLs | All `.tsx` with `http://localhost:8000` | Use `process.env.NEXT_PUBLIC_GATEWAY_URL` |
+| Add `lang="en"` | `apps/web/app/layout.tsx` | Root HTML element |
+| Enforce MFA on clinical login | `services/identity/app/routers/auth.py` | Add TOTP verification step for clinical roles |
+
+### 1.2 Brand Name Corrections
+
+| From | To | Files |
+|---|---|---|
+| "Hakeem Sahab" | "Hakeem Sahab AI™" | All UI components, page titles |
+| "Knowledge Service" | "ZAYVORA Knowledge Intelligence™" | `/knowledge` page |
+| "Clinical AI" | "Hakeem Sahab AI™" | AI-related UI |
+| "Clinic" / "Matab" | "ZAYVORA Matab™" | Clinic route, booking |
+| "Health OS" | "ZAYVORA Health OS™" | Header, meta tags |
+
+### 1.3 Design System Integration
+- Wire `design-system/` components into all pages (replace ad-hoc Tailwind)
+- Add Toast/notification system globally
+- Implement global loading indicator (route transitions)
+- Standardize error message display (no raw API errors to users)
+
+---
+
+## Phase 2 — Public Website Completion
+**Goal:** Full public website — booking, cart/checkout, contact all functional  
+**Estimated Effort:** 3–4 days
+
+| Task | Detail |
+|---|---|
+| Wire `/website/book` to clinical appointments API | Create appointment on submit, send confirmation SMS/email |
+| Wire `/website/cart` to Stripe | `stripe_client.py` already exists — connect checkout flow |
+| Wire `/website/contact` to notifications service | Send email via `notifications_client.py` |
+| Add SEO meta tags + schema.org | Healthcare provider schema on all pages |
+| Add GDPR cookie consent banner | Before any analytics or tracking |
+| CMS → Database migration path | Plan how to move `programsData.ts` etc. to proper CMS/DB |
+| Add `care-system` page to website nav | Not currently in nav menu |
+
+---
+
+## Phase 3 — Core Healthcare Workflows
+**Goal:** Doctor, Receptionist, Pharmacy fully operational end-to-end  
+**Estimated Effort:** 5–7 days
+
+### 3.1 Doctor Workspace
+- Patient queue sidebar with API-loaded patient list
+- Dynamic encounter creation on workspace open
+- Wire "Mizaj" tab to `mizaj_assessor.py` engine output
+- Wire "Afaal" tab to `afaal_cascade_engine.py` output
+- Wire "Axis" tab to `organ_axis_engine.py` output
+- Wire "Assessment" tab to `differential_engine.py` output
+- Real-time clinical notes auto-save (debounced API calls)
+- Prescription PDF generation (server-side)
+- Add `/doctor/[patient-id]` dynamic route
+
+### 3.2 Receptionist Workspace
+- Patient registration form → identity + clinical APIs
+- Live queue management (WebSocket)
+- Appointment scheduling with conflict detection
+- Walk-in vs. pre-booked flow
+- Add `/receptionist/queue` and `/receptionist/appointments` sub-routes
+
+### 3.3 Pharmacy Workspace
+- Safety Firewall error display (clear clinical language)
+- FEFO expiry warnings in inventory
+- QR/barcode prescription scan
+- Add `/pharmacy/inventory` and `/pharmacy/dispensing` sub-routes
+
+---
+
+## Phase 4 — Intelligence Layer Full Activation
+**Goal:** Hakeem Sahab AI™, ZAPE, Multimodal all fully operational  
+**Estimated Effort:** 3–4 days
+
+| Task | Detail |
+|---|---|
+| Connect Hakeem Sahab AI™ with real auth | Replace mock token, test 5-layer advisory |
+| Remove `NEXT_PUBLIC_DEMO_MODE` fallback | `multimodalApi.ts` — real API only |
+| Expose ZAPE personalization in doctor UI | Show personalized reasoning explanation |
+| Connect Pharmacovigilance to doctor workspace | Surface adverse event warnings |
+| Wire Digital Twin Cockpit fully | Connect all engine outputs to `DigitalTwinCockpit.tsx` |
+| Knowledge portal full connection | Wire `/knowledge` page to knowledge service RAG |
+| AI evaluation dashboard | Surface AI accuracy scores in admin |
+
+---
+
+## Phase 5 — Enterprise Modules
+**Goal:** Research, Manufacturing, Knowledge Management fully operational  
+**Estimated Effort:** 4–5 days
+
+| Task | Detail |
+|---|---|
+| Research portal (`/research`) | Wire to `clinical/app/research/` backend |
+| Manufacturing portal (`/manufacturing`) | Wire to `therapeutic/app/logistics/` + `courier_engine.py` |
+| Enterprise admin (`/admin/billing`) | Multi-org billing management |
+| Multi-tenant management (`/admin/tenancy`) | Org creation, quota management |
+| Knowledge ingestion pipeline | Upload + OCR + Neo4j ingest workflow |
+| GDPR export + erasure endpoints | Implement `GET/DELETE /api/v1/gdpr-export|erase` |
+| e-Mudhra/Aadhaar eSign bridge | Legal digital signature for Indian context |
+
+---
+
+## Phase 6 — Mobile App Completion
+**Goal:** Full patient + clinician mobile experience  
+**Estimated Effort:** 4–5 days
+
+| Task | Detail |
+|---|---|
+| Push notifications | Expo Push + FCM/APNs in `notifications_client.py` |
+| Deep linking | Configure Expo Linking + React Navigation |
+| Biometric auth | Expo LocalAuthentication |
+| `AIChatScreen` | Hakeem Sahab AI™ mobile chat |
+| `MizajAssessmentScreen` | Mobile Mizaj self-assessment |
+| `BookAppointmentScreen` | Full booking flow |
+| `VitalEntryScreen` | Manual vital entry |
+| `EmergencyScreen` | Red flag detection + emergency protocols |
+| Teleconsult video | WebRTC via Daily.co Expo SDK |
+| Wearable sync | Apple HealthKit + Google Fit |
+| Offline prescription caching | Extend `OfflineStorageService.ts` |
+| RTL / Urdu language support | i18n + RTL layout |
+| EAS Build configuration | App signing for App Store + Play Store |
+
+---
+
+## Phase 7 — Hardening, Security & Compliance
+**Goal:** Production-grade security, full compliance, performance  
+**Estimated Effort:** 4–5 days
+
+| Task | Detail |
+|---|---|
+| mTLS inter-service communication | Kubernetes network policy + TLS certs |
+| RabbitMQ/NATS event bus | Replace in-memory queue, wire durable async tasks |
+| Account lockout brute-force protection | `failed_login_attempts` + `locked_until` |
+| Automated JWT key rotation | Scheduled key rotation daemon |
+| GDPR consent table | `consent_records` — type, granted_at, withdrawn_at |
+| PHI encryption coverage audit | All patient PII fields verified AES-GCM |
+| CSP + Security headers full audit | Strict CSP via Next.js middleware |
+| WAF configuration | Cloudflare rules / Nginx ModSecurity |
+| Trivy scan as blocking CI gate | Currently non-blocking — must block on HIGH/CRITICAL |
+| Load testing | k6 stress tests on all critical paths |
+| Accessibility full audit | WCAG 2.1 AA compliance |
+| HIPAA documentation | Complete Business Associate Agreements |
+| GDPR DPA documentation | Data Processing Agreements |
+
+---
+
+## Phase 8 — Pilot Readiness
+**Goal:** Ready for first closed pilot with ZAYVORA Matab™ clinic  
+**Estimated Effort:** 2–3 days
+
+| Task | Detail |
+|---|---|
+| Staging environment deployment | Docker Compose on VPS or cloud VM |
+| Seed data for pilot clinic | Realistic Unani clinical data |
+| Staff onboarding documentation | Hakeem training guide, pharmacist guide |
+| Runbook + incident response | Escalation paths, rollback procedure |
+| Monitoring + alerting | Prometheus + Grafana dashboards |
+| Final go/no-go checklist | 0 P0 blockers verified by QA |
+| Pilot clinic user accounts | Create org + staff + test patients |
+| 72-hour soak test | Simulated clinical load before go-live |
+
+---
+
+## Recommended Implementation Sequence
+
+```
+Week 1:  Phase 1 (blockers) → Phase 2 (website)
+Week 2:  Phase 3 (healthcare workflows)
+Week 3:  Phase 4 (intelligence) → Phase 5 (enterprise)
+Week 4:  Phase 6 (mobile)
+Week 5:  Phase 7 (hardening)
+Week 6:  Phase 8 (pilot)
 ```
 
 ---
 
-## 2. Phase-by-Phase Deliverables & Acceptance Criteria
+## Success Criteria
 
-### Phase 1: Complete Repository Audit & Gap Reports (COMPLETED)
-- **Scope**: Meticulous inspection of all 715 files, 444 automated tests, database schemas, and frontend/mobile screens.
-- **Deliverables**: 17 governance documents and CSV inventories published in `/docs/` and `/docs/engine-audit/`.
-- **Status**: **100% COMPLETE & VERIFIED**.
-
-### Phase 2: Authentication, RBAC, Multi-Tenancy & API Contracts
-- **Scope**: Standardize JWT session validation, tenant scoping (`facility_id`), and role-based route guards across all microservices and Next.js shells.
-- **Acceptance Criteria**: Unauthorized API requests return HTTP 401/403 with user-friendly messages; cross-tenant access attempts are blocked and logged.
-
-### Phase 3: Core Clinical Workflow Continuum
-- **Scope**: End-to-end integration of the complete patient journey:
-  `Patient Registration -> OPD Queue -> Patient 360 -> Vitals -> 10-Ajnas Mizaj -> 9 Organ-Axis -> SOAP Notes -> Nuskha Formulation -> Safety Review -> 21 CFR Part 11 Approval -> A4 Prescription Letterhead Print`.
-- **Acceptance Criteria**: Every clinical action persists to `zayvora_live.db` and anchors an immutable block in `audit_ledger`.
-
-### Phase 4: Pharmacy, Inventory, FEFO Dispensing & Billing
-- **Scope**: First-Expired First-Out stock picking, Schedule E(1) Mudabbar certificate validation, live stock decrements, and consultation/dispensary billing.
-- **Acceptance Criteria**: Expired or unpurified batches cannot be dispensed; invoices reconcile 100% against collected fees.
-
-### Phase 5: AI Provider Gateway, RAG & Knowledge Graph
-- **Scope**: Model-agnostic AI provider gateway with fallback circuit breaker, hybrid BM25/embedding retrieval over approved UPI monographs, and hallucination scoring.
-- **Acceptance Criteria**: AI recommendations strictly grounded in peer-reviewed pharmacopoeia; `safe_to_lock = False` physician gate strictly enforced.
-
-### Phase 6: QSURA Communication & Notifications
-- **Scope**: Multi-channel notification broker (SMS, WhatsApp, Email) with template management, consent opt-out, and delivery status tracking.
-- **Acceptance Criteria**: Patient appointment reminders and Mudabbar safety advisories dispatch reliably without exposing raw unencrypted PHI.
-
-### Phase 7: Mobile Authentication, Sync & Real Workflows
-- **Scope**: React Native companion app hardening, offline-safe read cache, vernacular audio posology player, and push notification triggers.
-- **Acceptance Criteria**: Mobile app functions smoothly with live REST API server (`http://localhost:8000`) and provides zero simulated tokens.
-
-### Phase 8: Security, Compliance, Observability & Disaster Recovery
-- **Scope**: Automated backup snapshots (`dr_backup_restore.py`), W3C distributed traceparent logging, rate limiting, and DISHA/HIPAA compliance verification.
-- **Acceptance Criteria**: RPO < 15 minutes, RTO < 30 seconds verified by automated restore smoke tests.
-
-### Phase 9: Comprehensive E2E, Clinical Safety & Accessibility QA
-- **Scope**: Execution of all 10 automated test suites (444+ tests), WCAG 2.1 AA accessibility auditing, and clinical edge-case red teaming.
-- **Acceptance Criteria**: Zero test failures, zero regressions, zero developer jargon across all screens.
-
-### Phase 10: Closed Pilot Release & Institutional Handover
-- **Scope**: Packaging of production artifacts (`zayvora-health-os-production.zip`), final deployment certification, demo credential configuration, and handover to clinical stakeholders.
-- **Acceptance Criteria**: Unconditional Go/No-Go release certification signed by Chief Medical Officer and Lead Architect.
+| Criterion | Metric |
+|---|---|
+| Zero P0 blockers | 0/6 remaining |
+| Real auth everywhere | `SESSION_MOCK_TOKEN` count = 0 |
+| API connection coverage | ≥ 90% of UI actions have real backend |
+| Test coverage | ≥ 80% on critical clinical paths |
+| WCAG 2.1 AA | 0 Level A violations |
+| Security scan | 0 HIGH/CRITICAL CVEs in container images |
+| Load test | P95 response time < 500ms at 100 concurrent users |
+| Brand consistency | All brand names match canonical names (100%) |

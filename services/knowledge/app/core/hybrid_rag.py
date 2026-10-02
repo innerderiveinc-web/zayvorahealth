@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Any, Protocol
+from typing import Any, List, Protocol
 
 
 class Document:
@@ -173,6 +173,7 @@ class DenseVectorStore:
 
     def __init__(self, embedding_provider: EmbeddingProvider | None = None):
         self.provider = embedding_provider or DeterministicSemanticEmbeddingProvider()
+        self.dimension = getattr(self.provider, "dim", 128)
         self.docs: dict[str, Document] = {}
 
     def index_documents(self, documents: list[Document]) -> None:
@@ -221,21 +222,31 @@ def reciprocal_rank_fusion(
     return ranked
 
 
-class HybridRAGEngine:
+class ZAYVORAIntelligenceEngine:
     """Master Hybrid RAG Retrieval Engine for ZAYVORA Health.
     Unifies BM25 lexical search, Dense vector semantic retrieval, and Knowledge Graph triples.
     """
 
     def __init__(self, embedding_provider: EmbeddingProvider | None = None):
         self.bm25 = BM25Index()
+        # Choose embedding provider: BioBERT if enabled, else deterministic
+        if embedding_provider is None:
+            import os
+            if os.getenv("USE_BIOBERT", "false").lower() == "true":
+                from .bio_bert_provider import BioBERTEmbeddingProvider
+                embedding_provider = BioBERTEmbeddingProvider()
         self.vector_store = DenseVectorStore(embedding_provider=embedding_provider)
         self.documents: dict[str, Document] = {}
 
     def load_canonical_corpus(self) -> int:
         """Loads canonical UPI Mufradat, NFUM Murakkabat, Schedule E(1) Poisons,
         and Organ Axes into the hybrid index."""
-        from app.core.pharmacopoeia import NFUM_COMPOUND_REGISTRY, SCHEDULE_E1_POISONS, UPI_MUFRADAT_REGISTRY
-        from app.core.taxonomy import ORGAN_AXES
+        try:
+            from app.core.pharmacopoeia import NFUM_COMPOUND_REGISTRY, SCHEDULE_E1_POISONS, UPI_MUFRADAT_REGISTRY, get_upi_mufradat
+            from app.core.taxonomy import ORGAN_AXES
+        except ImportError:
+            from services.knowledge.app.core.pharmacopoeia import NFUM_COMPOUND_REGISTRY, SCHEDULE_E1_POISONS, UPI_MUFRADAT_REGISTRY, get_upi_mufradat
+            from services.knowledge.app.core.taxonomy import ORGAN_AXES
 
         docs: list[Document] = []
 
@@ -251,18 +262,21 @@ class HybridRAGEngine:
             )
             docs.append(Document(id=f"poison-{pid}", doc_type="poison", title=title, content=content, metadata=p))
 
-        # 2. UPI Mufradat Monograph Register
-        for m in UPI_MUFRADAT_REGISTRY:
+        # 2. Complete Pharmacopoeia Monograph Register (350 Monographs)
+        for m in get_upi_mufradat():
             mz = m.get("mizaj", {})
             mz_str = f"{mz.get('temperament', '')} (Hot/Cold: {mz.get('hc_degree', 0)}, Wet/Dry: {mz.get('wd_degree', 0)})"
             afal = ", ".join(m.get("afal", [])) if isinstance(m.get("afal"), list) else m.get("afal", "")
-            title = f"Mufrad: {m['name']} ({m.get('botanicalName', '')})"
+            botanical = m.get("botanical_name") or m.get("botanicalName", "")
+            is_e1 = m.get("is_schedule_e1", m.get("isScheduleE1", False))
+            syns = ", ".join(m.get("synonyms", []))
+            title = f"Mufrad: {m['name']} ({botanical})"
             content = (
-                f"Single Drug Monograph: {m['name']} ({m.get('botanicalName', '')}). Mizaj Temperament: {mz_str}. "
+                f"Single Drug Monograph: {m['name']} ({botanical}). Synonyms: {syns}. Mizaj Temperament: {mz_str}. "
                 f"Actions and Af'al: {afal}. Standard Posology Dose: {m.get('dose', '')}. "
                 f"Classical Musleh Corrective: {m.get('musleh', '')}. Classical Badal Substitute: {m.get('badal', '')}. "
                 f"Contraindications: {m.get('contraindications', 'None listed')}. "
-                f"Schedule E(1) Poison: {'Yes' if m.get('isScheduleE1') else 'No'}."
+                f"Schedule E(1) Poison: {'Yes' if is_e1 else 'No'}."
             )
             docs.append(Document(id=f"mufrad-{m['id']}", doc_type="mufrad", title=title, content=content, metadata=m))
 
@@ -295,7 +309,7 @@ class HybridRAGEngine:
         self,
         query: str,
         *,
-        organ_axis: str | None = None,
+        organ_axis: List[str] | None = None,
         temperament: str | None = None,
         top_k: int = 5,
         dense_weight: float = 0.45,
@@ -321,16 +335,19 @@ class HybridRAGEngine:
             meta = doc.metadata
             # Axis match
             if organ_axis:
-                if doc.doc_type == "organ_axis" and meta.get("code") == organ_axis:
+                if isinstance(organ_axis, list):
+                    axes = organ_axis
+                else:
+                    axes = [organ_axis]
+                if doc.doc_type == "organ_axis" and meta.get("code") in axes:
                     g_score += 2.0
                 elif doc.doc_type == "mufrad":
-                    # Check if mufrad is linked to this axis in taxonomy or afal
                     afal_str = str(meta.get("afal", "")).lower()
-                    if organ_axis.lower() in afal_str:
+                    if any(ax.lower() in afal_str for ax in axes):
                         g_score += 1.0
                 elif doc.doc_type == "murakkab":
                     ind = str(meta.get("classicalIndication", "")).lower()
-                    if organ_axis.lower() in ind:
+                    if any(ax.lower() in ind for ax in axes):
                         g_score += 1.0
 
             # Temperament match
@@ -362,7 +379,11 @@ class HybridRAGEngine:
             doc = self.documents.get(doc_id)
             if not doc:
                 continue
-            is_poison = doc.doc_type == "poison" or doc.metadata.get("isScheduleE1", False)
+            is_poison = (
+                doc.doc_type == "poison"
+                or bool(doc.metadata.get("isScheduleE1", False))
+                or bool(doc.metadata.get("is_schedule_e1", False))
+            )
             output.append({
                 "document_id": doc.id,
                 "doc_type": doc.doc_type,
@@ -406,3 +427,29 @@ class HybridRAGEngine:
         if max_v == min_v:
             return {k: 1.0 for k in score_dict}
         return {k: (v - min_v) / (max_v - min_v) for k, v in score_dict.items()}
+
+    def get_corpus_stats(self) -> dict[str, Any]:
+        """Returns statistics on indexed corpus documents."""
+        if not self.documents:
+            self.load_canonical_corpus()
+        by_type: dict[str, int] = {}
+        for d in self.documents.values():
+            by_type[d.doc_type] = by_type.get(d.doc_type, 0) + 1
+        return {
+            "total_documents": len(self.documents),
+            "by_type": by_type,
+            "dense_vector_dim": self.vector_store.dimension,
+            "bm25_terms_count": len(self.bm25.doc_freqs),
+        }
+
+HybridRAGEngine = ZAYVORAIntelligenceEngine  # backward‑compatibility alias
+
+_HYBRID_RAG_SINGLETON: ZAYVORAIntelligenceEngine | None = None
+
+def get_hybrid_rag_service() -> ZAYVORAIntelligenceEngine:
+    """Returns singleton instance of ZAYVORA hybrid RAG service with preloaded canonical corpus."""
+    global _HYBRID_RAG_SINGLETON
+    if _HYBRID_RAG_SINGLETON is None:
+        _HYBRID_RAG_SINGLETON = ZAYVORAIntelligenceEngine()
+        _HYBRID_RAG_SINGLETON.load_canonical_corpus()
+    return _HYBRID_RAG_SINGLETON

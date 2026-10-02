@@ -1,5 +1,5 @@
 """
-Therapeutic Core domain models (Master Build Prompt v4.0 §14-19 Ilaj
+Therapeutic Core domain models (ZAYVORA Clinical Architecture Specification v4.0 §14-19 Ilaj
 bil-Dawa/Nuskha Nawisi/Nuskha Compiler, §15 Ilaj bil-Tadbeer, §16 Ilaj
 bil-Ghiza).
 

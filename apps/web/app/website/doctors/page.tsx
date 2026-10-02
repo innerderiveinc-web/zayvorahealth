@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { CLINICAL_TEAM } from "@/lib/cms/doctorsData";
+import { HealthcareIcon } from "@/components/ui/HealthcareIcon";
 
 export default function DoctorsPage() {
   const [selectedFocus, setSelectedFocus] = useState<string>("All");
@@ -25,32 +26,33 @@ export default function DoctorsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-10 text-[#CBD5E1]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-10">
       
       {/* Header */}
-      <div className="border-b border-[#1E293B] pb-8 space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
-          <span>🩺</span> Central Clinical Faculty & Registered Practitioners
+      <div className="border-b border-slate-200 pb-8 space-y-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#1B4332] text-xs font-bold">
+          <HealthcareIcon name="stethoscope" className="w-4 h-4 text-emerald-700" />
+          <span>Central Clinical Faculty & Registered Practitioners</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
           Licensed Practitioners & Tabeebs
         </h1>
-        <p className="text-sm text-[#94A3B8] max-w-3xl leading-relaxed">
-          Our senior clinical faculty hold statutory CCIM/BUMS credentials with decades of combined clinical leadership at premier academic hospitals, blending classical pulse diagnostics with modern laboratory medicine.
+        <p className="text-sm text-slate-600 max-w-3xl leading-relaxed">
+          Our senior clinical faculty hold statutory NCISM Act 2020 registration with decades of combined clinical leadership at premier academic hospitals, blending classical pulse diagnostics with modern laboratory medicine.
         </p>
       </div>
 
       {/* Focus Area Filter */}
-      <div className="flex flex-wrap gap-2 p-4 rounded-2xl bg-[#0F172A] border border-[#334155]">
-        <span className="text-xs font-bold text-[#64748B] flex items-center pr-2">Filter Specialization:</span>
+      <div className="flex flex-wrap gap-2 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+        <span className="text-xs font-bold text-slate-500 flex items-center pr-2">Filter Specialization:</span>
         {focusAreas.map((focus) => (
           <button
             key={focus}
             onClick={() => setSelectedFocus(focus)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${
               selectedFocus === focus
-                ? "bg-[#0D9488] text-white"
-                : "bg-[#1E293B] text-[#94A3B8] hover:text-white"
+                ? "bg-[#1B4332] text-white shadow-sm"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
             }`}
           >
             {focus}
@@ -63,49 +65,49 @@ export default function DoctorsPage() {
         {filteredDoctors.map((doc) => (
           <div
             key={doc.id}
-            className="rounded-3xl bg-[#0F172A] border border-[#334155] p-7 space-y-5 hover:border-[#0D9488] transition flex flex-col justify-between"
+            className="rounded-3xl bg-white border border-slate-200/90 p-7 space-y-5 shadow-sm hover:shadow-md hover:border-emerald-600/40 transition flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-14 h-14 rounded-2xl bg-[#0D9488] text-white font-extrabold flex items-center justify-center text-xl shadow-md">
+                  <div className="w-14 h-14 rounded-2xl bg-[#1B4332] text-white font-extrabold flex items-center justify-center text-xl shadow-md">
                     {doc.avatarInitials}
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-white text-lg">{doc.name}</h3>
-                    <span className="text-xs text-[#2DD4BF] font-mono font-medium block">{doc.regNumber}</span>
-                    <span className="text-[11px] text-[#94A3B8] block">{doc.degrees}</span>
+                    <h3 className="font-extrabold text-[#0F172A] text-lg">{doc.name}</h3>
+                    <span className="text-xs text-emerald-700 font-mono font-medium block">{doc.regNumber}</span>
+                    <span className="text-[11px] text-slate-500 block">{doc.degrees}</span>
                   </div>
                 </div>
-                <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                   ★ {doc.rating}
                 </span>
               </div>
 
-              <p className="text-xs text-[#94A3B8] leading-relaxed">{doc.bio}</p>
+              <p className="text-xs text-slate-600 leading-relaxed">{doc.bio}</p>
 
-              <div className="p-4 rounded-2xl bg-[#0A0F1D] border border-[#1E293B] space-y-2 text-xs">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold text-white uppercase block tracking-wider">Hospital Affiliation:</span>
-                  <span className="text-[#94A3B8] text-[11px]">{doc.hospitalAffiliation}</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase block tracking-wider">Hospital Affiliation:</span>
+                  <span className="text-slate-700 text-[11px]">{doc.hospitalAffiliation}</span>
                 </div>
-                <div className="grid grid-cols-2 gap-2 pt-1">
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200/60">
                   <div>
-                    <span className="text-[10px] font-bold text-[#64748B] block">OPD Hours:</span>
-                    <span className="text-white text-[11px]">{doc.clinicTimings}</span>
+                    <span className="text-[10px] font-bold text-slate-400 block">OPD Hours:</span>
+                    <span className="text-slate-800 text-[11px]">{doc.clinicTimings}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-[#64748B] block">Languages:</span>
-                    <span className="text-white text-[11px]">{doc.languages.join(", ")}</span>
+                    <span className="text-[10px] font-bold text-slate-400 block">Languages:</span>
+                    <span className="text-slate-800 text-[11px]">{doc.languages.join(", ")}</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider block">Areas of Focus:</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Areas of Focus:</span>
                 <div className="flex flex-wrap gap-1.5">
                   {doc.areasOfFocus.map((f, idx) => (
-                    <span key={idx} className="text-[10px] px-2.5 py-0.5 rounded-lg bg-[#1E293B] text-[#CBD5E1] border border-[#334155]">
+                    <span key={idx} className="text-[10px] px-2.5 py-0.5 rounded-lg bg-emerald-50 text-[#1B4332] border border-emerald-200 font-medium">
                       {f}
                     </span>
                   ))}
@@ -114,16 +116,16 @@ export default function DoctorsPage() {
             </div>
 
             {/* Card Footer Actions */}
-            <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between gap-3">
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
               <Link
                 href={`/website/doctor?id=${doc.id}`}
-                className="w-1/2 text-center py-2.5 rounded-xl bg-[#1E293B] hover:bg-[#334155] text-xs font-semibold text-white transition"
+                className="w-1/2 text-center py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-800 transition"
               >
                 View Profile & Credentials
               </Link>
               <Link
                 href={`/website/book?doctor=${doc.id}`}
-                className="w-1/2 text-center py-2.5 rounded-xl bg-[#0D9488] hover:bg-[#0F766E] text-xs font-bold text-white shadow-sm transition"
+                className="w-1/2 text-center py-2.5 rounded-xl bg-[#1B4332] hover:bg-[#2D6A4F] text-xs font-bold text-white shadow-sm transition"
               >
                 Book Consultation
               </Link>

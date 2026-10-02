@@ -74,6 +74,7 @@ class CourierLogisticsEngine:
         }
 
         shipment = ShipmentRecord(
+            id=uuid.uuid4(),
             organization_id=uuid.UUID(str(organization_id)),
             prescription_id=uuid.UUID(str(prescription_id)),
             patient_id=uuid.UUID(str(patient_id)),

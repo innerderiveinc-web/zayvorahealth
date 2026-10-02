@@ -3,9 +3,9 @@
 ZAYVORA Health™ — Phase 8 Clinical Pilot University Tenant Seeding Utility.
 
 Provisions multi-tenant academic medical centers:
-1. Ayurvedic & Unani Tibbia College and Hospital (AUTC, New Delhi)
-2. School of Unani Medical Education & Research, Jamia Hamdard (JH-SUMER, New Delhi)
-3. Ajmal Khan Tibbiya College, Aligarh Muslim University (AMU-AKTC, Aligarh)
+1. ZAYVORA Healthcare System - Central Hospital (Delhi)
+2. ZAYVORA Healthcare System - Research Wing (SUMER, New Delhi)
+3. ZAYVORA Healthcare System - Clinical Center (AKTC, Aligarh)
 """
 
 from __future__ import annotations
@@ -22,27 +22,27 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PILOT_CENTERS = [
     {
         "id": "org-autc-delhi-001",
-        "name": "Ayurvedic & Unani Tibbia College & Hospital (Karol Bagh)",
+        "name": "ZAYVORA Healthcare System - Central Clinical Hub (Delhi)",
         "slug": "autc-delhi",
-        "pi_name": "Prof. Dr. M. A. Siddiqui, MD (Moalajat)",
-        "pi_email": "pi.autc@zayvora.clinical",
-        "reg_no": "AYUSH-DL-1994-0821",
+        "pi_name": "Hakeem Dr. Irfan Ashraf (BUMS, Chief Clinical Lead)",
+        "pi_email": "clinical.lead@zayvora.clinical",
+        "reg_no": "Facility ID: ZAY-DEL-01",
     },
     {
         "id": "org-jh-sumer-002",
-        "name": "School of Unani Medical Education & Research, Jamia Hamdard",
+        "name": "ZAYVORA Healthcare System - Academic Research Node (Simulation-1)",
         "slug": "jh-sumer",
-        "pi_name": "Prof. Dr. Yasmeen Shamsi, Dean (Faculty of Unani)",
-        "pi_email": "pi.sumer@zayvora.clinical",
-        "reg_no": "AYUSH-DL-2001-1452",
+        "pi_name": "Dr. Tariq Mahmood (BUMS, Academic Research Lead)",
+        "pi_email": "research.sim1@zayvora.clinical",
+        "reg_no": "Facility ID: ZAY-RES-02",
     },
     {
         "id": "org-amu-aktc-003",
-        "name": "Ajmal Khan Tibbiya College, Aligarh Muslim University",
+        "name": "ZAYVORA Healthcare System - Collaborative Clinical Node (Simulation-2)",
         "slug": "amu-aktc",
-        "pi_name": "Prof. Dr. F. S. Sherwani, MD (Ilmul Advia)",
-        "pi_email": "pi.aktc@zayvora.clinical",
-        "reg_no": "AYUSH-UP-1998-3319",
+        "pi_name": "Dr. Rehan Qureshi (BUMS, Clinical Specialist)",
+        "pi_email": "clinic.sim2@zayvora.clinical",
+        "reg_no": "Facility ID: ZAY-COL-03",
     },
 ]
 

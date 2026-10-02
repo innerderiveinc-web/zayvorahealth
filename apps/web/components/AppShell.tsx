@@ -2,22 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { PlatformHeader } from "@/components/PlatformHeader";
 import { PlatformFooter } from "@/components/PlatformFooter";
+import { Sidebar, UserRole } from "@/components/Sidebar";
+import { AuthService, UserSession } from "@/lib/services/authService";
+import { useAuth } from "@/lib/hooks/useAuth";
 
-export type UserRole = 
-  | "doctor"
-  | "patient"
-  | "clinic"
-  | "receptionist"
-  | "pharmacy"
-  | "research"
-  | "admin"
-  | "manufacturing"
-  | "enterprise"
-  | "website"
-  | "herbals";
+export type { UserRole };
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -28,114 +20,122 @@ interface AppShellProps {
 export function AppShell({ 
   children, 
   activeRole = "doctor",
-  currentFacility = "Jamia Hamdard AUTC - Main Hospital"
+  currentFacility = "ZAYVORA Matab™ — Central Care Centre"
 }: AppShellProps) {
   const pathname = usePathname();
-  const router = useRouter();
+  const { logout } = useAuth();
   const [role, setRole] = useState<UserRole>(activeRole);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [session, setSession] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+    setSession(AuthService.getSession());
+  }, []);
 
   useEffect(() => {
     if (pathname.startsWith("/doctor")) setRole("doctor");
     else if (pathname.startsWith("/patient")) setRole("patient");
-    else if (pathname.startsWith("/receptionist")) setRole("receptionist");
-    else if (pathname.startsWith("/clinic")) setRole("clinic");
+    else if (pathname.startsWith("/reception") || pathname.startsWith("/receptionist") || pathname.startsWith("/clinic")) setRole("receptionist");
     else if (pathname.startsWith("/pharmacy")) setRole("pharmacy");
     else if (pathname.startsWith("/research")) setRole("research");
     else if (pathname.startsWith("/admin")) setRole("admin");
+    else if (pathname.startsWith("/nurse")) setRole("nurse");
     else if (pathname.startsWith("/manufacturing")) setRole("manufacturing");
-    else if (pathname.startsWith("/website/herbals") || pathname.startsWith("/website/cart")) setRole("herbals");
+    else if (pathname.startsWith("/enterprise")) setRole("admin");
+    else if (pathname.startsWith("/knowledge") || pathname.startsWith("/herbals")) setRole("knowledge");
     else if (pathname.startsWith("/website")) setRole("website");
   }, [pathname]);
 
-  const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: "📊", href: "/dashboard" },
-    { id: "patients", label: "Patients", icon: "👥", href: "/patient" },
-    { id: "reception", label: "Reception / Queue", icon: "🏥", href: "/receptionist" },
-    { id: "appointments", label: "Appointments", icon: "📅", href: "/clinic" },
-    { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
-    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", href: "/ai" },
-    { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", href: "/dashboard" },
-    { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor" },
-    { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", href: "/pharmacy" },
-    { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", href: "/dashboard" },
-    { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", href: "/dashboard" },
-    { id: "followups", label: "Follow-ups", icon: "🔄", href: "/clinic" },
-    { id: "telemedicine", label: "Telemedicine", icon: "📱", href: "/website" },
-    { id: "billing", label: "Billing & Payments", icon: "💳", href: "/clinic" },
-    { id: "analytics", label: "Analytics", icon: "📈", href: "/research" },
-    { id: "knowledge", label: "Knowledge Base", icon: "📚", href: "/knowledge" },
-    { id: "messages", label: "Messages", icon: "💬", href: "/dashboard" },
-    { id: "notifications", label: "Notifications", icon: "🔔", href: "/dashboard" },
-    { id: "settings", label: "Settings", icon: "⚙️", href: "/admin" },
-  ];
+  // Dedicated Patient Shell (Oracle Health / Mayo Mobile-First Model)
+  if (role === "patient" || pathname.startsWith("/patient")) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#0A0F1D] text-slate-100 pb-20 md:pb-0">
+        {/* Patient Minimal Top Bar */}
+        <header className="border-b border-slate-800 bg-[#0F172A]/95 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <Link href="/patient" className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-emerald-950/60 border border-emerald-500/40 flex items-center justify-center p-1">
+                <img src="/zayvora-logo.png" alt="ZAYVORA" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLElement).style.display = "none"; }} />
+              </div>
+              <div>
+                <span className="font-extrabold text-sm text-white tracking-tight">ZAYVORA</span>
+                <span className="text-[10px] text-emerald-400 font-medium block">My Health Portal</span>
+              </div>
+            </Link>
 
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-slate-300 font-medium hidden sm:inline">
+                Good day, <strong className="text-white">{session?.user?.fullName ? session.user.fullName.split(' ')[0] : "Patient"}</strong>
+              </span>
+              <button className="p-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-emerald-500 text-sm relative transition" title="Patient Notifications">
+                🔔
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 text-white font-bold text-[8px] flex items-center justify-center">
+                  1
+                </span>
+              </button>
+              <Link href="/patient?tab=profile" className="w-7 h-7 rounded-full bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shadow-sm" title={session?.user?.fullName || "Patient Profile"}>
+                {session?.user?.fullName ? session.user.fullName.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : "PT"}
+              </Link>
+              <button
+                onClick={logout}
+                className="text-xs text-slate-400 hover:text-red-400 transition px-2 py-1 rounded-lg border border-slate-700 hover:border-red-500"
+                title="Sign Out"
+              >
+                ⏻
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Patient Portal Workspace Body */}
+        <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6">
+          {children}
+        </main>
+
+        {/* Patient Bottom Navigation Bar (Mobile / Sticky) */}
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F172A]/95 backdrop-blur-md border-t border-slate-800 py-2 px-6">
+          <div className="max-w-md mx-auto flex justify-between items-center text-xs">
+            <Link href="/patient" className="flex flex-col items-center gap-0.5 text-emerald-400 font-semibold">
+              <span className="text-base">🏠</span>
+              <span className="text-[10px]">Home</span>
+            </Link>
+            <Link href="/patient?tab=treatment-plans" className="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition">
+              <span className="text-base">🌿</span>
+              <span className="text-[10px]">Care</span>
+            </Link>
+            <Link href="/patient?tab=reports" className="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition">
+              <span className="text-base">📊</span>
+              <span className="text-[10px]">Health</span>
+            </Link>
+            <Link href="/patient?tab=messages" className="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition">
+              <span className="text-base">💬</span>
+              <span className="text-[10px]">Messages</span>
+            </Link>
+            <Link href="/patient?tab=profile" className="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition">
+              <span className="text-base">👤</span>
+              <span className="text-[10px]">Me</span>
+            </Link>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+
+  // Clinician & Operational OS Shell
   return (
     <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
-      {/* Universal SaaS Header */}
+      {/* Universal Enterprise Clinician Header */}
       <PlatformHeader />
 
-      {/* Main Layout (Sidebar + Workspace) */}
+      {/* Main Layout (Role-Aware Sidebar + Workspace) */}
       <div className="flex-1 flex overflow-hidden">
         
-        {/* Collapsible Left Sidebar */}
-        <aside
-          className={`bg-[var(--panel)] border-r border-[var(--border)] flex flex-col transition-all duration-200 shrink-0 ${
-            sidebarCollapsed ? "w-16" : "w-60"
-          } hidden md:flex`}
-        >
-          <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
-            {!sidebarCollapsed && (
-              <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">
-                Menu
-              </span>
-            )}
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-1 rounded-lg hover:bg-[var(--elevated)] text-[var(--muted)] hover:text-white transition"
-              title="Toggle sidebar"
-            >
-              {sidebarCollapsed ? "▶" : "◀"}
-            </button>
-          </div>
-
-          <nav className="p-2 space-y-0.5 flex-1 overflow-y-auto">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname?.startsWith(item.href));
-              return (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition ${
-                    isActive
-                      ? "bg-[#0D9488]/20 text-[#2DD4BF] border border-[#0D9488]/30 font-semibold"
-                      : "text-[var(--muted)] hover:bg-[var(--elevated)] hover:text-white"
-                  }`}
-                  title={item.label}
-                >
-                  <span className="text-base shrink-0">{item.icon}</span>
-                  {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Bottom Sidebar Links */}
-          <div className="p-2 border-t border-[var(--border)] bg-[var(--background)] space-y-0.5 text-xs">
-            <Link href="/website/faqs" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
-              <span>❓</span> {!sidebarCollapsed && <span>Help Center</span>}
-            </Link>
-            <Link href="/knowledge" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
-              <span>📖</span> {!sidebarCollapsed && <span>Documentation</span>}
-            </Link>
-            <Link href="/admin" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
-              <span>🟢</span> {!sidebarCollapsed && <span>System Status</span>}
-            </Link>
-            <Link href="/website/contact" className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[var(--muted)] hover:text-white">
-              <span>📞</span> {!sidebarCollapsed && <span>Contact Support</span>}
-            </Link>
-          </div>
-        </aside>
+        {/* Role-Aware Left Sidebar */}
+        <Sidebar
+          role={role}
+          collapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
 
         {/* Workspace Body */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[var(--background)]">
@@ -143,7 +143,7 @@ export function AppShell({
         </main>
       </div>
 
-      {/* Universal SaaS Footer */}
+      {/* Universal Enterprise Footer */}
       <PlatformFooter />
     </div>
   );

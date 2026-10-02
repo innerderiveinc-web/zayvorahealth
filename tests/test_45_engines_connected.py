@@ -482,9 +482,9 @@ def run_45_engine_tests():
     if suite.failed == 0:
         print("✓ ALL 45 ZAYVORA ENGINES VERIFIED & CONNECTED WITH REAL EXECUTION EVIDENCE.")
     print("=" * 80)
-    return suite.failed == 0
+    return suite.passed, suite.failed
 
 
 if __name__ == "__main__":
-    success = run_45_engine_tests()
-    sys.exit(0 if success else 1)
+    p, f = run_45_engine_tests()
+    sys.exit(0 if f == 0 else 1)

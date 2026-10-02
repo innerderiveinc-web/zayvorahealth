@@ -1,0 +1,50 @@
+apps/web/app/research/workspace/page.tsx:283:        {/* Tab 4: Other tabs placeholder */}
+apps/web/app/pharmacy/page.tsx:538:                  placeholder="Search batch or formulation..."
+apps/web/app/pharmacy/page.tsx:852:                  placeholder="e.g. RX-2026-0441"
+apps/web/app/messages/page.tsx:242:                  placeholder="Search chats, patients, MRN..."
+apps/web/app/messages/page.tsx:245:                  className="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-1.5 pl-8 text-xs text-white placeholder-[var(--muted)] focus:outline-none focus:border-teal-500"
+apps/web/app/messages/page.tsx:457:                placeholder={`Reply to ${activeConv.participantName}... (Press Enter to send)`}
+apps/web/app/messages/page.tsx:460:                className="flex-1 bg-[var(--background)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-xs text-white placeholder-[var(--muted)] focus:outline-none focus:border-teal-500"
+apps/web/app/receptionist/appointments/page.tsx:76:            placeholder="Search patient, doctor, or complaint..."
+apps/web/app/receptionist/page.tsx:456:                  placeholder="Search by Patient Name, MRN, or Token (e.g. T-104)..."
+apps/web/app/receptionist/page.tsx:459:                  className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+apps/web/app/receptionist/page.tsx:743:                      placeholder="e.g. Tariq Ansari"
+apps/web/app/receptionist/page.tsx:754:                      placeholder="+91-9876543210"
+apps/web/app/receptionist/page.tsx:806:                    placeholder="e.g. Knee swelling, morning joint stiffness..."
+apps/web/app/signup/page.tsx:74:              placeholder="e.g. Ashraf Unani Clinic"
+apps/web/app/doctor/patients/page.tsx:32:          <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search by name or ID…"
+apps/web/app/doctor/nuskha/page.tsx:249:                        placeholder="Dose"
+apps/web/app/doctor/nuskha/page.tsx:259:                        placeholder="Form"
+apps/web/app/doctor/nuskha/page.tsx:269:                        placeholder="Freq"
+apps/web/app/doctor/hakeem-sahab/page.tsx:121:                placeholder="e.g. MRN-2026-0001"
+apps/web/app/doctor/hakeem-sahab/page.tsx:146:              placeholder="Describe chief complaint, temperamental dyscrasia (Su-ul-Mizaj), or posology questions..."
+apps/web/app/doctor/organ-axis/page.tsx:11:  { name:"Reproductive-Endocrine Axis",code:"repro",     icon:"🌸", status:"Mocked",             note:"PCOS, Amenorrhoea Unani correlates — clinical review pending." },
+apps/web/app/doctor/organ-axis/page.tsx:19:  "Mocked": "zv-badge-rose",
+apps/web/app/website/contact/page.tsx:104:                  placeholder="Your Full Name"
+apps/web/app/website/contact/page.tsx:111:                  placeholder="Email Address or 10-Digit Mobile"
+apps/web/app/website/contact/page.tsx:129:                  placeholder="Inquiry details or clinical query..."
+apps/web/app/website/ai-healthcare/page.tsx:7:      {/* Navigation placeholder */}
+apps/web/app/website/modern-science/page.tsx:7:      {/* Navigation placeholder */}
+apps/web/app/website/knowledge-centre/page.tsx:70:            placeholder="Search articles & authors..."
+apps/web/app/website/knowledge-centre/page.tsx:73:            className="w-full pl-8 pr-4 py-2 rounded-xl bg-[#1E293B] border border-[#334155] text-xs text-white placeholder-[#64748B] focus:outline-none focus:border-[#0D9488]"
+apps/web/app/website/academy/page.tsx:7:      {/* Navigation placeholder */}
+apps/web/app/website/programs/page.tsx:69:            placeholder="Search symptoms or programs..."
+apps/web/app/website/programs/page.tsx:72:            className="w-full pl-8 pr-4 py-2 rounded-xl bg-[#1E293B] border border-[#334155] text-xs text-white placeholder-[#64748B] focus:outline-none focus:border-[#0D9488]"
+apps/web/app/website/clinics/page.tsx:19:      <input placeholder="Enter city, pin code, or locality..." className="flex-1 px-4 py-2.5 rounded-xl bg-[#0F172A] border border-[#334155] text-white text-xs" />
+apps/web/app/website/clinical-care/page.tsx:7:      {/* Navigation placeholder */}
+apps/web/app/website/book/page.tsx:278:                        placeholder="e.g. Hamza Farooqi"
+apps/web/app/website/book/page.tsx:281:                        className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+apps/web/app/website/book/page.tsx:292:                        placeholder="+91-9876543210"
+apps/web/app/website/book/page.tsx:295:                        className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+apps/web/app/website/book/page.tsx:306:                        placeholder="patient@example.com"
+apps/web/app/website/book/page.tsx:309:                        className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+apps/web/app/website/book/page.tsx:486:                        placeholder="Briefly describe your symptoms, how long you've experienced them, and any previous medications taken..."
+apps/web/app/website/book/page.tsx:489:                        className="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+apps/web/app/website/cart/page.tsx:249:                placeholder="Promo / Clinical Coupon (e.g. UNANI10)"
+apps/web/app/website/herbals/page.tsx:79:            placeholder="Search active herbs or products..."
+apps/web/app/website/herbals/page.tsx:82:            className="w-full pl-8 pr-4 py-2 rounded-xl bg-[#1E293B] border border-[#334155] text-xs text-white placeholder-[#64748B] focus:outline-none focus:border-[#0D9488]"
+apps/web/app/website/teleconsultation/page.tsx:7:      {/* Navigation placeholder */}
+apps/web/app/admin/organizations/page.tsx:162:          placeholder="Filter organizations by name, slug, or tier..."
+apps/web/app/admin/organizations/page.tsx:244:                  placeholder="e.g. Bukhara Unani Wellness"
+apps/web/app/admin/dashboard/page.tsx:43:const MOCK_AUDIT: AuditEvent[] = [
+apps/web/app/admin/dashboard/page.tsx:136:                {MOCK_AUDIT.map((ev) => (

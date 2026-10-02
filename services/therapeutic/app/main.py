@@ -25,7 +25,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title="ZAYVORA Therapeutic Service",
         version="0.1.0-phase3",
         description="Nuskha Nawisi (with Safety Firewall gate + Clinical Authority "
-        "Guardrail), Ilaj bil-Tadbeer, and Ilaj bil-Ghiza — Master Build Prompt v4.0 Phase 3.",
+        "Guardrail), Ilaj bil-Tadbeer, and Ilaj bil-Ghiza — ZAYVORA Clinical Architecture Specification v4.0 Phase 3.",
         lifespan=lifespan,
     )
     app.add_middleware(

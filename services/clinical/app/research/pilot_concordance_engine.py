@@ -2,7 +2,7 @@
 ZAYVORA Health™ — Multi-Center Clinical Pilot Concordance & DSMB Analytics Engine.
 
 Evaluates inter-rater diagnostic concordance between University Senior Tabeeb Panels
-(A&U Tibbia College, Jamia Hamdard SUMER, AMU Ajmal Khan Tibbiya College) and ZAYVORA
+(A&U Tibbia College, SUMER Partner Wing, AMU Ajmal Khan Tibbiya College) and ZAYVORA
 algorithmic diagnostic engines across:
 1. Longitudinal 10-Ajnas Mizaj Assessment
 2. Organ-Axis Biomarker Cross-Talk Identification

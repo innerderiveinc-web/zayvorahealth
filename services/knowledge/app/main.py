@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import Settings, get_settings
 from app.graph.repository import GraphRepository
-from app.routers import evidence, governance_board, graph, mufradat, pharmacopoeia, rag, search, taxonomy
+from app.routers import clinical_knowledge, evidence, governance_board, graph, mufradat, ocr, ocr_vision, pharmacopoeia, rag, search, sources, taxonomy, taxonomy_custom, diet, hybrid_rag
 
 
 def create_app(settings: Settings | None = None, graph_repository: GraphRepository | None = None) -> FastAPI:
@@ -31,6 +31,9 @@ def create_app(settings: Settings | None = None, graph_repository: GraphReposito
             )
             repo.verify_connectivity()
             repo.seed_pharmacopoeia_graph()
+        # Seed structured knowledge graph (Phase 5)
+        from app.core.graph_seeder import seed_all
+        seed_all(repo)
         app.state.graph_repository = repo
         yield
         if hasattr(repo, "close"):
@@ -40,7 +43,7 @@ def create_app(settings: Settings | None = None, graph_repository: GraphReposito
         title="ZAYVORA Knowledge Service",
         version="0.1.0-phase2",
         description="Pharmacopoeia (Mufradat monographs), Mizaj/Organ-Axis taxonomy, "
-        "and provenance-tracked Evidence — the Knowledge Graph core (Master Build Prompt v4.0 Phase 2).",
+        "and provenance-tracked Evidence — the Knowledge Graph core (ZAYVORA Clinical Architecture Specification v4.0 Phase 2).",
         lifespan=lifespan,
     )
     app.add_middleware(
@@ -59,7 +62,13 @@ def create_app(settings: Settings | None = None, graph_repository: GraphReposito
     app.include_router(rag.router)
     app.include_router(search.router)
     app.include_router(governance_board.router)
-
+    app.include_router(sources.router)
+    app.include_router(ocr.router)
+    app.include_router(ocr_vision.router)
+    app.include_router(taxonomy_custom.router)
+    app.include_router(diet.router)
+    app.include_router(clinical_knowledge.router)
+    app.include_router(hybrid_rag.router)
 
     @app.get("/api/health")
     def health():

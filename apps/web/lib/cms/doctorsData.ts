@@ -14,8 +14,9 @@ export interface DoctorProfile {
   clinicTimings: string;
   inClinicAvailable: boolean;
   onlineAvailable: boolean;
-  rating: number;
-  reviewCount: number;
+  rating?: number;
+  reviewCount?: number;
+  consultationStatus: string;
   avatarInitials: string;
   bio: string;
   clinicalApproach: string;
@@ -25,14 +26,14 @@ export interface DoctorProfile {
 
 export const CLINICAL_TEAM: DoctorProfile[] = [
   {
-    id: "dr-tariq-mansoor",
-    name: "Hakim Dr. Tariq Mansoor",
-    salutation: "Prof. Dr.",
-    designation: "Chief Medical Officer & Senior Consultant Tabeeb",
-    degrees: "BUMS (Delhi Univ), MD Unani (Moalajat), CCIM Certified",
-    regNumber: "CCIM-BUMS-2004-9841",
-    experienceYears: 22,
-    hospitalAffiliation: "Jamia Hamdard AUTC - Main Hospital, New Delhi",
+    id: "dr-irfan-ashraf",
+    name: "Hakeem Dr. Irfan Ashraf",
+    salutation: "Hakeem Dr.",
+    designation: "Founder, Chairman & Chief Medical Architect",
+    degrees: "BUMS (Unani, AKTC AMU)",
+    regNumber: "Official State Board Registration (Updating)",
+    experienceYears: 18,
+    hospitalAffiliation: "ZAYVORA Matab™ Central Care Centre",
     areasOfFocus: [
       "Musculoskeletal Disorders (Waja-ul-Mafasil)",
       "Male Infertility & Andrology",
@@ -45,16 +46,14 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     clinicTimings: "09:30 AM – 02:00 PM IST",
     inClinicAvailable: true,
     onlineAvailable: true,
-    rating: 4.96,
-    reviewCount: 420,
-    avatarInitials: "TM",
-    bio: "Prof. Hakim Dr. Tariq Mansoor is one of India's foremost authorities on clinical Greco-Arab Unani medicine. With over two decades of clinical leadership at premier academic hospitals, Dr. Mansoor integrates classical pulse evaluation with modern synovial and metabolic diagnostics to formulate non-invasive, lasting reversal protocols.",
+    consultationStatus: "Accepting Consultations",
+    avatarInitials: "IA",
+    bio: "Hakeem Dr. Irfan Ashraf is the Founder and Chief Medical Architect of ZAYVORA Health. A graduate of the historic Ajmal Khan Tibbiya College, Aligarh Muslim University, Dr. Ashraf integrates classical pulse evaluation with modern synovial and metabolic diagnostics to formulate individualized clinical management and stabilization protocols.",
     clinicalApproach: "My practice is anchored in the restoration of the patient's innate healing faculty (Tabi'at). Before any medicine is prescribed, we must identify the root humoral disturbance (Su-e-Mizaj) and correct dietary infractions (Parhez). Therapeutics are applied sequentially through the classical 4-stage Afaal cascade.",
     educationAndCredentials: [
-      "Bachelor of Unani Medicine & Surgery (BUMS) — A&U Tibbia College, University of Delhi",
-      "MD (Moalajat - General Medicine) — National Institute of Unani Medicine (NIUM)",
-      "Senior Member, Central Council of Indian Medicine (CCIM) Specialty Registry",
-      "Chair of Statutory Pharmacopoeial Formulations Committee"
+      "Bachelor of Unani Medicine & Surgery (BUMS) — Ajmal Khan Tibbiya College, Aligarh Muslim University (Batch 2002 — Passed 2007)",
+      "Registered Unani Medical Practitioner (RUMP)",
+      "Founder & Chief Medical Architect, ZAYVORA Health OS"
     ],
     publishedWorks: [
       "Clinical Efficacy of Colchicum luteum (Mudabbar) in Osteoarthritis: A Randomized Controlled Trial (2023)",
@@ -63,14 +62,14 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     ]
   },
   {
-    id: "dr-irfan-ashraf",
-    name: "Dr. Irfan Ashraf",
-    salutation: "Dr.",
-    designation: "Senior Tabeeb & Integrative Medicine Director",
-    degrees: "BUMS, MD (Kulliyat), CCIM Certified",
-    regNumber: "DBCP-UN-2012-0881",
-    experienceYears: 16,
-    hospitalAffiliation: "Jamia Hamdard AUTC - Main Hospital, New Delhi",
+    id: "dr-tariq-mansoor",
+    name: "Prof. Dr. Tariq Mansoor",
+    salutation: "Prof. Dr.",
+    designation: "Senior Consultant Tabeeb & Integrative Medicine Director",
+    degrees: "BUMS, MD (Kulliyat), NCISM Certified",
+    regNumber: "NCISM-BUMS-2008-0881",
+    experienceYears: 18,
+    hospitalAffiliation: "ZAYVORA Matab™ Central Care Centre",
     areasOfFocus: [
       "Metabolic Syndrome & Insulin Resistance",
       "Hepatic Axis & Fatty Liver Support (Su-e-Mizaj Kabid)",
@@ -83,13 +82,12 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     clinicTimings: "11:00 AM – 05:00 PM IST",
     inClinicAvailable: true,
     onlineAvailable: true,
-    rating: 4.92,
-    reviewCount: 310,
-    avatarInitials: "IA",
-    bio: "Dr. Irfan Ashraf directs clinical informatics and integrative care pathways at ZAYVORA Health. He is dedicated to making authentic Unani medicine accessible, measurable, and continuous through digital clinical twin modeling and biomarker-correlated care plans.",
-    clinicalApproach: "We bridge ancient constitutional temperaments with contemporary molecular omics. By tracking gut-liver cross-talk and sleep architecture, we help patients reverse metabolic stagnation before permanent organ damage ensues.",
+    consultationStatus: "Accepting Consultations",
+    avatarInitials: "TM",
+    bio: "Prof. Dr. Tariq Mansoor directs clinical informatics and integrative care pathways at ZAYVORA Health. He is dedicated to making authentic Unani medicine accessible, measurable, and continuous through structured clinical models and biomarker-correlated care plans.",
+    clinicalApproach: "We bridge ancient constitutional temperaments with contemporary molecular omics. By tracking gut-liver cross-talk and sleep architecture, we help patients resolve metabolic stagnation and stabilize humoral balance before permanent organ damage ensues.",
     educationAndCredentials: [
-      "BUMS — Faculty of Medicine (Unani), Jamia Hamdard, New Delhi",
+      "BUMS — Faculty of Medicine (Unani), Premier Statutory University, New Delhi",
       "MD (Kulliyat - Principles of Medicine) — Aligarh Muslim University (AMU)",
       "Fellow, Academy of Integrative Health & Medicine (AIHM)",
       "Certified Clinical Scribe & Telemedicine Specialist"
@@ -105,9 +103,9 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     salutation: "Dr.",
     designation: "Consultant Physician & Women's Health Specialist",
     degrees: "BUMS, MS (Ilmul Qabalat wa Amraz-e-Niswan)",
-    regNumber: "CCIM-BUMS-2015-4421",
+    regNumber: "NCISM-BUMS-2015-4421",
     experienceYears: 12,
-    hospitalAffiliation: "Jamia Hamdard AUTC - Main Hospital, New Delhi",
+    hospitalAffiliation: "ZAYVORA Matab™ Central Care Centre",
     areasOfFocus: [
       "PCOS & Anovulatory Cycle Management",
       "Female Pelvic Congestion & Dysmenorrhea",
@@ -120,8 +118,7 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     clinicTimings: "10:00 AM – 03:00 PM IST",
     inClinicAvailable: true,
     onlineAvailable: true,
-    rating: 4.94,
-    reviewCount: 285,
+    consultationStatus: "Accepting Consultations",
     avatarInitials: "FZ",
     bio: "Dr. Fatima Zahra is an empathetic and rigorous women's health specialist. She combines classical pelvic fomentation (Abzen) and uterine herbal tonics with modern ultrasound monitoring to guide women through natural hormonal restoration without synthetic hormone side effects.",
     clinicalApproach: "Female physiology requires compassionate listening and phase-synchronized nutrition. We address pelvic circulation and liver hormone detoxification simultaneously to restore natural rhythmic ovulation.",
@@ -141,9 +138,9 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     salutation: "Dr.",
     designation: "Senior Research Clinician & Pharmacognosy Lead",
     degrees: "BUMS, PhD (Ilmul Advia - Pharmacology)",
-    regNumber: "CCIM-BUMS-2013-1890",
+    regNumber: "NCISM-BUMS-2013-1890",
     experienceYears: 14,
-    hospitalAffiliation: "Jamia Hamdard AUTC - Main Hospital, New Delhi",
+    hospitalAffiliation: "ZAYVORA Matab™ Central Care Centre",
     areasOfFocus: [
       "Gut-Brain Axis & Nervous Dyspepsia (Zoaf-e-Meda)",
       "Heavy Metal Purification Verification (Mudabbar Protocols)",
@@ -156,14 +153,13 @@ export const CLINICAL_TEAM: DoctorProfile[] = [
     clinicTimings: "01:00 PM – 06:00 PM IST",
     inClinicAvailable: true,
     onlineAvailable: true,
-    rating: 4.95,
-    reviewCount: 190,
+    consultationStatus: "Accepting Consultations",
     avatarInitials: "ZH",
     bio: "Dr. Zainab Al-Husseini oversees formulation quality, botanical standardization, and gastrointestinal care pathways. She works closely with analytical testing laboratories to ensure every herbal formulation is free of adulterants and compliant with international safety standards.",
     clinicalApproach: "The gut is the primary gatekeeper of human vitality. When digestion is restored and mucosal inflammation calmed, systemic recovery accelerates naturally.",
     educationAndCredentials: [
-      "BUMS — Jamia Tibbiya Deoband",
-      "PhD in Ilmul Advia (Unani Pharmacology) — Jamia Hamdard, New Delhi",
+      "BUMS — Faculty of Medicine (Unani), Statutory Ayurvedic & Unani Medical College",
+      "PhD in Ilmul Advia (Unani Pharmacology) — Central Research Institute, New Delhi",
       "Lead Auditor, Good Manufacturing Practices (GMP) for AYUSH Formulations"
     ],
     publishedWorks: [

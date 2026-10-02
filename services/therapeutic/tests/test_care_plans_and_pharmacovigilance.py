@@ -1,6 +1,6 @@
 """
 Unit tests for Unified Care Plans, WHO-UMC Pharmacovigilance, and Expanded
-Classical Formulation Registry (Master Build Prompt Phase 7).
+Classical Formulation Registry (ZAYVORA Clinical Architecture Phase 7).
 """
 import unittest
 import uuid

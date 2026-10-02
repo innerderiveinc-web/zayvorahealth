@@ -8,7 +8,7 @@
 
 This technical audit document represents the exhaustive Phase 0 evaluation of **ZAYVORA HEALTH™**, an AI-native, clinician-governed, Unani-centered integrative healthcare operating system. 
 
-Per the architectural mandate, this audit evaluates the current codebase against the **Master Build Prompt v4.0** target specifications, establishing the foundation for all subsequent engineering phases.
+Per the architectural mandate, this audit evaluates the current codebase against the **ZAYVORA Clinical Architecture Specification v4.0** target specifications, establishing the foundation for all subsequent engineering phases.
 
 ### Core Audit Principles
 1. **Never rebuild blindly**: Existing, working, verified functionality is preserved.

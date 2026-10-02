@@ -107,7 +107,7 @@ export default function AiStudioPage() {
             <div className="flex items-center gap-2">
               <span className="text-xl">🤖</span>
               <span className="text-[11px] font-bold text-teal-400 uppercase tracking-widest bg-teal-950/80 px-3 py-1 rounded-full border border-teal-800/80">
-                Hakeem Sahab™ Clinical AI Copilot
+                Hakeem Sahab AI™ Clinical Copilot
               </span>
               <span className="text-xs text-slate-400 font-mono">• Clinician Decision Support (Advisory Only)</span>
             </div>
@@ -196,7 +196,7 @@ export default function AiStudioPage() {
                     <span>Synthesizing Literature & Evidence...</span>
                   </>
                 ) : (
-                  <span>Run Hakeem Sahab Reasoning →</span>
+                  <span>Run Hakeem Sahab AI™ Reasoning →</span>
                 )}
               </button>
             </div>

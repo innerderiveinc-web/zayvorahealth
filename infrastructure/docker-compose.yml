@@ -1,7 +1,7 @@
 version: "3.9"
 
 # ZAYVORA Platform — Phase 0 local dev stack.
-# Neo4j is wired up now (per Master Build Prompt v4.0 §52) but not yet used
+# Neo4j is wired up now (per ZAYVORA Clinical Architecture Specification v4.0 §52) but not yet used
 # by any service — it comes online in Phase 2 (Knowledge Core) when the
 # Pharmacopoeia/Mufradat/Evidence graph is built. Included here so the
 # infra shape matches the target architecture from day one.

@@ -425,9 +425,9 @@ def run_30_critical_workflows():
     if suite.failed == 0:
         print("✓ ALL 30 CRITICAL HEALTHCARE WORKFLOWS VERIFIED END-TO-END WITH ZERO GAPS.")
     print("=" * 80)
-    return suite.failed == 0
+    return suite.passed, suite.failed
 
 
 if __name__ == "__main__":
-    success = run_30_critical_workflows()
-    sys.exit(0 if success else 1)
+    p, f = run_30_critical_workflows()
+    sys.exit(0 if f == 0 else 1)

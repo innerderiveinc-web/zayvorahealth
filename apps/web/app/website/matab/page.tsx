@@ -8,7 +8,7 @@ export default function MatabPage() {
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-8 text-xs text-[#CBD5E1]">
       <div className="border-b border-[#334155] pb-6 space-y-2">
         <span className="text-[11px] font-bold text-[#2DD4BF] uppercase tracking-wider">ZAYVORA Health OS™ v5.0</span>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white">ZAYVORA Matab Clinics</h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-white">ZAYVORA Matab™ Clinics</h1>
         <p className="text-sm text-[#94A3B8]">Institutional Network of Integrated Healthcare Centres</p>
       </div>
 
@@ -26,7 +26,7 @@ export default function MatabPage() {
         <span className="text-emerald-400 font-semibold block text-[10px] mt-2">● 4 Doctors on Roster</span>
       </div>
       <div className="p-4 bg-[#0F172A] rounded-xl border border-[#334155]">
-        <span className="text-white font-bold block">Matab Jamia Hamdard Campus</span>
+        <span className="text-white font-bold block">ZAYVORA Matab™ Central Care Centre</span>
         <span className="text-[#94A3B8] block text-[11px]">Academic Integrative OPD Wing</span>
         <span className="text-emerald-400 font-semibold block text-[10px] mt-2">● Clinical Research Center</span>
       </div>

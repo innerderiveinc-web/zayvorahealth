@@ -129,6 +129,10 @@ def calculate_mizaj_assessment(
 
     if answered_count == 0:
         return {
+            "status": "INSUFFICIENT_DATA",
+            "status_code": "MIZAJ_ASSESSMENT_INCOMPLETE",
+            "is_imputed_fallback": True,
+            "grounding_warning": "No 10-Ajnas determinants provided. Baseline equable (Motadil) assumed as uncalibrated default.",
             "primary_temperament": "Motadil",
             "secondary_temperament": "Motadil",
             "distribution_percentages": {"Damwi": 25.0, "Safrawi": 25.0, "Balghami": 25.0, "Saudawi": 25.0},
@@ -231,3 +235,33 @@ def calculate_mizaj_assessment(
         "calibration_applied": len(calibration_notes) > 0,
         "calibration_notes": calibration_notes,
     }
+
+
+# -----------------------------------------------------------------------------
+# Z-MAI 30-Point 6-Domain Assessment Integration
+# -----------------------------------------------------------------------------
+try:
+    from services.knowledge.app.data.zmai_scoring_tool import (
+        calculate_zmai_score as master_calculate_zmai_score,
+        get_all_domains as master_get_zmai_domains,
+    )
+except ImportError:
+    master_calculate_zmai_score = None
+    master_get_zmai_domains = None
+
+
+def assess_mizaj_zmai_30_point(responses: dict[str, str]) -> dict[str, Any]:
+    """
+    Evaluates temperament using the modern 30-point 6-domain Z-MAI tool.
+    Accepts question answers mapping question_id -> temperament key ('damawi', 'safrawi', 'balghami', 'sawdawi').
+    """
+    if master_calculate_zmai_score:
+        return master_calculate_zmai_score(responses)
+    return {"error": "zmai_scoring_tool unavailable"}
+
+
+def get_zmai_questionnaire() -> dict[str, Any]:
+    """Returns the 30-question, 6-domain Z-MAI questionnaire structure."""
+    if master_get_zmai_domains:
+        return master_get_zmai_domains()
+    return {}

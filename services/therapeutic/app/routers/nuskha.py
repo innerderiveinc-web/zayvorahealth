@@ -50,7 +50,7 @@ def create_nuskha_draft(
     db: Session = Depends(get_db),
     user: CurrentUser = Depends(require_permission("nuskha.create")),
 ):
-    """Master Build Prompt v4.0 §19: 'Never automatically convert an
+    """ZAYVORA Clinical Architecture Specification v4.0 §19: 'Never automatically convert an
     AI-generated candidate into a final prescription.' Every draft is
     created with status='draft' — there is no code path that creates one
     pre-approved. The Safety Firewall runs here, once, and its result is

@@ -22,7 +22,7 @@ network allowlist. There was no way to stand up a real Neo4j instance to test ag
 **What this means concretely:**
 
 - The Cypher queries in `neo4j_repository.py` were written carefully, reviewed for
-  correctness against the schema in Master Build Prompt v4.0 §27, and structurally
+  correctness against the schema in ZAYVORA Clinical Architecture Specification v4.0 §27, and structurally
   mirror the exact same operations that ARE tested (see below) — but a Cypher typo,
   a wrong relationship direction, or a subtle `MERGE` vs `CREATE` bug would not be
   caught by anything in this repository as it stands.

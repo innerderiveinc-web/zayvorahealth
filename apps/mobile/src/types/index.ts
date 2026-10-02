@@ -1,38 +1,35 @@
-export type Role = "patient" | "doctor";
-
-export type Language = "en" | "ur" | "hi";
-
-export interface PatientProfile {
-  mrn: string;
-  name: string;
-  age: number;
-  gender: string;
-  mizaj: "Damawi (Sanguine)" | "Safrawi (Choleric)" | "Balghami (Phlegmatic)" | "Sawdawi (Melancholic)";
-  dominantOrganAxis: "Qalb-Dimagh" | "Kabid-Mida" | "Kulyah-Masana";
-  activeConditions: string[];
+export interface User {
+  id: string; email: string; name: string; role: 'patient' | 'clinician' | 'admin';
+  organization_id?: string; is_active: boolean;
 }
 
-export interface PrescriptionItem {
-  id: string;
-  formulation: string;
-  dosage: string;
-  frequency: string;
-  duration: string;
-  anupan: string;
-  audioGuideAvailable: boolean;
-  audioPosologyText: {
-    en: string;
-    ur: string;
-    hi: string;
-  };
+export interface Patient {
+  id: string; user_id: string; mrn: string; date_of_birth: string;
+  gender: string; mizaj_type?: 'Damawi' | 'Safrawi' | 'Balghami' | 'Sawdawi';
+  phone?: string; blood_group?: string;
 }
 
-export interface AsbabSittahLog {
-  date: string;
-  hawa_air: "fresh_mountain" | "moderate_ventilated" | "congested_polluted";
-  makul_food: "balanced_prescribed" | "excess_spicy" | "excess_phlegmatic";
-  harakat_movement: number; // minutes
-  nawm_sleep: number; // hours
-  istifragh_retention: "normal_evacuation" | "constipated" | "diarrhea";
-  nafsaniyah_psychic: "calm_focused" | "moderate_stress" | "acute_anxiety";
+export interface Appointment {
+  id: string; patient_id: string; clinician_id: string; scheduled_at: string;
+  status: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+  notes?: string; doctor_name?: string; clinic_name?: string;
 }
+
+export interface Prescription {
+  id: string; patient_id: string; clinician_id: string; created_at: string;
+  formulations: Array<{ name: string; dose: string; frequency: string; duration: string }>;
+  notes?: string; status: 'active' | 'completed' | 'cancelled';
+}
+
+export interface LabResult {
+  id: string; patient_id: string; panel_name: string; collected_at: string;
+  status: 'normal' | 'abnormal' | 'pending';
+  tests: Array<{ name: string; value: string; unit: string; reference_range: string; flag?: 'H' | 'L' | 'N' }>;
+}
+
+export interface Notification {
+  id: string; title: string; body: string; category: string;
+  read: boolean; created_at: string;
+}
+
+export type MizajType = 'Damawi' | 'Safrawi' | 'Balghami' | 'Sawdawi';

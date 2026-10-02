@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { clearSession, loadSession, saveSession } from "@/lib/session";
+import { clearSession, loadSession } from "@/lib/auth";
 import type { TokenResponse } from "@/lib/identityApi";
 
 export function PlatformHeader() {
@@ -16,24 +16,29 @@ export function PlatformHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [showRoleSwitcher, setShowRoleSwitcher] = useState(false);
-  const [lang, setLang] = useState<"EN" | "HI" | "UR">("EN");
-  const [darkMode, setDarkMode] = useState(true);
+  const [selectedFacility, setSelectedFacility] = useState("New Delhi Central Matab & Hospital");
 
-  // Global search mock index
-  const searchItems = [
-    { type: "Patient", title: "Hamza Farooqi (MRN-2026-0814)", sub: "Age 44 • Male • Balghami • Active Afaal: Tanqiya", href: "/doctor" },
-    { type: "Patient", title: "Ayesha Siddiqui (MRN-2026-0921)", sub: "Age 36 • Female • Safrawi • PCOS & Insulin Resistance", href: "/doctor" },
-    { type: "Prescription", title: "RX-2026-0441 (Hamza Farooqi)", sub: "Suranjan Talkh + Kateera • 21 CFR Part 11 Locked", href: "/pharmacy" },
-    { type: "Protocol", title: "Mafasil Reversal Protocol (Waja-ul-Mafasil)", sub: "4-Stage Afaal Cascade: Tanqiya, Tahleel, Taqwiyaat, Hifz", href: "/clinical" },
-    { type: "Protocol", title: "Metabolic Reset 90 (Su-e-Mizaj Barid)", sub: "Dietary Anupan + MetaboCore Elite + Picrorhiza", href: "/clinical" },
-    { type: "Medicine", title: "Habb-e-Suranjan Forte (Schedule E-1 Mudabbar)", sub: "Batch B2-2026 • Stock: 29 • Expiry: 2027-08-30", href: "/pharmacy" },
-    { type: "Medicine", title: "ManiVital Pro (Withania + Mucuna)", sub: "Batch MVP-901 • Stock: 142 • HPLC Assay > 2.5%", href: "/website/product?id=manivital-pro" },
+  // Facilities list
+  const facilities = [
+    "New Delhi Central Matab & Hospital",
+    "Lucknow Matab & Research Complex",
+    "Hyderabad Integrative Care Centre",
+    "Bengaluru Wellness & Clinical Matab",
+    "Srinagar Botanical Medicine Institute",
+  ];
+
+  // Dynamic search categories
+  const searchCategories = [
+    { type: "Patient Search", title: "Search Master Patient Index (MPI)", sub: "Lookup active patient files by Name, ABHA ID, or MRN", href: "/doctor" },
+    { type: "Formulation Index", title: "Codified Pharmacopoeia (UPI / NFUM)", sub: "250+ Botanical monographs, HPLC active markers, and safety limits", href: "/knowledge" },
+    { type: "Prescription Registry", title: "Digital Prescription Ledger", sub: "21 CFR Part 11 signed prescriptions and dispensing status", href: "/pharmacy" },
+    { type: "Clinical Protocols", title: "Afaal & Regimenal Protocols", sub: "16 Tadbeer modalities, 4-stage cascade, and dietetics", href: "/doctor" },
+    { type: "Inventory & Batch", title: "Dispensary & Cold-Chain Stock", sub: "FEFO batch allocations and Schedule E(1) Mudabbar verification", href: "/pharmacy" },
   ];
 
   const filteredSearch = searchQuery.trim() === ""
-    ? searchItems.slice(0, 5)
-    : searchItems.filter(item =>
+    ? searchCategories
+    : searchCategories.filter(item =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.sub.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.type.toLowerCase().includes(searchQuery.toLowerCase())
@@ -46,89 +51,71 @@ export function PlatformHeader() {
   function handleSignOut() {
     clearSession();
     setShowProfileDropdown(false);
-    router.push("/");
-  }
-
-  function handleSwitchRole(role: string, targetPath: string) {
-    saveSession({
-      access_token: `jwt-zayvora-role-${role.toLowerCase().replace(/\s+/g, "-")}`,
-      token_type: "bearer",
-      expires_in: 7200,
-      role: role,
-      organization_id: "org-jamia-hamdard-01"
-    });
-    setSession(loadSession());
-    setShowRoleSwitcher(false);
-    setShowProfileDropdown(false);
-    router.push(targetPath);
+    router.replace("/login");
   }
 
   const notifications = [
-    { id: 1, type: "Clinical", title: "Drug Interaction Warning", desc: "Potential synergistic depression with sedative botanicals.", priority: "Critical", time: "10m ago" },
-    { id: 2, type: "Appointment", title: "New OPD Check-In", desc: "Hamza Farooqi (Token T-104) is waiting in Room 3.", priority: "High", time: "15m ago" },
-    { id: 3, type: "Pharmacy", title: "FEFO Batch Allocated", desc: "Batch B2-SURANJAN dispensed under 21 CFR Part 11 sign-off.", priority: "Normal", time: "32m ago" },
+    { id: 1, type: "Clinical Safety", title: "Drug-Herb Interaction Caution", desc: "Potential synergistic metabolic inhibition with sedative botanicals.", priority: "Critical", time: "8m ago" },
+    { id: 2, type: "OPD Triage", title: "Patient Checked In", desc: "Next scheduled outpatient token waiting in Consultation Room 2.", priority: "High", time: "14m ago" },
+    { id: 3, type: "Dispensary", title: "FEFO Batch Allocated", desc: "Batch released under electronic signature and CoA verification.", priority: "Normal", time: "28m ago" },
   ];
 
   return (
     <header className="border-b border-[var(--border)] bg-[var(--panel)] sticky top-0 z-40 px-4 py-2 text-[var(--text)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        {/* Brand & Clinic Identity */}
+        {/* Brand & Executive Identity */}
         <div className="flex items-center gap-3 shrink-0">
-          <Link href="/dashboard" className="flex items-center gap-2.5 group">
-            {/* Official Logo */}
-            <div className="w-9 h-9 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center p-1 shadow-sm overflow-hidden group-hover:border-[#2DD4BF] transition-colors">
+          <Link href="/doctor" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center p-1 shadow-sm overflow-hidden group-hover:border-emerald-500 transition-colors">
               <img
                 src="/zayvora-logo.png"
                 alt="ZAYVORA Logo"
                 className="w-full h-full object-contain"
                 onError={(e) => {
-                  // Fallback letter if image not yet loaded
                   (e.target as HTMLElement).style.display = "none";
                 }}
               />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold tracking-tight text-base zv-brand-title block leading-none">
+                <span className="font-extrabold tracking-tight text-base text-white block leading-none">
                   ZAYVORA
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                  HEALTH OS
+                  HEALTH OS™
                 </span>
               </div>
-              <span className="text-[10px] text-[var(--muted)] block font-medium mt-0.5 truncate max-w-[200px] sm:max-w-[280px]">
-                🏥 Jamia Hamdard AUTC - Main Hospital
+              <span className="text-[10px] text-[var(--muted)] block font-medium mt-0.5 truncate max-w-[220px] sm:max-w-[320px]">
+                🏥 {selectedFacility}
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Live Hardware IoT Sensors Telemetry */}
+        {/* Clinical Compliance & Security Badge */}
         <div className="hidden xl:flex items-center gap-2 text-[10px]">
-          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium flex items-center gap-1">
+          <span className="px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 font-medium flex items-center gap-1.5" title="Electronic Prescriptions & Clinical Records Protected by SHA-256 Digital Signatures">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Nabz: 100Hz
+            21 CFR Part 11 Electronic Seal Active
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-medium flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-            Lisan Cam
+          <span className="px-2 py-0.5 rounded-full bg-slate-800/60 border border-slate-700/70 text-slate-400 font-mono text-[10px]">
+            HIPAA &amp; DPDP 2023 Isolated
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-medium flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            19.4°C (FEFO)
+          <span className="hidden 2xl:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono text-[10px]" title="Hardware Integration Architecture • Connected Devices: 0">
+            Hardware Integration Architecture • Connected Devices: 0
           </span>
         </div>
 
-        {/* Global Search Bar Trigger */}
+        {/* Global Search Bar Trigger (⌘K) */}
         <div className="flex-1 max-w-md hidden md:block">
           <button
             onClick={() => setShowSearchModal(true)}
-            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-[var(--muted)] hover:border-[#2DD4BF] transition-all"
+            className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-[var(--muted)] hover:border-emerald-500/60 transition-all"
           >
             <span className="flex items-center gap-2">
               <span>🔍</span>
-              <span>Search Patient, Rx, Protocol, Medicine...</span>
+              <span>Search Patient, MRN, Nuskha, Mufradat, Knowledge...</span>
             </span>
             <kbd className="px-1.5 py-0.5 rounded bg-[var(--elevated)] border border-[var(--border)] text-[10px] font-mono">
               ⌘K
@@ -136,9 +123,25 @@ export function PlatformHeader() {
           </button>
         </div>
 
-        {/* Top Header Actions */}
+        {/* Header Right Actions: Facility, Alerts, Tasks, Profile */}
         <div className="flex items-center gap-2 sm:gap-3">
           
+          {/* Facility Selector */}
+          <div className="hidden lg:flex items-center gap-1.5 text-xs">
+            <select
+              value={selectedFacility}
+              onChange={(e) => setSelectedFacility(e.target.value)}
+              aria-label="Select clinical facility"
+              className="bg-[var(--background)] border border-[var(--border)] text-[11px] font-medium text-slate-300 rounded-lg px-2.5 py-1 focus:outline-none focus:border-emerald-500 cursor-pointer"
+            >
+              {facilities.map((fac, idx) => (
+                <option key={idx} value={fac} className="bg-[#0F172A] text-slate-200">
+                  📍 {fac}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Global Search Icon for Mobile */}
           <button
             onClick={() => setShowSearchModal(true)}
@@ -147,11 +150,24 @@ export function PlatformHeader() {
             🔍
           </button>
 
+          {/* Pending Clinical Tasks */}
+          <Link
+            href="/doctor"
+            className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-emerald-500/40 text-xs text-slate-300 transition"
+            title="Clinical Tasks"
+          >
+            <span>📋</span>
+            <span className="font-semibold text-[11px]">Tasks</span>
+            <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">
+              3
+            </span>
+          </Link>
+
           {/* Notifications Bell with Counter */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-[#2DD4BF] text-sm relative transition"
+              className="p-2 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-emerald-500/40 text-sm relative transition"
               title="Notifications"
             >
               🔔
@@ -163,7 +179,7 @@ export function PlatformHeader() {
             {showNotifications && (
               <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-[var(--panel)] border border-[var(--border)] shadow-2xl p-4 space-y-3 z-50">
                 <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
-                  <span className="font-bold text-xs text-white">Clinical & System Alerts (3)</span>
+                  <span className="font-bold text-xs text-white">Clinical &amp; System Alerts (3)</span>
                   <button onClick={() => setShowNotifications(false)} className="text-xs text-[var(--muted)] hover:text-white">✕</button>
                 </div>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -178,133 +194,98 @@ export function PlatformHeader() {
                     </div>
                   ))}
                 </div>
-                <div className="pt-2 border-t border-[var(--border)] flex justify-between text-[11px]">
-                  <Link href="/notifications" className="text-emerald-400 font-bold hover:underline">View All Notifications →</Link>
-                  <button onClick={() => setShowNotifications(false)} className="text-[var(--muted)] hover:text-white">Clear</button>
-                </div>
               </div>
             )}
           </div>
 
-          {/* Messages */}
-          <Link
-            href="/messages"
-            className="p-2 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-[#2DD4BF] text-sm text-[var(--muted)] hover:text-white transition"
-            title="Messages & Care Team"
-          >
-            💬
-          </Link>
-
-          {/* Help & Support */}
-          <Link
-            href="/website/faqs"
-            className="hidden sm:flex p-2 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-[#2DD4BF] text-sm text-[var(--muted)] hover:text-white transition"
-            title="Help Center"
-          >
-            ❓
-          </Link>
-
-          {/* Language Selector */}
-          <div className="flex items-center bg-[var(--background)] rounded-xl border border-[var(--border)] p-0.5 text-[10px] font-bold">
-            {(["EN", "HI", "UR"] as const).map(l => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                className={`px-2 py-1 rounded-lg transition ${
-                  lang === l ? "bg-[var(--elevated)] text-[#2DD4BF] shadow-xs" : "text-[var(--muted)] hover:text-white"
-                }`}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
-
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-xl bg-[var(--elevated)] border border-[var(--border)] text-xs hover:border-[var(--gold-soft)] transition"
-            title="Toggle theme"
-          >
-            {darkMode ? "🌙" : "☀️"}
-          </button>
-
-          {/* Role Badge & User Profile Dropdown */}
+          {/* Clinician User Profile Dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-              className="flex items-center gap-2 p-1.5 pl-2.5 rounded-xl bg-[var(--elevated)] border border-[var(--border)] hover:border-[#2DD4BF] transition"
+              className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-[var(--elevated)] border border-transparent hover:border-[var(--border)] transition"
             >
-              <span className="text-xs font-bold text-white hidden sm:inline">Dr. Irfan</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
-                {session?.role || "Doctor"}
-              </span>
-              <div className="w-6 h-6 rounded-full bg-teal-600 text-white font-bold text-xs flex items-center justify-center">
-                I
+              <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-sm">
+                IA
               </div>
+              <span className="text-xs font-semibold text-white hidden sm:inline">
+                Dr. Irfan Ashraf ▾
+              </span>
             </button>
 
             {showProfileDropdown && (
-              <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-[var(--panel)] border border-[var(--border)] shadow-2xl p-3 space-y-2 z-50 text-xs">
+              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-[var(--panel)] border border-[var(--border)] shadow-2xl p-3 space-y-2 z-50 text-xs">
                 <div className="px-3 py-2 border-b border-[var(--border)] space-y-0.5">
-                  <div className="font-bold text-white">Dr. Irfan Ashraf</div>
-                  <div className="text-[11px] text-[var(--muted)]">Senior Tabeeb • CCIM-BUMS</div>
-                  <div className="text-[10px] font-mono text-emerald-400">Jamia Hamdard AUTC</div>
+                  <div className="font-bold text-white">
+                    {session?.user?.fullName || "Hakeem Dr. Irfan Ashraf"}
+                  </div>
+                  <div className="text-[11px] text-emerald-400 font-medium">
+                    {session?.user?.role === "SUPER_ADMIN" || !session?.user?.role
+                      ? "Founder, Chairman & Chief Architect"
+                      : session?.user?.role}
+                  </div>
+                  <div className="text-[10px] text-[var(--muted)]">
+                    {session?.user?.role === "SUPER_ADMIN" || !session?.user?.role
+                      ? "Senior Tabeeb · BUMS (Unani Medicine)"
+                      : session?.user?.email || "ZAYVORA Health OS™"}
+                  </div>
                 </div>
 
                 <div className="py-1 space-y-0.5 text-[11px]">
-                  <Link href="/doctor" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
-                    <span>👤</span> My Profile
-                  </Link>
-                  <Link href="/settings" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
-                    <span>⚙️</span> Account Settings
-                  </Link>
-                  <Link href="/clinic" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
-                    <span>🏥</span> Clinic Settings
-                  </Link>
-                  <Link href="/admin" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
-                    <span>🛡️</span> Security & Compliance
-                  </Link>
-                  <Link href="/admin" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
-                    <span>📜</span> Activity Logs (Merkle)
-                  </Link>
-                  <button
-                    onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
-                    className="w-full text-left flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-teal-300 font-semibold"
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <span>🔄</span> Switch Role
-                    </span>
-                    <span>→</span>
-                  </button>
+                  {(!session?.user?.role || session?.user?.role === "SUPER_ADMIN" || session?.user?.role === "CLINIC_ADMIN") ? (
+                    <>
+                      <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                        <span>👑</span> Master Switcher (God View)
+                      </div>
+                      <Link href="/doctor" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>🩺</span> Clinical Desk™ (OPD)
+                      </Link>
+                      <Link href="/nurse" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>🏥</span> Nurse Station (Ward/Vitals)
+                      </Link>
+                      <Link href="/receptionist" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>📋</span> Reception &amp; Token Queue
+                      </Link>
+                      <Link href="/pharmacy" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>💊</span> Dispensary &amp; FEFO Inventory
+                      </Link>
+                      <Link href="/manufacturing" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>🏭</span> Manufacturing Lab &amp; eBMR
+                      </Link>
+                      <Link href="/research/workspace" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>🔬</span> Clinical Trials &amp; RWE
+                      </Link>
+                      <Link href="/patient" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>👤</span> Patient Portal View
+                      </Link>
+                      <Link href="/admin" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white">
+                        <span>🛡️</span> Governance &amp; Audit Logs
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      href={
+                        session?.user?.role === "DOCTOR" || session?.user?.role === "HAKEEM" ? "/doctor" :
+                        session?.user?.role === "NURSE" || session?.user?.role === "NURSE_COORDINATOR" ? "/nurse" :
+                        session?.user?.role === "PHARMACIST" ? "/pharmacy" :
+                        session?.user?.role === "RECEPTIONIST" ? "/receptionist" :
+                        session?.user?.role === "RESEARCHER" ? "/research/workspace" :
+                        session?.user?.role === "MANUFACTURING_HEAD" ? "/manufacturing" :
+                        "/patient"
+                      }
+                      onClick={() => setShowProfileDropdown(false)}
+                      className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-[var(--elevated)] text-white font-medium"
+                    >
+                      <span>⚡</span> Open My Assigned Desk
+                    </Link>
+                  )}
                 </div>
-
-                {showRoleSwitcher && (
-                  <div className="p-2 rounded-xl bg-[var(--background)] border border-[var(--border)] space-y-1">
-                    <span className="text-[10px] font-bold text-[var(--muted)] uppercase block px-1">Select Persona</span>
-                    <button onClick={() => handleSwitchRole("Doctor", "/doctor")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
-                      🩺 Doctor (Clinical Suite)
-                    </button>
-                    <button onClick={() => handleSwitchRole("Admin", "/admin")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
-                      🛡️ Admin (Governance)
-                    </button>
-                    <button onClick={() => handleSwitchRole("Patient", "/patient")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
-                      👤 Patient (PHR Portal)
-                    </button>
-                    <button onClick={() => handleSwitchRole("Pharmacist", "/pharmacy")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
-                      💊 Pharmacist (Dispensary)
-                    </button>
-                    <button onClick={() => handleSwitchRole("Receptionist", "/receptionist")} className="w-full text-left px-2 py-1 rounded hover:bg-[var(--elevated)] text-[11px] text-white">
-                      🏥 Receptionist (Queue OPD)
-                    </button>
-                  </div>
-                )}
 
                 <div className="pt-2 border-t border-[var(--border)]">
                   <button
                     onClick={handleSignOut}
                     className="w-full text-left flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-rose-400 hover:bg-rose-500/10 font-bold text-[11px]"
                   >
-                    <span>🚪</span> Logout
+                    <span>🚪</span> Sign Out
                   </button>
                 </div>
               </div>
@@ -315,7 +296,7 @@ export function PlatformHeader() {
 
       </div>
 
-      {/* Global Search Modal */}
+      {/* Global Search Modal (⌘K) */}
       {showSearchModal && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-start justify-center pt-20 p-4">
           <div className="bg-[var(--panel)] border border-[var(--border)] rounded-2xl max-w-xl w-full p-4 space-y-4 shadow-2xl">
@@ -323,7 +304,7 @@ export function PlatformHeader() {
               <span className="text-base">🔍</span>
               <input
                 autoFocus
-                placeholder="Search patients, prescriptions, protocols, medicines..."
+                placeholder="Search patients, MRN, Nuskha, Mufradat, knowledge..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-transparent text-sm text-white focus:outline-none"
@@ -337,7 +318,7 @@ export function PlatformHeader() {
             </div>
 
             <div className="space-y-1.5 max-h-80 overflow-y-auto">
-              <span className="text-[10px] font-bold text-[var(--muted)] uppercase px-2">Clinical Results ({filteredSearch.length})</span>
+              <span className="text-[10px] font-bold text-[var(--muted)] uppercase px-2">Clinical Indexes</span>
               {filteredSearch.map((item, idx) => (
                 <Link
                   key={idx}
@@ -347,7 +328,7 @@ export function PlatformHeader() {
                 >
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="px-1.5 py-0.2 rounded bg-teal-500/20 text-teal-300 font-mono text-[9px] font-bold">{item.type}</span>
+                      <span className="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px] font-bold">{item.type}</span>
                       <span className="font-bold text-white">{item.title}</span>
                     </div>
                     <p className="text-[11px] text-[var(--muted)]">{item.sub}</p>

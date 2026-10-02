@@ -1,6 +1,6 @@
 """
 ZAYVORA HEALTH™ Multimodal AI — Lab Report Structured Extractor & Physical Signs Analyzer
-Master Build Prompt v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
+ZAYVORA Clinical Architecture Specification v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
 
 Extracts and normalizes standardized LOINC laboratory analytes and clinical physical signs,
 synthesizing modern quantitative biomarkers with classical Unani humoral medicine (Mizaj & Akhlat).

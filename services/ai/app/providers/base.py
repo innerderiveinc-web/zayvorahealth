@@ -1,5 +1,5 @@
 """
-Model-agnostic AI provider interface (Master Build Prompt v4.0 §52:
+Model-agnostic AI provider interface (ZAYVORA Clinical Architecture Specification v4.0 §52:
 "Never hard-code the application to a single model provider").
 
 Two implementations:

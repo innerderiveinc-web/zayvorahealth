@@ -4,7 +4,7 @@ from app.core.hybrid_rag import (
     DeterministicSemanticEmbeddingProvider,
     DenseVectorStore,
     Document,
-    HybridRAGEngine,
+    ZAYVORAIntelligenceEngine,
     reciprocal_rank_fusion,
     _tokenize,
 )
@@ -77,7 +77,7 @@ def test_reciprocal_rank_fusion():
 
 
 def test_hybrid_rag_engine_full_lifecycle():
-    engine = HybridRAGEngine()
+    engine = ZAYVORAIntelligenceEngine()
     total_loaded = engine.load_canonical_corpus()
     assert total_loaded >= 20
 
@@ -98,7 +98,7 @@ def test_hybrid_rag_engine_full_lifecycle():
 
 
 def test_hybrid_rag_weighted_mode():
-    engine = HybridRAGEngine()
+    engine = ZAYVORAIntelligenceEngine()
     engine.load_canonical_corpus()
 
     results = engine.hybrid_search(

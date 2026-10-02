@@ -49,7 +49,7 @@ class TestCourierLogistics(unittest.TestCase):
             patient_id=self.patient_id,
             carrier="SHIPROCKET",
             destination_pincode="110025",
-            shipping_address="Jamia Nagar, Okhla, New Delhi 110025",
+            shipping_address="Institutional Area, Okhla, New Delhi 110025",
             temperature_controlled=True,
             temperature_range_celsius="15C - 20C (Protected Herb Extracts)",
             db=self.db,
@@ -69,7 +69,7 @@ class TestCourierLogistics(unittest.TestCase):
                 patient_id=self.patient_id,
                 carrier="UNKNOWN_COURIER",
                 destination_pincode="110025",
-                shipping_address="Jamia Nagar, New Delhi",
+                shipping_address="Institutional Area, New Delhi",
                 db=self.db,
             )
 

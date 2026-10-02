@@ -1,0 +1,20 @@
+apps/web/app/pharmacy/page.tsx:492:                        onClick={() => alert(`Printing Dispense Certificate & Posology Labels for ${order.orderNumber}`)}
+apps/web/app/pharmacy/page.tsx:623:                            onClick={() => alert(`Creating Purchase Reorder for ${item.name} (${item.batchNumber})`)}
+apps/web/app/pharmacy/page.tsx:646:              <button onClick={() => alert("Creating new purchase order...")} className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold">
+apps/web/app/pharmacy/page.tsx:880:                      alert(`No prescription found matching code "${scannedCode}". Please verify the order number.`);
+apps/web/app/receptionist/page.tsx:664:                        onClick={() => alert(`Printing official OPD Receipt for ${item.patientName} (${item.tokenNumber})`)}
+apps/web/app/receptionist/page.tsx:698:                  <button onClick={() => alert("Scheduled Day +7 Follow-up with WhatsApp alert!")} className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-center">
+apps/web/app/receptionist/page.tsx:701:                  <button onClick={() => alert("Scheduled Day +14 Follow-up with WhatsApp alert!")} className="p-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-center">
+apps/web/app/receptionist/page.tsx:704:                  <button onClick={() => alert("Scheduled Day +28 Follow-up with WhatsApp alert!")} className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-center">
+apps/web/app/doctor/nuskha/page.tsx:101:      alert("Please include at least one herb or formulation.");
+apps/web/app/doctor/nuskha/page.tsx:391:                          onClick={() => alert(`Prescription Order: ${n.order_number}
+apps/web/app/doctor/page.tsx:293:        alert("No active encounter. Please wait for the encounter to be created.");
+apps/web/app/admin/organizations/page.tsx:118:        alert(`Organization "${formData.name}" created successfully!`);
+apps/web/app/admin/organizations/page.tsx:137:      alert("Failed to connect to gateway, saved locally.");
+apps/web/app/admin/security/page.tsx:87:            onClick={() => alert("Security configuration policies saved successfully!")}
+apps/web/app/admin/feature-flags/page.tsx:36:          onClick={() => alert("Feature flag changes deployed across all clusters!")}
+apps/web/app/admin/compliance/page.tsx:45:              onClick={() => alert("Generating Schedule E(1) Statutory Audit PDF...")}
+apps/web/app/admin/compliance/page.tsx:57:              onClick={() => alert("Generating 21 CFR Part 11 Audit Trail Export...")}
+apps/web/app/admin/compliance/page.tsx:69:              onClick={() => alert("Generating Cold-Chain IoT Compliance Log...")}
+apps/web/app/admin/subscriptions/page.tsx:14:          onClick={() => alert("Licensing wizard opened for new hospital onboarding.")}
+apps/web/app/admin/integrations/page.tsx:46:                onClick={() => alert(`Testing live ping to ${item.name}... Response: 200 OK (Latency: 28ms)`)}

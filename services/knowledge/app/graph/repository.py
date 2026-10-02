@@ -1,7 +1,7 @@
 """
 Abstract graph repository interface.
 
-Master Build Prompt v4.0 §27 and 2035 Horizon 1 specify the Four-Graph
+ZAYVORA Clinical Architecture Specification v4.0 §27 and 2035 Horizon 1 specify the Four-Graph
 physical separation model across:
 1. zayvora_knowledge: Ontologies of Mufradat, Mizaj, Akhlat, Quwa, Af'al,
    OrganAxes, Diseases, Schedule E(1) poisons, and Mudabbar protocols.

@@ -25,7 +25,7 @@ export default function MaintenancePage() {
 
         <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-1">
           <div>Estimated Time to Service: <strong>15 Minutes</strong></div>
-          <div className="text-slate-400">Emergency OPD Desk remains active: +91 11 2605 9000</div>
+          <div className="text-slate-400">Emergency OPD Desk remains active: +91 97738 82657</div>
         </div>
 
         <div className="pt-4">

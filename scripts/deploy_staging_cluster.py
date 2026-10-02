@@ -5,7 +5,7 @@ ZAYVORA Health™ — Staging Cluster Deployment Orchestrator & Smoke Test Runne
 Automates the complete staging cluster onboarding sequence:
 1. Pre-deployment environment and Helm chart syntax verification.
 2. Relational database migration orchestration across all 4 database schemas.
-3. Seeding canonical clinical fixtures and university pilot medical centers (AUTC, Jamia Hamdard, AMU).
+3. Seeding canonical clinical fixtures and university pilot medical centers (AUTC, SUMER Center, AMU).
 4. Automated microservice health probe verification (/health/live & /health/ready).
 5. Generation of Staging Cluster Deployment Certificate.
 """
@@ -146,7 +146,7 @@ class StagingDeploymentOrchestrator:
             "database_schemas": mig_res["schemas"],
             "academic_centers_onboarded": [
                 "Ayurvedic & Unani Tibbia College (AUTC, Delhi)",
-                "School of Unani Medical Education (Jamia Hamdard, Delhi)",
+                "School of Unani Medical Education (SUMER Medical Center, Delhi)",
                 "Ajmal Khan Tibbiya College (AMU, Aligarh)",
             ],
             "microservices_telemetry": health_res,

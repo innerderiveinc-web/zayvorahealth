@@ -73,7 +73,7 @@ export class AppointmentService {
     }
 
     if (!req.consentAccepted) {
-      throw new Error("Please consent to clinical record creation and HIPAA/ABDM data processing.");
+      throw new Error("Please consent to clinical record creation and DPDP Act 2023 / ABDM data processing.");
     }
 
     // 2. Duplicate prevention
@@ -83,12 +83,10 @@ export class AppointmentService {
     }
     this.bookedReferences.add(dedupeKey);
 
-    // 3. Generate Reference Code & Token Number
-    let refCode = `ZAY-APT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    let tokenNumber = `T-${Math.floor(100 + Math.random() * 900)}`;
-
-    // Submit to Live REST API and SQLite Database
+    // 3. Submit to Live REST API and Central Database
     const API_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
+    let bookingData: any = null;
+
     try {
       const res = await fetch(`${API_URL}/api/v1/appointments`, {
         method: "POST",
@@ -99,20 +97,33 @@ export class AppointmentService {
           timeSlot: req.preferredTime,
           doctorName: req.doctorPreference || "Prof. (Dr.) Mansoor Alam",
           chiefComplaint: req.healthConcern || "General Health Assessment",
-          fee: 800.0
+          fee: 800.0,
+          mobile: cleanMobile,
+          email: req.email,
+          consultationType: req.consultationType
         })
       });
-      if (res.ok) {
-        const body = await res.json();
-        if (body.ok && body.appointment) {
-          tokenNumber = body.appointment.tokenNumber || tokenNumber;
-          refCode = body.appointment.id || refCode;
-        }
+
+      if (!res.ok) {
+        const errorPayload = await res.json().catch(() => ({}));
+        throw new Error(errorPayload.detail || `Clinical appointment scheduling failed (HTTP ${res.status}). Please contact clinic reception.`);
       }
-    } catch {
-      // Backend not running on port 8000 - fall back to local generation
-      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const body = await res.json();
+      if (!body.ok && !body.appointment) {
+        throw new Error(body.detail || "Clinical server rejected appointment scheduling. Please verify availability.");
+      }
+      bookingData = body.appointment || body;
+    } catch (err: any) {
+      this.bookedReferences.delete(dedupeKey);
+      throw new Error(
+        err.message || 
+        "Unable to reach the clinical appointment service. Please verify your connection or contact ZAYVORA Matab reception at +91 11 4928 0000."
+      );
     }
+
+    const refCode = bookingData.id || bookingData.referenceNumber || `ZAY-APT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const tokenNumber = bookingData.tokenNumber || bookingData.token_number || "T-101";
 
     return {
       success: true,
@@ -122,14 +133,14 @@ export class AppointmentService {
       doctorName: req.doctorPreference || "Senior Consulting Tabeeb (Assigned by Specialization)",
       mode: req.consultationType,
       facilityLocation: req.consultationType === "In-Clinic OPD"
-        ? "Jamia Hamdard AUTC - Main Hospital, OPD Wing, New Delhi"
+        ? "ZAYVORA Matab™ — Central Care Centre, OPD Wing, New Delhi"
         : "Secure Encrypted Video Teleconsultation Room (WebRTC)",
       tokenNumber: tokenNumber,
-      message: `Your appointment request has been confirmed under reference ${refCode}. Our patient coordinator has dispatched booking confirmation details.`,
+      message: `Your appointment request has been scheduled on the Central Clinical Server under reference ${refCode}.`,
       notificationChannels: {
-        smsDispatched: true,
-        whatsAppDispatched: true,
-        emailDispatched: true
+        smsDispatched: Boolean(bookingData.smsDispatched ?? bookingData.sms_dispatched ?? false),
+        whatsAppDispatched: Boolean(bookingData.whatsAppDispatched ?? bookingData.whatsapp_dispatched ?? false),
+        emailDispatched: Boolean(bookingData.emailDispatched ?? bookingData.email_dispatched ?? false)
       }
     };
   }

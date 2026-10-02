@@ -13,9 +13,25 @@ from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
 
 
-GOVERNANCE_SIGNING_KEY = "ZAYVORA_GOVERNANCE_BOARD_ROOT_SEAL_2035"
+import os
+import sqlite3
+from dataclasses import asdict
+
+GOVERNANCE_SIGNING_KEY = os.getenv("GOVERNANCE_SIGNING_KEY", "ZAYVORA_GOVERNANCE_BOARD_ROOT_SEAL_2035")
 SENIOR_BOARD_ROLES = {"SENIOR_TABEEB", "CLINICAL_SPECIALIST", "PHARMACOPOEIA_LEAD", "DIRECTOR_OF_MEDICINE"}
 
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+_DB_PATH = os.path.join(_BASE_DIR, "database", "zayvora_live.db")
+
+def _get_governance_db():
+    if os.path.exists(_DB_PATH):
+        try:
+            conn = sqlite3.connect(_DB_PATH)
+            conn.row_factory = sqlite3.Row
+            return conn
+        except Exception:
+            return None
+    return None
 
 class QuorumNotReachedError(Exception):
     """Raised when an attempt is made to publish without meeting the 2-expert quorum."""
@@ -68,7 +84,7 @@ CHANGE_ORDERS_STORE: Dict[str, ClinicalChangeOrder] = {}
 
 
 class ClinicalGovernanceBoardEngine:
-    """Multi-expert governance workflow manager with cryptographic sealing."""
+    """Multi-expert governance workflow manager with cryptographic sealing and SQL persistence."""
 
     @classmethod
     def create_proposal(
@@ -94,6 +110,30 @@ class ClinicalGovernanceBoardEngine:
             attestations=[],
         )
         PROPOSALS_STORE[prop_id] = proposal
+
+        conn = _get_governance_db()
+        if conn:
+            try:
+                with conn:
+                    cur = conn.cursor()
+                    cur.execute("""
+                    INSERT OR REPLACE INTO governance_proposals 
+                    (proposal_id, title, target_type, target_id, proposed_diff_json, status, created_by, created_at_utc, attestations_json)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        proposal.proposal_id,
+                        proposal.title,
+                        proposal.target_type,
+                        proposal.target_id,
+                        json.dumps(proposal.proposed_diff),
+                        proposal.status,
+                        proposal.created_by,
+                        proposal.created_at_utc,
+                        json.dumps([asdict(a) for a in proposal.attestations])
+                    ))
+            except Exception:
+                pass
+
         return proposal
 
     @classmethod
@@ -106,6 +146,32 @@ class ClinicalGovernanceBoardEngine:
         intent: str = "Clinical Verification & Pharmacopoeial Quorum Attestation",
     ) -> ChangeProposal:
         proposal = PROPOSALS_STORE.get(proposal_id)
+        if not proposal:
+            # Check DB
+            conn = _get_governance_db()
+            if conn:
+                try:
+                    with conn:
+                        cur = conn.cursor()
+                        cur.execute("SELECT * FROM governance_proposals WHERE proposal_id = ?", (proposal_id,))
+                        row = cur.fetchone()
+                        if row:
+                            att_list = [BoardAttestation(**a) for a in json.loads(row["attestations_json"] or "[]")]
+                            proposal = ChangeProposal(
+                                proposal_id=row["proposal_id"],
+                                title=row["title"],
+                                target_type=row["target_type"],
+                                target_id=row["target_id"],
+                                proposed_diff=json.loads(row["proposed_diff_json"] or "{}"),
+                                status=row["status"],
+                                created_by=row["created_by"],
+                                created_at_utc=row["created_at_utc"],
+                                attestations=att_list
+                            )
+                            PROPOSALS_STORE[proposal_id] = proposal
+                except Exception:
+                    pass
+
         if not proposal:
             raise KeyError(f"Proposal '{proposal_id}' not found.")
 
@@ -143,12 +209,54 @@ class ClinicalGovernanceBoardEngine:
         else:
             proposal.status = "UNDER_PEER_REVIEW"
 
+        conn = _get_governance_db()
+        if conn:
+            try:
+                with conn:
+                    cur = conn.cursor()
+                    cur.execute("""
+                    UPDATE governance_proposals 
+                    SET status = ?, attestations_json = ?
+                    WHERE proposal_id = ?
+                    """, (
+                        proposal.status,
+                        json.dumps([asdict(a) for a in proposal.attestations]),
+                        proposal.proposal_id
+                    ))
+            except Exception:
+                pass
+
         return proposal
 
     @classmethod
     def publish_change_order(cls, proposal_id: str) -> ClinicalChangeOrder:
         """Publishes and locks the ratified change order. Requires minimum 2 attestations."""
         proposal = PROPOSALS_STORE.get(proposal_id)
+        if not proposal:
+            conn = _get_governance_db()
+            if conn:
+                try:
+                    with conn:
+                        cur = conn.cursor()
+                        cur.execute("SELECT * FROM governance_proposals WHERE proposal_id = ?", (proposal_id,))
+                        row = cur.fetchone()
+                        if row:
+                            att_list = [BoardAttestation(**a) for a in json.loads(row["attestations_json"] or "[]")]
+                            proposal = ChangeProposal(
+                                proposal_id=row["proposal_id"],
+                                title=row["title"],
+                                target_type=row["target_type"],
+                                target_id=row["target_id"],
+                                proposed_diff=json.loads(row["proposed_diff_json"] or "{}"),
+                                status=row["status"],
+                                created_by=row["created_by"],
+                                created_at_utc=row["created_at_utc"],
+                                attestations=att_list
+                            )
+                            PROPOSALS_STORE[proposal_id] = proposal
+                except Exception:
+                    pass
+
         if not proposal:
             raise KeyError(f"Proposal '{proposal_id}' not found.")
 
@@ -179,8 +287,57 @@ class ClinicalGovernanceBoardEngine:
 
         proposal.status = "PUBLISHED"
         CHANGE_ORDERS_STORE[order_id] = change_order
+
+        conn = _get_governance_db()
+        if conn:
+            try:
+                with conn:
+                    cur = conn.cursor()
+                    cur.execute("""
+                    INSERT OR REPLACE INTO governance_change_orders
+                    (change_order_id, proposal_id, title, target_type, target_id, applied_diff_json, published_at_utc, immutable_sha256_seal, attestations_json)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        change_order.change_order_id,
+                        change_order.proposal_id,
+                        change_order.title,
+                        change_order.target_type,
+                        change_order.target_id,
+                        json.dumps(change_order.applied_diff),
+                        change_order.published_at_utc,
+                        change_order.immutable_sha256_seal,
+                        json.dumps([asdict(a) for a in change_order.attestations])
+                    ))
+                    cur.execute("UPDATE governance_proposals SET status = 'PUBLISHED' WHERE proposal_id = ?", (proposal_id,))
+            except Exception:
+                pass
+
         return change_order
 
     @classmethod
     def get_change_orders(cls) -> List[ClinicalChangeOrder]:
+        conn = _get_governance_db()
+        if conn:
+            try:
+                with conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT * FROM governance_change_orders ORDER BY published_at_utc DESC")
+                    rows = cur.fetchall()
+                    for r in rows:
+                        oid = r["change_order_id"]
+                        if oid not in CHANGE_ORDERS_STORE:
+                            att_list = [BoardAttestation(**a) for a in json.loads(r["attestations_json"] or "[]")]
+                            CHANGE_ORDERS_STORE[oid] = ClinicalChangeOrder(
+                                change_order_id=r["change_order_id"],
+                                proposal_id=r["proposal_id"],
+                                title=r["title"],
+                                target_type=r["target_type"],
+                                target_id=r["target_id"],
+                                applied_diff=json.loads(r["applied_diff_json"] or "{}"),
+                                published_at_utc=r["published_at_utc"],
+                                immutable_sha256_seal=r["immutable_sha256_seal"],
+                                attestations=att_list
+                            )
+            except Exception:
+                pass
         return list(CHANGE_ORDERS_STORE.values())

@@ -63,7 +63,7 @@ export default function AccessibilityStatementPage() {
             </p>
             <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
               <div>Email: <strong>accessibility@zayvora.com</strong></div>
-              <div>Phone: <strong>+91 11 2605 9000 (Ext 404)</strong></div>
+              <div>Phone: <strong>+91 97738 82657 (Ext 404)</strong></div>
             </div>
           </section>
 

@@ -564,9 +564,9 @@ def run_tests():
     print("=" * 80)
     print(f"FINAL RESULT: {suite.passed} PASSED | {suite.failed} FAILED (TOTAL {len(methods)})")
     print("=" * 80)
-    return suite.failed == 0
+    return suite.passed, suite.failed
 
 
 if __name__ == "__main__":
-    success = run_tests()
-    sys.exit(0 if success else 1)
+    p, f = run_tests()
+    sys.exit(0 if f == 0 else 1)

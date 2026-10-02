@@ -1,6 +1,6 @@
 # ==============================================================================
 # ZAYVORA HEALTH™ — Enterprise Kubernetes Production Deployment Manifests
-# Master Build Prompt v4.0 Phase 30 (Horizon 4 & Infrastructure Tier)
+# ZAYVORA Clinical Architecture Specification v4.0 Phase 30 (Horizon 4 & Infrastructure Tier)
 # Target Standards: High-Availability, Zero-Downtime, Zero-Trust mTLS, 2030-2035 HA
 # ==============================================================================
 
@@ -37,24 +37,46 @@ data:
 
 ---
 # ------------------------------------------------------------------------------
-# 2. Production Secret Template (Encrypted at rest via AWS KMS / HashiCorp Vault)
+# 2. Production Secret (Provisioned via HashiCorp Vault / External Secrets Operator)
 # ------------------------------------------------------------------------------
-apiVersion: v1
-kind: Secret
+# Production environments MUST inject secrets via External Secrets Operator (ESO)
+# or HashiCorp Vault CSI Driver. Direct commit of plaintext credentials is prohibited.
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
   name: zayvora-production-secrets
   namespace: zayvora-production
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-cluster-store
+    kind: ClusterSecretStore
+  target:
+    name: zayvora-production-secrets
+    creationPolicy: Owner
+  dataFrom:
+    - extract:
+        key: secret/data/zayvora/production
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: zayvora-production-secrets-template
+  namespace: zayvora-production
+  annotations:
+    security.zayvora.com/vault-path: "secret/data/zayvora/production"
+    security.zayvora.com/compliance: "DPDP-2023-Section-8,IT-Act-2000-Section-43A"
 type: Opaque
 stringData:
-  DATABASE_URL: "postgresql+psycopg://zayvora_prod_user:VaultManagedSecret_K8s2035@postgres-cluster.database.svc.cluster.local:5432/zayvora_clinical_prod"
-  REDIS_URL: "rediss://:VaultManagedRedisToken@redis-cluster.database.svc.cluster.local:6379/0"
-  NEO4J_URI: "neo4j+s://neo4j-cluster.database.svc.cluster.local:7687"
-  NEO4J_USER: "neo4j"
-  NEO4J_PASSWORD: "VaultManagedNeo4jPassword"
-  JWT_PUBLIC_KEY_PEM: "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvZayvoraProductionKey...\n-----END PUBLIC KEY-----"
-  JWT_PRIVATE_KEY_PEM: "-----BEGIN RSA PRIVATE KEY-----\nVaultManagedRS256PrivateKey...\n-----END RSA PRIVATE KEY-----"
-  ANTHROPIC_API_KEY: "sk-ant-prod-vault-managed-key"
-  OPENAI_API_KEY: "sk-proj-prod-vault-managed-key"
+  DATABASE_URL: "${VAULT_INJECTED_DATABASE_URL}"
+  REDIS_URL: "${VAULT_INJECTED_REDIS_URL}"
+  NEO4J_URI: "${VAULT_INJECTED_NEO4J_URI}"
+  NEO4J_USER: "${VAULT_INJECTED_NEO4J_USER}"
+  NEO4J_PASSWORD: "${VAULT_INJECTED_NEO4J_PASSWORD}"
+  JWT_PUBLIC_KEY_PEM: "${VAULT_INJECTED_JWT_PUBLIC_KEY_PEM}"
+  JWT_PRIVATE_KEY_PEM: "${VAULT_INJECTED_JWT_PRIVATE_KEY_PEM}"
+  ANTHROPIC_API_KEY: "${VAULT_INJECTED_ANTHROPIC_API_KEY}"
+  OPENAI_API_KEY: "${VAULT_INJECTED_OPENAI_API_KEY}"
 
 ---
 # ------------------------------------------------------------------------------

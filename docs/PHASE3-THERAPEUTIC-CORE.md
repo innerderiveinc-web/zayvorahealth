@@ -15,7 +15,7 @@ literal folder-per-line reading of §53, not an oversight.
 
 ## The core safety property this phase implements
 
-Master Build Prompt v4.0 §19: *"Never automatically convert an AI-generated
+ZAYVORA Clinical Architecture Specification v4.0 §19: *"Never automatically convert an AI-generated
 candidate into a final prescription."* And §2: *"AI must NOT autonomously... bypass
 red flags... override clinician judgment."*
 

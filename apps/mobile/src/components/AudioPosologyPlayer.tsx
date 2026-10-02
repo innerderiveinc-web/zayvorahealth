@@ -63,7 +63,7 @@ export const AudioPosologyPlayer: React.FC<AudioPosologyPlayerProps> = ({
           style={[styles.langBtn, selectedLang === "ur" && styles.langBtnActive]}
           onPress={() => setSelectedLang("ur")}
         >
-          <Text style={[styles.langText, selectedLang === "ur" && styles.langTextActive]}>اردو (Urdu)</Text>
+          <Text style={[styles.langText, selectedLang === "ur" && styles.langTextActive]}>Urdu (Roman)</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.langBtn, selectedLang === "hi" && styles.langBtnActive]}

@@ -94,7 +94,7 @@ html = '''<!DOCTYPE html>
             <span class="font-bold tracking-tight text-lg text-white">ZAYVORA Health OS™</span>
             <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold badge-emerald">Clinical v4.2</span>
           </div>
-          <p class="text-xs text-[var(--muted)]">National Institute of Integrative Medicine • Central Clinical Facility</p>
+          <p class="text-xs text-[var(--muted)]">ZAYVORA Integrative Healthcare & Research Centre • Central Clinical Facility</p>
         </div>
       </div>
 

@@ -7,12 +7,22 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.core.pharmacopoeia import (
-    NFUM_COMPOUND_REGISTRY,
-    SCHEDULE_E1_POISONS,
-    UPI_MUFRADAT_REGISTRY,
-)
-from app.core.taxonomy import MIZAJ_TEMPERAMENTS, ORGAN_AXES
+try:
+    from app.core.pharmacopoeia import (
+        NFUM_COMPOUND_REGISTRY,
+        SCHEDULE_E1_POISONS,
+        UPI_MUFRADAT_REGISTRY,
+        get_upi_mufradat,
+    )
+    from app.core.taxonomy import MIZAJ_TEMPERAMENTS, ORGAN_AXES
+except ImportError:
+    from services.knowledge.app.core.pharmacopoeia import (
+        NFUM_COMPOUND_REGISTRY,
+        SCHEDULE_E1_POISONS,
+        UPI_MUFRADAT_REGISTRY,
+        get_upi_mufradat,
+    )
+    from services.knowledge.app.core.taxonomy import MIZAJ_TEMPERAMENTS, ORGAN_AXES
 
 
 def build_canonical_graph_nodes_and_edges() -> dict[str, Any]:
@@ -69,23 +79,24 @@ def build_canonical_graph_nodes_and_edges() -> dict[str, Any]:
             "protocol": p["mudabbar_protocol"],
         })
 
-    # 4. Mufradat Nodes & Relationships
-    for m in UPI_MUFRADAT_REGISTRY:
+    # 4. Mufradat Nodes & Relationships (Full Pharmacopoeia)
+    for m in get_upi_mufradat():
         m_id = m["id"]
+        is_e1 = m.get("is_schedule_e1", m.get("isScheduleE1", False))
         nodes["Mufrad"].append({
             "id": m_id,
             "name": m["name"],
-            "botanicalName": m["botanical_name"],
-            "partUsed": m["part_used"],
-            "synonyms": m["synonyms"],
-            "afal": m["afal"],
-            "traditionalUses": m["traditional_uses"],
-            "contraindications": m["contraindications"],
-            "musleh": m["musleh"],
-            "badal": m["badal"],
-            "dose": m["dose"],
-            "isScheduleE1": m["is_schedule_e1"],
-            "modernPharmacology": m["modern_pharmacology"],
+            "botanicalName": m.get("botanical_name", m.get("botanicalName", "")),
+            "partUsed": m.get("part_used", m.get("partUsed", "")),
+            "synonyms": m.get("synonyms", []),
+            "afal": m.get("afal", []),
+            "traditionalUses": m.get("traditional_uses", m.get("traditionalUses", "")),
+            "contraindications": m.get("contraindications", ""),
+            "musleh": m.get("musleh", ""),
+            "badal": m.get("badal", ""),
+            "dose": m.get("dose", ""),
+            "isScheduleE1": is_e1,
+            "modernPharmacology": m.get("modern_pharmacology", m.get("modernPharmacology", "")),
         })
 
         # Relationship: HAS_MIZAJ
@@ -115,32 +126,63 @@ def build_canonical_graph_nodes_and_edges() -> dict[str, Any]:
                 "props": {},
             })
 
+        # Relationship: HAS_MUSLEH (Correctives)
+        if m.get("musleh"):
+            edges.append({
+                "type": "HAS_MUSLEH",
+                "from_label": "Mufrad",
+                "from_id": m_id,
+                "to_label": "Mufrad",
+                "to_id": str(m["musleh"]),
+                "props": {"musleh_name": str(m["musleh"])},
+            })
+
+        # Relationship: HAS_BADAL (Substitutes)
+        if m.get("badal"):
+            edges.append({
+                "type": "HAS_BADAL",
+                "from_label": "Mufrad",
+                "from_id": m_id,
+                "to_label": "Mufrad",
+                "to_id": str(m["badal"]),
+                "props": {"badal_name": str(m["badal"])},
+            })
+
         # Link to Schedule E(1) & Mudabbar
-        if m["is_schedule_e1"]:
+        if is_e1:
+            matched_p = None
             for _, p in SCHEDULE_E1_POISONS.items():
                 if p["canonical_name"].lower() in m["name"].lower() or m["name"].lower() in p["canonical_name"].lower():
-                    edges.append({
-                        "type": "SCHEDULE_E1_POISON",
-                        "from_label": "Mufrad",
-                        "from_id": m_id,
-                        "to_label": "PoisonClass",
-                        "to_id": p["poison_class"],
-                        "props": {
-                            "statutory_warning": p["statutory_warning"],
-                            "max_single_dose_mg": p["max_single_dose_mg"],
-                            "max_daily_dose_mg": p["max_daily_dose_mg"],
-                        },
-                    })
-                    edges.append({
-                        "type": "REQUIRES_DETOXIFICATION",
-                        "from_label": "Mufrad",
-                        "from_id": m_id,
-                        "to_label": "MudabbarProtocol",
-                        "to_id": f"Mudabbar Protocol for {p['canonical_name']}",
-                        "props": {
-                            "mandatory": True,
-                        },
-                    })
+                    matched_p = p
+                    break
+            p_name = matched_p["poison_class"] if matched_p else "Statutory Toxic Substance"
+            p_warn = matched_p["statutory_warning"] if matched_p else "SCHEDULE E(1) POISON: Caution: To be taken under medical supervision only. Must be Mudabbar."
+            max_single = matched_p["max_single_dose_mg"] if matched_p else 100.0
+            max_daily = matched_p["max_daily_dose_mg"] if matched_p else 300.0
+            mud_proto = f"Mudabbar Protocol for {matched_p['canonical_name']}" if matched_p else f"Mudabbar Protocol for {m['name']}"
+
+            edges.append({
+                "type": "SCHEDULE_E1_POISON",
+                "from_label": "Mufrad",
+                "from_id": m_id,
+                "to_label": "PoisonClass",
+                "to_id": p_name,
+                "props": {
+                    "statutory_warning": p_warn,
+                    "max_single_dose_mg": max_single,
+                    "max_daily_dose_mg": max_daily,
+                },
+            })
+            edges.append({
+                "type": "REQUIRES_DETOXIFICATION",
+                "from_label": "Mufrad",
+                "from_id": m_id,
+                "to_label": "MudabbarProtocol",
+                "to_id": mud_proto,
+                "props": {
+                    "mandatory": True,
+                },
+            })
 
     # 5. Murakkabat (Compound Formulations)
     for c in NFUM_COMPOUND_REGISTRY:
@@ -177,3 +219,6 @@ def build_canonical_graph_nodes_and_edges() -> dict[str, Any]:
                 })
 
     return {"nodes": nodes, "edges": edges}
+
+
+generate_mufradat_graph_payload = build_canonical_graph_nodes_and_edges

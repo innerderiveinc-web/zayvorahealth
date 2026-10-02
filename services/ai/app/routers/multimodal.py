@@ -1,6 +1,6 @@
 """
 ZAYVORA HEALTH™ — Multimodal AI & Clinical Lab Report Extractor Router
-Master Build Prompt v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
+ZAYVORA Clinical Architecture Specification v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
 
 Provides REST endpoints for:
 1. LOINC clinical lab report parsing, renal safety profiling, and Unani humoral synthesis.
@@ -20,7 +20,7 @@ from app.multimodal.lab_report_extractor import (
     PhysicalSignsAnalysisResult,
 )
 
-router = APIRouter(prefix="/api/v1/ai/multimodal", tags=["Multimodal AI & Lab Intelligence"])
+router = APIRouter(prefix="/api/v1/multimodal", tags=["Multimodal AI & Lab Intelligence"])
 
 
 class LabExtractionRequest(BaseModel):

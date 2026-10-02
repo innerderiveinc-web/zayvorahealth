@@ -1,5 +1,5 @@
 """
-Clinical Core domain models (Master Build Prompt v4.0 §5 Patient 360, §6
+Clinical Core domain models (ZAYVORA Clinical Architecture Specification v4.0 §5 Patient 360, §6
 Clinical Timeline, §39 EMR).
 
 Tenant isolation: every table carries organization_id directly (not a join
@@ -7,7 +7,7 @@ through Patient) so a single malformed query can't leak across tenants —
 each query in routers/ filters on organization_id explicitly, never trusts
 a patient_id alone to imply the right tenant.
 
-Versioning: Master Build Prompt v4.0 §5 says "Never overwrite historical
+Versioning: ZAYVORA Clinical Architecture Specification v4.0 §5 says "Never overwrite historical
 clinical information. Use versioned records." Applied here to ClinicalNote
 and Prescription — both are effectively append-only. Amending a note
 creates a new row pointing back via amends_note_id; the original is never

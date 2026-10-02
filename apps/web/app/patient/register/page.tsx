@@ -11,6 +11,7 @@ export default function PatientRegisterPage() {
     fullName: "",
     email: "",
     mobile: "",
+    password: "",
     age: 35,
     gender: "Male",
     consent: true
@@ -37,7 +38,7 @@ export default function PatientRegisterPage() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-lg text-center relative z-10 space-y-3">
-        <Link href="/website" className="inline-flex items-center gap-2.5 text-xl font-bold text-white tracking-wide group">
+        <Link href="/" className="inline-flex items-center gap-2.5 text-xl font-bold text-white tracking-wide group">
           <span className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-400 flex items-center justify-center text-white text-lg shadow-lg shadow-teal-900/30 group-hover:scale-105 transition">
             🌿
           </span>
@@ -132,6 +133,21 @@ export default function PatientRegisterPage() {
               </div>
             </div>
 
+            <div>
+              <label className="block font-semibold text-slate-300 mb-1">
+                Account Password <span className="text-rose-400">*</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Create a strong account password (min 6 characters)"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+                required
+                minLength={6}
+              />
+            </div>
+
             <div className="p-3 rounded-xl bg-teal-950/40 border border-teal-800/60 flex items-start gap-2.5">
               <input
                 type="checkbox"
@@ -171,7 +187,7 @@ export default function PatientRegisterPage() {
         </div>
 
         <div className="text-center mt-6">
-          <Link href="/website" className="text-xs text-slate-500 hover:text-slate-300 transition">
+          <Link href="/" className="text-xs text-slate-500 hover:text-slate-300 transition">
             ← Return to ZAYVORA Public Website
           </Link>
         </div>

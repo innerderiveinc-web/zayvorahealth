@@ -11,6 +11,11 @@ export default function App() {
   const [audioLang, setAudioLang] = useState<"urdu" | "hindi" | "english">("urdu");
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [reportUploaded, setReportUploaded] = useState(false);
+  const [patientAdherence, setPatientAdherence] = useState<{ [key: string]: "taken" | "not_yet" | "skipped" }>({
+    morning: "taken",
+    afternoon: "not_yet",
+    evening: "not_yet",
+  });
   const [aiQuery, setAiQuery] = useState("");
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [activeQueue, setActiveQueue] = useState([
@@ -49,7 +54,7 @@ export default function App() {
               <Text style={styles.brandTitle}>ZAYVORA</Text>
               <Text style={styles.brandTag}>OS</Text>
             </View>
-            <Text style={styles.brandSub}>Jamia Hamdard AUTC</Text>
+            <Text style={styles.brandSub}>ZAYVORA Matab™</Text>
           </View>
         </View>
 
@@ -217,11 +222,64 @@ export default function App() {
                 </View>
               </View>
 
+              {/* Action-First Regimen: What do I do today? */}
+              <View style={styles.actionRegimenCard}>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardHeader}>TODAY'S CARE • NEXT ACTION</Text>
+                  <Text style={styles.badgeActionHeader}>What do I do today?</Text>
+                </View>
+                <Text style={styles.regimenMainTask}>Hab-e-Suranjan (2 pills) + Roghan Massage</Text>
+                <Text style={styles.regimenSub}>Scheduled for: After Lunch &amp; Bedtime</Text>
+
+                <View style={styles.adherenceList}>
+                  {[
+                    { id: "morning", label: "Morning Dose", item: "Majun Suranjan 5g with lukewarm water", time: "8:00 AM" },
+                    { id: "afternoon", label: "Afternoon Regimen", item: "Arq-e-Badiyan 25ml post-lunch", time: "1:30 PM" },
+                    { id: "evening", label: "Bedtime Regimen", item: "Roghan-e-Balsan local joint massage", time: "9:00 PM" }
+                  ].map((task) => (
+                    <View key={task.id} style={styles.adherenceItem}>
+                      <View style={styles.rowBetween}>
+                        <Text style={styles.adherenceTaskName}>{task.label} ({task.time})</Text>
+                        <Text style={[
+                          styles.adherenceBadge,
+                          patientAdherence[task.id] === "taken" ? styles.adherenceBadgeTaken :
+                          patientAdherence[task.id] === "skipped" ? styles.adherenceBadgeSkipped : styles.adherenceBadgePending
+                        ]}>
+                          {patientAdherence[task.id] === "taken" ? "✓ Taken" :
+                           patientAdherence[task.id] === "skipped" ? "✕ Skipped" : "⏳ Pending"}
+                        </Text>
+                      </View>
+                      <Text style={styles.adherenceTaskDetail}>{task.item}</Text>
+                      <View style={styles.adherenceBtnRow}>
+                        <TouchableOpacity
+                          style={[styles.adherenceBtn, patientAdherence[task.id] === "taken" && styles.adherenceBtnActive]}
+                          onPress={() => setPatientAdherence(prev => ({ ...prev, [task.id]: "taken" }))}
+                        >
+                          <Text style={[styles.adherenceBtnText, patientAdherence[task.id] === "taken" && styles.adherenceBtnTextActive]}>✓ Taken</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.adherenceBtn, patientAdherence[task.id] === "not_yet" && styles.adherenceBtnActive]}
+                          onPress={() => setPatientAdherence(prev => ({ ...prev, [task.id]: "not_yet" }))}
+                        >
+                          <Text style={[styles.adherenceBtnText, patientAdherence[task.id] === "not_yet" && styles.adherenceBtnTextActive]}>⏳ Not Yet</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.adherenceBtn, patientAdherence[task.id] === "skipped" && styles.adherenceBtnActive]}
+                          onPress={() => setPatientAdherence(prev => ({ ...prev, [task.id]: "skipped" }))}
+                        >
+                          <Text style={[styles.adherenceBtnText, patientAdherence[task.id] === "skipped" && styles.adherenceBtnTextActive]}>✕ Skipped</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+
               {/* Next Scheduled Appointment */}
               <View style={styles.cardHighlight}>
                 <Text style={styles.cardHeader}>NEXT CLINICAL VISIT</Text>
                 <Text style={styles.patientName}>Sep 15, 2026 at 10:30 AM</Text>
-                <Text style={styles.patientDetails}>Jamia Hamdard AUTC • OPD Room 3</Text>
+                <Text style={styles.patientDetails}>ZAYVORA Matab™ • OPD Room 3</Text>
                 <Text style={styles.doctorName}>Prof. (Dr.) Mansoor Alam</Text>
                 <View style={styles.cardBtnRow}>
                   <TouchableOpacity style={styles.primaryBtn} onPress={() => alert("Connecting to HD Encrypted Teleconsultation...")}>
@@ -552,4 +610,23 @@ const styles = StyleSheet.create({
   navIcon: { fontSize: 18 },
   navLabel: { color: "#94A3B8", fontSize: 10, fontWeight: "600" },
   navLabelActive: { color: "#2DD4BF" },
+
+  // Action Regimen Styles
+  actionRegimenCard: { backgroundColor: "#0C1B2A", padding: 14, borderRadius: 16, borderWidth: 1, borderColor: "#0284C7", gap: 8 },
+  badgeActionHeader: { color: "#38BDF8", fontSize: 10, fontWeight: "700", backgroundColor: "rgba(56, 189, 248, 0.15)", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
+  regimenMainTask: { color: "#F0F9FF", fontSize: 15, fontWeight: "800", marginTop: 2 },
+  regimenSub: { color: "#7DD3FC", fontSize: 11, marginBottom: 4 },
+  adherenceList: { gap: 8 },
+  adherenceItem: { backgroundColor: "#0F172A", padding: 10, borderRadius: 10, borderWidth: 1, borderColor: "#1E293B", gap: 4 },
+  adherenceTaskName: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
+  adherenceBadge: { fontSize: 9, fontWeight: "700", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+  adherenceBadgeTaken: { color: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.15)" },
+  adherenceBadgeSkipped: { color: "#EF4444", backgroundColor: "rgba(239, 68, 68, 0.15)" },
+  adherenceBadgePending: { color: "#F59E0B", backgroundColor: "rgba(245, 158, 11, 0.15)" },
+  adherenceTaskDetail: { color: "#94A3B8", fontSize: 11 },
+  adherenceBtnRow: { flexDirection: "row", gap: 6, marginTop: 4 },
+  adherenceBtn: { flex: 1, paddingVertical: 6, borderRadius: 6, backgroundColor: "#1E293B", alignItems: "center" },
+  adherenceBtnActive: { backgroundColor: "#0D9488" },
+  adherenceBtnText: { color: "#94A3B8", fontSize: 10, fontWeight: "700" },
+  adherenceBtnTextActive: { color: "#FFFFFF" },
 });

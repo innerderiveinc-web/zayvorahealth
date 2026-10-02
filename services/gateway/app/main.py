@@ -50,15 +50,18 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
         or path.startswith("/api/v1/organizations")
         or path.startswith("/api/v1/roles")
         or path.startswith("/api/v1/tenancy")
+        or path.startswith("/api/v1/users")
     ):
         return settings.identity_service_url
     if (
         path.startswith("/api/v1/patients")
         or path.startswith("/api/v1/encounters")
+        or path.startswith("/api/v1/clinical")
         or path.startswith("/api/v1/clinical-notes")
         or path.startswith("/api/v1/prescriptions")
         or path.startswith("/api/v1/appointments")
         or path.startswith("/api/v1/diagnostics")
+        or path.startswith("/api/v1/labs")
         or path.startswith("/api/v1/mizaj")
         or path.startswith("/api/v1/timeline")
         or path.startswith("/api/v1/digital-twin")
@@ -84,6 +87,9 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
         or path.startswith("/api/v1/graph")
         or path.startswith("/api/v1/board")
         or path.startswith("/api/v1/search")
+        or path.startswith("/api/v1/hybrid-rag")
+        or path.startswith("/api/v1/rag")
+        or path.startswith("/api/v1/knowledge")
     ):
         return settings.knowledge_service_url
     if (
@@ -97,7 +103,8 @@ def _resolve_target_service(path: str, settings: Settings) -> str | None:
     ):
         return settings.therapeutic_service_url
     if (
-        path.startswith("/api/v1/hakeem")
+        path.startswith("/api/v1/ai")
+        or path.startswith("/api/v1/hakeem")
         or path.startswith("/api/v1/multimodal")
         or path.startswith("/api/v1/evaluation")
         or path.startswith("/api/v1/security")

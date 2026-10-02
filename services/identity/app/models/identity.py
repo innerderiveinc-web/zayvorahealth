@@ -6,7 +6,7 @@ depends on for tenant isolation and authorization.
 Design notes:
 - Every clinically-scoped table elsewhere in the platform will carry an
   organization_id foreign key to this Organization table for tenant
-  isolation (see Master Build Prompt v4.0 §49, "tenant isolation").
+  isolation (see ZAYVORA Clinical Architecture Specification v4.0 §49, "tenant isolation").
 - Roles are per-organization (a user can hold different roles in different
   clinics/organizations they belong to), not global.
 - AuditLog rows are append-only by convention: nothing in this codebase
@@ -96,7 +96,7 @@ class Role(Base):
 class Permission(Base):
     """A fine-grained capability, e.g. 'patient.create', 'nuskha.approve',
     'safety_firewall.override'. Permission overrides are logged, never
-    silent (Master Build Prompt v4.0 §2 — human clinical authority)."""
+    silent (ZAYVORA Clinical Architecture Specification v4.0 §2 — human clinical authority)."""
 
     __tablename__ = "permissions"
 
@@ -124,7 +124,7 @@ class User(Base):
 class AuditLog(Base):
     """Append-only audit trail. Every state-changing action across every
     ZAYVORA service should write one of these — this is the backbone of
-    the AI Governance audit trail in Master Build Prompt v4.0 §50."""
+    the AI Governance audit trail in ZAYVORA Clinical Architecture Specification v4.0 §50."""
 
     __tablename__ = "audit_logs"
 

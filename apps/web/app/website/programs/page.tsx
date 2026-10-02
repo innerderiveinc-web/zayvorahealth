@@ -39,7 +39,7 @@ export default function ProgramsListingPage() {
           ZAYVORA Health Programs
         </h1>
         <p className="text-sm text-[#94A3B8] max-w-3xl leading-relaxed">
-          Multi-week structured reversal programs designed to restore constitutional humoral equilibrium (Mizaj) and physiological organ-axis health under direct physician supervision.
+          Multi-week structured clinical care programs designed to restore constitutional humoral equilibrium (Mizaj) and physiological organ-axis health under direct physician supervision.
         </p>
       </div>
 

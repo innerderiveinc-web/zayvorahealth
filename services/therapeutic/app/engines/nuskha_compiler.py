@@ -1,7 +1,7 @@
 """
 ZAYVORA Classical Nuskha Compiler & Formulation Balancing Engine.
 
-Master Build Prompt v4.0 §14, §18 (Nuskha Nawisi Sequence) & §19.
+ZAYVORA Clinical Architecture Specification v4.0 §14, §18 (Nuskha Nawisi Sequence) & §19.
 
 Codifies the authentic Unani formulation synthesis rules:
 1. Juz-e-Azam (Chief Active Ingredient): Validated against target organ-axis & primary pathology.
@@ -152,6 +152,7 @@ def _extract_base_name(name: str) -> str:
     return cleaned.strip()
 
 
+
 def substitute_badal_with_posology(
     original_ingredient_name: str,
     original_dose_mg: float,
@@ -166,7 +167,21 @@ def substitute_badal_with_posology(
     badal_key = _extract_base_name(badal_name)
 
     ratios = BADAL_POTENCY_RATIOS.get(orig_key, {})
-    ratio = ratios.get(badal_key, 1.0)
+    if not ratios:
+        for k, r in BADAL_POTENCY_RATIOS.items():
+            if k in orig_key or orig_key in k:
+                ratios = r
+                break
+
+    ratio = ratios.get(badal_key)
+    if ratio is None:
+        for bk, r in ratios.items():
+            if bk in badal_key or badal_key in bk:
+                ratio = r
+                break
+    if ratio is None:
+        ratio = 1.0
+
     adjusted_dose = original_dose_mg * ratio
 
     posology = calculate_adjusted_dose(adjusted_dose, patient_context or {})
@@ -256,10 +271,27 @@ def compile_nuskha(
         base_name = _extract_base_name(raw_name)
         matched_profile = None
 
+        sub_identity = None
+        try:
+            from services.knowledge.app.core.canonical_substance_identity import CanonicalSubstanceIdentityService
+            sub_res = CanonicalSubstanceIdentityService.resolve_substance(raw_name)
+            if sub_res.get("matched"):
+                sub_identity = sub_res
+        except Exception:
+            pass
+
         for k, profile in CLASSICAL_CORRECTIVES_AND_SUBSTITUTES.items():
             if k in base_name or base_name in k:
                 matched_profile = profile
                 break
+
+        if not matched_profile and sub_identity:
+            matched_profile = {
+                "musleh": sub_identity.get("musleh") or "",
+                "badal": sub_identity.get("badal") or "",
+                "primary_organ_axis": sub_identity.get("primary_organ_axis") or primary_axis,
+                "default_adult_dose_mg": sub_identity.get("default_adult_dose_mg") or 500.0,
+            }
 
         # Extract or infer base dose
         dose_mg = ing.get("dose_mg")
@@ -281,7 +313,7 @@ def compile_nuskha(
             roles_assigned["juz_e_azam"] = raw_name
 
         # Check for Musleh requirement
-        if matched_profile:
+        if matched_profile and matched_profile.get("musleh"):
             required_musleh = matched_profile["musleh"]
             has_musleh_in_nuskha = (
                 ing.get("musleh")
@@ -314,6 +346,8 @@ def compile_nuskha(
 
         compiled_ing = {
             "name": raw_name,
+            "canonical_id": sub_identity.get("canonical_id") if sub_identity else None,
+            "canonical_name": sub_identity.get("canonical_name") if sub_identity else raw_name,
             "classical_role": role,
             "target_axis_alignment": (matched_profile.get("primary_organ_axis") if matched_profile else primary_axis),
             "prescribed_dose_mg": dose_mg,
@@ -321,8 +355,9 @@ def compile_nuskha(
             "posology_adjustments": posology["adjustment_reasons"],
             "musleh": ing.get("musleh") or (matched_profile.get("musleh") if matched_profile else ""),
             "badal": ing.get("badal") or (matched_profile.get("badal") if matched_profile else ""),
-            "is_mudabbar": ing.get("is_mudabbar"),
-            "mudabbar_process": ing.get("mudabbar_process", ""),
+            "is_mudabbar": ing.get("is_mudabbar") or (sub_identity.get("mandatory_mudabbar") if sub_identity else False),
+            "mudabbar_process": ing.get("mudabbar_process", "") or (sub_identity.get("mudabbar_protocol") if sub_identity else ""),
+            "is_schedule_e1": sub_identity.get("is_schedule_e1", False) if sub_identity else False,
         }
         compiled_ingredients.append(compiled_ing)
 
@@ -337,4 +372,100 @@ def compile_nuskha(
         "missing_musleh_alerts": missing_musleh_alerts,
         "substitute_suggestions": substitute_suggestions,
         "compiled_ingredients": compiled_ingredients,
+    }
+
+
+# -----------------------------------------------------------------------------
+# Four-Tier Nuskha Architecture & 80/20 Clinical Rule
+# -----------------------------------------------------------------------------
+FORBIDDEN_RAW_TOXICS = [
+    "raw kuchla", "unpurified nux-vomica", "raw strychnos",
+    "raw shingraf", "unpurified cinnabar",
+    "raw suranjan", "unpurified colchicum",
+    "raw jamalgota", "unpurified croton",
+    "raw bhilawa", "unpurified marking nut",
+    "unpurified aconite", "raw bish"
+]
+
+
+def verify_four_tier_nuskha_architecture(
+    ingredients: list[dict[str, Any]],
+    total_batch_weight_mg: float | None = None
+) -> dict[str, Any]:
+    """
+    Validates a prescription against the Classical 4-Tier Nuskha Architecture:
+    1. Tier 1: Asl / Juz-e-Azam (Primary therapeutic driver)
+    2. Tier 2: Mua'wwid / Muin (Synergist & bioavailability catalyst)
+    3. Tier 3: Musleh (Corrective / harmonizer neutralizing toxicity)
+    4. Tier 4: Muhsin (Vehicle, demulcent, taste & mucosal protector)
+    
+    Also enforces the 80/20 rule:
+    - Active therapeutic mass (Tier 1 + 2) ~ 75-85% (target 80%)
+    - Protective/vehicle buffer (Tier 3 + 4) ~ 15-25% (target 20%)
+    """
+    tiers = {
+        "tier1_asl": [],
+        "tier2_muawwid": [],
+        "tier3_musleh": [],
+        "tier4_muhsin": []
+    }
+    tier_weights = {
+        "tier1_asl": 0.0,
+        "tier2_muawwid": 0.0,
+        "tier3_musleh": 0.0,
+        "tier4_muhsin": 0.0
+    }
+    
+    toxic_alerts = []
+    
+    for ing in ingredients:
+        name = ing.get("name", "").lower()
+        role = (ing.get("classical_role") or ing.get("role") or "").lower()
+        dose = float(ing.get("prescribed_dose_mg") or ing.get("dose_mg") or 0.0)
+        is_mudabbar = ing.get("is_mudabbar", False)
+        
+        # Check raw toxic substances
+        for tox in FORBIDDEN_RAW_TOXICS:
+            if tox in name and not is_mudabbar:
+                toxic_alerts.append(
+                    f"CRITICAL SAFETY VIOLATION: '{ing.get('name')}' is classified as toxic and requires certified Mudabbar purification before dispensing."
+                )
+                
+        # Categorize tier
+        if "asl" in role or "juz_e_azam" in role or "chief" in role or "active" in role:
+            tiers["tier1_asl"].append(ing)
+            tier_weights["tier1_asl"] += dose
+        elif "muawwid" in role or "muin" in role or "synergist" in role or "bio-enhancer" in role:
+            tiers["tier2_muawwid"].append(ing)
+            tier_weights["tier2_muawwid"] += dose
+        elif "musleh" in role or "corrective" in role or "harmonizer" in role:
+            tiers["tier3_musleh"].append(ing)
+            tier_weights["tier3_musleh"] += dose
+        elif "muhsin" in role or "vehicle" in role or "base" in role or "protective" in role:
+            tiers["tier4_muhsin"].append(ing)
+            tier_weights["tier4_muhsin"] += dose
+        else:
+            # Default to Tier 1 Asl if unspecified
+            tiers["tier1_asl"].append(ing)
+            tier_weights["tier1_asl"] += dose
+
+    total_weight = sum(tier_weights.values()) or total_batch_weight_mg or 1.0
+    therapeutic_core_pct = round(((tier_weights["tier1_asl"] + tier_weights["tier2_muawwid"]) / total_weight) * 100, 1)
+    protective_buffer_pct = round(((tier_weights["tier3_musleh"] + tier_weights["tier4_muhsin"]) / total_weight) * 100, 1)
+    
+    rule_80_20_compliant = 65.0 <= therapeutic_core_pct <= 90.0
+    
+    return {
+        "status": "passed" if len(toxic_alerts) == 0 else "failed_safety",
+        "is_four_tier_complete": all(len(v) > 0 for v in tiers.values()),
+        "tiers": tiers,
+        "tier_weights_mg": tier_weights,
+        "therapeutic_core_pct": therapeutic_core_pct,
+        "protective_buffer_pct": protective_buffer_pct,
+        "rule_80_20_compliant": rule_80_20_compliant,
+        "toxic_alerts": toxic_alerts,
+        "clinical_notes": (
+            f"Active Core: {therapeutic_core_pct}% | Protective/Vehicle: {protective_buffer_pct}%. "
+            + ("80/20 balance optimal." if rule_80_20_compliant else "Rebalance formulation towards 80% active / 20% protective.")
+        )
     }

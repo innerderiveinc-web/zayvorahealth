@@ -10,7 +10,7 @@ import sys
 import argparse
 import subprocess
 
-SERVICES = ["identity", "clinical", "therapeutic", "ai"]
+SERVICES = ["identity", "clinical", "therapeutic", "ai", "knowledge"]
 
 def run_service_migration(service: str, action: str = "upgrade", revision: str = "head") -> int:
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -26,7 +26,7 @@ def run_service_migration(service: str, action: str = "upgrade", revision: str =
 def main():
     parser = argparse.ArgumentParser(description="ZAYVORA Multi-Database Migration Runner")
     parser.add_argument("action", choices=["upgrade", "downgrade", "current", "history"], default="upgrade", nargs="?")
-    parser.add_argument("target", choices=["all", "identity", "clinical", "therapeutic", "ai"], default="all", nargs="?")
+    parser.add_argument("target", choices=["all", "identity", "clinical", "therapeutic", "ai", "knowledge"], default="all", nargs="?")
     parser.add_argument("--revision", default="head", help="Revision target (default: head)")
 
     args = parser.parse_args()

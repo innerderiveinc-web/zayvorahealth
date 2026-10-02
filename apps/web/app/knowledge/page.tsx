@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PlatformHeader } from "@/components/PlatformHeader";
+import { AuthService } from "@/lib/services/authService";
+
+const API = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
 
 interface Monograph {
   id: string;
@@ -92,6 +95,72 @@ export default function KnowledgePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMonograph, setSelectedMonograph] = useState<Monograph | null>(CANONICAL_MONOGRAPHS[0]);
   const [filterScheduleE1, setFilterScheduleE1] = useState(false);
+  const [ragEvidence, setRagEvidence] = useState<any[]>([]);
+  const [isSearchingRag, setIsSearchingRag] = useState(false);
+
+  useEffect(() => {
+    async function loadMonographs() {
+      try {
+        const session = AuthService.getSession();
+        const headers: Record<string, string> = session?.token ? { Authorization: `Bearer ${session.token}` } : {};
+        const res = await fetch(`${API}/api/v1/pharmacopoeia/monographs`, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          const items = Array.isArray(data) ? data : data.monographs || [];
+          if (items.length > 0) {
+            const mapped: Monograph[] = items.map((m: any, idx: number) => ({
+              id: m.id || `MONO-${idx + 1}`,
+              unani_name: m.unani_name || m.title || "Botanical",
+              botanical_name: m.botanical_name || m.scientific_name || "",
+              family: m.family || "Botanical",
+              part_used: m.part_used || "Whole Plant",
+              mizaj: m.mizaj || "Moderate",
+              daraja: m.daraja || "Daraja Awwal",
+              afal: Array.isArray(m.afal) ? m.afal : (m.afal ? [m.afal] : []),
+              indications: Array.isArray(m.indications) ? m.indications : (m.indications ? [m.indications] : []),
+              musleh: m.musleh || "None",
+              badal: m.badal || "None",
+              therapeutic_dose: m.therapeutic_dose || "Standard dose",
+              is_schedule_e1: Boolean(m.is_schedule_e1),
+              upi_volume: m.upi_volume || "UPI Standard Monograph",
+            }));
+            setMonographs(mapped);
+            if (!selectedMonograph && mapped.length > 0) setSelectedMonograph(mapped[0]);
+          }
+        }
+      } catch {}
+    }
+    loadMonographs();
+  }, []);
+
+  const handleRagSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setIsSearchingRag(true);
+    try {
+      const session = AuthService.getSession();
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {})
+      };
+      const res = await fetch(`${API}/api/v1/hybrid-rag/search`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          query: searchQuery,
+          top_k: 5,
+          alpha: 0.6,
+        })
+      });
+      if (res.ok) {
+        const ragData = await res.json();
+        setRagEvidence(ragData.results || ragData.documents || []);
+      }
+    } catch {}
+    finally {
+      setIsSearchingRag(false);
+    }
+  };
 
   const filteredMonographs = monographs.filter((m) => {
     const matchesSearch =
@@ -135,15 +204,22 @@ export default function KnowledgePage() {
           
           {/* Monographs List */}
           <div className="space-y-4">
-            <div className="flex gap-2">
+            <form onSubmit={handleRagSearch} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Search herb, botanical name, disease..."
+                placeholder="Search herb, botanical, or RAG query..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="zv-input text-xs"
+                className="zv-input text-xs flex-1"
               />
-            </div>
+              <button
+                type="submit"
+                disabled={isSearchingRag}
+                className="px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shrink-0"
+              >
+                {isSearchingRag ? "..." : "RAG"}
+              </button>
+            </form>
 
             <div className="flex items-center gap-2 text-xs">
               <label className="flex items-center gap-1.5 cursor-pointer text-[var(--muted)] hover:text-white">
@@ -260,9 +336,34 @@ export default function KnowledgePage() {
                 <span className="text-blue-400 font-bold block">Badal (Therapeutic Substitute)</span>
                 <p className="text-[var(--muted)] mt-1">{selectedMonograph?.badal}</p>
               </div>
-            </div>
-
+            {/* Neo4j Hybrid RAG Evidence Card */}
+            {ragEvidence.length > 0 && (
+              <div className="p-4 rounded-xl bg-purple-950/40 border border-purple-800/60 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-purple-300 font-bold flex items-center gap-2 text-xs">
+                    <span>🧠</span> Neo4j Knowledge Graph &amp; Hybrid RAG Citations
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] bg-purple-900/60 text-purple-200 border border-purple-700">
+                    {ragEvidence.length} Citations Retrieved
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {ragEvidence.map((doc: any, idx: number) => (
+                    <div key={idx} className="p-3 bg-[#0F172A] rounded-lg border border-slate-800 text-[11px] space-y-1">
+                      <div className="flex justify-between text-slate-300 font-bold">
+                        <span>{doc.title || doc.source || `Evidence Document #${idx + 1}`}</span>
+                        <span className="text-purple-400 font-mono text-[10px]">
+                          Score: {doc.score ? (doc.score * 100).toFixed(1) + "%" : "Direct Match"}
+                        </span>
+                      </div>
+                      <p className="text-slate-400 leading-relaxed">{doc.content || doc.text || JSON.stringify(doc)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
+
 
         </div>
 

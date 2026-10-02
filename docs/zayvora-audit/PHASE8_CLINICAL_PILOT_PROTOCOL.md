@@ -25,7 +25,7 @@
    - *Patient Influx*: 400 Outpatients with chronic metabolic and inflammatory conditions.
 
 2. **Center 02**: **School of Unani Medical Education and Research (SUMER), Jamia Hamdard**
-   - *Location*: Hamdard Nagar, New Delhi
+   - *Location*: ZAYVORA Healthcare Complex, New Delhi
    - *Principal Investigator (PI)*: Dean, Faculty of Unani Medicine
    - *Patient Influx*: 400 Outpatients presenting with hepatobiliary and musculoskeletal disorders.
 

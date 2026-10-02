@@ -563,8 +563,10 @@ def run_tests():
     print(f" PHASE 8 VERIFICATION RESULTS: {passed} PASSED | {failed} FAILED (TOTAL 16)")
     print("=" * 84)
 
-    if failed > 0:
-        sys.exit(1)
+    return passed, failed
 
 if __name__ == "__main__":
-    run_tests()
+    p, f = run_tests()
+    if f > 0:
+        sys.exit(1)
+    sys.exit(0)

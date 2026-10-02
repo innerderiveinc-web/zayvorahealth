@@ -1,6 +1,6 @@
 """
 Real Neo4j implementation of GraphRepository supporting the Four-Graph
-Physical Separation Architecture per Master Build Prompt v4.0 §27 and 2035 Horizon 1.
+Physical Separation Architecture per ZAYVORA Clinical Architecture Specification v4.0 §27 and 2035 Horizon 1.
 
 Databases:
 - zayvora_knowledge: Ontologies of Mufradat, Mizaj, OrganAxes, Poisons, Detox Protocols.

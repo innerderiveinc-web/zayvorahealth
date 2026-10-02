@@ -9,6 +9,7 @@ import {
 } from "@/lib/therapeuticApi";
 import { knowledgeApi, type MufradMonograph } from "@/lib/knowledgeApi";
 import type { PatientRecord } from "@/lib/clinicalApi";
+import { TwelveAxisRadar } from "@/components/TwelveAxisRadar";
 
 interface NuskhaBuilderProps {
   token: string;
@@ -31,13 +32,18 @@ const COMMON_DOSAGE_FORMS = [
 ];
 
 const ORGAN_AXES_OPTIONS = [
-  { id: "kabid", label: "Kabid (Hepatic)" },
-  { id: "mida", label: "Mida (Gastric / GI)" },
-  { id: "qalb", label: "Qalb (Cardiovascular)" },
-  { id: "dimagh", label: "Dimagh (Cerebral / Neuro)" },
-  { id: "asab", label: "Asab (Nervous system)" },
-  { id: "kulyah", label: "Kulyah (Renal / Urinary)" },
-  { id: "riya", label: "Riya (Respiratory / Pulmonary)" },
+  { id: "jigar-banas", label: "Axis 01: Jigar–Banas (Hepato-Metabolic)" },
+  { id: "dimagh-aasab", label: "Axis 02: Dimagh–Aasab (Neuro-Psychological)" },
+  { id: "qalb-uroq", label: "Axis 03: Qalb–Urooq (Cardio-Vascular)" },
+  { id: "riya-sadr", label: "Axis 04: Riya–Sadr (Broncho-Pulmonary)" },
+  { id: "meda-amaa", label: "Axis 05: Meda–Amaa (Gastro-Intestinal)" },
+  { id: "ghudad-hazm", label: "Axis 06: Kulyatain–Masana (Nephro-Urological)" },
+  { id: "khusyatain", label: "Axis 07: Khusyatain–Dam (Male Reproductive)" },
+  { id: "reham-mabaysim", label: "Axis 08: Rahim–Takhmdan (Female Reproductive)" },
+  { id: "mafasil", label: "Axis 09: Mafasil–Azlaat (Musculo-Skeletal)" },
+  { id: "shaar-jigar", label: "Axis 10: Jild–Masamat (Dermato-Immunological)" },
+  { id: "ghudda-mithana", label: "Axis 11: Tihal–Dimagh (Spleno-Cerebral)" },
+  { id: "tabiyat", label: "Axis 12: Hifz-e-Sehat (Immunomodulatory & Longevity)" },
 ];
 
 export function NuskhaBuilder({
@@ -167,6 +173,39 @@ export function NuskhaBuilder({
 
   const handleRemoveIngredient = (index: number) => {
     setIngredients((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSwapWithBadal = (index: number) => {
+    setIngredients((prev) => {
+      const copy = [...prev];
+      const target = copy[index];
+      if (!target.badal) return prev;
+      const primaryBadal = target.badal.split(/[,/;]/)[0].trim();
+      const oldName = target.name;
+      copy[index] = {
+        ...target,
+        name: primaryBadal,
+        badal: oldName,
+      };
+      return copy;
+    });
+  };
+
+  const handlePairMusleh = (index: number) => {
+    const target = ingredients[index];
+    if (!target.musleh) return;
+    const primaryMusleh = target.musleh.split(/[,/;]/)[0].trim();
+    setIngredients((prev) => [
+      ...prev,
+      {
+        name: primaryMusleh,
+        dose_mg: Math.round((target.dose_mg || 1000) * 0.25),
+        afal: "Musleh (Toxicity & Temperament Mitigator)",
+        musleh: "",
+        badal: "",
+        is_mudabbar: false,
+      },
+    ]);
   };
 
   const toggleAxis = (axisId: string) => {
@@ -345,25 +384,41 @@ export function NuskhaBuilder({
             />
           </div>
           <div>
-            <label className="zv-label">Target Organ Axes</label>
-            <div className="flex flex-wrap gap-1.5 mt-1">
-              {ORGAN_AXES_OPTIONS.map((axis) => {
-                const active = selectedAxes.includes(axis.id);
-                return (
-                  <button
-                    key={axis.id}
-                    type="button"
-                    onClick={() => toggleAxis(axis.id)}
-                    className={`px-2 py-1 rounded text-xs transition cursor-pointer border ${
-                      active
-                        ? "bg-[#1f6f54] text-white border-[#2ea87f]"
-                        : "bg-[#171d17] text-[#8a9490] border-[#24302a] hover:border-[#8a9490]"
-                    }`}
-                  >
-                    {axis.label}
-                  </button>
-                );
-              })}
+            <div className="flex items-center justify-between">
+              <label className="zv-label">Target Organ Axes (Aaza-e-Khadima & Raisa)</label>
+              <span className="text-[10px] text-[#2ea87f] font-mono">
+                {selectedAxes.length} / 12 Axes Targeted
+              </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-2 items-center bg-[#131913] p-3 rounded-lg border border-[#24302a]">
+              <div className="md:col-span-5 flex justify-center">
+                <TwelveAxisRadar
+                  activeAxes={selectedAxes}
+                  onAxisClick={toggleAxis}
+                  size={240}
+                  interactive={true}
+                  showLabels={true}
+                />
+              </div>
+              <div className="md:col-span-7 flex flex-wrap gap-1.5">
+                {ORGAN_AXES_OPTIONS.map((axis) => {
+                  const active = selectedAxes.includes(axis.id);
+                  return (
+                    <button
+                      key={axis.id}
+                      type="button"
+                      onClick={() => toggleAxis(axis.id)}
+                      className={`px-2 py-1 rounded text-xs transition cursor-pointer border ${
+                        active
+                          ? "bg-[#1f6f54] text-white border-[#2ea87f] shadow-sm shadow-[#2ea87f]/20"
+                          : "bg-[#171d17] text-[#8a9490] border-[#24302a] hover:border-[#8a9490] hover:text-[#ece8dd]"
+                      }`}
+                    >
+                      {axis.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -496,7 +551,19 @@ export function NuskhaBuilder({
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-[#8a9490]">Musleh (Corrective):</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-[#8a9490]">Musleh (Corrective):</span>
+                      {ing.musleh && (
+                        <button
+                          type="button"
+                          onClick={() => handlePairMusleh(idx)}
+                          className="text-[9px] text-[#2ea87f] hover:text-[#52d6a7] font-semibold underline cursor-pointer"
+                          title="Auto-add corrective as paired formulation ingredient"
+                        >
+                          + Pair Musleh
+                        </button>
+                      )}
+                    </div>
                     <input
                       type="text"
                       value={ing.musleh || ""}
@@ -506,7 +573,19 @@ export function NuskhaBuilder({
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-[#8a9490]">Badal (Substitute):</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-[#8a9490]">Badal (Substitute):</span>
+                      {ing.badal && (
+                        <button
+                          type="button"
+                          onClick={() => handleSwapWithBadal(idx)}
+                          className="text-[9px] text-[#c9a24b] hover:text-[#e3c884] font-semibold underline cursor-pointer"
+                          title="Instant 1-click replacement with classical substitute"
+                        >
+                          ⇄ Swap with Badal
+                        </button>
+                      )}
+                    </div>
                     <input
                       type="text"
                       value={ing.badal || ""}

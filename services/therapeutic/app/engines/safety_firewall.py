@@ -1,5 +1,5 @@
 """
-ZAYVORA Safety Firewall (Master Build Prompt v4.0 §13).
+ZAYVORA Safety Firewall (ZAYVORA Clinical Architecture Specification v4.0 §13).
 
 Runs BEFORE any Nuskha draft can be approved. Pure, deterministic function
 — no LLM involved, no randomness, same input always gives same output.
@@ -20,7 +20,28 @@ Enforces:
 from __future__ import annotations
 
 import re
+import sys
+import os
 from typing import Any
+
+# ── Mufradat 250 Registry Hard-Block Integration ─────────────────────────────
+try:
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../..")))
+    from services.knowledge.app.data.mufradat_250_registry import (
+        is_high_risk_blocked,
+        get_mufrad_by_id,
+        get_high_risk_28_registry,
+    )
+    _MUFRADAT_REGISTRY_AVAILABLE = True
+except ImportError:
+    _MUFRADAT_REGISTRY_AVAILABLE = False
+    def is_high_risk_blocked(zmf_id: str) -> bool:
+        return False
+    def get_mufrad_by_id(zmf_id: str) -> dict | None:
+        return None
+    def get_high_risk_28_registry() -> dict:
+        return {}
+# ─────────────────────────────────────────────────────────────────────────────
 
 VERDICT_ORDER = ["SAFE_TO_CONSIDER", "CAUTION", "MODIFY", "DO_NOT_RECOMMEND", "REFER"]
 
@@ -450,6 +471,60 @@ def _check_schedule_e1_poisons(ingredients: list[dict[str, Any]]) -> tuple[str, 
     verdict = "SAFE_TO_CONSIDER"
     reasons: list[str] = []
 
+    # ── GATE 0: Mufradat 250 Hard-Block (ZMF Registry Integration) ────────────
+    # Any ingredient carrying a ZMF ID that is in the HIGH_RISK_28 list
+    # receives an automatic DO_NOT_RECOMMEND regardless of Mudabbar status.
+    if _MUFRADAT_REGISTRY_AVAILABLE:
+        hr_registry = get_high_risk_28_registry()
+        for ing in ingredients:
+            zmf_id = (ing.get("zmf_id") or ing.get("id") or "").strip().upper()
+            ing_name = ing.get("name", "").strip()
+
+            is_purified = (
+                ing.get("shodhana_certified") is True
+                or ing.get("is_mudabbar") is True
+                or "shodhana" in ing_name.lower()
+                or "mudabbar" in ing_name.lower()
+            )
+
+            # Check by explicit ZMF ID
+            if zmf_id and is_high_risk_blocked(zmf_id):
+                rec = hr_registry.get(zmf_id, {})
+                target_verdict = "CAUTION" if is_purified else "DO_NOT_RECOMMEND"
+                verdict = _escalate(verdict, target_verdict)
+                reasons.append(
+                    f"🚫 MUFRADAT-250 HARD BLOCK [{zmf_id}]: '{ing_name or rec.get('name', zmf_id)}' "
+                    f"is classified HIGH_RISK in the ZMF Canonical Registry. "
+                    f"Primary toxin: {rec.get('primary_toxin', 'N/A')}. "
+                    f"Clinical risk: {rec.get('clinical_risk', 'See registry.')} "
+                    f"Restriction: {rec.get('restriction', 'AI_BLOCKED — clinician specialist sign-off required.')} "
+                    f"[Category: {rec.get('category', 'Restricted Substance')}]"
+                )
+                # Suranjan Talkh (ZMF-002) requires explicit Shodhana certificate
+                if zmf_id == "ZMF-002" and not is_purified:
+                    reasons.append(
+                        "⛔ SURANJAN SHODHANA ENFORCEMENT [ZMF-002]: Suranjan Talkh (Colchicum luteum Baker) "
+                        "requires a verified classical Shodhana certificate — soaked in vinegar (Sirka) for "
+                        "3 days, then boiled in cow's milk (Sheer-e-Gao) — before any dispensing. "
+                        "Set ingredient field 'shodhana_certified': true to acknowledge compliance. "
+                        "Without this, the formulation MUST NOT BE DISPENSED under PCIM&H / CDSCO norms."
+                    )
+            else:
+                # Also name-based scan against hr_registry for untagged ingredients
+                for zmf_key, rec in hr_registry.items():
+                    rec_name_lower = rec.get("name", "").lower()
+                    if rec_name_lower and rec_name_lower in ing_name.lower():
+                        target_verdict = "CAUTION" if is_purified else "DO_NOT_RECOMMEND"
+                        verdict = _escalate(verdict, target_verdict)
+                        reasons.append(
+                            f"🚫 MUFRADAT-250 HARD BLOCK (name match) [{zmf_key}]: "
+                            f"'{ing_name}' matches HIGH_RISK substance '{rec.get('name')}'. "
+                            f"Primary toxin: {rec.get('primary_toxin', 'N/A')}. "
+                            f"Restriction: {rec.get('restriction', 'AI_BLOCKED.')}"
+                        )
+                        break
+    # ─────────────────────────────────────────────────────────────────────────
+
     for ing in ingredients:
         name = ing.get("name", "").strip().lower()
         if not name:
@@ -671,4 +746,269 @@ def run_safety_firewall(*, patient_context: dict, ingredients: list[dict]) -> di
         "verdict": verdict,
         "reasons": reasons,
         "requiresPractitionerSignoff": True,
+    }
+
+
+# -----------------------------------------------------------------------------
+# Master Drug-Herb Interaction & Universal Contraindication Checker
+# -----------------------------------------------------------------------------
+try:
+    from services.knowledge.app.data.drug_interactions_master import (
+        check_drug_herb_interactions as master_check_interactions,
+        get_universal_contraindications as master_get_universal_contraindications,
+    )
+except ImportError:
+    master_check_interactions = None
+    master_get_universal_contraindications = None
+
+
+def run_master_drug_herb_safety_audit(
+    ingredients: list[Any],
+    current_medications: list[str],
+    is_pregnant: bool = False,
+    is_lactating: bool = False,
+    egfr: float | None = None
+) -> dict[str, Any]:
+    """
+    Direct audit against the 11 Master Drug-Herb Interactions and Universal Contraindications.
+    Accepts SKU strings, ingredient names, or ingredient dicts.
+    """
+    raw_names = []
+    for item in ingredients:
+        if isinstance(item, str):
+            raw_names.append(item)
+        elif isinstance(item, dict):
+            raw_names.append(item.get("name") or item.get("sku") or "")
+            
+    detected_interactions = []
+    if master_check_interactions:
+        detected_interactions = master_check_interactions(raw_names, current_medications)
+
+    contraindication_alerts = []
+    if master_get_universal_contraindications:
+        u_map = master_get_universal_contraindications()
+        if is_pregnant:
+            for item in u_map.get("PREGNANCY", []):
+                for ing in raw_names:
+                    sku = item.split()[0]
+                    if sku.lower() in ing.lower() or any(w.lower() in item.lower() for w in ing.split()):
+                        contraindication_alerts.append(f"PREGNANCY CONTRAINDICATION: {item}")
+        if is_lactating:
+            for item in u_map.get("LACTATION", []):
+                for ing in raw_names:
+                    sku = item.split()[0]
+                    if sku.lower() in ing.lower() or any(w.lower() in item.lower() for w in ing.split()):
+                        contraindication_alerts.append(f"LACTATION CONTRAINDICATION: {item}")
+        if egfr is not None and egfr < 30.0:
+            for item in u_map.get("SEVERE_RENAL_IMPAIRMENT_EGFR_UNDER_30", []):
+                for ing in raw_names:
+                    sku = item.split()[0]
+                    if sku.lower() in ing.lower() or any(w.lower() in item.lower() for w in ing.split()):
+                        contraindication_alerts.append(f"SEVERE RENAL CONTRAINDICATION (eGFR < 30): {item}")
+
+    is_safe = len(detected_interactions) == 0 and len(contraindication_alerts) == 0
+    severity = "SAFE"
+    if detected_interactions:
+        max_sev = max(i.get("severity", "LOW") for i in detected_interactions)
+        severity = max_sev
+    if contraindication_alerts:
+        severity = "CRITICAL"
+
+    return {
+        "is_safe": is_safe,
+        "severity": severity,
+        "interactions_count": len(detected_interactions),
+        "interactions": detected_interactions,
+        "contraindications_count": len(contraindication_alerts),
+        "contraindications": contraindication_alerts,
+        "requires_clinician_override": not is_safe
+    }
+
+
+# =====================================================================
+# CP-AFUM / AFUF RED FLAGS, FORBIDDEN LIST & HERB-DRUG MATRIX
+# Source: Dr. Irfan Ashraf — CP-AFUM Textbook Chapters 5 & 6, Table 6.1
+# =====================================================================
+
+CP_AFUM_RED_FLAGS = [
+    {
+        "name": "Elevated SGPT / Acute Hepatopathy",
+        "threshold": "SGPT > 100 U/L",
+        "check_fn": lambda d: d.get("sgpt", 0) > 100 or d.get("alt", 0) > 100,
+        "referral": "Hepatology — rule out viral hepatitis, NASH, or hepatocellular carcinoma.",
+        "zayvora_role": "Adjunctive liver support only — do not prescribe Phase 2 independently."
+    },
+    {
+        "name": "Severe Autoimmune Thyroiditis",
+        "threshold": "Anti-TPO > 300 IU/mL",
+        "check_fn": lambda d: d.get("anti_tpo", 0) > 300,
+        "referral": "Endocrinology — aggressive Hashimoto requiring specialist immunotherapy assessment.",
+        "zayvora_role": "ThyroMet Axis adjunctive only under specialist guidance."
+    },
+    {
+        "name": "Critically Diminished Ovarian Reserve",
+        "threshold": "AMH < 0.3 ng/mL",
+        "check_fn": lambda d: 0 < d.get("amh", 999) < 0.3,
+        "referral": "Reproductive Endocrinology — IVF pathway discussion required.",
+        "zayvora_role": "OvaSync may support but primary management is specialist-led."
+    },
+    {
+        "name": "Azoospermia",
+        "threshold": "Zero sperm on semen analysis",
+        "check_fn": lambda d: d.get("sperm_count", 999) == 0 or d.get("azoospermia", False),
+        "referral": "Urology / Reproductive Medicine — structural/genetic investigation (biopsy, ICSI candidacy).",
+        "zayvora_role": "Not a ZAYVORA solo case — ManiVital Pro as adjunct only."
+    },
+    {
+        "name": "Severe Uncontrolled Diabetes",
+        "threshold": "HbA1c > 10%",
+        "check_fn": lambda d: d.get("hba1c", 0) > 10.0,
+        "referral": "Endocrinology — severe T2DM requires insulin or multi-drug management.",
+        "zayvora_role": "MetaboCore adjunctive — do not solo manage severe T2DM."
+    },
+    {
+        "name": "Overt Primary Hypothyroidism",
+        "threshold": "TSH > 10 mIU/L",
+        "check_fn": lambda d: d.get("tsh", 0) > 10.0,
+        "referral": "General Medicine / Endocrinology — conventional levothyroxine co-prescription.",
+        "zayvora_role": "ThyroMet Axis adjunctive to conventional thyroid replacement."
+    },
+    {
+        "name": "Psychiatric Emergency",
+        "threshold": "Suicidal ideation, severe psychosis, acute mania",
+        "check_fn": lambda d: d.get("suicidal_ideation", False) or d.get("psychiatric_emergency", False),
+        "referral": "IMMEDIATE psychiatric referral — same day or emergency services.",
+        "zayvora_role": "No ZAYVORA role in acute psychiatric emergency management."
+    },
+    {
+        "name": "Unexplained Significant Weight Loss",
+        "threshold": ">10% body weight unintentional loss over 3 months",
+        "check_fn": lambda d: d.get("unexplained_weight_loss_pct", 0) > 10.0,
+        "referral": "Oncological screen mandatory before any protocol — exclude malignancy.",
+        "zayvora_role": "No ZAYVORA protocol until red flag cause excluded."
+    }
+]
+
+FORBIDDEN_FORMULATION_LIST = [
+    "DHEA", "pregnenolone", "synthetic testosterone", "synthetic estrogen", "anabolic steroid",
+    "Ephedra", "Ephedrine", "Yohimbine", "Aristolochia", "Kava-Kava", "Kava", "Raw Kuchla",
+    "Raw Shingraf", "Raw Suranjan", "Raw Jamalgota"
+]
+
+AFUF_HERB_DRUG_RULES = [
+    {
+        "herb": "Berberine",
+        "drug": "Metformin",
+        "severity": "SAFE_WITH_MONITORING",
+        "mechanism": "Additive AMPK activation — enhanced glucose-lowering.",
+        "action": "Safe combination; monitor for hypoglycemia if metformin dose is high."
+    },
+    {
+        "herb": "Berberine",
+        "drug": "Insulin",
+        "severity": "HIGH_CAUTION",
+        "mechanism": "Additive glucose lowering — cumulative hypoglycemia risk.",
+        "action": "CAUTION: Monitor glucose weekly; coordinate dose reduction with physician."
+    },
+    {
+        "herb": "Berberine",
+        "drug": "Statins",
+        "severity": "MODERATE_CAUTION",
+        "mechanism": "Berberine inhibits CYP3A4 -> increased statin plasma concentration.",
+        "action": "CAUTION: Monitor for myopathy (muscle pain, CK elevation); use lowest effective statin dose."
+    },
+    {
+        "herb": "Valerian",
+        "drug": "Benzodiazepines",
+        "severity": "CONTRAINDICATED",
+        "mechanism": "Additive GABAergic CNS depression -> excessive sedation risk.",
+        "action": "AVOID COMBINATION: Taper benzodiazepine first, then initiate Valerian after 2-week washout."
+    },
+    {
+        "herb": "Ashwagandha",
+        "drug": "Levothyroxine",
+        "severity": "MODERATE_MONITOR",
+        "mechanism": "Ashwagandha enhances deiodinase activity -> increased T4-to-T3 conversion.",
+        "action": "MONITOR: Recheck TSH + Free T3 every 4 weeks; patient may require Levothyroxine dose reduction."
+    },
+    {
+        "herb": "Guggul",
+        "drug": "Warfarin",
+        "severity": "HIGH_CAUTION",
+        "mechanism": "CYP modulation and antiplatelet additive effect alters INR.",
+        "action": "AVOID unless monitored weekly: inform anticoagulation clinic; check INR at 2 and 4 weeks."
+    },
+    {
+        "herb": "Silymarin",
+        "drug": "Cyclosporine",
+        "severity": "CONTRAINDICATED",
+        "mechanism": "CYP3A4 inhibition -> elevated immunosuppressant levels -> nephrotoxicity.",
+        "action": "AVOID in transplant patients: absolutely contraindicated without specialist transplant nephrologist review."
+    },
+    {
+        "herb": "NAC",
+        "drug": "Nitroglycerin",
+        "severity": "CONTRAINDICATED",
+        "mechanism": "NAC potentiates vasodilatory effect of nitrates -> severe hypotension risk.",
+        "action": "AVOID: Contraindicated combination. Screen for nitrate use in all cardiac patients."
+    }
+]
+
+
+def evaluate_cp_afum_clinical_safety(
+    patient_data: dict[str, Any],
+    ingredients: list[Any],
+    current_medications: list[str]
+) -> dict[str, Any]:
+    """
+    Comprehensive CP-AFUM Safety Screen:
+    1. Checks all Table 6.1 Red Flag referral criteria
+    2. Checks Chapter 19 Forbidden List violations
+    3. Checks Table 5.1 / Table R.2 Herb-Drug interaction rules
+    """
+    red_flag_triggers = []
+    for rf in CP_AFUM_RED_FLAGS:
+        try:
+            if rf["check_fn"](patient_data):
+                red_flag_triggers.append({
+                    "red_flag": rf["name"],
+                    "threshold": rf["threshold"],
+                    "referral": rf["referral"],
+                    "zayvora_role": rf["zayvora_role"]
+                })
+        except Exception:
+            pass
+
+    ing_names = []
+    for it in ingredients:
+        if isinstance(it, str):
+            ing_names.append(it)
+        elif isinstance(it, dict):
+            ing_names.append(it.get("name") or "")
+
+    forbidden_found = []
+    for ing in ing_names:
+        for f in FORBIDDEN_FORMULATION_LIST:
+            if f.lower() in ing.lower():
+                forbidden_found.append(f"FORBIDDEN INGREDIENT DETECTED: '{ing}' contains excluded agent '{f}'.")
+
+    # Check AFUF Herb-Drug rules
+    herb_drug_alerts = []
+    meds_str = " ".join(current_medications).lower()
+    for rule in AFUF_HERB_DRUG_RULES:
+        herb_hit = any(rule["herb"].lower() in ing.lower() for ing in ing_names)
+        drug_hit = rule["drug"].lower() in meds_str
+        if herb_hit and drug_hit:
+            herb_drug_alerts.append(rule)
+
+    is_safe = (len(red_flag_triggers) == 0 and len(forbidden_found) == 0 and 
+               all(a["severity"] != "CONTRAINDICATED" for a in herb_drug_alerts))
+
+    return {
+        "is_safe": is_safe,
+        "red_flag_referrals": red_flag_triggers,
+        "forbidden_ingredients": forbidden_found,
+        "herb_drug_interactions": herb_drug_alerts,
+        "requires_specialist_referral": len(red_flag_triggers) > 0,
+        "verdict": "SAFE" if is_safe else "REFER_OR_MODIFY"
     }

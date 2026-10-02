@@ -24,7 +24,7 @@ def test_add_classical_evidence(client, auth_headers):
 
 
 def test_evidence_defaults_to_pending_review_never_auto_approved(client, auth_headers):
-    """Master Build Prompt v4.0 §23: 'Never transform E0 into E3/E4
+    """ZAYVORA Clinical Architecture Specification v4.0 §23: 'Never transform E0 into E3/E4
     automatically.' Verified here as: adding evidence never sets
     review_status to anything but what was explicitly passed (default
     'pending'), regardless of the evidence level given."""
@@ -83,7 +83,7 @@ def test_list_evidence_ordered_by_level(client, auth_headers):
 def test_mufrad_with_no_evidence_can_be_explicitly_flagged_insufficient(client, auth_headers):
     """Not a distinct field yet — but confirms the honest baseline: a
     freshly created Mufrad has zero evidence, not fabricated evidence.
-    Master Build Prompt v4.0 §24: if no reliable source exists, the system
+    ZAYVORA Clinical Architecture Specification v4.0 §24: if no reliable source exists, the system
     must say so rather than inventing one."""
     mufrad = _create_mufrad(client, auth_headers)
     resp = client.get(f"/api/v1/mufradat/{mufrad['id']}/evidence", headers=auth_headers)

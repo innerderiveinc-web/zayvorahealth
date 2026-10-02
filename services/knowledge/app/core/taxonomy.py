@@ -1,6 +1,6 @@
 """
 Controlled vocabulary seeded at service startup. Taken verbatim from
-Master Build Prompt v4.0 §9 (Organ-Axis) and §8/classical Unani (Mizaj
+ZAYVORA Clinical Architecture Specification v4.0 §9 (Organ-Axis) and §8/classical Unani (Mizaj
 temperaments) — not invented here, not sourced from an AI guess. If this
 list is ever wrong, the fix is to correct it against the classical source
 the framework is built on, not to silently adjust it in code.

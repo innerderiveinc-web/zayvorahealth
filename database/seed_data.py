@@ -39,6 +39,12 @@ IMRAN_QURESHI_ID = "cccccccc-cccc-cccc-cccc-cccccccccccc"
 def get_canonical_seed_dict() -> dict:
     now = datetime.now(timezone.utc)
     return {
+        "system_provenance": {
+            "environment": "DEVELOPMENT_DEMO_FIXTURES",
+            "phi_classification": "ZERO_REAL_PATIENT_PHI (Synthetic Cohorts Only)",
+            "regulatory_compliance": "Digital Personal Data Protection Act, 2023 (read with DPDP Rules, 2025), IT Act 2000, & US-Export 21 CFR Part 11 / HIPAA Safe Harbor",
+            "clinical_intent": "Algorithm training, test suite execution & UI workflow demonstration."
+        },
         "organization": {
             "id": CANONICAL_ORG_ID,
             "name": "ZAYVORA Prime Clinic (New Delhi)",

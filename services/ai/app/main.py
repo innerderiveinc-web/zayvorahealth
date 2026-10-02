@@ -10,7 +10,7 @@ from app.clients.knowledge_client import KnowledgeClient
 from app.core.config import Settings, get_settings
 from app.core.database import init_db
 from app.providers.base import AIProvider
-from app.routers import hakeem, evaluation, security, multimodal
+from app.routers import hakeem, evaluation, security, multimodal, agentic
 
 
 def create_app(
@@ -44,9 +44,12 @@ def create_app(
             import os
 
             from app.providers.anthropic_provider import AnthropicProvider
+            from app.providers.deterministic_fallback_provider import DeterministicSafeFallbackProvider
             from app.providers.fallback_router import ChainedFallbackRouter
             from app.providers.local_vllm_provider import LocalVLLMProvider
             from app.providers.openai_provider import OpenAIProvider
+
+            safe_fallback = DeterministicSafeFallbackProvider()
 
             chain = []
             if settings.anthropic_api_key:
@@ -60,12 +63,11 @@ def create_app(
             if local_vllm_url:
                 chain.append(LocalVLLMProvider(base_url=local_vllm_url))
 
-            if len(chain) > 1:
-                app.state.ai_provider = ChainedFallbackRouter(providers=chain)
-            elif len(chain) == 1:
-                app.state.ai_provider = chain[0]
+            if len(chain) > 0:
+                app.state.ai_provider = ChainedFallbackRouter(providers=chain, deterministic_fallback=safe_fallback)
             else:
-                app.state.ai_provider = AnthropicProvider(api_key=settings.anthropic_api_key, model=settings.anthropic_model)
+                # Fall back gracefully to deterministic rule-based posology engine
+                app.state.ai_provider = safe_fallback
 
 
         yield
@@ -75,7 +77,7 @@ def create_app(
         version="0.1.0-phase4",
         description="Hakeem Sahab clinical copilot — orchestrates services/clinical + "
         "services/knowledge context, calls a model-agnostic AI provider, and structurally "
-        "validates the response before storing it as an AI Governance audit record (Master Build Prompt v4.0 Phase 4).",
+        "validates the response before storing it as an AI Governance audit record (ZAYVORA Clinical Architecture Specification v4.0 Phase 4).",
         lifespan=lifespan,
     )
     app.add_middleware(
@@ -89,6 +91,7 @@ def create_app(
     app.include_router(evaluation.router)
     app.include_router(security.router)
     app.include_router(multimodal.router)
+    app.include_router(agentic.router)
 
     @app.get("/api/health")
     def health():

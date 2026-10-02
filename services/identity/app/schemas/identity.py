@@ -44,16 +44,33 @@ class LoginRequest(BaseModel):
     email: EmailStr
     password: str
     organization_slug: str
+    mfa_code: str | None = Field(
+        default=None,
+        description="6-digit TOTP code. Required for clinical staff roles when MFA is enabled.",
+        min_length=6,
+        max_length=6,
+    )
 
 
 class TokenResponse(BaseModel):
+    """Response body returned by /login, /signup, and /refresh endpoints."""
+
     access_token: str
+    refresh_token: str | None = Field(
+        default=None,
+        description="Opaque refresh token. Present on login/signup and token rotation.",
+    )
     token_type: str = "bearer"
     expires_in_seconds: int
     user: UserOut
     organization: OrganizationOut
     roles: list[str]
     permissions: list[str]
+    mfa_required: bool = Field(
+        default=False,
+        description="True when MFA is required for this role but mfa_code was not supplied. "
+                    "Client must prompt user for TOTP and re-submit.",
+    )
 
 
 class RoleCreate(BaseModel):

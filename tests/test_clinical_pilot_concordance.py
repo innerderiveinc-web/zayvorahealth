@@ -3,7 +3,7 @@
 ZAYVORA Health™ — Phase 8: Multi-Center Clinical Pilot Concordance & DSMB Test Suite.
 
 Verifies:
-1. Multi-center clinical trial case ingestion across AUTC, Jamia Hamdard, and AMU AKTC.
+1. Multi-center clinical trial case ingestion across AUTC, SUMER Center, and AMU AKTC.
 2. Statistical inter-rater concordance (Cohen's Kappa >= 0.85).
 3. 100% statutory safety firewall interception and zero adverse event leakage.
 4. Automated Data & Safety Monitoring Board (DSMB) interim report generation.

@@ -1,6 +1,6 @@
 """
 Structural validation of a Hakeem Sahab response against the required
-format in Master Build Prompt v4.0 §59. This is NOT a hallucination
+format in ZAYVORA Clinical Architecture Specification v4.0 §59. This is NOT a hallucination
 detector (that would require a much harder factual-grounding check) — it
 only verifies the response is well-formed: every required section header
 is present. A response missing a required section (e.g. no SAFETY

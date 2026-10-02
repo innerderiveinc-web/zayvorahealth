@@ -188,8 +188,8 @@ export const portalApi = {
         return {
           patient_id: payload.patient_id,
           language: payload.language || "ur",
-          language_name: "Urdu (اردو)",
-          script_text: `محترم مریض! آپ کی تجویز کردہ دوا ${payload.medication_name || "جوارش"} نہار منہ لیں۔`,
+          language_name: "Urdu (Roman Transliteration)",
+          script_text: `Mohtaram Mareez! Aap ki tajweez kardah dawa ${payload.medication_name || "Jawarish"} nahar munh lein.`,
           transliteration: `Dear Patient! Please take ${payload.medication_name || "medication"} as prescribed.`,
           audio_format: "audio/wav;codec=pcm_16",
           audio_data_uri: "data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=",

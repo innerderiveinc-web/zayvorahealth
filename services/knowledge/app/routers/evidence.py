@@ -30,8 +30,8 @@ def add_evidence(
 ):
     """Never upgrades a claim's evidence level automatically — the caller
     states the level (E0-E6) explicitly, and review_status defaults to
-    'pending' until a qualified reviewer approves it. See Master Build
-    Prompt v4.0 §23: "Never transform E0 into E3/E4 automatically."""
+    'pending' until a qualified reviewer approves it. See
+    ZAYVORA Clinical Architecture Specification v4.0 §23: "Never transform E0 into E3/E4 automatically."""
     try:
         return _repo(request).add_evidence(
             organization_id=user.organization_id, mufrad_id=mufrad_id, evidence=payload.model_dump()

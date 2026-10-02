@@ -99,6 +99,12 @@ export const knowledgeApi = {
   listScheduleE1: (token: string) =>
     request<ScheduleE1Substance[]>("/api/v1/pharmacopoeia/schedule-e1", token),
 
+  listMaster350Catalog: (token: string) =>
+    request<Array<Record<string, unknown>>>("/api/v1/knowledge/mufradat-250/all", token),
+
+  getMonograph350Detail: (token: string, zmfId: string) =>
+    request<Record<string, unknown>>(`/api/v1/knowledge/mufradat-250/${encodeURIComponent(zmfId)}`, token),
+
   listCompounds: (token: string) =>
     request<CompoundFormulation[]>("/api/v1/pharmacopoeia/compounds", token),
 

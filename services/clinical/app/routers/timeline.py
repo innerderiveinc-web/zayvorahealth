@@ -20,7 +20,7 @@ def get_patient_timeline(
     db: Session = Depends(get_db),
     user: CurrentUser = Depends(require_permission("patient.read")),
 ):
-    """Master Build Prompt v4.0 §6: a chronological, machine-readable view
+    """ZAYVORA Clinical Architecture Specification v4.0 §6: a chronological, machine-readable view
     of everything that has happened to this patient — encounters, notes,
     prescriptions, appointments — so a clinician can understand the
     patient's journey quickly. Only current (non-superseded) note versions

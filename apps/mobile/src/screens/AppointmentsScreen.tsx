@@ -17,7 +17,7 @@ export const AppointmentsScreen: React.FC<{ onBack: () => void; onNavigate?: (sc
       <View style={styles.doctorCard}>
         <Text style={styles.doctorName}>Prof. Hakim Syed Mansoor Ahmad</Text>
         <Text style={styles.doctorRole}>Senior Tabeeb & Integrative Endocrinologist</Text>
-        <Text style={styles.doctorAffil}>Jamia Hamdard • 26+ Yrs Clinical Experience</Text>
+        <Text style={styles.doctorAffil}>ZAYVORA Matab™ • 26+ Yrs Clinical Experience</Text>
         <View style={styles.tagBadge}>
           <Text style={styles.tagText}>⭐ 4.9/5 (1,240 consultations)</Text>
         </View>

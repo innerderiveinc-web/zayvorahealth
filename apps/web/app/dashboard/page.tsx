@@ -7,22 +7,31 @@ import { PlatformHeader } from "@/components/PlatformHeader";
 import { PlatformFooter } from "@/components/PlatformFooter";
 import { loadSession, clearSession } from "@/lib/session";
 import type { TokenResponse } from "@/lib/identityApi";
+import { useAuth } from "@/lib/hooks/useAuth";
+import { getRoleDashboard } from "@/lib/auth";
 
 type DashboardRole = "doctor" | "admin" | "patient" | "pharmacist" | "receptionist";
 
 type DashboardModuleTab = 
-  | "all"
-  | "appointments"
-  | "patients"
-  | "clinical_ai"
-  | "axes_treatment"
-  | "pharmacy_labs"
-  | "revenue_analytics"
-  | "knowledge_system";
+  | "clinical"
+  | "therapeutic"
+  | "operations"
+  | "all";
 
 export default function EnterpriseHealthDashboard() {
   const router = useRouter();
+  const { role, isLoading: authLoading } = useAuth();
   const [session, setSession] = useState<TokenResponse | null>(null);
+
+  // Redirect to role-specific panel immediately after auth resolves
+  useEffect(() => {
+    if (!authLoading && role) {
+      const target = getRoleDashboard(role);
+      if (target !== '/dashboard') {
+        router.replace(target);
+      }
+    }
+  }, [authLoading, role, router]);
 
   // Active Role View
   const [activeRole, setActiveRole] = useState<DashboardRole>("doctor");
@@ -31,8 +40,8 @@ export default function EnterpriseHealthDashboard() {
   const [sidebarMode, setSidebarMode] = useState<"expanded" | "collapsed" | "mobile">("expanded");
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  // Active in-dashboard section tab
-  const [activeTab, setActiveTab] = useState<DashboardModuleTab>("all");
+  // Active in-dashboard section tab (Focus Mode)
+  const [activeTab, setActiveTab] = useState<DashboardModuleTab>("clinical");
 
   // Interactive state
   const [appointmentFilter, setAppointmentFilter] = useState("today");
@@ -40,6 +49,7 @@ export default function EnterpriseHealthDashboard() {
   const [acknowledgedAlerts, setAcknowledgedAlerts] = useState<number[]>([]);
   const [aiQuery, setAiQuery] = useState("");
   const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [quickActionNotice, setQuickActionNotice] = useState<string | null>(null);
 
@@ -57,44 +67,53 @@ export default function EnterpriseHealthDashboard() {
     setAcknowledgedAlerts((prev) => [...prev, id]);
   }
 
-  function handleAskAi(customPrompt?: string) {
+  // Ask Hakeem AI
+  async function handleAskAi(customPrompt?: string) {
     const q = customPrompt || aiQuery;
     if (!q.trim()) return;
     setAiLoading(true);
     setAiResponse(null);
-    setTimeout(() => {
+    setAiError(null);
+    try {
+      const res = await fetch("/api/v1/hakeem/consult", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: q, mode: "copilot" }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAiResponse(data.summary || (typeof data === "string" ? data : JSON.stringify(data, null, 2)));
+      } else {
+        setAiError(`CDS Service returned HTTP ${res.status}. Clinical Decision Support Copilot is currently offline or unreachable.`);
+      }
+    } catch {
+      setAiError("Unable to establish secure connection with ZAYVORA Clinical Inference Engine. Offline/fail-closed mode active.");
+    } finally {
       setAiLoading(false);
-      setAiResponse(
-        `AI Clinical Copilot Analysis for: "${q}"\n\n` +
-        `• Su-e-Mizaj Correlation: Barid Balghami (Cold & Moist dyscrasia) detected.\n` +
-        `• Organ-Axis Affinity: Kabid-Mida (Hepato-Gastric) with mild peripheral microvascular stasis.\n` +
-        `• Suggested Pathway: Afaal Stage 1 (Tanqiya) with Munzij-e-Balgham + Arq-e-Badiyan Anupan.\n` +
-        `• Statutory Clinician Barrier: safe_to_lock = False. Clinician digital signature required before dispensing.`
-      );
-    }, 600);
+    }
   }
 
   // 18 Sidebar Main Menu items
   const sidebarItems = [
     { id: "dashboard", label: "Dashboard", icon: "📊", tab: "all" },
     { id: "reception", label: "Reception & Queue", icon: "🛎️", href: "/receptionist" },
-    { id: "patients", label: "Patients", icon: "👥", tab: "patients" },
-    { id: "appointments", label: "Appointments", icon: "📅", tab: "appointments" },
+    { id: "patients", label: "Patients", icon: "👥", href: "/doctor/patients" },
+    { id: "appointments", label: "Appointments", icon: "📅", href: "/doctor/calendar" },
     { id: "clinical", label: "Clinical Workspace", icon: "🩺", href: "/doctor" },
-    { id: "ai_doctor", label: "AI Doctor — Hakeem Sahab", icon: "🤖", href: "/ai" },
-    { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", tab: "axes_treatment" },
-    { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor" },
+    { id: "ai_cds", label: "Hakeem Sahab AI™ — Clinical Decision Support", icon: "🤖", href: "/doctor/hakeem-sahab" },
+    { id: "protocols", label: "ZAYVORA Protocols", icon: "📑", href: "/protocols" },
+    { id: "prescriptions", label: "Prescriptions", icon: "📝", href: "/doctor/nuskha" },
     { id: "pharmacy", label: "Medicines / Pharmacy", icon: "💊", href: "/pharmacy" },
-    { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", tab: "pharmacy_labs" },
-    { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", tab: "axes_treatment" },
-    { id: "followups", label: "Follow-ups", icon: "🔄", tab: "appointments" },
-    { id: "telemedicine", label: "Telemedicine", icon: "📱", href: "/website" },
-    { id: "billing", label: "Billing & Payments", icon: "💳", tab: "revenue_analytics" },
-    { id: "analytics", label: "Analytics", icon: "📈", tab: "revenue_analytics" },
-    { id: "knowledge", label: "Knowledge Base", icon: "📚", tab: "knowledge_system" },
-    { id: "messages", label: "Messages", icon: "💬", tab: "all" },
-    { id: "notifications", label: "Notifications", icon: "🔔", tab: "all" },
-    { id: "settings", label: "Settings", icon: "⚙️", tab: "all" },
+    { id: "diagnostics", label: "Diagnostics / Reports", icon: "🧪", href: "/doctor/reports" },
+    { id: "treatment_plans", label: "Treatment Plans", icon: "🌿", href: "/doctor/organ-axis" },
+    { id: "followups", label: "Follow-ups", icon: "🔄", href: "/doctor/follow-ups" },
+    { id: "telemedicine", label: "Telemedicine", icon: "📱", href: "/telemedicine" },
+    { id: "billing", label: "Billing & Payments", icon: "💳", href: "/billing" },
+    { id: "analytics", label: "Analytics", icon: "📈", href: "/analytics" },
+    { id: "knowledge", label: "Knowledge Base", icon: "📚", href: "/knowledge" },
+    { id: "messages", label: "Messages", icon: "💬", href: "/messages" },
+    { id: "notifications", label: "Notifications", icon: "🔔", href: "/notifications" },
+    { id: "settings", label: "Settings", icon: "⚙️", href: "/settings" },
   ];
 
   // 6 KPI Summary Cards Data
@@ -306,10 +325,10 @@ export default function EnterpriseHealthDashboard() {
                   📅 Book Appointment
                 </button>
                 <button
-                  onClick={() => { setActiveTab("clinical_ai"); handleQuickAction("Open AI Doctor"); }}
+                  onClick={() => { setActiveTab("clinical_ai"); handleQuickAction("Open Clinical Decision Support"); }}
                   className="px-3.5 py-2 rounded-xl bg-teal-500/20 text-teal-300 hover:bg-teal-500/30 text-xs font-semibold border border-teal-500/40 transition"
                 >
-                  🤖 Open AI Doctor
+                  🤖 Clinical Decision Support
                 </button>
                 <button
                   onClick={() => handleQuickAction("Add Medicine")}
@@ -328,40 +347,70 @@ export default function EnterpriseHealthDashboard() {
           </section>
 
           {/* Role-Based Dashboard View Switcher */}
-          <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
-            <div className="flex items-center gap-2 overflow-x-auto">
-              <span className="text-xs font-bold text-[var(--muted)] uppercase mr-1">View Persona:</span>
-              {(["doctor", "admin", "patient", "pharmacist", "receptionist"] as DashboardRole[]).map(r => (
-                <button
-                  key={r}
-                  onClick={() => {
-                    setActiveRole(r);
-                    if (r === "admin") router.push("/admin");
-                    else if (r === "patient") router.push("/patient");
-                    else if (r === "pharmacist") router.push("/pharmacy");
-                    else if (r === "receptionist") router.push("/receptionist");
-                  }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition ${
-                    activeRole === r
-                      ? "bg-[#0D9488] text-white shadow-xs"
-                      : "bg-[var(--panel)] text-[var(--muted)] hover:text-white border border-[var(--border)]"
-                  }`}
-                >
-                  {r === "doctor" ? "🩺 Doctor" :
-                   r === "admin" ? "🛡️ Admin" :
-                   r === "patient" ? "👤 Patient" :
-                   r === "pharmacist" ? "💊 Pharmacist" : "🏥 Receptionist"}
-                </button>
-              ))}
+          {/* FOCUSED CLINICAL MODE SELECTOR (PROGRESSIVE DISCLOSURE) */}
+          <div className="bg-[var(--panel)] border border-[var(--border)] rounded-2xl p-2.5 flex flex-wrap items-center justify-between gap-3 shadow-md">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[11px] font-bold text-[var(--muted)] uppercase tracking-wider px-1">
+                Clinical Focus:
+              </span>
+              
+              <button
+                onClick={() => setActiveTab("clinical")}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                  activeTab === "clinical"
+                    ? "bg-[#0D9488] text-white shadow-sm"
+                    : "text-[var(--muted)] hover:text-white hover:bg-[var(--elevated)]"
+                }`}
+              >
+                <span>🩺</span>
+                <span>Daily Clinical OPD</span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/25 text-[#A7F3D0] uppercase font-mono">Active OPD</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("therapeutic")}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                  activeTab === "therapeutic"
+                    ? "bg-[#0D9488] text-white shadow-sm"
+                    : "text-[var(--muted)] hover:text-white hover:bg-[var(--elevated)]"
+                }`}
+              >
+                <span>🌿</span>
+                <span>9-Organ Axis & Living Plans</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("operations")}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                  activeTab === "operations"
+                    ? "bg-[#0D9488] text-white shadow-sm"
+                    : "text-[var(--muted)] hover:text-white hover:bg-[var(--elevated)]"
+                }`}
+              >
+                <span>💊</span>
+                <span>Dispensary & Practice Ops</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("all")}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                  activeTab === "all"
+                    ? "bg-[#0D9488] text-white shadow-sm"
+                    : "text-[var(--muted)] hover:text-white hover:bg-[var(--elevated)]"
+                }`}
+              >
+                <span>🌐</span>
+                <span>All Overview</span>
+              </button>
             </div>
 
-            {/* In-Dashboard Module Tabs */}
-            <div className="hidden xl:flex items-center gap-1.5 text-xs">
-              <button onClick={() => setActiveTab("all")} className={`px-2.5 py-1 rounded-md ${activeTab === "all" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>All Overview</button>
-              <button onClick={() => setActiveTab("clinical_ai")} className={`px-2.5 py-1 rounded-md ${activeTab === "clinical_ai" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>AI & Alerts</button>
-              <button onClick={() => setActiveTab("axes_treatment")} className={`px-2.5 py-1 rounded-md ${activeTab === "axes_treatment" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>9-Axis & Plans</button>
-              <button onClick={() => setActiveTab("pharmacy_labs")} className={`px-2.5 py-1 rounded-md ${activeTab === "pharmacy_labs" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>Dispensary & Labs</button>
-              <button onClick={() => setActiveTab("revenue_analytics")} className={`px-2.5 py-1 rounded-md ${activeTab === "revenue_analytics" ? "bg-[var(--elevated)] text-[#2DD4BF] font-bold" : "text-[var(--muted)]"}`}>Revenue</button>
+            {/* Quick Persona Navigation */}
+            <div className="flex items-center gap-1.5 text-xs border-t lg:border-t-0 lg:border-l border-[var(--border)] pt-2 lg:pt-0 lg:pl-3 w-full lg:w-auto">
+              <span className="text-[10px] text-[var(--muted)] uppercase font-semibold">Portal:</span>
+              <button onClick={() => router.push("/doctor")} className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] text-[11px] text-white hover:border-[#2DD4BF] border border-transparent font-medium">Doctor Cockpit</button>
+              <button onClick={() => router.push("/patient")} className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] text-[11px] text-white hover:border-[#2DD4BF] border border-transparent font-medium">Patient 360</button>
+              <button onClick={() => router.push("/pharmacy")} className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] text-[11px] text-white hover:border-[#2DD4BF] border border-transparent font-medium">FEFO Pharmacy</button>
+              <button onClick={() => router.push("/receptionist")} className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] text-[11px] text-white hover:border-[#2DD4BF] border border-transparent font-medium">Reception</button>
             </div>
           </div>
 
@@ -450,7 +499,8 @@ export default function EnterpriseHealthDashboard() {
           </section>
 
           {/* SECTION 5 & 8: Priority Split - Today's Appointments & Hakeem Sahab AI */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {(activeTab === "clinical" || activeTab === "all") && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Today's Appointments Widget (7 cols) */}
             <div className="lg:col-span-7 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
@@ -524,13 +574,13 @@ export default function EnterpriseHealthDashboard() {
               </div>
             </div>
 
-            {/* SECTION 8: Hakeem Sahab — AI Doctor Panel (5 cols) */}
+            {/* SECTION 8: Hakeem Sahab — Clinical Decision Support Panel (5 cols) */}
             <div className="lg:col-span-5 p-6 rounded-3xl bg-gradient-to-b from-[#1E293B] to-[var(--panel)] border border-teal-500/40 space-y-4 shadow-xl">
               <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🤖</span>
                   <div>
-                    <h3 className="text-base font-bold text-white">Hakeem Sahab AI Copilot</h3>
+                    <h3 className="text-base font-bold text-white">Hakeem Sahab AI™ Copilot</h3>
                     <span className="text-[10px] text-teal-300 font-mono">5-Layer Clinical Decision Support</span>
                   </div>
                 </div>
@@ -541,8 +591,8 @@ export default function EnterpriseHealthDashboard() {
 
               {/* Quick AI Action Pills */}
               <div className="flex flex-wrap gap-1.5 text-[10px]">
-                <button onClick={() => handleAskAi("Analyze Patient Hamza Farooqi")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
-                  ⚡ Analyze Hamza Farooqi
+                <button onClick={() => handleAskAi("Explore Barid Balghami Dyscrasia Guidelines")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
+                  ⚡ Barid Balghami Guidelines
                 </button>
                 <button onClick={() => handleAskAi("Review Knee Arthralgia Symptoms")} className="px-2.5 py-1 rounded-lg bg-[var(--background)] border border-[var(--border)] hover:border-[#2DD4BF] text-slate-300">
                   🦴 Review Symptoms
@@ -579,347 +629,400 @@ export default function EnterpriseHealthDashboard() {
                 </div>
               )}
 
+              {/* AI Service Fail-Closed State */}
+              {aiError && (
+                <div className="p-4 rounded-2xl bg-rose-950/40 border border-rose-800/60 text-xs space-y-2.5">
+                  <div className="flex items-center gap-2 text-rose-300 font-semibold">
+                    <span className="text-base">⚠</span>
+                    <span>Clinical Decision Support Currently Unavailable</span>
+                  </div>
+                  <p className="text-slate-300 text-[11px] leading-relaxed">
+                    {aiError} In accordance with medical safety guardrails (<code className="text-rose-200">safe_to_lock = False</code>), clinical suggestions cannot be simulated offline.
+                  </p>
+                  <div className="flex items-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleAskAi()}
+                      className="px-3 py-1 rounded-lg bg-rose-900/60 hover:bg-rose-800 text-white text-[10px] font-bold border border-rose-700 transition"
+                    >
+                      Retry Connection
+                    </button>
+                    <a
+                      href="/knowledge"
+                      className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-semibold border border-slate-700 transition"
+                    >
+                      Consult Knowledge Base
+                    </a>
+                  </div>
+                </div>
+              )}
+
               {/* Mandatory AI Safety Disclaimer */}
               <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 leading-snug">
                 <strong>Statutory Disclaimer:</strong> AI-generated information is for clinical decision support only. Final diagnosis and treatment decisions require qualified clinician approval (<code className="text-amber-200">safe_to_lock = False</code>).
               </div>
             </div>
-
-          </div>
+          )}
 
           {/* SECTION 6 & 11: Patient Overview & Follow-up Reminders */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            {/* Patient Overview Widget (8 cols) */}
-            <div className="lg:col-span-8 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-3">
-                <div>
-                  <h3 className="text-base font-bold text-white">Patient Clinical Directory</h3>
-                  <p className="text-xs text-[var(--muted)]">Active cohorts and EMR records</p>
-                </div>
-                <div className="flex flex-wrap items-center gap-1 bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] text-[10px] font-bold">
-                  {["all", "high-priority", "follow-up", "pending-reports"].map(f => (
-                    <button
-                      key={f}
-                      onClick={() => setPatientFilter(f)}
-                      className={`px-2 py-1 rounded-lg capitalize transition ${
-                        patientFilter === f ? "bg-[var(--elevated)] text-[#2DD4BF]" : "text-[var(--muted)]"
-                      }`}
-                    >
-                      {f.replace("-", " ")}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          {(activeTab === "therapeutic" || activeTab === "operations" || activeTab === "all" || activeTab === "clinical") && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Patient Overview Widget (8 cols in all, 12 cols in therapeutic) */}
+              {(activeTab === "therapeutic" || activeTab === "all") && (
+                <div className={`p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4 ${
+                  activeTab === "therapeutic" ? "lg:col-span-12" : "lg:col-span-8"
+                }`}>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[var(--border)] pb-3">
+                    <div>
+                      <h3 className="text-base font-bold text-white">Patient Clinical Directory</h3>
+                      <p className="text-xs text-[var(--muted)]">Active cohorts and EMR records</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1 bg-[var(--background)] p-1 rounded-xl border border-[var(--border)] text-[10px] font-bold">
+                      {["all", "high-priority", "follow-up", "pending-reports"].map(f => (
+                        <button
+                          key={f}
+                          onClick={() => setPatientFilter(f)}
+                          className={`px-2 py-1 rounded-lg capitalize transition ${
+                            patientFilter === f ? "bg-[var(--elevated)] text-[#2DD4BF]" : "text-[var(--muted)]"
+                          }`}
+                        >
+                          {f.replace("-", " ")}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {patientsList.map(p => (
-                  <div key={p.id} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2 text-xs">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-bold text-white text-sm">{p.name}</h4>
-                        <span className="text-[10px] text-[var(--muted)] font-mono">{p.id} • {p.ageGender}</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {patientsList.map(p => (
+                      <div key={p.id} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2 text-xs">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="font-bold text-white text-sm">{p.name}</h4>
+                            <span className="text-[10px] text-[var(--muted)] font-mono">{p.id} • {p.ageGender}</span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+                            {p.status}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-slate-300">
+                          <strong>Complaint:</strong> {p.complaint}
+                        </div>
+                        <div className="text-[10px] text-[var(--muted)] space-y-0.5">
+                          <div>Protocol: <strong className="text-teal-300">{p.protocol}</strong></div>
+                          <div>Next Follow-up: <strong className="text-white">{p.nextFollowup}</strong></div>
+                        </div>
+                        <div className="pt-2 border-t border-[var(--border)] flex justify-between items-center">
+                          <button onClick={() => router.push("/doctor")} className="text-xs text-emerald-400 font-bold hover:underline">
+                            Open EMR Dossier →
+                          </button>
+                        </div>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
-                        {p.status}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-300">
-                      <strong>Complaint:</strong> {p.complaint}
-                    </div>
-                    <div className="text-[10px] text-[var(--muted)] space-y-0.5">
-                      <div>Protocol: <strong className="text-teal-300">{p.protocol}</strong></div>
-                      <div>Next Follow-up: <strong className="text-white">{p.nextFollowup}</strong></div>
-                    </div>
-                    <div className="pt-2 border-t border-[var(--border)] flex justify-between items-center">
-                      <button onClick={() => router.push("/doctor")} className="text-xs text-emerald-400 font-bold hover:underline">
-                        Open EMR Dossier →
-                      </button>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* SECTION 11: Pending Follow-ups with QSURA (4 cols) */}
-            <div className="lg:col-span-4 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <div>
-                  <h3 className="text-base font-bold text-white">Pending Follow-ups</h3>
-                  <span className="text-[10px] text-emerald-400 font-mono">QSURA Multi-Rail Ready</span>
                 </div>
-                <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
-                  3 Pending
-                </span>
-              </div>
+              )}
 
-              <div className="space-y-3">
-                {followupsList.map((f, i) => (
-                  <div key={i} className="p-3 rounded-2xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-2">
-                    <div className="flex justify-between items-center">
-                      <strong className="text-white font-bold">{f.patient}</strong>
-                      <span className="text-[10px] font-mono text-amber-300 font-bold">{f.due}</span>
+              {/* SECTION 11: Pending Follow-ups with QSURA */}
+              {(activeTab === "operations" || activeTab === "clinical" || activeTab === "all") && (
+                <div className={`p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4 ${
+                  activeTab === "operations" || activeTab === "clinical" ? "lg:col-span-12" : "lg:col-span-4"
+                }`}>
+                  <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                    <div>
+                      <h3 className="text-base font-bold text-white">Pending Patient Follow-ups</h3>
+                      <span className="text-[10px] text-emerald-400 font-mono">QSURA Multi-Rail Active</span>
                     </div>
-                    <p className="text-[11px] text-[var(--muted)]">{f.reason}</p>
-                    <div className="flex gap-1.5 pt-1">
-                      <button
-                        onClick={() => handleQuickAction(`Sent WhatsApp reminder to ${f.patient}`)}
-                        className="flex-1 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]"
-                      >
-                        💬 WhatsApp
-                      </button>
-                      <button
-                        onClick={() => handleQuickAction(`Placed call to ${f.patient}`)}
-                        className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
-                      >
-                        📞 Call
-                      </button>
-                      <button
-                        onClick={() => handleQuickAction(`Sent SMS to ${f.patient}`)}
-                        className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
-                      >
-                        ✉️ SMS
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* SECTION 9: ZAYVORA Axis Mapping Section (9 Functional Axes) */}
-          <section className="p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border)] pb-3">
-              <div>
-                <span className="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Functional Biomarker Topology</span>
-                <h3 className="text-lg font-bold text-white mt-0.5">ZAYVORA 9-Axis Clinical Mapping</h3>
-              </div>
-              <span className="text-xs text-[var(--muted)] font-mono">Patient Baseline vs Current Humoral Deviation</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {axesData.map((axis) => (
-                <div key={axis.name} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2.5">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-white text-xs">{axis.name}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono ${
-                      axis.risk === "Optimal" ? "bg-emerald-500/20 text-emerald-400" :
-                      axis.risk === "Stable" ? "bg-blue-500/20 text-blue-400" :
-                      axis.risk === "Moderate" ? "bg-yellow-500/20 text-yellow-300" :
-                      "bg-rose-500/20 text-rose-300"
-                    }`}>
-                      {axis.risk}
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
+                      3 Actionable Today
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 bg-[var(--panel)] h-2 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${
-                          axis.score > 75 ? "bg-rose-500" : axis.score > 60 ? "bg-amber-400" : "bg-emerald-400"
-                        }`}
-                        style={{ width: `${axis.score}%` }}
-                      />
-                    </div>
-                    <span className="text-xs font-bold font-mono text-white">{axis.score}/100</span>
-                  </div>
-
-                  <div className="text-[11px] text-[var(--muted)] space-y-0.5 pt-1 border-t border-[var(--border)]">
-                    <div>Protocol: <strong className="text-teal-300">{axis.protocol}</strong></div>
-                    <div>Action: <span className="text-white">{axis.action}</span></div>
+                  <div className={`space-y-3 ${activeTab === "clinical" || activeTab === "operations" ? "grid grid-cols-1 md:grid-cols-3 gap-3 space-y-0" : ""}`}>
+                    {followupsList.map((f, i) => (
+                      <div key={i} className="p-3 rounded-2xl bg-[var(--background)] border border-[var(--border)] text-xs space-y-2">
+                        <div className="flex justify-between items-center">
+                          <strong className="text-white font-bold">{f.patient}</strong>
+                          <span className="text-[10px] font-mono text-amber-300 font-bold">{f.due}</span>
+                        </div>
+                        <p className="text-[11px] text-[var(--muted)]">{f.reason}</p>
+                        <div className="flex gap-1.5 pt-1">
+                          <button
+                            onClick={() => handleQuickAction(`Sent WhatsApp reminder to ${f.patient}`)}
+                            className="flex-1 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px]"
+                          >
+                            💬 WhatsApp
+                          </button>
+                          <button
+                            onClick={() => handleQuickAction(`Placed call to ${f.patient}`)}
+                            className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
+                          >
+                            📞 Call
+                          </button>
+                          <button
+                            onClick={() => handleQuickAction(`Sent SMS to ${f.patient}`)}
+                            className="px-2.5 py-1 rounded-lg bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-[10px]"
+                          >
+                            ✉️ SMS
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+              )}
+
             </div>
-          </section>
+          )}
+
+          {/* SECTION 9: ZAYVORA Axis Mapping Section (9 Functional Axes) */}
+          {(activeTab === "therapeutic" || activeTab === "all") && (
+            <section className="p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border)] pb-3">
+                <div>
+                  <span className="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Functional Biomarker Topology</span>
+                  <h3 className="text-lg font-bold text-white mt-0.5">ZAYVORA 9-Axis Clinical Mapping</h3>
+                </div>
+                <span className="text-xs text-[var(--muted)] font-mono">Patient Baseline vs Current Humoral Deviation</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {axesData.map((axis) => (
+                  <div key={axis.name} className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-2.5">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-white text-xs">{axis.name}</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full font-mono ${
+                        axis.risk === "Optimal" ? "bg-emerald-500/20 text-emerald-400" :
+                        axis.risk === "Stable" ? "bg-blue-500/20 text-blue-400" :
+                        axis.risk === "Moderate" ? "bg-yellow-500/20 text-yellow-300" :
+                        "bg-rose-500/20 text-rose-300"
+                      }`}>
+                        {axis.risk}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 bg-[var(--panel)] h-2 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${
+                            axis.score > 75 ? "bg-rose-500" : axis.score > 60 ? "bg-amber-400" : "bg-emerald-400"
+                          }`}
+                          style={{ width: `${axis.score}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-bold font-mono text-white">{axis.score}/100</span>
+                    </div>
+
+                    <div className="text-[11px] text-[var(--muted)] space-y-0.5 pt-1 border-t border-[var(--border)]">
+                      <div>Protocol: <strong className="text-teal-300">{axis.protocol}</strong></div>
+                      <div>Action: <span className="text-white">{axis.action}</span></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* SECTION 10 & 12: Active Treatment Plans & Pharmacy Dispensary */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            {/* Active Treatment Plans (6 cols) */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <h3 className="text-base font-bold text-white">Active Treatment Plans</h3>
-                <span className="text-xs text-[#2DD4BF] font-semibold">89 Active Cohorts</span>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-3 text-xs">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-white text-sm">Metabolic Reset 90</span>
-                  <span className="text-emerald-400 font-mono font-bold">27% Complete</span>
-                </div>
-                <div className="text-[11px] text-[var(--muted)] space-y-1">
-                  <div>Patient: <strong className="text-white">Hamza Farooqi (MRN-2026-0814)</strong></div>
-                  <div>Current Phase: <strong className="text-teal-300">Phase 1: Liver Priming (Day 24 of 90)</strong></div>
-                  <div>Next Milestone: <strong>Fasting Lipid & Glucose Panel in 7 days</strong></div>
-                  <div>Adherence Status: <span className="text-emerald-400 font-semibold">High (94%)</span></div>
-                </div>
-                <div className="w-full bg-[var(--panel)] h-2 rounded-full overflow-hidden">
-                  <div className="bg-emerald-400 h-full rounded-full" style={{ width: "27%" }} />
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION 12: Pharmacy & Medicine Inventory (6 cols) */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <div>
-                  <h3 className="text-base font-bold text-white">Dispensary & Medicine Safety</h3>
-                  <span className="text-[10px] text-emerald-400 font-mono">Schedule E(1) Mudabbar Gated</span>
-                </div>
-                <Link href="/pharmacy" className="text-xs text-teal-300 hover:underline font-bold">
-                  Open Pharmacy OS →
-                </Link>
-              </div>
-
-              <div className="space-y-2.5 text-xs">
-                <div className="p-3 rounded-xl bg-[var(--background)] border border-amber-500/30 flex justify-between items-center">
-                  <div>
-                    <span className="font-bold text-white block">Suranjan Talkh (Mudabbar)</span>
-                    <span className="text-[10px] text-amber-300">Batch B2-2026 • Exp: 2027-08-30</span>
+          {(activeTab === "therapeutic" || activeTab === "operations" || activeTab === "all") && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Active Treatment Plans (6 cols in all, 12 cols in therapeutic) */}
+              {(activeTab === "therapeutic" || activeTab === "all") && (
+                <div className={`p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4 ${
+                  activeTab === "therapeutic" ? "lg:col-span-12" : "lg:col-span-6"
+                }`}>
+                  <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                    <h3 className="text-base font-bold text-white">Active Living Treatment Plans</h3>
+                    <span className="text-xs text-[#2DD4BF] font-semibold">89 Active Cohorts</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">
-                    29 Units (Low Stock)
-                  </span>
-                </div>
-                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
-                  <div>
-                    <span className="font-bold text-white block">ManiVital Pro (Withania Extract)</span>
-                    <span className="text-[10px] text-[var(--muted)]">Batch MVP-901 • HPLC Verified</span>
-                  </div>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold text-[10px]">
-                    142 Units Normal
-                  </span>
-                </div>
-              </div>
-            </div>
 
-          </div>
+                  <div className="p-4 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-3 text-xs">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-white text-sm">Metabolic Reset 90</span>
+                      <span className="text-emerald-400 font-mono font-bold">27% Complete</span>
+                    </div>
+                    <div className="text-[11px] text-[var(--muted)] space-y-1">
+                      <div>Patient: <strong className="text-white">Hamza Farooqi (MRN-2026-0814)</strong></div>
+                      <div>Current Phase: <strong className="text-teal-300">Phase 1: Liver Priming (Day 24 of 90)</strong></div>
+                      <div>Next Milestone: <strong>Fasting Lipid & Glucose Panel in 7 days</strong></div>
+                      <div>Adherence Status: <span className="text-emerald-400 font-semibold">High (94%)</span></div>
+                    </div>
+                    <div className="w-full bg-[var(--panel)] h-2 rounded-full overflow-hidden">
+                      <div className="bg-emerald-400 h-full rounded-full" style={{ width: "27%" }} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION 12: Pharmacy & Medicine Inventory (6 cols in all, 12 cols in operations) */}
+              {(activeTab === "operations" || activeTab === "all") && (
+                <div className={`p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4 ${
+                  activeTab === "operations" ? "lg:col-span-12" : "lg:col-span-6"
+                }`}>
+                  <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                    <div>
+                      <h3 className="text-base font-bold text-white">Dispensary & Medicine Safety</h3>
+                      <span className="text-[10px] text-emerald-400 font-mono">Schedule E(1) Mudabbar Gated</span>
+                    </div>
+                    <Link href="/pharmacy" className="text-xs text-teal-300 hover:underline font-bold">
+                      Open Pharmacy OS →
+                    </Link>
+                  </div>
+
+                  <div className="space-y-2.5 text-xs">
+                    <div className="p-3 rounded-xl bg-[var(--background)] border border-amber-500/30 flex justify-between items-center">
+                      <div>
+                        <span className="font-bold text-white block">Suranjan Talkh (Mudabbar)</span>
+                        <span className="text-[10px] text-amber-300">Batch B2-2026 • Exp: 2027-08-30</span>
+                      </div>
+                      <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">
+                        29 Units (Low Stock)
+                      </span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                      <div>
+                        <span className="font-bold text-white block">ManiVital Pro (Withania Extract)</span>
+                        <span className="text-[10px] text-[var(--muted)]">Batch MVP-901 • HPLC Verified</span>
+                      </div>
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono font-bold text-[10px]">
+                        142 Units Normal
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          )}
 
           {/* SECTION 14 & 15: Revenue & Business/Clinical Analytics */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            {/* Revenue Overview (5 cols) */}
-            <div className="lg:col-span-5 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <h3 className="text-base font-bold text-white">Revenue & Invoicing</h3>
-                <span className="text-xs text-emerald-400 font-mono font-bold">₹54,200 Today</span>
-              </div>
+          {(activeTab === "operations" || activeTab === "all") && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
-              <div className="space-y-2 text-xs">
-                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
-                  <span className="text-[var(--muted)]">Monthly Cumulative Revenue</span>
-                  <strong className="text-white font-mono">₹14,82,400</strong>
+              {/* Revenue Overview (5 cols) */}
+              <div className="lg:col-span-5 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+                <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                  <h3 className="text-base font-bold text-white">Revenue & Invoicing</h3>
+                  <span className="text-xs text-emerald-400 font-mono font-bold">₹54,200 Today</span>
                 </div>
-                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
-                  <span className="text-[var(--muted)]">Pending Insurance / Claims</span>
-                  <strong className="text-amber-300 font-mono">₹38,500</strong>
+                
+                <div className="space-y-2 text-xs">
+                  <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <span className="text-[var(--muted)]">Monthly Cumulative Revenue</span>
+                    <strong className="text-white font-mono">₹14,82,400</strong>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <span className="text-[var(--muted)]">Pending Insurance / Claims</span>
+                    <strong className="text-amber-300 font-mono">₹38,500</strong>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
+                    <span className="text-[var(--muted)]">Dispensary Product Sales</span>
+                    <strong className="text-emerald-400 font-mono">₹32,400 (60%)</strong>
+                  </div>
                 </div>
-                <div className="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] flex justify-between items-center">
-                  <span className="text-[var(--muted)]">Dispensary Product Sales</span>
-                  <strong className="text-emerald-400 font-mono">₹32,400 (60%)</strong>
+
+                <div className="flex gap-2 pt-2">
+                  <button onClick={() => handleQuickAction("Create Invoice")} className="flex-1 py-2 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition">
+                    + Create Invoice
+                  </button>
+                  <button onClick={() => handleQuickAction("Download Financial Report")} className="px-3 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)]">
+                    Download CSV
+                  </button>
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-2">
-                <button onClick={() => handleQuickAction("Create Invoice")} className="flex-1 py-2 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold transition">
-                  + Create Invoice
-                </button>
-                <button onClick={() => handleQuickAction("Download Financial Report")} className="px-3 py-2 rounded-xl bg-[var(--elevated)] hover:bg-[var(--border)] text-white text-xs font-semibold border border-[var(--border)]">
-                  Download CSV
-                </button>
+              {/* Analytics Section (7 cols) */}
+              <div className="lg:col-span-7 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
+                <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
+                  <h3 className="text-base font-bold text-white">Clinical & Operational Analytics</h3>
+                  <span className="text-xs text-[var(--muted)]">Last 30 Days Trajectory</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                    <span className="text-[10px] text-[var(--muted)] block uppercase">Retention Rate</span>
+                    <span className="text-lg font-bold text-emerald-400">91.4%</span>
+                  </div>
+                  <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                    <span className="text-[10px] text-[var(--muted)] block uppercase">Avg Consult</span>
+                    <span className="text-lg font-bold text-blue-400">32 mins</span>
+                  </div>
+                  <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                    <span className="text-[10px] text-[var(--muted)] block uppercase">Pain Reduction</span>
+                    <span className="text-lg font-bold text-teal-300">58.2%</span>
+                  </div>
+                  <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                    <span className="text-[10px] text-[var(--muted)] block uppercase">Adherence</span>
+                    <span className="text-lg font-bold text-purple-400">88.7%</span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-1.5 text-xs">
+                  <span className="text-[10px] font-bold text-[var(--muted)] uppercase">RWE Cohort Concordance</span>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    94.2% diagnostic concordance between 10-Ajnas pulse evaluation and blinded university rheumatologist evaluations across 3 clinical centers.
+                  </p>
+                </div>
               </div>
+
             </div>
-
-            {/* Analytics Section (7 cols) */}
-            <div className="lg:col-span-7 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-4">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-3">
-                <h3 className="text-base font-bold text-white">Clinical & Operational Analytics</h3>
-                <span className="text-xs text-[var(--muted)]">Last 30 Days Trajectory</span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                  <span className="text-[10px] text-[var(--muted)] block uppercase">Retention Rate</span>
-                  <span className="text-lg font-bold text-emerald-400">91.4%</span>
-                </div>
-                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                  <span className="text-[10px] text-[var(--muted)] block uppercase">Avg Consult</span>
-                  <span className="text-lg font-bold text-blue-400">32 mins</span>
-                </div>
-                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                  <span className="text-[10px] text-[var(--muted)] block uppercase">Pain Reduction</span>
-                  <span className="text-lg font-bold text-teal-300">58.2%</span>
-                </div>
-                <div className="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)]">
-                  <span className="text-[10px] text-[var(--muted)] block uppercase">Adherence</span>
-                  <span className="text-lg font-bold text-purple-400">88.7%</span>
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-[var(--background)] border border-[var(--border)] space-y-1.5 text-xs">
-                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">RWE Cohort Concordance</span>
-                <p className="text-[11px] text-slate-300 leading-relaxed">
-                  94.2% diagnostic concordance between 10-Ajnas pulse evaluation and blinded university rheumatologist evaluations across 3 clinical centers.
-                </p>
-              </div>
-            </div>
-
-          </div>
+          )}
 
           {/* SECTION 18 & 19: Knowledge Base & System Status Widgets */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            {/* Knowledge Base Widget (6 cols) */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
-                <h3 className="text-sm font-bold text-white">Canonical Knowledge Base (ZKB)</h3>
-                <Link href="/knowledge" className="text-xs text-teal-300 hover:underline">Explore ZKB →</Link>
+          {(activeTab === "operations" || activeTab === "all") && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Knowledge Base Widget (6 cols) */}
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
+                <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                  <h3 className="text-sm font-bold text-white">Canonical Knowledge Base (ZKB)</h3>
+                  <Link href="/knowledge" className="text-xs text-teal-300 hover:underline">Explore ZKB →</Link>
+                </div>
+                <p className="text-xs text-[var(--muted)]">
+                  Query 1,280+ classical monographs (UPI, NFUM, Al-Qanoon) with verified Badal (substitutes) and Musleh (correctives).
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    placeholder="Lookup herb (e.g., Asgandh, Suranjan)..."
+                    className="flex-1 px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-white"
+                  />
+                  <button onClick={() => router.push("/knowledge")} className="px-3 py-1.5 rounded-xl bg-[#0D9488] text-white text-xs font-bold">
+                    Lookup
+                  </button>
+                </div>
               </div>
-              <p className="text-xs text-[var(--muted)]">
-                Query 1,280+ classical monographs (UPI, NFUM, Al-Qanoon) with verified Badal (substitutes) and Musleh (correctives).
-              </p>
-              <div className="flex gap-2">
-                <input
-                  placeholder="Lookup herb (e.g., Asgandh, Suranjan)..."
-                  className="flex-1 px-3 py-1.5 rounded-xl bg-[var(--background)] border border-[var(--border)] text-xs text-white"
-                />
-                <button onClick={() => router.push("/knowledge")} className="px-3 py-1.5 rounded-xl bg-[#0D9488] text-white text-xs font-bold">
-                  Lookup
-                </button>
-              </div>
-            </div>
 
-            {/* System Status Widget (6 cols) */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
-              <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
-                <h3 className="text-sm font-bold text-white">Platform System & Microservices Status</h3>
-                <span className="text-[10px] text-emerald-400 font-mono">ALL OPERATIONAL</span>
+              {/* System Status Widget (6 cols) */}
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[var(--panel)] border border-[var(--border)] space-y-3">
+                <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                  <h3 className="text-sm font-bold text-white">Platform System & Microservices Status</h3>
+                  <span className="text-[10px] text-emerald-400 font-mono">ALL OPERATIONAL</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>Clinical AI CDS:</span> <span className="text-emerald-400">Online</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>Patient EMR:</span> <span className="text-emerald-400">Online</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>QSURA Comms:</span> <span className="text-emerald-400">Online</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>Dispensary:</span> <span className="text-emerald-400">Online</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>Payments:</span> <span className="text-emerald-400">Online</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
+                    <span>DR Backup:</span> <span className="text-emerald-400">Synced (12m)</span>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] font-mono">
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>AI Doctor:</span> <span className="text-emerald-400">Online</span>
-                </div>
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>Patient EMR:</span> <span className="text-emerald-400">Online</span>
-                </div>
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>QSURA Comms:</span> <span className="text-emerald-400">Online</span>
-                </div>
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>Dispensary:</span> <span className="text-emerald-400">Online</span>
-                </div>
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>Payments:</span> <span className="text-emerald-400">Online</span>
-                </div>
-                <div className="p-2 rounded-lg bg-[var(--background)] border border-[var(--border)] flex justify-between">
-                  <span>DR Backup:</span> <span className="text-emerald-400">Synced (12m)</span>
-                </div>
-              </div>
-            </div>
 
-          </div>
+            </div>
+          )}
 
         </main>
       </div>

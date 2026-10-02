@@ -113,7 +113,7 @@ export const ZAYVORA_ROUTE_MATRIX: RouteDefinition[] = [
   },
   {
     id: "hakeem_ai_copilot",
-    name: "AI Doctor — Hakeem Sahab",
+    name: "Hakeem Sahab AI™",
     webUrl: "/ai",
     mobileScreen: "AiDoctorScreen",
     parentModule: "INTELLIGENCE",

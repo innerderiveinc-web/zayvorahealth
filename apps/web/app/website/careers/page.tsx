@@ -18,7 +18,7 @@ export default function CareersPage() {
     <p>We are actively seeking qualified Senior Tabeebs (BUMS/MD Unani), biomedical clinical informatics specialists, and pharmaceutical quality control analysts.</p>
     <div className="p-4 bg-[#0F172A] rounded-xl border border-[#334155] space-y-1">
       <span className="font-bold text-white block">Senior Tabeeb / Integrative Physician (OPD)</span>
-      <p className="text-[#94A3B8] text-[11px]">New Delhi & Mumbai Matabs • CCIM/NCISM registration required.</p>
+      <p className="text-[#94A3B8] text-[11px]">New Delhi & Mumbai Matabs • NCISM Act 2020 registration required.</p>
     </div>
   </div>
 

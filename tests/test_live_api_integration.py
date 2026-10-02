@@ -15,7 +15,7 @@ from io import BytesIO
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
-from services.live_api_server import ZayvoraApiHandler, DB_PATH
+from services.live_api_server import ZayvoraApiHandler, DB_PATH, hash_password
 
 class DirectTestClient:
     """Invokes ZayvoraApiHandler directly with simulated I/O streams."""
@@ -291,11 +291,102 @@ def run_tests():
         print(f"[FAIL] Test 11: Billing Invoice Creation & Receipt Verification ({e})")
         failed += 1
 
+    # 12. Refresh Token Rotation
+    try:
+        # Obtain tokens via login
+        login_st, login_bd = client.request("POST", "/api/v1/auth/login", {
+            "identifier": "admin@zayvorahealth",
+            "password": "admin123"
+        })
+        assert login_st == 200
+        assert "refresh_token" in login_bd
+        refresh_tk = login_bd["refresh_token"]
+
+        # Rotate refresh token
+        ref_st, ref_bd = client.request("POST", "/api/v1/auth/refresh", {
+            "refresh_token": refresh_tk
+        })
+        assert ref_st == 200
+        assert ref_bd["ok"] is True
+        assert "access_token" in ref_bd
+        assert "refresh_token" in ref_bd
+        print("[PASS] Test 12: Cryptographic Refresh Token Rotation & Session Renewal")
+        passed += 1
+    except Exception as e:
+        print(f"[FAIL] Test 12: Refresh Token Rotation ({e})")
+        failed += 1
+
+    # 13. Password Reset OTP & Cryptographic Reset Flow
+    try:
+        # Request OTP
+        fp_st, fp_bd = client.request("POST", "/api/v1/auth/forgot-password", {
+            "identifier": "dr.irfan@zayvorahealth"
+        })
+        assert fp_st == 200
+        assert fp_bd["ok"] is True
+
+        # Retrieve the generated OTP from database for testing verification
+        conn = sqlite3.connect("database/zayvora_live.db")
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT message_text FROM notifications WHERE recipient = '+91 98110 44219' ORDER BY created_at DESC LIMIT 1")
+        notif_row = cur.fetchone()
+        assert notif_row is not None
+        # Extract 6-digit code
+        import re
+        m = re.search(r"code is (\d{6})", notif_row["message_text"])
+        assert m is not None
+        otp_code = m.group(1)
+
+        # Test invalid OTP rejection
+        bad_st, bad_bd = client.request("POST", "/api/v1/auth/reset-password", {
+            "identifier": "dr.irfan@zayvorahealth",
+            "otp": "000000",
+            "newPassword": "newSecurePassword2026!"
+        })
+        assert bad_st == 400
+
+        # Execute valid reset
+        rst_st, rst_bd = client.request("POST", "/api/v1/auth/reset-password", {
+            "identifier": "dr.irfan@zayvorahealth",
+            "otp": otp_code,
+            "newPassword": "newDoctorPassword2026!"
+        })
+        assert rst_st == 200
+        assert rst_bd["ok"] is True
+
+        # Verify old password rejected
+        old_login_st, _ = client.request("POST", "/api/v1/auth/login", {
+            "identifier": "dr.irfan@zayvorahealth",
+            "password": "doctor123"
+        })
+        assert old_login_st == 401
+
+        # Verify new password accepted
+        new_login_st, new_login_bd = client.request("POST", "/api/v1/auth/login", {
+            "identifier": "dr.irfan@zayvorahealth",
+            "password": "newDoctorPassword2026!"
+        })
+        assert new_login_st == 200
+        assert new_login_bd["ok"] is True
+
+        # Restore doctor password back to doctor123 for downstream test consistency
+        pwd_hash, salt = hash_password("doctor123")
+        cur.execute("UPDATE users SET password_hash = ?, salt = ? WHERE email = 'dr.irfan@zayvorahealth'", (pwd_hash, salt))
+        conn.commit()
+        conn.close()
+
+        print("[PASS] Test 13: Identity-Verified Hashed OTP Password Reset & Prior Session Revocation")
+        passed += 1
+    except Exception as e:
+        print(f"[FAIL] Test 13: Password Reset OTP Flow ({e})")
+        failed += 1
+
     print("=" * 70)
     print(f"LIVE API VERIFICATION SUMMARY: {passed} PASSED | {failed} FAILED (TOTAL {passed + failed})")
     print("=" * 70)
-    return failed == 0
+    return passed, failed
 
 if __name__ == "__main__":
-    success = run_tests()
-    sys.exit(0 if success else 1)
+    p, f = run_tests()
+    sys.exit(0 if f == 0 else 1)

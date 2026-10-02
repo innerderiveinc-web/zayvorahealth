@@ -15,16 +15,16 @@ export default function BookAppointmentPage() {
     fullName: "",
     mobile: "",
     email: "",
-    age: 38,
+    age: 32,
     gender: "Male",
     healthConcern: "Waja-ul-Mafasil (Joint & Knee Pain)",
-    consultationType: "Online Video Consultation",
-    preferredDate: "2026-09-18",
+    consultationType: "In-Clinic OPD",
+    preferredDate: new Date(Date.now() + 86400000).toISOString().split("T")[0],
     preferredTime: "10:00 AM – 10:30 AM",
     doctorPreference: "Prof. (Dr.) Mansoor Alam — Ilmul Advia & Chronic Disorders",
     additionalMessage: "",
-    hasPreviousReports: true,
-    consentAccepted: true,
+    hasPreviousReports: false,
+    consentAccepted: false,
   });
 
   const availableSlots = AppointmentService.getAvailableSlots(formData.preferredDate);
@@ -69,7 +69,7 @@ export default function BookAppointmentPage() {
       }
     } else if (step === 4) {
       if (!formData.consentAccepted) {
-        setErrorMessage("You must accept the clinical record consent & ABDM/HIPAA privacy terms to proceed.");
+        setErrorMessage("You must accept the clinical record consent & ABDM/DPDP Act 2023 privacy terms to proceed.");
         return false;
       }
     }
@@ -381,7 +381,7 @@ export default function BookAppointmentPage() {
                         >
                           <div className="font-bold text-sm text-teal-300">🏥 In-Clinic Physical OPD</div>
                           <div className="text-[11px] text-slate-400 mt-1">
-                            Jamia Hamdard AUTC, Main Hospital OPD, New Delhi. Physical Nabz palpation & Ilaj-bit-Tadbeer.
+                            ZAYVORA Matab™ Central Care Centre OPD, New Delhi. Physical Nabz palpation & Ilaj-bit-Tadbeer.
                           </div>
                         </button>
                       </div>
@@ -615,7 +615,7 @@ export default function BookAppointmentPage() {
             Emergency? For acute emergencies, call national helpline 112 or visit the nearest emergency trauma center immediately.
           </p>
           <p className="text-slate-500">
-            OPD Services coordinated at Jamia Hamdard AUTC Main Hospital, New Delhi • AYUSH / CCIM Registered Clinicians
+            OPD Services coordinated at ZAYVORA Healthcare System - Central Hospital, New Delhi • Ministry of AYUSH / NCISM Act 2020 Registered Clinicians
           </p>
         </div>
 

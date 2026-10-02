@@ -4,7 +4,7 @@ This directory contains the database schema migration infrastructure for ZAYVORA
 
 ## Multi-Service Database Architecture
 
-Per Master Build Prompt v4.0 §49, ZAYVORA employs domain-isolated relational databases on PostgreSQL 16:
+Per ZAYVORA Clinical Architecture Specification v4.0 §49, ZAYVORA employs domain-isolated relational databases on PostgreSQL 16:
 
 1. **`zayvora_identity`**: Tenants (`organizations`), `users`, `roles`, `permissions`, `audit_logs`.
 2. **`zayvora_clinical`**: `patients`, `encounters`, `clinical_notes` (versioned), `prescriptions`, `appointments`.

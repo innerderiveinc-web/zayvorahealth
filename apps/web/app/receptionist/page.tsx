@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { AppointmentStatus, PaymentStatus } from "@/lib/shared/statusEnums";
+import { AuthService } from "@/lib/services/authService";
+import { useAuth } from "@/lib/hooks/useAuth";
+
+const API = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
 
 interface ReceptionQueueItem {
   id: string;
@@ -163,6 +167,7 @@ const DOCTOR_ROSTER: DoctorRoster[] = [
 ];
 
 export default function ReceptionistDashboardPage() {
+  const { isLoading: authLoading, isAuthorized } = useAuth({ requiredRoles: ['RECEPTIONIST'] });
   const [activeTab, setActiveTab] = useState<"queue" | "register" | "roster" | "billing" | "followup">("queue");
   const [queue, setQueue] = useState<ReceptionQueueItem[]>(INITIAL_QUEUE);
   const [filterAcuity, setFilterAcuity] = useState<string>("ALL");
@@ -170,6 +175,7 @@ export default function ReceptionistDashboardPage() {
   
   // Registration Form State
   const [showRegModal, setShowRegModal] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [newPatient, setNewPatient] = useState({
     fullName: "",
     mobile: "",
@@ -184,6 +190,45 @@ export default function ReceptionistDashboardPage() {
   // Patient Call Notification
   const [callNotice, setCallNotice] = useState<string | null>(null);
 
+  // Live Queue Synchronization & Polling
+  useEffect(() => {
+    async function fetchLiveQueue() {
+      if (!isAuthorized) return;
+      try {
+        const session = AuthService.getSession();
+        const headers: Record<string, string> = session?.token ? { Authorization: `Bearer ${session.token}` } : {};
+        const res = await fetch(`${API}/api/v1/appointments`, { headers });
+        if (res.ok) {
+          const data = await res.json();
+          const items = data.appointments || data.items || data;
+          if (Array.isArray(items) && items.length > 0) {
+            const mapped: ReceptionQueueItem[] = items.map((apt: any, idx: number) => ({
+              id: apt.id || `Q-${100 + idx}`,
+              tokenNumber: apt.tokenNumber || `T-${100 + idx}`,
+              mrn: apt.mrn || `MRN-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+              patientName: apt.patientName || apt.patient_name || "Patient",
+              age: apt.age || 40,
+              gender: apt.gender || "Unknown",
+              phone: apt.phone || "+91 98110 00000",
+              arrivalTime: apt.timeSlot || apt.scheduled_time || "10:00 AM",
+              acuity: apt.acuity || "STANDARD",
+              chiefComplaint: apt.chiefComplaint || apt.chief_complaint || "General Consultation",
+              assignedDoctor: apt.doctorName || apt.doctor_name || "Prof. (Dr.) Mansoor Alam",
+              opdRoom: apt.room || "OPD Room 1",
+              status: apt.status || "WAITING",
+              feeAmount: apt.fee || 800,
+              paymentStatus: apt.paymentStatus || "PAID"
+            }));
+            setQueue(mapped);
+          }
+        }
+      } catch {}
+    }
+    fetchLiveQueue();
+    const interval = setInterval(fetchLiveQueue, 20000);
+    return () => clearInterval(interval);
+  }, [isAuthorized]);
+
   // Status Handler
   const handleUpdateStatus = (id: string, newStatus: AppointmentStatus) => {
     setQueue(prev => prev.map(item => item.id === id ? { ...item, status: newStatus } : item));
@@ -195,9 +240,13 @@ export default function ReceptionistDashboardPage() {
     setQueue(prev => prev.map(item => item.id === id ? { ...item, paymentStatus: "PAID" } : item));
     if (item) {
       try {
-        fetch("http://localhost:8000/api/v1/billing/invoices", {
+        const session = AuthService.getSession();
+        fetch(`${API}/api/v1/billing/invoices`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {})
+          },
           body: JSON.stringify({
             mrn: item.mrn,
             patientName: item.patientName,
@@ -217,13 +266,14 @@ export default function ReceptionistDashboardPage() {
   };
 
   // Register New Patient Submit
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPatient.fullName.trim() || !newPatient.mobile.trim()) return;
 
+    setIsRegistering(true);
     const nextTokenNum = 100 + queue.length + 1;
     const tokenStr = `T-${nextTokenNum}`;
-    const mrnStr = `MRN-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    let mrnStr = `MRN-2026-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const roomMap: Record<string, string> = {
       "Prof. (Dr.) Mansoor Alam": "OPD Room 3",
@@ -231,6 +281,46 @@ export default function ReceptionistDashboardPage() {
       "Dr. Tariq Zafar": "OPD Room 1",
       "Dr. Shagufta Parveen": "OPD Room 4"
     };
+
+    const session = AuthService.getSession();
+    const headers = {
+      "Content-Type": "application/json",
+      ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {})
+    };
+
+    // Synchronize walk-in patient with live database API
+    try {
+      const pRes = await fetch(`${API}/api/v1/patients`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          first_name: newPatient.fullName.split(" ")[0] || "Walk-in",
+          last_name: newPatient.fullName.split(" ").slice(1).join(" ") || "Patient",
+          contact_phone: newPatient.mobile,
+          gender: newPatient.gender.toLowerCase(),
+          blood_group: "Unknown"
+        })
+      });
+
+      if (pRes.ok) {
+        const pData = await pRes.json();
+        if (pData.id) mrnStr = `MRN-${pData.id.slice(0, 8).toUpperCase()}`;
+      }
+
+      await fetch(`${API}/api/v1/appointments`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          patientName: newPatient.fullName,
+          mrn: mrnStr,
+          doctorName: newPatient.doctor,
+          chiefComplaint: newPatient.chiefComplaint || "General consultation",
+          fee: newPatient.feeAmount,
+          tokenNumber: tokenStr,
+          timeSlot: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        })
+      });
+    } catch (e) {}
 
     const newItem: ReceptionQueueItem = {
       id: `Q-${nextTokenNum}`,
@@ -250,34 +340,9 @@ export default function ReceptionistDashboardPage() {
       paymentStatus: "PAID"
     };
 
-    // Synchronize walk-in patient with live database API
-    try {
-      fetch("http://localhost:8000/api/v1/patients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: newPatient.fullName.split(" ")[0] || "Walk-in",
-          lastName: newPatient.fullName.split(" ").slice(1).join(" ") || "Patient",
-          phone: newPatient.mobile,
-          gender: newPatient.gender
-        })
-      }).catch(() => {});
-
-      fetch("http://localhost:8000/api/v1/appointments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          patientName: newPatient.fullName,
-          mrn: mrnStr,
-          doctorName: newPatient.doctor,
-          chiefComplaint: newPatient.chiefComplaint || "General consultation",
-          fee: newPatient.feeAmount
-        })
-      }).catch(() => {});
-    } catch (e) {}
-
-    setQueue([newItem, ...queue]);
+    setQueue(prev => [newItem, ...prev]);
     setShowRegModal(false);
+    setIsRegistering(false);
     setNewPatient({
       fullName: "",
       mobile: "",
@@ -288,8 +353,8 @@ export default function ReceptionistDashboardPage() {
       acuity: "STANDARD",
       feeAmount: 800
     });
-    setCallNotice(`✓ Patient Registered: ${newItem.patientName} (${tokenStr}) added to live queue.`);
-    setTimeout(() => setCallNotice(null), 4000);
+    setCallNotice(`✓ Patient ${newItem.patientName} registered. Token ${newItem.tokenNumber} assigned.`);
+    setTimeout(() => setCallNotice(null), 5000);
   };
 
   // Filtered Queue
@@ -307,6 +372,9 @@ export default function ReceptionistDashboardPage() {
   const completedCount = queue.filter(q => q.status === "COMPLETED").length;
   const totalRevenue = queue.filter(q => q.paymentStatus === "PAID").reduce((sum, q) => sum + q.feeAmount, 0);
 
+  if (authLoading) return <div className="flex items-center justify-center h-64 text-slate-500">Verifying access…</div>;
+  if (!isAuthorized) return null;
+
   return (
     <AppShell activeRole="clinic">
       <div className="space-y-6 max-w-7xl mx-auto pb-12 text-slate-100">
@@ -319,7 +387,7 @@ export default function ReceptionistDashboardPage() {
               <span className="text-[11px] font-bold text-teal-400 uppercase tracking-widest bg-teal-950/80 px-3 py-1 rounded-full border border-teal-800/80">
                 Central OPD Reception Desk
               </span>
-              <span className="text-xs text-slate-400 font-mono">• Jamia Hamdard AUTC Main Hospital</span>
+              <span className="text-xs text-slate-400 font-mono">• ZAYVORA Matab™ Central Care Centre</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
               Patient Queue & Reception Workspace

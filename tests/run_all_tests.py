@@ -48,7 +48,34 @@ def run_test_module(service_dir: str, file_path: str, module_name: str):
     passed = 0
     failed = 0
     errors = []
-    
+
+    if not test_funcs:
+        for runner_name in ["run_tests", "run_45_engine_tests", "run_30_critical_workflows", "run_certification", "run_verification", "run_audit", "main"]:
+            if hasattr(mod, runner_name) and callable(getattr(mod, runner_name)):
+                try:
+                    runner = getattr(mod, runner_name)
+                    ret = runner()
+                    if isinstance(ret, tuple) and len(ret) >= 2:
+                        return ret[0], ret[1], []
+                    elif ret is True or ret == 0 or ret is None:
+                        return 1, 0, []
+                    else:
+                        return 0, 1, [(runner_name, "Runner indicated test failure")]
+                except Exception:
+                    return 0, 1, [(runner_name, traceback.format_exc())]
+
+        for cls_name in dir(mod):
+            cls = getattr(mod, cls_name)
+            if isinstance(cls, type) and hasattr(cls, "run_all") and callable(getattr(cls, "run_all")):
+                try:
+                    inst = cls()
+                    ret = inst.run_all()
+                    p = getattr(inst, "passed", 1 if (ret is True or ret == 0) else 0)
+                    f = getattr(inst, "failed", 0 if (ret is True or ret == 0) else 1)
+                    return p, f, []
+                except Exception:
+                    return 0, 1, [(cls_name, traceback.format_exc())]
+
     for fn in test_funcs:
         fn_name = fn._testMethodName if isinstance(fn, unittest.TestCase) else fn.__name__
         try:
@@ -104,6 +131,9 @@ TEST_SUITES = [
     ("Knowledge Hybrid RAG & Semantic Retrieval", "services/knowledge", "services/knowledge/tests/test_hybrid_rag.py"),
     ("Knowledge Global Command Search (Cmd+K)", "services/knowledge", "services/knowledge/tests/test_command_search.py"),
     ("Knowledge Clinical Governance Board & Quorum", "services/knowledge", "services/knowledge/tests/test_governance_board.py"),
+    ("Knowledge Source Library & Provenance", "services/knowledge", "services/knowledge/tests/test_source_library.py"),
+    ("Knowledge OCR Pipeline & Extraction", "services/knowledge", "services/knowledge/tests/test_ocr_pipeline.py"),
+    ("Knowledge Structured Clinical Knowledge & Safety", "services/knowledge", "services/knowledge/tests/test_structured_knowledge.py"),
     ("AI Hakeem Sahab Response Validator", "services/ai", "services/ai/tests/test_response_validator.py"),
     ("AI Runtime Fallback & ZAPE Personalization", "services/ai", "services/ai/tests/test_ai_runtime_and_zape.py"),
     ("AI Evaluation Lab & Security Guardrails", "services/ai", "services/ai/tests/test_evaluation_and_red_team.py"),
@@ -115,13 +145,85 @@ TEST_SUITES = [
     ("Clinical Pilot Multi-Center Concordance & DSMB", ".", "tests/test_clinical_pilot_concordance.py"),
     ("Phase 9 Statutory Regulatory Dossier & Traceability", ".", "tests/test_regulatory_dossier.py"),
     ("Phase 10 Staging Cluster Deployment Orchestrator", ".", "tests/test_staging_deployment_orchestrator.py"),
+    ("Multi-Page Website & Shared Data Layer", ".", "tests/test_multi_page_website.py"),
+    ("Mobile Application Workflows & Navigation", ".", "tests/test_mobile_application.py"),
+    ("End-to-End Clinical Ecosystem Continuum", ".", "tests/test_e2e_clinical_workflow.py"),
+    ("Master Clinical System Knowledge & Endpoints", ".", "tests/test_master_clinical_system.py"),
+    ("CP-AFUM & Organ-Axis Clinical System", ".", "tests/test_cp_afum_and_afuf_system.py"),
+    ("Global Edition Clinical & AI Systems (2026)", ".", "tests/test_global_edition_systems.py"),
+    ("12-Axis Clinical Intelligence Framework™", ".", "tests/test_twelve_axis_framework.py"),
+    ("Volume II 16 Core Products & 8 Parhez Protocols", ".", "tests/test_volume_two_products_and_parhez.py"),
+    ("Pharmacopoeia Single Drugs & Formula Safety", ".", "tests/test_pharmacopoeia_materia_medica.py"),
+    ("Master System Architecture & Clinical Decision Support", ".", "tests/test_master_system_architecture_and_cds.py"),
+    ("Foundations Framework & Polypharmacy Architecture", ".", "tests/test_foundations_framework_and_polypharmacy.py"),
+    ("Clinical Intelligence Doctrine & Enterprise Governance", ".", "tests/test_clinical_intelligence_doctrine.py"),
+    ("Master Nuskha Nawisi & 7-Pillars Prescribing", ".", "tests/test_master_nuskha_nawisi_system.py"),
+    ("Systemic Dual-Doctrine Engines (Modern & Unani)", ".", "tests/test_systemic_dual_doctrine_engines.py"),
+    ("Mufradat 250 Validation & Canonical Governance", ".", "tests/test_mufradat_250_pipeline.py"),
+    ("Full Validation Suite — Safety Firewall, 12-Gate, Badal, Cards", ".", "tests/test_full_validation_suite.py"),
+    ("Mufradat 25-Drug Gold Benchmark Monograph Pipeline", ".", "tests/test_mufradat_gold_benchmark.py"),
+    ("Validated Murakkab & Nuskha Integration", ".", "tests/test_validated_murakkab_compiler.py"),
+    ("End-to-End Matab Clinical Simulation & 250 Matrix", ".", "tests/test_end_to_end_matab_simulation.py"),
+    ("Knowledge Intelligence & Clinical Governance vNEXT", ".", "tests/test_knowledge_intelligence_vnext.py"),
+    ("Knowledge Graph & Doctor Clinical Continuum", ".", "tests/test_knowledge_graph_and_clinical_continuum.py"),
+    ("Murakkab Intelligence, Pharmacy, Outcomes & Pharmacovigilance", ".", "tests/test_murakkab_pharmacy_outcomes_safety.py"),
+    ("Clinical Intelligence Core vNext & Learning Healthcare OS", ".", "tests/test_clinical_intelligence_core_vnext.py"),
+    ("ABDM FHIR Interoperability, Federation & Population Health", ".", "tests/test_abdm_federation_and_population_health.py"),
+    ("Adaptive Precision Healthcare & Phenotype Intelligence", ".", "tests/test_adaptive_precision_healthcare_foundation.py"),
+    ("Digital Biomarkers, Continuous Monitoring & N-of-1 Evidence", ".", "tests/test_continuous_monitoring_and_n_of_1_evidence.py"),
+    ("Adaptive Precision OS & Global Learning Ecosystem", ".", "tests/test_adaptive_precision_full_ecosystem.py"),
+    ("Phase 2 Auth, RBAC & Multi-Tenancy", ".", "tests/test_phase2_auth_rbac_tenancy.py"),
+    ("Phase 3 Core Clinical Continuum", ".", "tests/test_phase3_clinical_continuum.py"),
+    ("Phase 4 Pharmacy FEFO & Billing", ".", "tests/test_phase4_pharmacy_fefo_billing.py"),
+    ("Phase 5 AI RAG Safety CDS", ".", "tests/test_phase5_ai_rag_safety_cds.py"),
+    ("Phase 6 QSURA, Telemed & Patient Portal", ".", "tests/test_phase6_qsura_telemed_vernacular.py"),
+    ("Phase 7 Staging, DR & Pilot Concordance", ".", "tests/test_phase7_staging_dr_concordance.py"),
+    ("Phase 8 Final Verification & Certification", ".", "tests/test_phase8_final_verification_go_no_go.py"),
+    ("30 Critical Healthcare Workflows", ".", "tests/test_30_critical_workflows.py"),
+    ("45 Connected Clinical Engines", ".", "tests/test_45_engines_connected.py"),
+    ("Clinical Intelligence Integration", ".", "tests/test_clinical_intelligence_integration.py"),
+    ("Definition of Done Verification", ".", "tests/test_definition_of_done.py"),
+    ("Hardware & Complete Ecosystem Verification", ".", "tests/test_hardware_and_complete_ecosystem.py"),
+    ("Live REST API & SQL Database Integration", ".", "tests/test_live_api_integration.py"),
+    ("Rescue User Experience & Clean UI Verification", ".", "tests/test_rescue_user_experience.py"),
+    ("Ultimate Ecosystem Final Verification", ".", "tests/test_ultimate_ecosystem_verification.py"),
+    ("V5 Enterprise 24-Point Verification", ".", "tests/test_v5_enterprise_verification.py"),
+    ("Clinical Safety Invariants Suite (SAFETY-001 - 010)", ".", "tests/test_clinical_safety_invariants.py"),
+    ("Ilaj bil Nafsiyat & Psychosomatic Medicine Suite", ".", "tests/test_ilaj_bil_nafsiyat.py"),
+    ("Ilaj bil Tadbeer (16 Modalities & Protocols)", ".", "tests/test_tadbeer_16_and_protocols.py"),
+    ("Ilaj bil Ghiza & Ilaj bil Yad (Jarahat) Suite", ".", "tests/test_ghiza_and_yad_engines.py"),
+    ("World-Class Frontend & Clinical Desk Experience", ".", "tests/test_world_class_frontend_experience.py"),
+    ("Design System Primitives & Clinical Components", ".", "tests/test_design_system_and_clinical_primitives.py"),
+    ("Master Platform Services & Connected Architecture", ".", "tests/test_master_platform_services.py"),
+    ("Grand Classical & Modern Integrative Medical Library (12 Volumes)", ".", "tests/test_grand_integrative_library.py"),
+    ("Next-Gen Enhancements: Deep RAG, Simulator, PWA & Botanical Atlas", ".", "tests/test_platform_enhancements_suite.py"),
+    ("Agentic Clinical AI Runtime & Safety Firewall (Hakeem Sahab v2)", "services/ai", "tests/test_agentic_clinical_runtime.py"),
+    ("Computational Formulation Intelligence (Blueprint §98)", ".", "tests/test_computational_formulation_intelligence.py"),
+    ("ZFIE Master Acceptance Tests (AT-01 to AT-12)", ".", "tests/test_zfie_master_acceptance_tests.py"),
+    ("ZFIE Complete Domain & Engine Specification", ".", "tests/test_zfie_engine_complete.py"),
+    ("ZFIE 5 Horizontal Layers (Factory, Benchmarking, Bridge, QC, Compiler)", ".", "tests/test_zfie_horizontal_layers.py"),
+    ("Care Intelligence 2.0 (Front-Door Orchestrator & Care Gaps)", ".", "tests/test_care_intelligence_2.py"),
 ]
+
+
+
+
 
 def main():
     print("=" * 70)
     print(" ZAYVORA HEALTH™ — MASTER SYSTEM VERIFICATION TEST RUNNER")
     print("=" * 70)
     
+    # Initialize test database for deterministic runs
+    try:
+        workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if workspace_root not in sys.path:
+            sys.path.insert(0, workspace_root)
+        from database.init_live_db import init_db
+        init_db()
+    except Exception as e:
+        print(f"Note: Database initialization skipped ({e})")
+
     test_suites = TEST_SUITES
     
     total_passed = 0

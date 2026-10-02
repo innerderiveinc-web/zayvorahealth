@@ -48,17 +48,18 @@ The three university clinical trial teaching hospitals are provisioned with dedi
 
 ```
 ┌──────────────────────────────────────┬─────────────────────────┬────────────────────────┬──────────────────────┐
-│ Academic Medical Center              │ Tenant Slug / ID        │ Principal Investigator │ AYUSH Registration   │
+│ Academic Medical Center (Simulation) │ Tenant Slug / ID        │ Principal Investigator │ AYUSH Registration   │
 ├──────────────────────────────────────┼─────────────────────────┼────────────────────────┼──────────────────────┤
-│ Ayurvedic & Unani Tibbia College     │ autc-delhi              │ Prof. Dr. M.A. Siddiqui│ AYUSH-DL-1994-0821   │
-│ (Karol Bagh, New Delhi)              │ org-autc-delhi-001      │ pi.autc@zayvora.clinic │ (Moalajat Medicine)  │
+│ Ayurvedic & Unani Tibbia Pilot       │ autc-delhi              │ Academic Research Lead │ AYUSH-DL-SIM-0821    │
+│ (Simulation Staging Environment)     │ org-autc-delhi-001      │ sim.autc@zayvora.clinic│ (Moalajat Medicine)  │
 ├──────────────────────────────────────┼─────────────────────────┼────────────────────────┼──────────────────────┤
-│ Jamia Hamdard SUMER                  │ jh-sumer                │ Prof. Dr. Y. Shamsi    │ AYUSH-DL-2001-1452   │
-│ (Hamdard Nagar, New Delhi)           │ org-jh-sumer-002        │ pi.sumer@zayvora.clinic│ (Dean, Unani Faculty)│
+│ ZAYVORA Clinical Research Center     │ jh-sumer                │ Hakeem Dr. Irfan Ashraf│ AYUSH-DL-2007-0412   │
+│ (Primary Clinical Practice, Delhi)   │ org-jh-sumer-002        │ dr.irfan@zayvora.com   │ (BUMS, AKTC AMU)     │
 ├──────────────────────────────────────┼─────────────────────────┼────────────────────────┼──────────────────────┤
-│ Ajmal Khan Tibbiya College (AMU)     │ amu-aktc                │ Prof. Dr. F.S. Sherwani│ AYUSH-UP-1998-3319   │
-│ (Aligarh, Uttar Pradesh)             │ org-amu-aktc-003        │ pi.aktc@zayvora.clinic │ (Ilmul Advia Pharma) │
+│ AKTC Pilot Validation Testbed        │ amu-aktc                │ Academic Clinical Lead │ AYUSH-UP-SIM-3319    │
+│ (Simulation Staging Environment)     │ org-amu-aktc-003        │ sim.aktc@zayvora.clinic│ (Ilmul Advia Pharma) │
 └──────────────────────────────────────┴─────────────────────────┴────────────────────────┴──────────────────────┘
+*Note: University and college entries are simulated tenant environments for pre-clinical staging, workflow modeling, and API sandbox validation.*
 ```
 
 ---

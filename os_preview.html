@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZAYVORA Health OS™ — Clinical Command Center Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[var(--background,#0b111e)] text-[var(--foreground,#f1f5f9)] p-3 sm:p-5 antialiased">
+
+  <!-- OS COMMAND HEADER -->
+  <header class="max-w-6xl mx-auto mb-5 bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-700 to-teal-500 flex items-center justify-center text-white font-black text-2xl shadow-lg">
+        Z
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-base sm:text-lg font-bold tracking-tight text-[var(--foreground,#f8fafc)]">ZAYVORA Health OS™</h1>
+          <span class="px-2 py-0.5 text-xs font-mono font-semibold uppercase bg-emerald-950 text-emerald-300 border border-emerald-700/60 rounded">
+            v5.0 Enterprise
+          </span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground,#94a3b8)] mt-0.5">
+          Clinical Command Center • <strong class="text-[var(--foreground,#f8fafc)]">Hakeem Dr. Irfan Ashraf</strong> (BUMS, AKTC AMU 2002–2007)
+        </p>
+      </div>
+    </div>
+
+    <!-- Live Status Pill & Quick Switchers -->
+    <div class="flex flex-wrap items-center gap-2 text-xs">
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-200">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono text-xs font-semibold">1,046 Verified Invariants</span>
+      </div>
+      <div class="px-3 py-1.5 rounded-xl bg-amber-950/70 border border-amber-700/60 text-amber-200 font-mono text-xs">
+        Reg: In Progress
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-6xl mx-auto space-y-5">
+
+    <!-- 1. FAIL-CLOSED CLINICAL SAFETY STRIP (ALWAYS VISIBLE) -->
+    <div id="safety-strip" class="bg-red-950/60 border border-red-500/60 rounded-2xl p-4 sm:p-5 shadow-lg">
+      <div class="flex flex-col sm:flex-row items-start justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-red-900 text-red-300 flex items-center justify-center text-xl shrink-0 border border-red-600">
+            ⚠️
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-mono font-bold uppercase tracking-wider text-red-300 bg-red-950 px-2.5 py-0.5 rounded border border-red-700">
+                P0 Fail-Closed Safety Firewall
+              </span>
+              <span class="text-xs text-red-200 font-medium">Critical Drug-Herb Warning Pending Physician Sign-off</span>
+            </div>
+            <p class="text-xs text-slate-200 mt-2 leading-relaxed">
+              <strong class="text-white">Patient Hamza Farooqi (MRN-2026-0814):</strong> Azaraqi Mudabbar (Strychnos nux-vomica) co-prescribed with CNS depressant. Mudabbar detoxification clearance certificate validated; 6h dosing interval required with Kateera corrective.
+            </p>
+          </div>
+        </div>
+        <button onclick="dismissSafetyAlert()" class="px-4 py-2 bg-red-800 hover:bg-red-700 text-white border border-red-500 rounded-xl text-xs font-bold shrink-0 shadow transition">
+          Acknowledge &amp; Seal
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. FOCUS MODE SWITCHER (PROGRESSIVE DISCLOSURE TABS) -->
+    <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] p-2.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+        <button id="tab-btn-clinical" onclick="setFocusMode('clinical')" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white shadow-md flex items-center gap-2 transition">
+          <span>🩺</span>
+          <span>Daily Clinical OPD</span>
+          <span class="bg-emerald-950 text-emerald-200 text-xs px-2 py-0.5 rounded font-mono font-bold">Active</span>
+        </button>
+        <button id="tab-btn-therapeutic" onclick="setFocusMode('therapeutic')" class="px-4 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 flex items-center gap-2 transition">
+          <span>🌿</span>
+          <span>9-Organ Axis &amp; Living Plans</span>
+          <span class="bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded font-mono">9 Systems</span>
+        </button>
+        <button id="tab-btn-operations" onclick="setFocusMode('operations')" class="px-4 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 flex items-center gap-2 transition">
+          <span>💊</span>
+          <span>Dispensary &amp; Practice Ops</span>
+          <span class="bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded font-mono">FEFO &amp; Rev</span>
+        </button>
+        <button id="tab-btn-all" onclick="setFocusMode('all')" class="px-4 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 flex items-center gap-2 transition">
+          <span>🌐</span>
+          <span>All Overview</span>
+        </button>
+      </div>
+
+      <div class="text-xs text-slate-300 font-mono hidden md:block pr-3">
+        Mode: <span id="current-focus-label" class="text-emerald-400 font-bold">OPD Desk Only</span>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION A: DAILY CLINICAL OPD (Default View) -->
+    <!-- =================================================================== -->
+    <div id="section-clinical" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      
+      <!-- Left: Queue & Schedule (7 Cols) -->
+      <div class="lg:col-span-7 space-y-5">
+        <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+          <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+            <div>
+              <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                <span>🗓️</span>
+                <span>Today's OPD Queue &amp; Scheduled Consults</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">8 Patients Registered • 3 In-Clinic • 1 Tele-Consult Active</p>
+            </div>
+            <span class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-700/50">
+              Matab Live
+            </span>
+          </div>
+
+          <!-- Queue List -->
+          <div class="space-y-3 text-xs">
+            <!-- Patient 1 (Selected) -->
+            <div class="p-3.5 rounded-xl bg-slate-800/90 border-2 border-emerald-500 flex items-center justify-between shadow">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-950 text-emerald-300 font-bold flex items-center justify-center font-mono text-sm border border-emerald-700">
+                  01
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-white text-sm">Hamza Farooqi</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950 text-amber-200 text-xs font-mono border border-amber-800">Mizaj: Barid Balghami</span>
+                  </div>
+                  <p class="text-slate-300 text-xs mt-1">MRN-2026-0814 • Osteoarthritis (Waja-ul-Mafasil) • Follow-up Day 14</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="px-3 py-1 rounded-md bg-emerald-600 text-white font-bold text-xs shadow">In Cabin</span>
+                <p class="text-xs text-slate-400 font-mono mt-1">Token #101</p>
+              </div>
+            </div>
+
+            <!-- Patient 2 -->
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center font-mono text-sm">
+                  02
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-200 text-sm">Zahra Parveen</span>
+                    <span class="px-2 py-0.5 rounded bg-red-950 text-red-200 text-xs font-mono border border-red-800">Mizaj: Haar Yabis</span>
+                  </div>
+                  <p class="text-slate-400 text-xs mt-1">MRN-2026-0912 • Acid Peptic Disorder (Su-e-Hazm) • New Patient</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="px-3 py-1 rounded-md bg-slate-800 text-slate-300 text-xs">Waiting (8m)</span>
+                <p class="text-xs text-slate-400 font-mono mt-1">Token #102</p>
+              </div>
+            </div>
+
+            <!-- Patient 3 -->
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center font-mono text-sm">
+                  03
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-200 text-sm">Tariq Mehmood</span>
+                    <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-200 text-xs font-mono border border-blue-800">Mizaj: Damawi</span>
+                  </div>
+                  <p class="text-slate-400 text-xs mt-1">MRN-2026-0740 • Hypertension (Zaght-ud-Dam) • Tele-Consult</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="px-3 py-1 rounded-md bg-teal-950 text-teal-300 border border-teal-700 text-xs font-semibold">Video Link Ready</span>
+                <p class="text-xs text-slate-400 font-mono mt-1">Token #103</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QSURA Follow-up Action Strip -->
+        <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+          <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+            <span>📲</span>
+            <span>QSURA Automated Follow-up Trigger Strip (SMS &amp; Email)</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-emerald-400 font-bold block">14-Day Afaal Review</span>
+              <p class="text-slate-300 text-xs mt-1">Hamza Farooqi: Sent WhatsApp reminder for Tanqiya completion check.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-amber-400 font-bold block">Dietary Parhez Adherence</span>
+              <p class="text-slate-300 text-xs mt-1">Zahra Parveen: Warm broth &amp; Avoidance of cold sour ahara logged.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-blue-400 font-bold block">Biomarker Fasting Test</span>
+              <p class="text-slate-300 text-xs mt-1">Tariq Mehmood: SBP/DBP graph sync from smart cuff received.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Hakeem Sahab AI Copilot (5 Cols) -->
+      <div class="lg:col-span-5 space-y-5">
+        <div class="bg-[var(--card,#131d2e)] border border-emerald-800/60 rounded-2xl p-5 shadow-md">
+          <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🤖</span>
+              <div>
+                <h3 class="font-bold text-white text-sm">Hakeem Sahab™ AI Copilot</h3>
+                <p class="text-xs text-slate-400">Classical RAG • 12 Canon Volumes • Non-Autonomous</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">CDS L2 Active</span>
+          </div>
+
+          <div class="space-y-3.5 text-xs">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-xs font-bold text-emerald-400 block mb-1">Differential Correlation:</span>
+              <p class="text-slate-200 leading-relaxed text-xs">
+                Hamza Farooqi's chronic knee swelling correlates with <strong class="text-white">Waja-ul-Mafasil Barid Balghami</strong>. Classical text <em>Al-Qanun fi al-Tibb</em> (Vol III, §14) advises Tanqiya-e-Balgham prior to Tadbeer-e-Mufattit.
+              </p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-xs font-bold text-amber-400 block mb-1">Herb-Drug &amp; Schedule E1 Check:</span>
+              <p class="text-slate-200 leading-relaxed text-xs">
+                Prescription formulation includes <strong class="text-white">Suranjan Talkh (Colchicum autumnale)</strong>. Maximum daily colchicine equivalence capped at 1.5mg. FEFO lot passed HPTLC purity.
+              </p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+              <span class="text-xs font-bold text-teal-300 block mb-1">Recommended Regimen (Physician Approval):</span>
+              <ul class="text-slate-200 list-disc list-inside space-y-1 text-xs">
+                <li>Majun Suranjan: 5g bid with lukewarm cow milk</li>
+                <li>Habb-e-Azaraqi Mudabbar: 1 tab OD after dinner (6h spacing)</li>
+                <li>Raughan-e-Balsan: Local fomentation bedtime</li>
+              </ul>
+            </div>
+
+            <div class="pt-2 flex items-center gap-2">
+              <button class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition">
+                Apply to Rx Draft
+              </button>
+              <button class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700">
+                Review Canon
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION B: 9-ORGAN AXIS & LIVING PLANS (Shown in tab 'therapeutic') -->
+    <!-- =================================================================== -->
+    <div id="section-therapeutic" class="hidden space-y-5">
+      
+      <!-- 9-Organ Axis Matrix -->
+      <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+          <div>
+            <h3 class="font-bold text-white text-sm flex items-center gap-2">
+              <span>🌿</span>
+              <span>9-Organ Axis Clinical Biomarker Matrix (Taqweem-ul-A'za)</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Multi-organ physiological balance mapping based on Ibn Sina &amp; modern labs</p>
+          </div>
+          <span class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-950 text-amber-300 border border-amber-700">
+            All 9 Systems Tracked
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3 text-xs">
+          <!-- 1. Qalb -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">❤️</span>
+            <h4 class="font-bold text-white mt-1">Qalb (Heart)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">72 bpm</span>
+            <p class="text-xs text-slate-400 mt-1">Mu'tadil</p>
+          </div>
+          <!-- 2. Dimagh -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🧠</span>
+            <h4 class="font-bold text-white mt-1">Dimagh (Brain)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Alert</span>
+            <p class="text-xs text-slate-400 mt-1">7.2 hrs</p>
+          </div>
+          <!-- 3. Jigar -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🫀</span>
+            <h4 class="font-bold text-white mt-1">Jigar (Liver)</h4>
+            <span class="text-xs text-amber-400 font-mono block">Su-e-Mizaj</span>
+            <p class="text-xs text-slate-400 mt-1">SGPT: 38</p>
+          </div>
+          <!-- 4. Meda -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🥣</span>
+            <h4 class="font-bold text-white mt-1">Meda (Stomach)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Optimal</span>
+            <p class="text-xs text-slate-400 mt-1">Hazm: Salih</p>
+          </div>
+          <!-- 5. Gurda -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🫘</span>
+            <h4 class="font-bold text-white mt-1">Gurda (Kidney)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Normal</span>
+            <p class="text-xs text-slate-400 mt-1">eGFR: &gt;90</p>
+          </div>
+          <!-- 6. Riya -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🫁</span>
+            <h4 class="font-bold text-white mt-1">Riya (Lungs)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Clear</span>
+            <p class="text-xs text-slate-400 mt-1">SpO2: 98%</p>
+          </div>
+          <!-- 7. Mafasil -->
+          <div class="p-3 rounded-xl bg-red-950/40 border-2 border-red-500 text-center">
+            <span class="text-xl">🦴</span>
+            <h4 class="font-bold text-red-300 mt-1">Mafasil (Joints)</h4>
+            <span class="text-xs text-red-300 font-mono font-bold block">Waja-ul-Mafasil</span>
+            <p class="text-xs text-red-200 mt-1">Pain: 6/10</p>
+          </div>
+          <!-- 8. Jild -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">✋</span>
+            <h4 class="font-bold text-white mt-1">Jild (Skin)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Intact</span>
+            <p class="text-xs text-slate-400 mt-1">Normal</p>
+          </div>
+          <!-- 9. Bah -->
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-center">
+            <span class="text-xl">🧬</span>
+            <h4 class="font-bold text-white mt-1">Bah (Reprod)</h4>
+            <span class="text-xs text-emerald-400 font-mono block">Balanced</span>
+            <p class="text-xs text-slate-400 mt-1">Vitality: High</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Stage Afaal Treatment Plan -->
+      <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+        <h3 class="font-bold text-white text-sm mb-4 flex items-center gap-2">
+          <span>🔄</span>
+          <span>4-Stage Unani Treatment Lifecycle (Afaal-e-Ilaj)</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+          <!-- Stage 1 -->
+          <div class="p-4 rounded-xl bg-emerald-950/70 border border-emerald-500 text-emerald-200">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold font-mono text-sm">Stage 1: Nuzj</span>
+              <span class="text-xs bg-emerald-800 text-white px-2 py-0.5 rounded font-semibold">Completed</span>
+            </div>
+            <p class="text-slate-200 text-xs leading-relaxed mt-1">Maturation of morbid phlegm via Munzij-e-Balgham decoctions.</p>
+          </div>
+          <!-- Stage 2 -->
+          <div class="p-4 rounded-xl bg-amber-950/70 border-2 border-amber-500 text-amber-200">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold font-mono text-sm">Stage 2: Tanqiya</span>
+              <span class="text-xs bg-amber-700 text-white px-2 py-0.5 rounded font-bold">Current: Day 7</span>
+            </div>
+            <p class="text-slate-200 text-xs leading-relaxed mt-1">Elimination of peccant humors via mild Mushil &amp; Natool therapy.</p>
+          </div>
+          <!-- Stage 3 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-300">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold font-mono text-sm">Stage 3: Tadeel</span>
+              <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Upcoming</span>
+            </div>
+            <p class="text-slate-400 text-xs leading-relaxed mt-1">Restoration of normal temperament via dietary &amp; lifestyle moderation.</p>
+          </div>
+          <!-- Stage 4 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-300">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold font-mono text-sm">Stage 4: Taqviyat</span>
+              <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Upcoming</span>
+            </div>
+            <p class="text-slate-400 text-xs leading-relaxed mt-1">Strengthening of principal organ (Muqawwi-e-A'za) to prevent recurrence.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION C: DISPENSARY & PRACTICE OPS (Shown in tab 'operations') -->
+    <!-- =================================================================== -->
+    <div id="section-operations" class="hidden space-y-5">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Dispensary & FEFO Gating (7 Cols) -->
+        <div class="lg:col-span-7 bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+          <div class="flex items-center justify-between mb-4 border-b border-slate-700/60 pb-3">
+            <div>
+              <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                <span>💊</span>
+                <span>FEFO Pharmacy Inventory &amp; Mudabbar Gating</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">First-Expiring-First-Out • Schedule E1 Detoxification Verification</p>
+            </div>
+            <span class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">
+              32 Classical SKUs
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-sm">Majun Suranjan</span>
+                  <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-mono text-xs border border-emerald-800">Batch #MS-2026-0441</span>
+                </div>
+                <p class="text-slate-300 text-xs mt-1">Expiry: Nov 2026 • 142 units in stock • Priority Dispatch</p>
+              </div>
+              <span class="px-3 py-1 rounded-lg bg-emerald-900 text-emerald-200 text-xs font-bold">FEFO Green</span>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-sm">Habb-e-Azaraqi (Mudabbar)</span>
+                  <span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 font-mono text-xs border border-amber-800">Schedule E1 Potent</span>
+                </div>
+                <p class="text-slate-300 text-xs mt-1">Detoxification Method: Shodhan in cow milk (7 days) • QC Certified</p>
+              </div>
+              <span class="px-3 py-1 rounded-lg bg-amber-900 text-amber-200 text-xs font-bold">Mudabbar OK</span>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-sm">Raughan-e-Balsan</span>
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-xs">Batch #RB-2026-0119</span>
+                </div>
+                <p class="text-slate-300 text-xs mt-1">Expiry: May 2027 • 88 units in stock</p>
+              </div>
+              <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs">Normal Stock</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clinic Revenue & System Health (5 Cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+            <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+              <span>📊</span>
+              <span>Matab Operations &amp; Billing</span>
+            </h3>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+                <span class="text-slate-400 text-xs">Today's Consults</span>
+                <p class="text-xl font-bold text-white mt-1">14 Consults</p>
+                <span class="text-emerald-400 text-xs font-mono font-semibold">100% On Schedule</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+                <span class="text-slate-400 text-xs">Dispensary Dispatch</span>
+                <p class="text-xl font-bold text-white mt-1">₹18,450</p>
+                <span class="text-teal-400 text-xs font-mono font-semibold">FEFO Auto-Billed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[var(--card,#131d2e)] border border-[var(--border,#1e2c42)] rounded-2xl p-5 shadow-md">
+            <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+              <span>⚡</span>
+              <span>Core Microservices Uptime</span>
+            </h3>
+            <div class="space-y-2.5 text-xs">
+              <div class="flex items-center justify-between text-slate-200">
+                <span class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span>Identity &amp; RBAC</span>
+                </span>
+                <span class="font-mono text-emerald-400 text-xs">200 OK (8ms)</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-200">
+                <span class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span>Clinical Engine</span>
+                </span>
+                <span class="font-mono text-emerald-400 text-xs">200 OK (12ms)</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-200">
+                <span class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span>Therapeutic &amp; FEFO</span>
+                </span>
+                <span class="font-mono text-emerald-400 text-xs">200 OK (9ms)</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-200">
+                <span class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span>Knowledge (ZKB RAG)</span>
+                </span>
+                <span class="font-mono text-emerald-400 text-xs">200 OK (14ms)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    function setFocusMode(mode) {
+      const modes = ['clinical', 'therapeutic', 'operations', 'all'];
+      const secClinical = document.getElementById('section-clinical');
+      const secTherapeutic = document.getElementById('section-therapeutic');
+      const secOperations = document.getElementById('section-operations');
+      const label = document.getElementById('current-focus-label');
+
+      modes.forEach(m => {
+        const btn = document.getElementById('tab-btn-' + m);
+        if (btn) {
+          if (m === mode) {
+            btn.className = "px-4 py-2.5 rounded-xl bg-emerald-600 text-white shadow-md flex items-center gap-2 transition";
+          } else {
+            btn.className = "px-4 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 flex items-center gap-2 transition";
+          }
+        }
+      });
+
+      if (mode === 'clinical') {
+        secClinical.classList.remove('hidden');
+        secTherapeutic.classList.add('hidden');
+        secOperations.classList.add('hidden');
+        label.innerText = 'OPD Desk Only';
+      } else if (mode === 'therapeutic') {
+        secClinical.classList.add('hidden');
+        secTherapeutic.classList.remove('hidden');
+        secOperations.classList.add('hidden');
+        label.innerText = '9-Organ Biomarkers & Afaal';
+      } else if (mode === 'operations') {
+        secClinical.classList.add('hidden');
+        secTherapeutic.classList.add('hidden');
+        secOperations.classList.remove('hidden');
+        label.innerText = 'Pharmacy & Ops Desk';
+      } else if (mode === 'all') {
+        secClinical.classList.remove('hidden');
+        secTherapeutic.classList.remove('hidden');
+        secOperations.classList.remove('hidden');
+        label.innerText = 'All Overview';
+      }
+    }
+
+    function dismissSafetyAlert() {
+      const strip = document.getElementById('safety-strip');
+      strip.innerHTML = `
+        <div class="flex items-center justify-between text-xs text-emerald-300 py-1">
+          <span>✓ All safety alerts acknowledged & electronically signed by Hakeem Dr. Irfan Ashraf.</span>
+          <span class="font-mono text-xs text-emerald-400 font-bold">21 CFR Part 11 Timestamp Recorded</span>
+        </div>
+      `;
+      strip.className = "bg-emerald-950/60 border border-emerald-500/60 rounded-2xl p-4 shadow-md transition";
+    }
+  </script>
+</body>
+</html>

@@ -31,7 +31,7 @@ const INITIAL_QUEUE: QueueItem[] = [
     arrivalTime: "10:15 AM",
     acuity: "STANDARD",
     chiefComplaint: "Bilateral knee stiffness, joint pain in cold weather",
-    doctor: "Hakim Dr. Tariq Mansoor",
+    doctor: "Hakeem Dr. Irfan Ashraf",
     room: "OPD Room 3",
     status: "IN_CONSULTATION",
   },
@@ -45,7 +45,7 @@ const INITIAL_QUEUE: QueueItem[] = [
     arrivalTime: "10:30 AM",
     acuity: "URGENT",
     chiefComplaint: "Acute Su-e-Hazm with epigastric burning",
-    doctor: "Hakim Dr. Tariq Mansoor",
+    doctor: "Hakeem Dr. Irfan Ashraf",
     room: "OPD Room 3",
     status: "WAITING",
   },
@@ -77,7 +77,7 @@ interface DoctorRoster {
 const INITIAL_ROSTER: DoctorRoster[] = [
   {
     id: "DOC-1001",
-    name: "Hakim Dr. Tariq Mansoor",
+    name: "Hakeem Dr. Irfan Ashraf",
     specialty: "Unani Rheumatology & Musculoskeletal",
     room: "OPD Room 3",
     status: "BUSY",
@@ -104,7 +104,7 @@ export default function ClinicWorkspacePage() {
   const [regSex, setRegSex] = useState("M");
   const [regPhone, setRegPhone] = useState("");
   const [regComplaint, setRegComplaint] = useState("");
-  const [regDoctor, setRegDoctor] = useState("Hakim Dr. Tariq Mansoor");
+  const [regDoctor, setRegDoctor] = useState("Hakeem Dr. Irfan Ashraf");
   const [regSuccess, setRegSuccess] = useState<string | null>(null);
 
   const handleRegisterPatient = (e: React.FormEvent) => {
@@ -345,7 +345,7 @@ export default function ClinicWorkspacePage() {
                     onChange={(e) => setRegDoctor(e.target.value)}
                     className="zv-input bg-[#0F172A]"
                   >
-                    <option value="Hakim Dr. Tariq Mansoor">Hakim Dr. Tariq Mansoor (Room 3)</option>
+                    <option value="Hakeem Dr. Irfan Ashraf">Hakeem Dr. Irfan Ashraf (Room 3)</option>
                     <option value="Dr. Asma Parveen">Dr. Asma Parveen (Room 1)</option>
                   </select>
                 </div>

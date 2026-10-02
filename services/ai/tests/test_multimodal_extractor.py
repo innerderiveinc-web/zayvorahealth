@@ -1,6 +1,6 @@
 """
 Unit Tests for Multimodal AI Lab Report Extractor & Physical Signs Analyzer
-Master Build Prompt v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
+ZAYVORA Clinical Architecture Specification v4.0 Phase 29 (Horizon 3: Clinical & AI Runtime Intelligence)
 """
 
 import unittest

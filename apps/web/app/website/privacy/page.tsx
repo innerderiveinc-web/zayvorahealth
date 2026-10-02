@@ -9,7 +9,7 @@ export default function PrivacyPage() {
       <div className="border-b border-[#334155] pb-6 space-y-2">
         <span className="text-[11px] font-bold text-[#2DD4BF] uppercase tracking-wider">ZAYVORA Health OS™ v5.0</span>
         <h1 className="text-3xl md:text-4xl font-extrabold text-white">Privacy & Data Protection Policy</h1>
-        <p className="text-sm text-[#94A3B8]">HIPAA, DISHA, and Digital Personal Data Protection Compliance</p>
+        <p className="text-sm text-[#94A3B8]">DPDP Act 2023, DISHA, and Digital Personal Data Protection Compliance</p>
       </div>
 
       <div className="space-y-6 leading-relaxed">

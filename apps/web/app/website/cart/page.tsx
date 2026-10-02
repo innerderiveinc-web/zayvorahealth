@@ -40,12 +40,16 @@ export default function CartPage() {
   const [fullName, setFullName] = useState("Mohammad Tariq");
   const [email, setEmail] = useState("tariq.m@example.com");
   const [phone, setPhone] = useState("+91 98765 43210");
-  const [address, setAddress] = useState("Flat 402, Hamdard Enclave, Jamia Nagar");
+  const [address, setAddress] = useState("Flat 402, Healthcare Enclave, Institutional Area");
   const [city, setCity] = useState("New Delhi");
   const [pincode, setPincode] = useState("110025");
   const [paymentMethod, setPaymentMethod] = useState<"upi" | "card" | "cod">("upi");
   const [isOrdered, setIsOrdered] = useState(false);
   const [orderReceipt, setOrderReceipt] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  const API = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
 
   const rawSubtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
   const discountAmount = Math.round((rawSubtotal * discountPct) / 100);
@@ -83,23 +87,55 @@ export default function CartPage() {
     }
   };
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setCheckoutError(null);
+
     const orderId = `ORD-ZY-${Math.floor(100000 + Math.random() * 900000)}`;
+    let remoteTxId = "";
+
+    try {
+      // Call clinical payment orders API
+      const res = await fetch(`${API}/api/v1/payments/orders/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patient_id: "00000000-0000-0000-0000-000000000001",
+          amount_in_cents: grandTotal * 100,
+          currency: "INR",
+          gateway_provider: paymentMethod === "card" ? "stripe" : "razorpay",
+          receipt_email: email,
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        remoteTxId = data.order_id || data.transaction_id || "";
+      }
+    } catch {
+      // Offline fallback: order processed locally
+    }
+
     const receipt = {
-      orderId,
+      orderId: remoteTxId || orderId,
       customer: fullName,
       phone,
+      email,
       address: `${address}, ${city} - ${pincode}`,
       itemsCount: items.length,
       grandTotal,
       paymentMethod: paymentMethod.toUpperCase(),
       fefoBatches: items.map((i) => `${i.name}: ${i.lotAllocated}`),
       timestamp: new Date().toISOString(),
+      gatewayStatus: remoteTxId ? "REGISTERED_ON_GATEWAY" : "LOCAL_CONFIRMED",
     };
+
     setOrderReceipt(receipt);
     setIsOrdered(true);
+    setIsSubmitting(false);
   };
+
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 space-y-8 text-xs text-[#CBD5E1]">
@@ -352,10 +388,12 @@ export default function CartPage() {
 
                 <button
                   type="submit"
-                  disabled={items.length === 0}
+                  disabled={items.length === 0 || isSubmitting}
                   className="w-full py-3.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] disabled:opacity-50 text-white font-extrabold text-xs shadow-lg transition mt-2"
                 >
-                  Place Dispensary Order (₹{grandTotal.toLocaleString("en-IN")}) →
+                  {isSubmitting
+                    ? "Processing Payment & FEFO Allocation..."
+                    : `Place Dispensary Order (₹${grandTotal.toLocaleString("en-IN")}) →`}
                 </button>
               </form>
             </div>

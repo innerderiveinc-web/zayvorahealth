@@ -93,7 +93,7 @@ Every healthcare transaction, patient profile, appointment token, prescription, 
 
 | Facility ID | Facility Name | Code | City | Type | Active |
 | :--- | :--- | :--- | :--- | :--- | :---: |
-| `FAC-HQ-01` | Jamia Hamdard AUTC - Main Hospital | `JH-AUTC-DELHI` | New Delhi | HOSPITAL | YES |
+| `FAC-HQ-01` | ZAYVORA Healthcare System - Central Hospital | `JH-AUTC-DELHI` | New Delhi | HOSPITAL | YES |
 | `FAC-BRANCH-02` | Nizamia General Hospital & Research Wing | `NGH-HYD-01` | Hyderabad | RESEARCH_INSTITUTE | YES |
 
 ### 4.2 Cross-Tenant Access Denial Guard

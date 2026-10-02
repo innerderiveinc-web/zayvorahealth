@@ -1,11 +1,29 @@
 .venv/
+venv/
 __pycache__/
 *.pyc
 node_modules/
 .next/
+dist/
+build/
+coverage/
+
+# Database files
 *.db
+*.sqlite
+*.sqlite3
+database/zayvora_live.db
+
+# Logs and archives
 *.log
-.env
-.env.local
 *.zip
 scratch/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Certificates and keys
+*.pem
+keys/

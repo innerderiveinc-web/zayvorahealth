@@ -6,6 +6,9 @@ import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CANONICAL_PRODUCTS, ProductItem } from "@/lib/cms/productsData";
 import { AuthService } from "@/lib/services/authService";
+import { useAuth } from "@/lib/hooks/useAuth";
+
+const API = process.env.NEXT_PUBLIC_GATEWAY_URL || "http://localhost:8000";
 
 interface PrescriptionOrder {
   id: string;
@@ -33,8 +36,8 @@ const INITIAL_ORDERS: PrescriptionOrder[] = [
     orderNumber: "RX-2026-0441",
     patientName: "Hamza Farooqi",
     mrn: "MRN-2026-0814",
-    doctorName: "Prof. (Dr.) Mansoor Alam",
-    doctorReg: "CCIM-U-1988-0412",
+    doctorName: "Hakeem Dr. Irfan Ashraf",
+    doctorReg: "Updating / Verification in Progress",
     items: [
       {
         name: "Majun Suranjan (Mudabbar)",
@@ -64,7 +67,7 @@ const INITIAL_ORDERS: PrescriptionOrder[] = [
     patientName: "Ayesha Siddiqui",
     mrn: "MRN-2026-0815",
     doctorName: "Dr. Aisha Siddiqui",
-    doctorReg: "CCIM-U-2004-1892",
+    doctorReg: "NCISM-BUMS-2004-1892",
     items: [
       {
         name: "Jawarish Shahi",
@@ -124,6 +127,7 @@ const INVENTORY_ITEMS: InventoryBatch[] = [
 ];
 
 export default function PharmacyWorkspacePage() {
+  const { isLoading: authLoading, isAuthorized } = useAuth({ requiredRoles: ['PHARMACIST'] });
   const [activeTab, setActiveTab] = useState<"queue" | "inventory" | "orders" | "search">("queue");
   const [regulatoryFilter, setRegulatoryFilter] = useState<"ALL" | "CLINIC_UNANI" | "RETAIL_UNANI" | "AYUSH_PROPRIETARY" | "FSSAI_SUPPLEMENT">("ALL");
   const [orders, setOrders] = useState<PrescriptionOrder[]>(INITIAL_ORDERS);
@@ -132,16 +136,20 @@ export default function PharmacyWorkspacePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDispensing, setIsDispensing] = useState(false);
   const [dispenseResultModal, setDispenseResultModal] = useState<any | null>(null);
+  const [safetyFirewallAlert, setSafetyFirewallAlert] = useState<string | null>(null);
+  const [qrScanModalOpen, setQrScanModalOpen] = useState(false);
+  const [scannedCode, setScannedCode] = useState("");
 
   // Load live prescriptions and inventory
   useEffect(() => {
     async function loadPharmacyData() {
+      if (!isAuthorized) return;
       try {
         const session = AuthService.getSession();
         const headers = session?.token ? { Authorization: `Bearer ${session.token}` } : {};
         const [rxRes, invRes] = await Promise.all([
-          fetch("http://localhost:8000/api/v1/prescriptions", { headers }),
-          fetch("http://localhost:8000/api/v1/inventory", { headers })
+          fetch(`${API}/api/v1/prescriptions`, { headers }),
+          fetch(`${API}/api/v1/inventory`, { headers })
         ]);
 
         if (rxRes.ok) {
@@ -193,7 +201,7 @@ export default function PharmacyWorkspacePage() {
       }
     }
     loadPharmacyData();
-  }, []);
+  }, [isAuthorized]);
 
   // 12-Step Dispensing Verification Checklist Modal
   const [isVerifying, setIsVerifying] = useState(false);
@@ -234,10 +242,22 @@ export default function PharmacyWorkspacePage() {
   const handleConfirmDispense = async () => {
     if (!selectedOrder) return;
     setIsDispensing(true);
+    setSafetyFirewallAlert(null);
+
+    // Client-side Safety Firewall pre-check
+    const uncertifiedE1 = selectedOrder.items.find(i => i.isScheduleE1 && !i.mudabbarCert);
+    if (uncertifiedE1) {
+      setSafetyFirewallAlert(
+        `⚠️ SAFETY FIREWALL BLOCK: "${uncertifiedE1.name}" contains toxic botanicals governed by Schedule E(1) of the Drugs & Cosmetics Act. Dispensing is blocked until verified Mudabbar detoxification certification is provided.`
+      );
+      setIsDispensing(false);
+      return;
+    }
+
     try {
       const session = AuthService.getSession();
       const token = session?.token;
-      const res = await fetch(`http://localhost:8000/api/v1/prescriptions/${selectedOrder.id}/dispense`, {
+      const res = await fetch(`${API}/api/v1/prescriptions/${selectedOrder.id}/dispense`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -248,7 +268,16 @@ export default function PharmacyWorkspacePage() {
         })
       });
 
-      if (res.ok) {
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        const detail = errJson.detail || errJson.error || errJson.message || "Prescription failed Safety Firewall verification.";
+        setSafetyFirewallAlert(
+          `⚠️ SAFETY FIREWALL BLOCK: ${typeof detail === "string" ? detail : JSON.stringify(detail)}`
+        );
+        setIsDispensing(false);
+        return;
+      }
+
         const data = await res.json();
         if (data.ok) {
           setOrders(orders.map(o => o.id === selectedOrder.id ? { ...o, status: "DISPENSED" } : o));
@@ -257,7 +286,7 @@ export default function PharmacyWorkspacePage() {
           setIsDispensing(false);
 
           // Refresh live inventory
-          const invRes = await fetch("http://localhost:8000/api/v1/inventory", {
+          const invRes = await fetch(`${API}/api/v1/inventory`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
           });
           if (invRes.ok) {
@@ -279,7 +308,6 @@ export default function PharmacyWorkspacePage() {
           }
           return;
         }
-      }
     } catch {
       // Offline fallback
     }
@@ -311,6 +339,9 @@ export default function PharmacyWorkspacePage() {
       item.batchNumber.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesReg && matchesSearch;
   });
+
+  if (authLoading) return <div className="flex items-center justify-center h-64 text-slate-500">Verifying access…</div>;
+  if (!isAuthorized) return null;
 
   return (
     <AppShell activeRole="pharmacy">
@@ -376,13 +407,41 @@ export default function PharmacyWorkspacePage() {
         {/* TAB 1: DISPENSING QUEUE */}
         {activeTab === "queue" && (
           <div className="bg-[#0F172A] border border-slate-800 rounded-3xl p-6 space-y-4 animate-fade-in">
-            <div className="border-b border-slate-800 pb-3 flex justify-between items-center">
+            <div className="border-b border-slate-800 pb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div>
                 <h3 className="text-sm font-bold text-white">Active Electronic Prescriptions</h3>
                 <p className="text-slate-400 text-[11px]">21 CFR Part 11 signed by attending clinicians, awaiting dispensing verification.</p>
               </div>
-              <span className="text-amber-400 font-semibold">{orders.filter(o => o.status === "PENDING_VERIFICATION").length} Orders Awaiting Action</span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setQrScanModalOpen(true)}
+                  className="px-3 py-1.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white text-xs font-bold flex items-center gap-1.5 shadow-md transition"
+                >
+                  <span>📷</span>
+                  <span>Scan Prescription QR / Barcode</span>
+                </button>
+                <span className="text-amber-400 font-semibold">{orders.filter(o => o.status === "PENDING_VERIFICATION").length} Orders Awaiting</span>
+              </div>
             </div>
+
+            {/* Safety Firewall Alert Banner */}
+            {safetyFirewallAlert && (
+              <div className="p-4 rounded-2xl bg-rose-950/90 border border-rose-600 text-rose-200 text-xs flex items-start gap-3 shadow-xl animate-fade-in">
+                <span className="text-lg">🚫</span>
+                <div className="space-y-1 flex-1">
+                  <span className="font-bold text-rose-100 text-sm block">
+                    AYUSH / CDSCO Safety Firewall Enforcement Alert
+                  </span>
+                  <p className="text-slate-200 leading-relaxed">{safetyFirewallAlert}</p>
+                </div>
+                <button
+                  onClick={() => setSafetyFirewallAlert(null)}
+                  className="text-rose-400 hover:text-white text-base font-bold px-1"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
             <div className="space-y-4">
               {orders.map(order => (
@@ -533,6 +592,17 @@ export default function PharmacyWorkspacePage() {
                         <td className="p-4">
                           <div className="font-mono text-white text-[11px]">{item.batchNumber}</div>
                           <div className="text-[10px] text-slate-400">Exp: {item.expiryDate}</div>
+                          {(() => {
+                            const exp = new Date(item.expiryDate).getTime();
+                            const days = Math.ceil((exp - Date.now()) / (1000 * 3600 * 24));
+                            if (days <= 0) {
+                              return <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-950 text-rose-300 border border-rose-800">EXPIRED</span>;
+                            }
+                            if (days <= 180) {
+                              return <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-950 text-amber-300 border border-amber-800 animate-pulse">⚠️ FEFO PRIORITY ({days}d)</span>;
+                            }
+                            return null;
+                          })()}
                         </td>
                         <td className="p-4">
                           <span className={`font-mono font-bold ${item.stockQty <= item.minThreshold ? "text-amber-400" : "text-white"}`}>
@@ -577,7 +647,7 @@ export default function PharmacyWorkspacePage() {
             <div className="border-b border-slate-800 pb-3 flex justify-between items-center">
               <div>
                 <h3 className="text-sm font-bold text-white">Botanical Purchase Orders & Restock Pipeline</h3>
-                <p className="text-slate-400 text-[11px]">Procurement from Jamia Hamdard Certified AYUSH-GMP Botanical Pharmacy Facility.</p>
+                <p className="text-slate-400 text-[11px]">Procurement from ZAYVORA Research & Manufacturing™ Certified AYUSH-GMP Botanical Pharmacy Facility.</p>
               </div>
               <button onClick={() => alert("Creating new purchase order...")} className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold">
                 + New Purchase Order
@@ -586,8 +656,8 @@ export default function PharmacyWorkspacePage() {
 
             <div className="space-y-3">
               {[
-                { po: "PO-2026-081", item: "Suranjan Talkh Raw Botanical Extract (Mudabbar Grade)", qty: "50 kg", supplier: "Hamdard Laboratories GMP Unit", status: "In Transit", arrival: "Sep 15" },
-                { po: "PO-2026-080", item: "Balsamodendron Mukul Purified Gum Resin (Guggulu)", qty: "25 kg", supplier: "AUTC Central Processing Facility", status: "Received & QA Cleared", arrival: "Sep 11" }
+                { po: "PO-2026-081", item: "Suranjan Talkh Raw Botanical Extract (Mudabbar Grade)", qty: "50 kg", supplier: "ZAYVORA Standardized Botanical Division", status: "In Transit", arrival: "Sep 15" },
+                { po: "PO-2026-080", item: "Balsamodendron Mukul Purified Gum Resin (Guggulu)", qty: "25 kg", supplier: "ZAYVORA Certified Processing Facility", status: "Received & QA Cleared", arrival: "Sep 11" }
               ].map((po, idx) => (
                 <div key={idx} className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 flex justify-between items-center">
                   <div>
@@ -755,6 +825,72 @@ export default function PharmacyWorkspacePage() {
               >
                 Close Receipt & Continue
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* QR / BARCODE PRESCRIPTION SCAN MODAL */}
+        {qrScanModalOpen && (
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-[#0F172A] border border-teal-500/50 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-teal-400 text-lg">📷</span>
+                  <h3 className="text-sm font-bold text-white">Prescription QR &amp; Barcode Scanner</h3>
+                </div>
+                <button
+                  onClick={() => setQrScanModalOpen(false)}
+                  className="text-slate-400 hover:text-white font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-slate-900 border-2 border-dashed border-teal-500/40 text-center space-y-3">
+                <div className="w-16 h-16 rounded-2xl bg-teal-950/80 border border-teal-600/50 flex items-center justify-center mx-auto text-2xl">
+                  🔍
+                </div>
+                <p className="text-xs text-slate-300">
+                  Align prescription QR code or barcode within camera viewport, or enter Rx order code manually:
+                </p>
+                <input
+                  type="text"
+                  placeholder="e.g. RX-2026-0441"
+                  value={scannedCode}
+                  onChange={(e) => setScannedCode(e.target.value)}
+                  className="w-full bg-[#0A0F1D] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white uppercase font-mono focus:outline-none focus:border-teal-500"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setQrScanModalOpen(false)}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const match = orders.find(o =>
+                      o.orderNumber.toLowerCase() === scannedCode.trim().toLowerCase() ||
+                      o.id.toLowerCase() === scannedCode.trim().toLowerCase()
+                    );
+                    if (match) {
+                      setSelectedOrder(match);
+                      setQrScanModalOpen(false);
+                      setScannedCode("");
+                      handleStartVerification(match);
+                    } else {
+                      alert(`No prescription found matching code "${scannedCode}". Please verify the order number.`);
+                    }
+                  }}
+                  className="flex-1 py-2.5 rounded-xl bg-[#0D9488] hover:bg-[#14B8A6] text-white font-bold shadow-md"
+                >
+                  Locate &amp; Verify Rx →
+                </button>
+              </div>
             </div>
           </div>
         )}

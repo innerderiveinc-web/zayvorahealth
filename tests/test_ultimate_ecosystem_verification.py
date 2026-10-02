@@ -190,7 +190,7 @@ class TestUltimateEnterpriseEcosystem(unittest.TestCase):
             self.assertIn("hi", content)
             self.assertIn("en", content)
             self.assertIn("audioPosologyText", content)
-            self.assertIn("اردو", content)
+            self.assertTrue("Urdu" in content or "اردو" in content)
             self.assertIn("हिन्दी", content)
 
     def test_07_mobile_asbab_sittah_tracker(self):

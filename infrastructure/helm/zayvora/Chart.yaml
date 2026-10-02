@@ -1,15 +1,9 @@
 apiVersion: v2
 name: zayvora
-description: Helm chart for ZAYVORA HEALTH™ Enterprise Integrative Healthcare Platform (2035 Edition)
+description: ZAYVORA Health OS™ — AI-native Unani Healthcare Platform
 type: application
 version: 2.0.0
-appVersion: "2.0.0"
-keywords:
-  - healthcare
-  - unani
-  - clinical-ai
-  - fhir-r4
-  - abdm
+appVersion: "5.0.0"
 maintainers:
-  - name: ZAYVORA DevOps & Infrastructure Team
-    email: devops@zayvora.com
+  - name: ZAYVORA Team
+    email: tech@zayvora.com

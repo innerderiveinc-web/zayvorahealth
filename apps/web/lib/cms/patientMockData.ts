@@ -99,12 +99,12 @@ export const MOCK_PATIENT_PROFILE: PatientProfileData = {
 
 export const MOCK_PATIENT_APPOINTMENT: PatientAppointment = {
   id: "APT-2026-0915-01",
-  doctorName: "Hakim Dr. Tariq Mansoor",
+  doctorName: "Hakeem Dr. Irfan Ashraf",
   doctorSpecialty: "Senior Consultant Tabeeb • Musculoskeletal & Nabz",
   date: "2026-09-15",
   timeSlot: "10:30 AM IST",
   mode: "In-Clinic OPD",
-  facilityLocation: "Jamia Hamdard AUTC - Main Hospital, OPD Room 3",
+  facilityLocation: "ZAYVORA Matab™ Central Care Centre, OPD Room 3",
   tokenNumber: "T-104",
   status: "Confirmed",
   joinVideoUrl: "/patient/teleconsult?session=ENC-2026-0814"
@@ -119,7 +119,7 @@ export const MOCK_CARE_PLAN: ActiveCarePlanData = {
   progressPercent: 65,
   startDate: "2026-09-02",
   nextReviewDate: "2026-09-16",
-  attendingPhysician: "Hakim Dr. Tariq Mansoor (CCIM-BUMS)",
+  attendingPhysician: "Hakeem Dr. Irfan Ashraf (NCISM-BUMS)",
   clinicalNotes: "Patient demonstrates marked reduction in synovial crepitus. Morning stiffness reduced from 45 min to 18 min. Progressing towards Phase 2 (Tahleel) following lab review.",
   dietaryDirectives: [
     "Drink warm ginger-infused water with meals; strictly avoid chilled yogurt and cold sodas.",
@@ -159,7 +159,7 @@ export const MOCK_REPORTS: PatientLabReport[] = [
     id: "REP-101",
     title: "Serum hs-CRP & Rheumatoid Factor Panel",
     testDate: "2026-09-03",
-    labName: "Jamia Hamdard Central Diagnostic Pathology",
+    labName: "ZAYVORA Clinical Diagnostics Laboratory",
     status: "Verified",
     fileSize: "1.2 MB PDF",
     downloadUrl: "#"
@@ -177,7 +177,7 @@ export const MOCK_REPORTS: PatientLabReport[] = [
     id: "REP-103",
     title: "Complete Blood Count (CBC) & Serum Uric Acid",
     testDate: "2026-08-28",
-    labName: "Jamia Hamdard Central Diagnostic Pathology",
+    labName: "ZAYVORA Clinical Diagnostics Laboratory",
     status: "Verified",
     fileSize: "850 KB PDF",
     downloadUrl: "#"
@@ -187,7 +187,7 @@ export const MOCK_REPORTS: PatientLabReport[] = [
 export const MOCK_MESSAGES: PatientMessage[] = [
   {
     id: "msg-1",
-    senderName: "Hakim Dr. Tariq Mansoor",
+    senderName: "Hakeem Dr. Irfan Ashraf",
     senderRole: "Senior Consultant Tabeeb",
     timestamp: "Yesterday, 04:30 PM",
     messageText: "Dear Hamza, your hs-CRP levels show a favorable decline towards 4.8 mg/L. Please continue with the morning Majun Suranjan and do not miss the evening warm fomentation before your follow-up visit on the 15th.",
@@ -214,3 +214,11 @@ export const MOCK_INVOICES: PatientInvoice[] = [
     receiptNumber: "REC-ZAY-99014"
   }
 ];
+
+// Compatibility aliases
+export const MOCK_ACTIVE_CARE_PLAN = MOCK_CARE_PLAN;
+export const MOCK_PRESCRIPTIONS = MOCK_MEDICINES;
+export const MOCK_LAB_REPORTS = MOCK_REPORTS;
+export const MOCK_PATIENT_MESSAGES = MOCK_MESSAGES;
+export const MOCK_PATIENT_INVOICES = MOCK_INVOICES;
+

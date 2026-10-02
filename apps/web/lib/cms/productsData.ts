@@ -104,8 +104,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "9f82ab410cd8321e9014b2e88a31c0e819b52a417c80"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -164,8 +164,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "b41c098e98da8711e5a201c890f12d4a7c18b049e771"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -225,7 +225,7 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
     },
     manufacturer: {
       name: "ZAYVORA Central Dispensary & Matab",
-      facility: "Jamia Hamdard AUTC Certified eBMR Cleanroom",
+      facility: "ZAYVORA Research & Manufacturing™ Certified Cleanroom",
       gmpLicense: "AYUSH-UNANI-MFR-2025-01"
     },
     faqs: [
@@ -284,8 +284,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "11a8b0c9e887a123f809a412b77a09d8172c9183490b"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -344,8 +344,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "c098e721a980b1278912c98a0b7612c80918237190ad"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -404,8 +404,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "88a912b70cd981a2719a0b871239c098a1290812739a"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -464,8 +464,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "67a80b192837190a98b01298c71289301982b7190281"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -524,8 +524,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "55a9182b0918237c891273901b87192a871239b01982"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -582,8 +582,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "44b0918237c891273901b87192a871239b0198277182"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "AYUSH-DL-GMP-2024-081"
     },
     faqs: [
@@ -642,8 +642,8 @@ export const PRODUCTS_CATALOG: ProductItem[] = [
       certificateHash: "33c0918237c891273901b87192a871239b0198266281"
     },
     manufacturer: {
-      name: "ZAYVORA Natural Formulations",
-      facility: "Jamia Hamdard AUTC Pharmacy & Formulation Facility",
+      name: "ZAYVORA Health Products™",
+      facility: "ZAYVORA Research & Manufacturing™ GMP Cleanroom",
       gmpLicense: "FSSAI-LIC-100240110098"
     },
     faqs: [

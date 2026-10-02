@@ -3,17 +3,24 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AuthService } from "@/lib/services/authService";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const [identifier, setIdentifier] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!identifier) {
+      setErrorMessage("Please enter your registered email or mobile.");
+      return;
+    }
     if (!otp || otp.length < 4) {
       setErrorMessage("Please enter the 6-digit verification OTP.");
       return;
@@ -27,10 +34,20 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    setSuccess(true);
-    setTimeout(() => {
-      router.push("/patient/login");
-    }, 2000);
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    try {
+      await AuthService.resetPasswordAsync(identifier, otp, newPassword);
+      setIsLoading(false);
+      setSuccess(true);
+      setTimeout(() => {
+        router.push("/patient/login");
+      }, 2000);
+    } catch (err: any) {
+      setErrorMessage(err.message || "Password reset verification failed.");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,6 +78,20 @@ export default function ResetPasswordPage() {
                   {errorMessage}
                 </div>
               )}
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">
+                  Registered Email Address or Mobile
+                </label>
+                <input
+                  type="text"
+                  placeholder="patient@example.com or +91-9876543210"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-600 focus:outline-none focus:border-teal-500"
+                  required
+                />
+              </div>
 
               <div>
                 <label className="block font-semibold text-slate-300 mb-1">
@@ -107,9 +138,10 @@ export default function ResetPasswordPage() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition shadow-lg shadow-teal-900/30"
+                disabled={isLoading}
+                className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 disabled:bg-slate-800 text-white font-bold transition shadow-lg shadow-teal-900/30 flex items-center justify-center"
               >
-                Update Password & Sign In →
+                {isLoading ? "Verifying & Updating..." : "Update Password & Sign In →"}
               </button>
             </form>
           )}

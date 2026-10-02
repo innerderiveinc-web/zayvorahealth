@@ -11,14 +11,14 @@ export default function SettingsWorkspacePage() {
   const [saveNotice, setSaveNotice] = useState<string | null>(null);
 
   // Form states
-  const [doctorName, setDoctorName] = useState("Prof. (Dr.) Mansoor Alam");
-  const [doctorReg, setDoctorReg] = useState("CCIM-U-1988-0412");
-  const [doctorEmail, setDoctorEmail] = useState("mansoor.alam@zayvora.health");
+  const [doctorName, setDoctorName] = useState("Hakeem Dr. Irfan Ashraf");
+  const [doctorReg, setDoctorReg] = useState("Updating / Verification in Progress");
+  const [doctorEmail, setDoctorEmail] = useState("dr.irfan@zayvorahealth.com");
   const [doctorPhone, setDoctorPhone] = useState("+91 98110 44219");
-  const [specialty, setSpecialty] = useState("Senior Consulting Tabeeb (M.D. Ilmul Advia)");
+  const [specialty, setSpecialty] = useState("Founder & Lead Integrative Clinician (BUMS - AKTC AMU, 2002-2007)");
 
   // Clinic states
-  const [clinicName, setClinicName] = useState("Jamia Hamdard AUTC - Main Hospital");
+  const [clinicName, setClinicName] = useState("ZAYVORA Matab™ — Central Care Centre");
   const [opdTiming, setOpdTiming] = useState("09:00 AM – 06:00 PM");
   const [standardFee, setStandardFee] = useState("800");
   const [followupFee, setFollowupFee] = useState("500");
@@ -354,7 +354,7 @@ export default function SettingsWorkspacePage() {
                   >
                     <option value="EN">English (Clinical Nomenclature)</option>
                     <option value="HI">हिन्दी (Hindi)</option>
-                    <option value="UR">اردو (Urdu / Greco-Arab Monograph Text)</option>
+                    <option value="UR">Urdu (Roman Transliteration / Monograph Text)</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">

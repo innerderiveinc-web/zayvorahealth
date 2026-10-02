@@ -97,17 +97,10 @@ export const multimodalApi = {
       patient_gender?: string;
     }
   ): Promise<LabExtractionResult> {
-    try {
-      return await request<LabExtractionResult>("/api/v1/ai/multimodal/extract-lab", token, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-    } catch (err) {
-      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
-        return clientSimulateLabExtraction(payload.text || "", payload.patient_age || 45, payload.patient_gender || "M");
-      }
-      throw err;
-    }
+    return await request<LabExtractionResult>("/api/v1/multimodal/extract-lab", token, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
   },
 
   async analyzePhysicalSigns(
@@ -118,17 +111,10 @@ export const multimodalApi = {
       pulse_notes?: string;
     }
   ): Promise<PhysicalSignsResult> {
-    try {
-      return await request<PhysicalSignsResult>("/api/v1/ai/multimodal/analyze-physical-signs", token, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-    } catch (err) {
-      if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
-        return clientSimulatePhysicalSigns(payload.tongue_notes, payload.skin_notes);
-      }
-      throw err;
-    }
+    return await request<PhysicalSignsResult>("/api/v1/multimodal/analyze-physical-signs", token, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
   },
 };
 
@@ -311,19 +297,19 @@ function clientSimulatePhysicalSigns(
         lesion_type: "Bars (Vitiligo)",
         description: skin,
         pathophysiology: "Infiltration of Balgham-e-Ghaleez in subdermal tissues.",
-        classical_unani_term: "Bars (برص)",
+        classical_unani_term: "Bars (Leukoderma / Vitiligo)",
       };
       tadbeer.push("Aftab-zani (Controlled solarization with Babchi oil)");
-      diff.push("Bars (برص)");
+      diff.push("Bars (Leukoderma / Vitiligo)");
     } else {
       skinObs = {
         lesion_type: "Qooba (Tinea / Lichenoid)",
         description: skin,
         pathophysiology: "Dry irritant humor erupting through epidermal layers.",
-        classical_unani_term: "Qooba (قوباء)",
+        classical_unani_term: "Qooba (Dermatomycosis / Lichenoid)",
       };
       tadbeer.push("Zimad (Topical poultice with Sirka and Roghan-e-Gul)");
-      diff.push("Qooba (قوباء)");
+      diff.push("Qooba (Dermatomycosis / Lichenoid)");
     }
   }
 

@@ -8,8 +8,8 @@ export default function ClinicsPage() {
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-8 text-xs text-[#CBD5E1]">
       <div className="border-b border-[#334155] pb-6 space-y-2">
         <span className="text-[11px] font-bold text-[#2DD4BF] uppercase tracking-wider">ZAYVORA Health OS™ v5.0</span>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white">Find a ZAYVORA Clinic</h1>
-        <p className="text-sm text-[#94A3B8]">Locate Certified Matabs and Partner Healthcare Facilities</p>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-white">Find a ZAYVORA Matab™ Clinic</h1>
+        <p className="text-sm text-[#94A3B8]">Locate Certified ZAYVORA Matab™ and Partner Healthcare Facilities</p>
       </div>
 
       <div className="space-y-6 leading-relaxed">
@@ -24,7 +24,7 @@ export default function ClinicsPage() {
         <h4 className="font-bold text-white text-sm">Central Integrative Clinical Facility (FAC-CENTRAL)</h4>
         <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">Active OPD</span>
       </div>
-      <p className="text-[#94A3B8]">14 Outpatient Consultations Today • Lead: Hakim Dr. Tariq Mansoor • Central Dispensary Onsite</p>
+      <p className="text-[#94A3B8]">14 Outpatient Consultations Today • Lead: Hakeem Dr. Irfan Ashraf • Central Dispensary Onsite</p>
       <Link href="/website/book" className="text-emerald-400 font-bold hover:underline inline-block mt-1">Book at this Facility →</Link>
     </div>
   </div>

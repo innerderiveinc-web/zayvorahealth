@@ -1,142 +1,119 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import Link from "next/link";
-import { identityApi, ApiError } from "@/lib/identityApi";
-import { saveSession } from "@/lib/session";
+import { PublicWebsiteShell } from "@/components/shells/PublicWebsiteShell";
 
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-export default function SignupPage() {
-  const router = useRouter();
-  const [clinicName, setClinicName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    const slug = slugify(clinicName);
-    try {
-      await identityApi.createOrganization({ name: clinicName, slug, tier: "clinic" });
-      const session = await identityApi.signup({
-        email,
-        full_name: fullName,
-        password,
-        organization_slug: slug,
-        role_name: "Owner",
-      });
-      saveSession(session);
-      router.push("/dashboard");
-    } catch (err) {
-      if (err instanceof ApiError) {
-        if (err.status === 409) setError("A clinic with this name is already registered.");
-        else if (err.status === 422) setError(err.message || "Please check your details and try again.");
-        else setError(err.message);
-      } else {
-        setError("Could not reach the identity service. Is it running?");
-      }
-    } finally {
-      setLoading(false);
+export default function SignupHubPage() {
+  const pathways = [
+    {
+      title: "Patient Health Account",
+      subtitle: "My ZAYVORA™ Personal Health Record",
+      icon: "🌿",
+      description:
+        "Create your individual health record, access active Unani prescriptions, track regimenal therapy (Tadbeer), and book clinical consultations.",
+      actionLabel: "Create Patient Account →",
+      href: "/patient/register",
+      badge: "Instant ABDM Access",
+      badgeColor: "bg-teal-950 text-teal-300 border-teal-800"
+    },
+    {
+      title: "Unani Clinician / Tabeeb",
+      subtitle: "NCISM Credentialing & Prescribing Privileges",
+      icon: "🩺",
+      description:
+        "8-step statutory credential verification for BUMS / MD Unani practitioners. Grants access to Clinical Thread™, Hakeem Sahab AI copilot, and 21 CFR Part 11 digital prescribing.",
+      actionLabel: "Apply for Clinician Credential →",
+      href: "/clinician/apply",
+      badge: "Statutory NCISM Review",
+      badgeColor: "bg-emerald-950 text-emerald-300 border-emerald-800"
+    },
+    {
+      title: "Hospital, Matab or Clinic",
+      subtitle: "Enterprise Healthcare OS Tenancy",
+      icon: "🏥",
+      description:
+        "Onboard your healthcare institution. Multi-room OPD queue management, dispensary FEFO inventory, cold-chain monitoring, and multi-facility compliance.",
+      actionLabel: "Institutional Partnership Application →",
+      href: "/organization/apply",
+      badge: "Enterprise Tenancy",
+      badgeColor: "bg-indigo-950 text-indigo-300 border-indigo-800"
     }
-  }
+  ];
 
   return (
-    <main className="flex-1 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <h1 className="zv-brand-title text-2xl mb-1">ZAYVORA</h1>
-          <p className="text-sm" style={{ color: "var(--muted)" }}>
-            Register Your Clinic
+    <PublicWebsiteShell>
+      <div className="min-h-[85vh] py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto flex flex-col justify-center">
+        <div className="text-center mb-12 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-teal-400 text-xs font-mono">
+            <span>🛡️ Unified Identity & Onboarding</span>
+            <span>•</span>
+            <span>Zero Unvetted Clinical Access</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Welcome to ZAYVORA Health OS™
+          </h1>
+          <p className="text-sm text-slate-400 max-w-xl mx-auto">
+            Select your registration pathway. In accordance with Indian digital health governance and the NCISM Act 2020, professional clinical privileges require verified statutory review.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="zv-panel p-6 space-y-4">
-          <div>
-            <label className="zv-label" htmlFor="clinicName">
-              Clinic name
-            </label>
-            <input
-              id="clinicName"
-              className="zv-input"
-              type="text"
-              placeholder="e.g. Ashraf Unani Clinic"
-              value={clinicName}
-              onChange={(e) => setClinicName(e.target.value)}
-              required
-            />
-            {clinicName && (
-              <p className="text-xs mt-1" style={{ color: "var(--muted)" }}>
-                Clinic ID: {slugify(clinicName) || "—"}
-              </p>
-            )}
-          </div>
-          <div>
-            <label className="zv-label" htmlFor="fullName">
-              Your full name
-            </label>
-            <input
-              id="fullName"
-              className="zv-input"
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="zv-label" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              className="zv-input"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="zv-label" htmlFor="password">
-              Password (min 12 characters)
-            </label>
-            <input
-              id="password"
-              className="zv-input"
-              type="password"
-              minLength={12}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {pathways.map((p, i) => (
+            <div
+              key={i}
+              className="rounded-3xl bg-[#0D1527] border border-slate-800 p-6 flex flex-col justify-between hover:border-teal-500/50 transition duration-200 shadow-xl group"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700/60 flex items-center justify-center text-2xl group-hover:scale-105 transition">
+                    {p.icon}
+                  </div>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium border ${p.badgeColor}`}>
+                    {p.badge}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white group-hover:text-teal-400 transition">
+                    {p.title}
+                  </h3>
+                  <p className="text-xs text-teal-400/80 font-mono mt-0.5">
+                    {p.subtitle}
+                  </p>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {p.description}
+                </p>
+              </div>
 
-          {error && <p className="zv-error">{error}</p>}
+              <div className="pt-6">
+                <Link
+                  href={p.href}
+                  className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-teal-600 text-teal-300 hover:text-white border border-slate-700 hover:border-teal-500 text-xs font-bold text-center block transition duration-200 shadow-sm"
+                >
+                  {p.actionLabel}
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
 
-          <button type="submit" className="zv-btn-primary w-full" disabled={loading}>
-            {loading ? "Creating clinic..." : "Create Clinic & Sign In"}
-          </button>
-
-          <p className="text-center text-sm" style={{ color: "var(--muted)" }}>
-            Already registered?{" "}
-            <Link href="/" className="underline" style={{ color: "var(--gold-soft)" }}>
-              Sign in
+        <div className="mt-12 text-center text-xs text-slate-400 space-y-2">
+          <p>
+            Already have an active account or institutional login?{" "}
+            <Link href="/login" className="text-teal-400 font-bold hover:underline">
+              Sign In to ZAYVORA Health OS™ →
             </Link>
           </p>
-        </form>
+          <div className="flex items-center justify-center gap-4 text-[11px] text-slate-500 pt-2">
+            <Link href="/patient/login" className="hover:text-slate-300">My ZAYVORA™ (Patient Portal)</Link>
+            <span>•</span>
+            <Link href="/doctor/login" className="hover:text-slate-300">Clinician OPD Desk</Link>
+            <span>•</span>
+            <Link href="/medical-disclaimer" className="hover:text-slate-300">Statutory Notice</Link>
+          </div>
+        </div>
       </div>
-    </main>
+    </PublicWebsiteShell>
   );
 }

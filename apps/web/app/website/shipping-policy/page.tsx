@@ -27,7 +27,7 @@ export default function ShippingPolicyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-white">1. Dispensary Fulfillment & Dispatch</h2>
             <p>
-              Prescriptions approved by ZAYVORA Health clinicians are verified and dispensed directly from our centralized central hospital pharmacy at Jamia Hamdard AUTC, New Delhi. Formulations requiring fresh preparation (Mudabbar detoxification, bespoke Safoof blending) are dispatched within 24 hours of physician lock.
+              Prescriptions approved by ZAYVORA Health clinicians are verified and dispensed directly from our centralized central hospital pharmacy at ZAYVORA Central Pharmacy, New Delhi. Formulations requiring fresh preparation (Mudabbar detoxification, bespoke Safoof blending) are dispatched within 24 hours of physician lock.
             </p>
           </section>
 

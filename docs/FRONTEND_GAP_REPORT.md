@@ -45,7 +45,7 @@ A comprehensive audit was executed across all user-facing templates to ensure co
 | Raw Developer Term (Forbidden in Clinical UI) | User-Facing Healthcare Replacement (Implemented) | Status |
 |:---|:---|:---:|
 | `GET /api/v1/clinical/patients` | "Patient Directory & Records" | **Resolved** |
-| `tenant_id: 001` | "Facility: Jamia Hamdard AUTC - Main Hospital" | **Resolved** |
+| `tenant_id: 001` | "Facility: ZAYVORA Healthcare System - Central Hospital" | **Resolved** |
 | `No data found` | "No patients have been registered yet. Add your first patient to begin." | **Resolved** |
 | `safe_to_lock = False` | "Pending Licensed Clinician Review & Digital Signature" | **Resolved** |
 | `25-Engine Live Matrix` | "Integrated Clinical Specialty Services" | **Resolved** |
