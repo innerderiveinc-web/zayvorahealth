@@ -242,7 +242,8 @@
         { id: 'research', label: '<svg class="w-4 h-4 inline-block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Research & RWE' },
         { id: 'knowledge', label: '📖 Medical Library' },
         { id: 'about', label: '🏛️ About' },
-        { id: 'contact', label: '📞 Contact & Triage' }
+        { id: 'contact', label: '📞 Contact & Triage' },
+        { id: 'pages25', label: '<svg class="w-4 h-4 inline-block text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg> Site Directory (25 Pages)' }
       ],
       herbals: [
         { id: 'catalog', label: '<svg class="w-4 h-4 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> 32 Master Formulations Portfolio' },
@@ -12310,6 +12311,114 @@ function generateInstantOpdToken() {
           </div>
 
           <!-- ===================================================================== -->
+          <!-- 11. LUXURY CLINICAL ARCHITECTURE & COMPLETE SITE DIRECTORY -->
+          <!-- ===================================================================== -->
+          <div class="p-8 md:p-10 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#142033] to-[#0A0F1D] border-2 border-emerald-500/30 space-y-8 shadow-2xl">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-800 pb-6">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Canonical Clinical Architecture &bull; 25 Public Web Pages</span>
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-white">The ZAYVORA Clinical Knowledge Index</h3>
+                <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1 leading-relaxed">
+                  Browse our complete 5-domain clinical framework — from outpatient matab protocols and analytical botanical pharmacopoeia to real-world evidence trials and statutory healthcare governance.
+                </p>
+              </div>
+              <button onclick="viewWebsitePage('pages25')" class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/40 transition flex items-center gap-2 shrink-0 cursor-pointer">
+                <span>View Full 25-Page Architecture</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 5 Elegant Semantic Domain Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-xs">
+              <!-- Domain 1 -->
+              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-emerald-500/50 transition-all space-y-3 flex flex-col justify-between group">
+                <div class="space-y-2">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg text-emerald-400">🩺</div>
+                  <h4 class="font-bold text-white text-sm group-hover:text-emerald-300 transition-colors">Clinical Services</h4>
+                  <p class="text-[11px] text-slate-400 leading-snug">In-clinic matab care, tele-consultation, and AI clinical decision support.</p>
+                </div>
+                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_clinical_care')" class="hover:text-emerald-400 block transition">&bull; In-Clinic Matab Care</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_digital_health')" class="hover:text-emerald-400 block transition">&bull; Digital Health &amp; Scribe</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 block transition">&bull; Hakeem Sahab™ AI</a></li>
+                </ul>
+              </div>
+
+              <!-- Domain 2 -->
+              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-teal-500/50 transition-all space-y-3 flex flex-col justify-between group">
+                <div class="space-y-2">
+                  <div class="w-9 h-9 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-lg text-teal-400">🌿</div>
+                  <h4 class="font-bold text-white text-sm group-hover:text-teal-300 transition-colors">Botanical Formulations</h4>
+                  <p class="text-[11px] text-slate-400 leading-snug">Standardized extracts, classical Greco-Arab compounds, and COAs.</p>
+                </div>
+                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_unani_care')" class="hover:text-teal-400 block transition">&bull; Classical Unani Care</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_herbal_products')" class="hover:text-teal-400 block transition">&bull; Standardized Extracts</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('products_nutraceuticals')" class="hover:text-teal-400 block transition">&bull; Phyto-Nutraceuticals</a></li>
+                </ul>
+              </div>
+
+              <!-- Domain 3 -->
+              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-amber-500/50 transition-all space-y-3 flex flex-col justify-between group">
+                <div class="space-y-2">
+                  <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-lg text-amber-400">🔬</div>
+                  <h4 class="font-bold text-white text-sm group-hover:text-amber-300 transition-colors">Research &amp; Evidence</h4>
+                  <p class="text-[11px] text-slate-400 leading-snug">RWE clinical registries, analytical HPLC monographs, and academic trials.</p>
+                </div>
+                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_clinical_research')" class="hover:text-amber-400 block transition">&bull; Clinical Trials &amp; RWE</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_knowledge_intelligence')" class="hover:text-amber-400 block transition">&bull; Pharmacopoeia Graph</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('research_evidence')" class="hover:text-amber-400 block transition">&bull; Phytochemical Evidence</a></li>
+                </ul>
+              </div>
+
+              <!-- Domain 4 -->
+              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-slate-800 hover:border-blue-500/50 transition-all space-y-3 flex flex-col justify-between group">
+                <div class="space-y-2">
+                  <div class="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-lg text-blue-400">🏛️</div>
+                  <h4 class="font-bold text-white text-sm group-hover:text-blue-300 transition-colors">Philosophy &amp; Care</h4>
+                  <p class="text-[11px] text-slate-400 leading-snug">Four Humors (Akhlat), 12-Step continuum, and multi-facility matabs.</p>
+                </div>
+                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('philosophy')" class="hover:text-blue-400 block transition">&bull; Humoral Philosophy</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('care_journey')" class="hover:text-blue-400 block transition">&bull; 12-Stage Care Loop</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('doctors')" class="hover:text-blue-400 block transition">&bull; Faculty &amp; Clinicians</a></li>
+                </ul>
+              </div>
+
+              <!-- Domain 5 -->
+              <div class="p-5 rounded-2xl bg-[#0A0F1D]/80 border border-purple-500/30 hover:border-purple-500/50 transition-all space-y-3 flex flex-col justify-between group">
+                <div class="space-y-2">
+                  <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-lg text-purple-400">⚖️</div>
+                  <h4 class="font-bold text-white text-sm group-hover:text-purple-300 transition-colors">Governance &amp; Trust</h4>
+                  <p class="text-[11px] text-slate-400 leading-snug">21 CFR Part 11 records, patient privacy under DPDP, and clinical ethics.</p>
+                </div>
+                <ul class="space-y-1.5 text-[11px] text-slate-300 border-t border-slate-800/80 pt-2.5">
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('ethics')" class="hover:text-purple-400 block transition">&bull; Clinical Ethics Charter</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('privacy')" class="hover:text-purple-400 block transition">&bull; Privacy &amp; Data Security</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('terms')" class="hover:text-purple-400 block transition">&bull; Telemedicine Terms</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Bottom interactive action strip -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-400">
+              <span class="flex items-center gap-1.5">
+                <span class="text-emerald-400">✓</span> All 25 canonical web pages are verified, responsive, and available in English, Hindi, and Urdu.
+              </span>
+              <div class="flex items-center gap-2">
+                <button onclick="viewWebsitePage('faqs')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer">
+                  Patient FAQs &rarr;
+                </button>
+                <button onclick="viewWebsitePage('contact')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer">
+                  Direct Contact &amp; Triage &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
 
         </div>
       `;
