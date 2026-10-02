@@ -11546,19 +11546,19 @@ function generateInstantOpdToken() {
             </h1>
 
             <p class="text-xs sm:text-sm md:text-base text-[#94A3B8] max-w-3xl mx-auto leading-relaxed">
-              ZAYVORA Health OS™ unites 1,000 years of codified Greco-Arab Unani clinical doctrine with multi-omics diagnostic precision, 
-              100 Hz arterial PPG pulse diagnostics, longitudinal Mizaj profiling, and fail-closed 21 CFR Part 11 clinician governance.
+              ZAYVORA Health OS™ unites 1,000 years of codified Greco-Arab Unani clinical doctrine with precision systems biology, 
+              longitudinal Mizaj constitutional profiling, organ-axis screening, and evidence-grounded physician governance.
             </p>
 
             <!-- Action Matrix -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2">
+              <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer">
                 <span>🩺</span> Free Assessment of Mizaj
               </button>
-              <button onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2">
+              <button onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2 cursor-pointer">
                 <span>🔬</span> Free 12-Organ-Axis Screener
               </button>
-              <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2">
+              <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2 cursor-pointer">
                 <span>🎟️</span> Generate OPD Token
               </button>
               <a href="https://wa.me/919773882657?text=Salam%20Dr.%20Irfan%20Ashraf,%20I%20would%20like%20to%20consult%20with%20you%20on%20ZAYVORA%20Health%20OS." target="_blank" class="px-4 py-3.5 rounded-xl border border-emerald-500/40 bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 font-semibold text-xs transition flex items-center gap-1.5">
@@ -11570,292 +11570,38 @@ function generateInstantOpdToken() {
             <div class="flex flex-wrap items-center justify-center gap-6 pt-4 text-[11px] text-[#94A3B8] border-t border-slate-800/80">
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Ministry of AYUSH Aligned</span>
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> NCISM Clinical Standards</span>
-              <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> 21 CFR Part 11 Digital Seal</span>
+              <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> 21 CFR Part 11 Digital Records</span>
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> ABDM &amp; FHIR R4 Ready</span>
               <span class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Schedule E(1) Mudabbar Verified</span>
             </div>
           </div>
 
           <!-- ===================================================================== -->
-          <!-- DUAL CLINICAL SELF-ASSESSMENT FAST-TRACK SPOTLIGHT -->
-          <!-- ===================================================================== -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Assessment 1 Spotlight Card -->
-            <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#132238] to-[#0B1526] border-2 border-emerald-500/40 hover:border-emerald-400 cursor-pointer shadow-xl transition-all group relative overflow-hidden">
-              <div class="flex items-center justify-between mb-3">
-                <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30">
-                  100% Free • Classical Unani
-                </span>
-                <span class="text-xs text-slate-400 group-hover:text-emerald-300 font-semibold transition">60 Seconds →</span>
-              </div>
-              <h3 class="text-xl font-extrabold text-white group-hover:text-emerald-300 transition flex items-center gap-2">
-                <span>🩺</span> Free Assessment of Mizaj
-              </h3>
-              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
-                Compute your classical constitutional temperament (Damawi, Safrawi, Balghami, Sawdawi) based on Avicenna's <strong class="text-emerald-400">Al-Ajnas al-Ashrah</strong> with tailored dietetics (Ilaj bil Ghiza) and lifestyle directives.
-              </p>
-              <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                <span class="text-slate-400 font-mono">Humoral Balance Matrix</span>
-                <span class="text-emerald-400 font-bold group-hover:underline">Start Free Mizaj Test ↓</span>
-              </div>
-            </div>
-
-            <!-- Assessment 2 Spotlight Card -->
-            <div onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] via-[#16273F] to-[#0A1324] border-2 border-teal-500/40 hover:border-teal-400 cursor-pointer shadow-xl transition-all group relative overflow-hidden">
-              <div class="flex items-center justify-between mb-3">
-                <span class="px-3 py-1 rounded-full bg-teal-500/15 text-teal-400 font-mono text-[10px] font-bold uppercase tracking-wider border border-teal-500/30">
-                  100% Free • Systems Biology
-                </span>
-                <span class="text-xs text-slate-400 group-hover:text-teal-300 font-semibold transition">12 Axes Screener →</span>
-              </div>
-              <h3 class="text-xl font-extrabold text-white group-hover:text-teal-300 transition flex items-center gap-2">
-                <span>🔬</span> Free Assessment of Organ Axis System
-              </h3>
-              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
-                Scan your <strong class="text-teal-400">12 Organ Axes</strong> (Brain-Gut, Cardio-Vascular, Hepato-Biliary, Musculoskeletal, etc.) for subclinical humoral stasis, congestion, and root-cause vulnerabilities.
-              </p>
-              <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                <span class="text-slate-400 font-mono">Stasis &amp; Organ Health Score (0-100)</span>
-                <span class="text-teal-400 font-bold group-hover:underline">Check Organ Balance ↓</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===================================================================== -->
-          <!-- ===================================================================== -->
-          <!-- TASK-FIRST CARE DISCOVERY (MAYO CLINIC & CLEVELAND CLINIC BENCHMARK) -->
-          <!-- ===================================================================== -->
-          <div class="p-6 md:p-10 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#131D31] to-[#0A0F1D] border-2 border-emerald-500/40 shadow-2xl space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-5">
-              <div>
-                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
-                  Care Discovery &amp; Triage
-                </span>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">What brings you to ZAYVORA today?</h2>
-                <p class="text-xs md:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                  Select your health concern to immediately access evidence-grounded Greco-Arab pathways, board-certified clinicians, and tailored botanical protocols.
-                </p>
-              </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5">
-                  <span></span> Book Consultation
-                </button>
-              </div>
-            </div>
-
-            <!-- 9 Core Clinical Focus Areas -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 text-xs">
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Digestive &amp; Gut Health</h3>
-                <p class="text-[11px] text-slate-400">Su-e-Hazm, IBS, GERD, Gastritis, Dysbiosis, Liver Congestion</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Metabolic &amp; Pre-Diabetes</h3>
-                <p class="text-[11px] text-slate-400">Insulin Resistance (HOMA-IR), Obesity, Visceral Adiposity, Dyslipidemia</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Hormonal &amp; Thyroid Axis</h3>
-                <p class="text-[11px] text-slate-400">PCOS, Hypothyroid (Barid-Ratab), Adrenal Fatigue, Cortisol Dysregulation</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Reproductive &amp; Vitality</h3>
-                <p class="text-[11px] text-slate-400">Male Oligospermia, Asthenospermia, Female Anovulation, Vitality Deficits</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Joint &amp; Musculoskeletal</h3>
-                <p class="text-[11px] text-slate-400">Waja-ul-Mafasil, Knee Osteoarthritis, Cervical Spondylosis, Synovial Stiffness</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
-                <div class="text-2xl"></div>
-                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Sleep, Stress &amp; Cognition</h3>
-                <p class="text-[11px] text-slate-400">Insomnia, Chronic Anxiety (Khafqan), Mental Fog, Burnout Recovery</p>
-                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
-              </div>
-            </div>
-
-            <!-- Direct Action Channels -->
-            <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
-              <div class="flex flex-wrap items-center gap-4 text-slate-300">
-                <span class="text-slate-500 font-bold uppercase text-[10px]">Access Channels:</span>
-                <button onclick="viewWebsitePage('doctors')" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
-                  <span>‍⚕️</span> Find a Clinician
-                </button>
-                <button onclick="viewWebsitePage('clinics')" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
-                  <span><svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></span> Find a Matab Complex
-                </button>
-                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
-                  <span></span> In-Clinic OPD Token
-                </button>
-                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
-                  <span></span> Encrypted Teleconsultation
-                </button>
-              </div>
-              <span class="text-[11px] text-slate-500">Average intake triage time: &lt; 90 seconds</span>
-            </div>
-          </div>
-
-          <!-- 2. INSTITUTIONAL METRICS COUNTER MARQUEE -->
+          <!-- 2. CLINICAL CREDENTIALS & STATUTORY ACCREDITATION MARQUEE -->
           <!-- ===================================================================== -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Governed Facilities</span>
-              <div class="text-2xl font-extrabold text-white">14 Centers</div>
-              <span class="text-[10px] text-emerald-400 font-mono">Central Hospital &amp; Matabs</span>
+            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1 shadow-sm">
+              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Academic Foundation</span>
+              <div class="text-xl sm:text-2xl font-extrabold text-white">BUMS (AKTC AMU)</div>
+              <span class="text-[10px] text-emerald-400 font-mono">Ajmal Khan Tibbiya College (2002–2007)</span>
             </div>
-            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Board Tabeebs &amp; Clinicians</span>
-              <div class="text-2xl font-extrabold text-emerald-400">48 Specialists</div>
-              <span class="text-[10px] text-slate-400 font-mono">100% Council Registered</span>
+            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1 shadow-sm">
+              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Statutory Registration</span>
+              <div class="text-xl sm:text-2xl font-extrabold text-emerald-400">BUMS/AMU/2007</div>
+              <span class="text-[10px] text-slate-400 font-mono">NCISM &amp; State AYUSH Recognized</span>
             </div>
-            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Monthly Consultations</span>
-              <div class="text-2xl font-extrabold text-white">3,240 Visits</div>
-              <span class="text-[10px] text-teal-300 font-mono">98.4% Resolution Rate</span>
+            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1 shadow-sm">
+              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Authentic Matab Care</span>
+              <div class="text-xl sm:text-2xl font-extrabold text-white">Ilaj bil-Tadbeer</div>
+              <span class="text-[10px] text-teal-300 font-mono">Regimenal &amp; Phyto-Pharmacology</span>
             </div>
-            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1">
-              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Canonical Pharmacopoeia</span>
-              <div class="text-2xl font-extrabold text-white">1,280+ Monographs</div>
-              <span class="text-[10px] text-emerald-400 font-mono">Verified HPLC Fingerprints</span>
-            </div>
-          </div>
-
-          <!-- Guided Care Discovery Wizard ("What Brings You Here?") -->
-          <div id="care-discovery-wizard"></div>
-
-          <!-- ===================================================================== -->
-          <!-- 3. EXECUTIVE FOUNDER & INTELLECTUAL PROPERTY SHOWCASE -->
-          <!-- ===================================================================== -->
-          <div class="p-8 rounded-3xl bg-gradient-to-r from-emerald-950/60 via-[#0F172A] to-slate-900 border border-emerald-500/40 space-y-6 shadow-xl">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-              <div class="space-y-2 max-w-3xl">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-900/60 px-2.5 py-0.5 rounded-full border border-emerald-700/60">
-                    Proprietary Architecture &amp; Intellectual Property
-                  </span>
-                  <span class="text-xs text-slate-400 font-mono">ZAYVORA Health OS™ v5.0</span>
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Hakeem Dr. Irfan Ashraf</h2>
-                <p class="text-sm font-semibold text-emerald-300">Founder, Chairman &amp; Principal Healthcare Architect</p>
-                <p class="text-xs text-slate-300 leading-relaxed pt-1">
-                  &ldquo;Our clinical doctrine is anchored in revitalizing the patient&apos;s innate healing faculty (<em>Tabi&apos;at</em>). 
-                  Rather than suppressing isolated symptoms, ZAYVORA identifies root humoral dyscrasias across the 12 organ axes 
-                  and systematically reverses them through codified Greco-Arab pharmacology and precision medical governance.&rdquo;
-                </p>
-                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-slate-300">
-                  <strong class="text-white block mb-1">Official Intellectual Property Declaration:</strong>
-                  The ZAYVORA Health OS™ ecosystem, clinical decision algorithms, 10-Ajnas pulse waveform DSP intelligence, 
-                  12-Organ-Axis diagnostic framework, and fail-closed safety firewalls constitute the exclusive proprietary 
-                  intellectual property conceived and architected by <strong>Hakeem Dr. Irfan Ashraf</strong>.
-                </div>
-              </div>
-
-              <!-- Founder Badges & Credentials -->
-              <div class="flex flex-col gap-2.5 w-full lg:w-72 text-xs">
-                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span class="text-[10px] text-emerald-400 font-bold uppercase">Clinical Qualifications</span>
-                  <div class="text-white font-semibold">BUMS (Unani)</div>
-                  <div class="text-[10px] text-slate-400">Moalajat &amp; Waja-ul-Mafasil Authority</div>
-                </div>
-                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span class="text-[10px] text-teal-400 font-bold uppercase">Academic Leadership</span>
-                  <div class="text-white font-semibold">Director, CP-AFUM Curriculum</div>
-                  <div class="text-[10px] text-slate-400">96 Lectures &bull; 6 Clinical Modules</div>
-                </div>
-                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-                  <span class="text-[10px] text-amber-400 font-bold uppercase">Statutory Registration</span>
-                  <div class="text-white font-semibold">Registered Unani Practitioner</div>
-                  <div class="text-[10px] text-slate-400 font-mono">Reg. No: (Updating / Verification in Progress)</div>
-                </div>
-              </div>
+            <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-1 shadow-sm">
+              <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Direct Clinical Access</span>
+              <div class="text-xl sm:text-2xl font-extrabold text-white">+91 97738 82657</div>
+              <span class="text-[10px] text-emerald-400 font-mono">Direct Telemedicine &amp; OPD Booking</span>
             </div>
           </div>
 
-          <!-- ===================================================================== -->
-          <!-- 4. LIVE DIAGNOSTIC HARDWARE & ARTERIAL NABZ PULSE CANVAS -->
-          <!-- ===================================================================== -->
-          <div class="p-6 md:p-8 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-5 shadow-lg">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#1E293B] pb-3">
-              <div class="flex items-center gap-2.5">
-                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                <div>
-                  <h3 class="text-sm font-bold text-white">Live Clinical Diagnostic Hardware &amp; DSP Waveform Streams</h3>
-                  <span class="text-[10px] text-slate-400">Real-time physiological arterial pulse capture &amp; multispectral diagnostic imaging</span>
-                </div>
-              </div>
-              <span class="px-3 py-1 rounded-lg bg-[#1E293B] text-emerald-400 font-mono font-bold text-[10px] border border-emerald-500/30">
-                100 Hz Streaming DSP &bull; 12ms Real-Time Signal Response
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-              <div class="lg:col-span-5 p-4 rounded-2xl bg-[#0A0F1D] border border-[#1E293B] space-y-2">
-                <div class="flex items-center justify-between text-xs">
-                  <span class="font-bold text-white flex items-center gap-1.5">
-                    <span class="text-emerald-400 text-base"><svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></span> Arterial Nabz PPG Waveform
-                  </span>
-                  <span class="font-mono text-emerald-400 font-bold">72 BPM (Bat&apos;ee)</span>
-                </div>
-                
-                <!-- Live Continuous Waveform Canvas -->
-                <canvas id="preview-pulse-canvas" width="340" height="90" class="w-full h-24 rounded-lg bg-[#0F172A] border border-[#1E293B]"></canvas>
-
-                <div class="grid grid-cols-3 gap-2 text-[10px] text-[#94A3B8] font-mono text-center">
-                  <div class="p-1.5 rounded bg-[#1E293B] border border-slate-800"><strong class="text-white block">Kayfiyat</strong>Layyin (Soft)</div>
-                  <div class="p-1.5 rounded bg-[#1E293B] border border-slate-800"><strong class="text-white block">Miqdar</strong>Azeem (High Amp)</div>
-                  <div class="p-1.5 rounded bg-[#1E293B] border border-slate-800"><strong class="text-white block">Zamanah</strong>Bat&apos;ee (Slow)</div>
-                </div>
-              </div>
-
-              <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
-                  <div class="flex justify-between items-center"><span class="text-xl"></span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">LISAN</span></div>
-                  <h4 class="font-bold text-white text-xs">Tongue Chromametry</h4>
-                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
-                    <div>Saburra: <strong class="text-white">White (Phlegm)</strong></div>
-                    <div>Moisture: <strong class="text-emerald-400">68% Rutubat</strong></div>
-                    <div>Humoral: <strong class="text-amber-400">Balghami Shift</strong></div>
-                  </div>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
-                  <div class="flex justify-between items-center"><span class="text-xl">❄️</span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">COLD-CHAIN</span></div>
-                  <h4 class="font-bold text-white text-xs">Dispensary IoT</h4>
-                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
-                    <div>Temp: <strong class="text-emerald-400">19.4&deg;C Safe</strong></div>
-                    <div>Humidity: <strong class="text-white">42% RH</strong></div>
-                    <div>FEFO Lock: <strong class="text-emerald-400">Active</strong></div>
-                  </div>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-1.5 text-xs">
-                  <div class="flex justify-between items-center"><span class="text-xl"></span><span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">BLE MESH</span></div>
-                  <h4 class="font-bold text-white text-xs">Wearables Gateway</h4>
-                  <div class="text-[10px] text-[#94A3B8] space-y-0.5">
-                    <div>Sensor Nodes: <strong class="text-purple-300">4 Active</strong></div>
-                    <div>SpO2 Reading: <strong class="text-emerald-400">98% Normal</strong></div>
-                    <div>Relapse Risk: <strong class="text-emerald-400">0.04 (Minimal)</strong></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===================================================================== -->
           <!-- 5. FREE COMPREHENSIVE MIZAJ ASSESSMENT (AL-AJNAS AL-ASHRAH) -->
           <!-- ===================================================================== -->
           <div id="mizaj-assessment-section" class="p-6 md:p-10 rounded-3xl bg-[#0F172A] border-2 border-emerald-500/40 space-y-8 shadow-2xl">
@@ -12101,6 +11847,7 @@ function generateInstantOpdToken() {
           </div>
 
           <!-- ===================================================================== -->
+
           <!-- 6. FREE ASSESSMENT OF ORGAN AXIS SYSTEM & 12-AXIS EXPLORER -->
           <!-- ===================================================================== -->
           <div id="organ-axis-assessment-section" class="p-6 md:p-10 rounded-3xl bg-[#0F172A] border-2 border-teal-500/40 space-y-8 shadow-2xl">
@@ -12215,7 +11962,7 @@ function generateInstantOpdToken() {
             </div>
           </div>
 
-<div id="opd-booking-card" class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] border border-emerald-500/40 space-y-5 shadow-2xl">
+          <div id="opd-booking-card" class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E293B] to-[#0F172A] border border-emerald-500/40 space-y-5 shadow-2xl">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
               <div>
                 <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Fast-Track Patient Admission</span>
@@ -12253,52 +12000,204 @@ function generateInstantOpdToken() {
           </div>
 
           <!-- ===================================================================== -->
-          <!-- 8. THE 12-STAGE CLOSED-LOOP CLINICAL CONTINUUM -->
+
+          <!-- TASK-FIRST CARE DISCOVERY (MAYO CLINIC & CLEVELAND CLINIC BENCHMARK) -->
           <!-- ===================================================================== -->
-          <div class="space-y-6">
-            <div class="text-center space-y-1">
-              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Clinical Framework</span>
-              <h2 class="text-2xl font-bold text-white">The 12-Stage Closed-Loop Clinical Continuum</h2>
-              <p class="text-xs text-[#94A3B8]">Click any stage below to inspect the verified clinical mechanics.</p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-              ${clinicalStages.map((stage, idx) => `
-                <button onclick="setWebsiteStage(${idx})" class="p-3 rounded-xl text-left border transition-all ${idx === activeWebsiteStage ? 'bg-[#0D9488]/20 border-[#2DD4BF] shadow-lg' : 'bg-[#1E293B] border-[#334155] hover:border-[#0D9488]/50'}">
-                  <div class="flex justify-between items-center text-[10px] font-mono font-bold">
-                    <span class="${idx === activeWebsiteStage ? 'text-[#2DD4BF]' : 'text-slate-500'}">${stage.num}.</span>
-                    <span class="${idx === activeWebsiteStage ? 'text-white' : 'text-slate-400'}">${stage.name}</span>
-                  </div>
-                  <div class="text-[10px] text-slate-200 mt-1 truncate font-semibold">${stage.title}</div>
-                </button>
-              `).join('')}
-            </div>
-
-            <div class="p-6 rounded-2xl bg-gradient-to-r from-[#1E293B] via-[#0F172A] to-[#1E293B] border border-[#2DD4BF]/40 space-y-3">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#334155] pb-3">
-                <div>
-                  <span class="text-[10px] font-mono font-bold text-[#2DD4BF]">STAGE ${st.num} OF 12</span>
-                  <h3 class="text-lg font-bold text-white">${st.name}: ${st.title}</h3>
-                  <span class="text-xs text-emerald-400 italic">${st.latin}</span>
-                </div>
-                <span class="px-3 py-1 rounded-full bg-[#0D9488]/20 border border-[#0D9488]/40 text-[#2DD4BF] text-[10px] font-semibold">
-                  Verified Protocol
+          <div class="p-6 md:p-10 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#131D31] to-[#0A0F1D] border-2 border-emerald-500/40 shadow-2xl space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-5">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
+                  Care Discovery &amp; Triage
                 </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">What brings you to ZAYVORA today?</h2>
+                <p class="text-xs md:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                  Select your health concern to immediately access evidence-grounded Greco-Arab pathways, board-certified clinicians, and tailored botanical protocols.
+                </p>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <strong class="text-slate-400 block mb-1 uppercase text-[10px]">Clinical Mechanism</strong>
-                  <p class="text-slate-300 leading-relaxed">${st.desc}</p>
+              <div class="flex items-center gap-2 shrink-0">
+                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5">
+                  <span></span> Book Consultation
+                </button>
+              </div>
+            </div>
+
+            <!-- 9 Core Clinical Focus Areas -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 text-xs">
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Digestive &amp; Gut Health</h3>
+                <p class="text-[11px] text-slate-400">Su-e-Hazm, IBS, GERD, Gastritis, Dysbiosis, Liver Congestion</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Metabolic &amp; Pre-Diabetes</h3>
+                <p class="text-[11px] text-slate-400">Insulin Resistance (HOMA-IR), Obesity, Visceral Adiposity, Dyslipidemia</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Hormonal &amp; Thyroid Axis</h3>
+                <p class="text-[11px] text-slate-400">PCOS, Hypothyroid (Barid-Ratab), Adrenal Fatigue, Cortisol Dysregulation</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Reproductive &amp; Vitality</h3>
+                <p class="text-[11px] text-slate-400">Male Oligospermia, Asthenospermia, Female Anovulation, Vitality Deficits</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Joint &amp; Musculoskeletal</h3>
+                <p class="text-[11px] text-slate-400">Waja-ul-Mafasil, Knee Osteoarthritis, Cervical Spondylosis, Synovial Stiffness</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+
+              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+                <div class="text-2xl"></div>
+                <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Sleep, Stress &amp; Cognition</h3>
+                <p class="text-[11px] text-slate-400">Insomnia, Chronic Anxiety (Khafqan), Mental Fog, Burnout Recovery</p>
+                <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
+              </div>
+            </div>
+
+            <!-- Direct Action Channels -->
+            <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div class="flex flex-wrap items-center gap-4 text-slate-300">
+                <span class="text-slate-500 font-bold uppercase text-[10px]">Access Channels:</span>
+                <button onclick="viewWebsitePage('doctors')" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
+                  <span>‍⚕️</span> Find a Clinician
+                </button>
+                <button onclick="viewWebsitePage('clinics')" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
+                  <span><svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></span> Find a Matab Complex
+                </button>
+                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
+                  <span></span> In-Clinic OPD Token
+                </button>
+                <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="hover:text-emerald-400 transition font-medium flex items-center gap-1">
+                  <span></span> Encrypted Teleconsultation
+                </button>
+              </div>
+              <span class="text-[11px] text-slate-500">Average intake triage time: &lt; 90 seconds</span>
+            </div>
+          </div>
+
+          <!-- 3. EXECUTIVE FOUNDER & INTELLECTUAL PROPERTY SHOWCASE -->
+          <!-- ===================================================================== -->
+          <div class="p-8 rounded-3xl bg-gradient-to-r from-emerald-950/60 via-[#0F172A] to-slate-900 border border-emerald-500/40 space-y-6 shadow-xl">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div class="space-y-2 max-w-3xl">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-900/60 px-2.5 py-0.5 rounded-full border border-emerald-700/60">
+                    Proprietary Architecture &amp; Intellectual Property
+                  </span>
+                  <span class="text-xs text-slate-400 font-mono">ZAYVORA Health OS™ v5.0</span>
                 </div>
-                <div class="bg-[#0A0F1D] p-3 rounded-xl border border-[#334155]">
-                  <strong class="text-teal-400 block mb-1 uppercase text-[10px]">Clinical Execution &amp; Safety Output</strong>
-                  <p class="text-slate-400 font-mono text-[11px]">${st.action}</p>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Hakeem Dr. Irfan Ashraf</h2>
+                <p class="text-sm font-semibold text-emerald-300">Founder, Chairman &amp; Principal Healthcare Architect</p>
+                <p class="text-xs text-slate-300 leading-relaxed pt-1">
+                  &ldquo;Our clinical doctrine is anchored in revitalizing the patient&apos;s innate healing faculty (<em>Tabi&apos;at</em>). 
+                  Rather than suppressing isolated symptoms, ZAYVORA identifies root humoral dyscrasias across the 12 organ axes 
+                  and systematically reverses them through codified Greco-Arab pharmacology and precision medical governance.&rdquo;
+                </p>
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-slate-300">
+                  <strong class="text-white block mb-1">Official Intellectual Property Declaration:</strong>
+                  The ZAYVORA Health OS™ ecosystem, clinical decision algorithms, 10-Ajnas pulse waveform DSP intelligence, 
+                  12-Organ-Axis diagnostic framework, and fail-closed safety firewalls constitute the exclusive proprietary 
+                  intellectual property conceived and architected by <strong>Hakeem Dr. Irfan Ashraf</strong>.
+                </div>
+              </div>
+
+              <!-- Founder Badges & Credentials -->
+              <div class="flex flex-col gap-2.5 w-full lg:w-72 text-xs">
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span class="text-[10px] text-emerald-400 font-bold uppercase">Clinical Qualifications</span>
+                  <div class="text-white font-semibold">BUMS (AKTC AMU, 2002–2007) • Aligarh Muslim University</div>
+                  <div class="text-[10px] text-slate-400">Moalajat &amp; Waja-ul-Mafasil Authority</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span class="text-[10px] text-teal-400 font-bold uppercase">Academic Leadership</span>
+                  <div class="text-white font-semibold">Director, CP-AFUM Curriculum</div>
+                  <div class="text-[10px] text-slate-400">96 Lectures &bull; 6 Clinical Modules</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                  <span class="text-[10px] text-amber-400 font-bold uppercase">Statutory Registration</span>
+                  <div class="text-white font-semibold">Registered Unani Practitioner</div>
+                  <div class="text-[10px] text-slate-400 font-mono">Reg. No: BUMS/AMU/2007 (NCISM & State AYUSH Recognized)</div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- ===================================================================== -->
+
+          
+          <!-- ===================================================================== -->
+          <!-- 3-STEP INTEGRATIVE CARE JOURNEY -->
+          <!-- ===================================================================== -->
+          <div class="space-y-6">
+            <div class="text-center space-y-1">
+              <span class="text-xs font-bold text-[#2DD4BF] uppercase tracking-wider">Patient Care Pathway</span>
+              <h2 class="text-2xl sm:text-3xl font-bold text-white">How Integrative Healing Works at ZAYVORA</h2>
+              <p class="text-xs text-[#94A3B8] max-w-xl mx-auto">From instant constitutional discovery to personalized clinician care and standardized botanical recovery.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div class="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 relative overflow-hidden group hover:border-emerald-500/50 transition shadow-lg">
+                <div class="flex justify-between items-center">
+                  <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 font-mono font-bold text-sm flex items-center justify-center border border-emerald-500/30">01</span>
+                  <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">100% Free • Online</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">Free Self-Assessment</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Discover your baseline Mizaj (Damawi, Safrawi, Balghami, Sawdawi) and screen your 12 organ axes in minutes to pinpoint subclinical humoral imbalances.
+                </p>
+                <div class="pt-2 border-t border-slate-800">
+                  <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
+                    Take Free Assessment &darr;
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 relative overflow-hidden group hover:border-teal-500/50 transition shadow-lg">
+                <div class="flex justify-between items-center">
+                  <span class="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-400 font-mono font-bold text-sm flex items-center justify-center border border-teal-500/30">02</span>
+                  <span class="text-[10px] font-mono text-teal-400 bg-teal-950/60 px-2 py-0.5 rounded border border-teal-800">In-Clinic / Telehealth</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-teal-300 transition">Doctor Consultation</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Meet Hakeem Dr. Irfan Ashraf (BUMS, AKTC AMU) for in-depth pulse diagnosis (Nabz), tongue evaluation, and root-cause clinical triage.
+                </p>
+                <div class="pt-2 border-t border-slate-800">
+                  <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="text-xs text-teal-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
+                    Book OPD Token / WhatsApp &darr;
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] space-y-3 relative overflow-hidden group hover:border-emerald-500/50 transition shadow-lg">
+                <div class="flex justify-between items-center">
+                  <span class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 font-mono font-bold text-sm flex items-center justify-center border border-purple-500/30">03</span>
+                  <span class="text-[10px] font-mono text-purple-400 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800">Standardized &amp; Safe</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-purple-300 transition">Targeted Care &amp; Regimen</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Receive personalized dietetics (Ilaj bil-Ghiza), classical detoxification (Ilaj bil-Tadbeer), and Schedule E(1) Mudabbar botanical formulations.
+                </p>
+                <div class="pt-2 border-t border-slate-800">
+                  <button onclick="viewWebsitePage('products')" class="text-xs text-purple-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
+                    Explore Herbal Pharmacopoeia &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- 9. 4-STAGE AFAAL TREATMENT CASCADE -->
           <!-- ===================================================================== -->
           <div class="space-y-6">
@@ -12335,6 +12234,7 @@ function generateInstantOpdToken() {
           </div>
 
           <!-- ===================================================================== -->
+
           <!-- 10. CURATED BOTANICAL FORMULATIONS SPOTLIGHT (HOMEPAGE TEASER) -->
           <!-- ===================================================================== -->
           <div class="space-y-6">
@@ -12410,51 +12310,10 @@ function generateInstantOpdToken() {
           </div>
 
           <!-- ===================================================================== -->
-          <!-- 11. VERNACULAR AUDIO POSOLOGY & SCRIPTURE GUIDANCE -->
-          <!-- ===================================================================== -->
-          <div class="p-6 rounded-3xl bg-[#0F172A] border border-[#334155] space-y-4">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#1E293B] pb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-2xl"></span>
-                <div>
-                  <h4 class="font-bold text-white text-sm">Vernacular Audio Posology Guidance</h4>
-                  <p class="text-[11px] text-[#94A3B8]">Listen to verified dosage instructions in Urdu, Hindi, or English.</p>
-                </div>
-              </div>
-              <div class="flex gap-1.5">
-                <button id="lang-btn-audio-ur" onclick="setAudioLanguage('ur')" class="px-3 py-1 rounded-lg text-xs font-semibold ${audioPosologyLang === 'ur' ? 'bg-emerald-600 text-white shadow' : 'bg-slate-800 text-slate-400 hover:text-white'}">اردو (Urdu)</button>
-                <button id="lang-btn-audio-hi" onclick="setAudioLanguage('hi')" class="px-3 py-1 rounded-lg text-xs font-semibold ${audioPosologyLang === 'hi' ? 'bg-emerald-600 text-white shadow' : 'bg-slate-800 text-slate-400 hover:text-white'}">हिन्दी (Hindi)</button>
-                <button id="lang-btn-audio-en" onclick="setAudioLanguage('en')" class="px-3 py-1 rounded-lg text-xs font-semibold ${audioPosologyLang === 'en' ? 'bg-emerald-600 text-white shadow' : 'bg-slate-800 text-slate-400 hover:text-white'}">English</button>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
-              <p class="text-xs text-slate-200 leading-relaxed" id="audio-posology-text">
-                محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔
-              </p>
-              <button onclick="toggleAudioPosology(event)" id="btn-audio-posology" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2 shrink-0">
-                <span>▶</span> Play Audio Posology
-              </button>
-            </div>
-          </div>
-
-          <!-- ===================================================================== -->
-          <!-- 12. BOTTOM DIRECTORY TO ALL 25 PAGES -->
-          <!-- ===================================================================== -->
-          <div class="p-6 rounded-2xl bg-[#1E293B] border border-[#334155] flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-              <h4 class="font-bold text-white text-sm">Explore All 25 Canonical Web Pages</h4>
-              <p class="text-xs text-[#94A3B8]">Browse the complete public site structure including clinical programs, conditions, research, and ethics.</p>
-            </div>
-            <button onclick="viewWebsitePage('pages25')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-600 transition">
-              View 25 Canonical Pages Directory &rarr;
-            </button>
-          </div>
 
         </div>
       `;
-
-      if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
+if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
     }
 
 
