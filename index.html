@@ -170,37 +170,54 @@
     [data-theme="light"] header select option,
     [data-theme="light"] header select optgroup  { background-color: #ffffff !important; color: #1a2328 !important; }
 
-    /* Surface overrides in Light Mode (Anti-Glare Medical Matte Linen) */
-    [data-theme="light"] .bg-\[\#0A0F1D\] { background-color: var(--input-bg-alt) !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#0F172A\] { background-color: #ffffff !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#0D1527\] { background-color: #ffffff !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#1E293B\] { background-color: #ffffff !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#0F172A\]\/95 { background: var(--header-bg) !important; }
-    [data-theme="light"] .bg-\[\#1E293B\]\/60 { background-color: var(--background-tertiary) !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#1E293B\]\/80 { background-color: #ffffff !important; }
-    [data-theme="light"] .bg-\[\#0B1120\],
-    [data-theme="light"] footer.bg-\[\#0B1120\] { background-color: var(--background-tertiary) !important; border-color: var(--border) !important; color: #475560 !important; }
-    [data-theme="light"] .bg-\[\#0B141A\] { background-color: #eae5d8 !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[\#050B14\] { background-color: #eae5d8 !important; }
-    [data-theme="light"] .bg-\[\#334155\] { background-color: #dfd9cb !important; color: #1a2328 !important; }
-
+    /* Surface overrides in Light Mode (Crisp Medical White & Porcelain Linen) */
+    [data-theme="light"] .bg-\[\#0A0F1D\],
+    [data-theme="light"] .bg-\[\#0A0F1D\]\/80,
+    [data-theme="light"] .bg-\[\#0A0F1D\]\/90,
+    [data-theme="light"] .bg-\[\#0F172A\],
+    [data-theme="light"] .bg-\[\#0F172A\]\/95,
+    [data-theme="light"] .bg-\[\#0F172A\]\/90,
+    [data-theme="light"] .bg-\[\#0F172A\]\/80,
+    [data-theme="light"] .bg-\[\#0D1526\],
+    [data-theme="light"] .bg-\[\#0D1527\],
+    [data-theme="light"] .bg-\[\#131D31\],
+    [data-theme="light"] .bg-\[\#151E2B\],
+    [data-theme="light"] .bg-\[\#1E293B\],
+    [data-theme="light"] .bg-\[\#1E293B\]\/90,
+    [data-theme="light"] .bg-\[\#1E293B\]\/80,
+    [data-theme="light"] .bg-\[\#1E293B\]\/70,
+    [data-theme="light"] .bg-\[\#1E293B\]\/60,
     [data-theme="light"] .bg-slate-900,
-    [data-theme="light"] .bg-slate-800 { background-color: #ffffff !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-slate-950 { background-color: var(--background-tertiary) !important; border-color: var(--border) !important; }
-    [data-theme="light"] .bg-\[var\(--card\)\] { background-color: #ffffff !important; border-color: var(--border) !important; }
-
-    /* Opacity slate background overrides in Light Mode (Calming warm linen) */
+    [data-theme="light"] .bg-slate-900\/95,
     [data-theme="light"] .bg-slate-900\/90,
     [data-theme="light"] .bg-slate-900\/80,
     [data-theme="light"] .bg-slate-900\/70,
     [data-theme="light"] .bg-slate-900\/60,
     [data-theme="light"] .bg-slate-900\/50,
-    [data-theme="light"] .bg-slate-900\/40,
+    [data-theme="light"] .bg-slate-800:not(button):not(a),
     [data-theme="light"] .bg-slate-800\/90,
-    [data-theme="light"] .bg-slate-800\/80,
+    [data-theme="light"] .bg-slate-800\/80:not(button):not(a),
     [data-theme="light"] .bg-slate-800\/60,
-    [data-theme="light"] .bg-slate-800\/40 {
-      background-color: #eae5d8 !important;
+    [data-theme="light"] .bg-slate-800\/40,
+    [data-theme="light"] .bg-slate-700:not(button):not(a):not(span),
+    [data-theme="light"] .bg-\[var\(--card\)\] {
+      background-color: #FFFFFF !important;
+      border-color: var(--border) !important;
+      box-shadow: 0 2px 10px -2px rgba(45, 40, 30, 0.05) !important;
+    }
+
+    [data-theme="light"] .bg-\[\#0B1120\],
+    [data-theme="light"] footer.bg-\[\#0B1120\] { background-color: var(--background-tertiary) !important; border-color: var(--border) !important; color: #475560 !important; }
+    [data-theme="light"] .bg-\[\#0B141A\] { background-color: #FAF8F5 !important; border-color: var(--border) !important; }
+    [data-theme="light"] .bg-\[\#050B14\] { background-color: #FAF8F5 !important; }
+    [data-theme="light"] .bg-\[\#334155\] { background-color: #FAF8F5 !important; color: #1a2328 !important; border-color: var(--border) !important; }
+
+    [data-theme="light"] .bg-slate-950,
+    [data-theme="light"] .bg-slate-950\/80,
+    [data-theme="light"] .bg-slate-950\/70,
+    [data-theme="light"] .bg-slate-950\/60,
+    [data-theme="light"] .bg-slate-950\/40 {
+      background-color: #F8F6F0 !important;
       border-color: var(--border) !important;
     }
     [data-theme="light"] .bg-slate-950\/40,
@@ -343,38 +360,149 @@
     [data-theme="light"] .text-\[\#CBD5E1\] { color: #334149 !important; }
     [data-theme="light"] .text-\[\#94A3B8\] { color: #667580 !important; }
 
+    /* Additional Vibrant Text Remaps in Light Mode */
+    [data-theme="light"] .text-indigo-400 { color: #3730A3 !important; }
+    [data-theme="light"] .text-indigo-300 { color: #312E81 !important; }
+    [data-theme="light"] .text-indigo-200 { color: #1E1B4B !important; }
+    [data-theme="light"] .text-yellow-400 { color: #854D0E !important; }
+    [data-theme="light"] .text-yellow-300 { color: #713F12 !important; }
+    [data-theme="light"] .text-sky-400 { color: #0369A1 !important; }
+    [data-theme="light"] .text-sky-300 { color: #075985 !important; }
+    [data-theme="light"] .text-zinc-400 { color: #52525B !important; }
+    [data-theme="light"] .text-zinc-300 { color: #3F3F46 !important; }
+    [data-theme="light"] .text-gray-400 { color: #4B5563 !important; }
+    [data-theme="light"] .text-gray-300 { color: #374151 !important; }
+
+    /* HIGH CONTRAST CLINICAL BADGES IN LIGHT MODE */
+    [data-theme="light"] .bg-emerald-500\/10,
+    [data-theme="light"] .bg-emerald-500\/15,
+    [data-theme="light"] .bg-emerald-500\/20,
+    [data-theme="light"] .bg-emerald-500\/30 {
+      background-color: #E6F4EA !important;
+      color: #137333 !important;
+      border-color: #A8DAB5 !important;
+    }
+    [data-theme="light"] .bg-teal-500\/10,
+    [data-theme="light"] .bg-teal-500\/15,
+    [data-theme="light"] .bg-teal-500\/20 {
+      background-color: #E6FFFA !important;
+      color: #0D7A70 !important;
+      border-color: #9AE6B4 !important;
+    }
+    [data-theme="light"] .bg-blue-500\/10,
+    [data-theme="light"] .bg-blue-500\/15,
+    [data-theme="light"] .bg-blue-500\/20 {
+      background-color: #E8F0FE !important;
+      color: #1A73E8 !important;
+      border-color: #AECBFA !important;
+    }
+    [data-theme="light"] .bg-amber-500\/10,
+    [data-theme="light"] .bg-amber-500\/15,
+    [data-theme="light"] .bg-amber-500\/20,
+    [data-theme="light"] .bg-amber-500\/30 {
+      background-color: #FEF7E0 !important;
+      color: #B06000 !important;
+      border-color: #FDD663 !important;
+    }
+    [data-theme="light"] .bg-purple-500\/10,
+    [data-theme="light"] .bg-purple-500\/15,
+    [data-theme="light"] .bg-purple-500\/20 {
+      background-color: #F3E8FD !important;
+      color: #7627BB !important;
+      border-color: #D7AEFB !important;
+    }
+    [data-theme="light"] .bg-indigo-500\/10,
+    [data-theme="light"] .bg-indigo-500\/15,
+    [data-theme="light"] .bg-indigo-500\/20 {
+      background-color: #EEF2FF !important;
+      color: #3730A3 !important;
+      border-color: #C7D2FE !important;
+    }
+    [data-theme="light"] .bg-rose-500\/10,
+    [data-theme="light"] .bg-rose-500\/15,
+    [data-theme="light"] .bg-rose-500\/20 {
+      background-color: #FCE8E6 !important;
+      color: #C5221F !important;
+      border-color: #FAD2CF !important;
+    }
+    [data-theme="light"] .bg-cyan-500\/10,
+    [data-theme="light"] .bg-cyan-500\/20 {
+      background-color: #E0F7FA !important;
+      color: #00796B !important;
+      border-color: #80DEEA !important;
+    }
+
     /* CRITICAL FIX: Solid Coloured Buttons MUST Keep Crisp White Text! */
     [data-theme="light"] .bg-emerald-600,
+    [data-theme="light"] .bg-emerald-700,
     [data-theme="light"] .bg-emerald-500,
     [data-theme="light"] .bg-rose-600,
+    [data-theme="light"] .bg-rose-700,
     [data-theme="light"] .bg-rose-500,
     [data-theme="light"] .bg-red-600,
     [data-theme="light"] .bg-blue-600,
+    [data-theme="light"] .bg-blue-700,
     [data-theme="light"] .bg-blue-500,
     [data-theme="light"] .bg-teal-600,
+    [data-theme="light"] .bg-teal-700,
     [data-theme="light"] .bg-teal-500,
     [data-theme="light"] .bg-cyan-600,
+    [data-theme="light"] .bg-cyan-700,
     [data-theme="light"] .bg-purple-600,
+    [data-theme="light"] .bg-purple-700,
+    [data-theme="light"] .bg-indigo-600,
+    [data-theme="light"] .bg-indigo-700,
+    [data-theme="light"] .bg-amber-600,
+    [data-theme="light"] .bg-amber-700,
     [data-theme="light"] button.bg-emerald-600,
     [data-theme="light"] button.bg-rose-600,
     [data-theme="light"] button.bg-blue-600,
     [data-theme="light"] button.bg-teal-600,
+    [data-theme="light"] button.bg-indigo-600,
+    [data-theme="light"] button.bg-amber-600,
     [data-theme="light"] .bg-rose-600 text-white,
     [data-theme="light"] .bg-emerald-600 text-white {
       color: #ffffff !important;
     }
     [data-theme="light"] .bg-emerald-600 *,
+    [data-theme="light"] .bg-emerald-700 *,
     [data-theme="light"] .bg-emerald-500 *,
     [data-theme="light"] .bg-rose-600 *,
+    [data-theme="light"] .bg-rose-700 *,
     [data-theme="light"] .bg-rose-500 *,
     [data-theme="light"] .bg-red-600 *,
     [data-theme="light"] .bg-blue-600 *,
+    [data-theme="light"] .bg-blue-700 *,
     [data-theme="light"] .bg-blue-500 *,
     [data-theme="light"] .bg-teal-600 *,
+    [data-theme="light"] .bg-teal-700 *,
     [data-theme="light"] .bg-teal-500 *,
     [data-theme="light"] .bg-cyan-600 *,
-    [data-theme="light"] .bg-purple-600 * {
+    [data-theme="light"] .bg-cyan-700 *,
+    [data-theme="light"] .bg-purple-600 *,
+    [data-theme="light"] .bg-purple-700 *,
+    [data-theme="light"] .bg-indigo-600 *,
+    [data-theme="light"] .bg-indigo-700 *,
+    [data-theme="light"] .bg-amber-600 *,
+    [data-theme="light"] .bg-amber-700 * {
       color: #ffffff !important;
+    }
+
+    /* Dark Action Pill Buttons in Light Mode */
+    [data-theme="light"] button.bg-slate-800,
+    [data-theme="light"] button.bg-slate-700,
+    [data-theme="light"] a.bg-slate-800,
+    [data-theme="light"] a.bg-slate-700 {
+      background-color: #2D3748 !important;
+      color: #FFFFFF !important;
+      border: 1px solid #1A202C !important;
+    }
+    [data-theme="light"] button.bg-slate-800:hover,
+    [data-theme="light"] button.bg-slate-700:hover,
+    [data-theme="light"] a.bg-slate-800:hover,
+    [data-theme="light"] a.bg-slate-700:hover {
+      background-color: #1A202C !important;
+      color: #FFFFFF !important;
     }
 
     /* Interactive Hover States in Light Mode (No dark jumps on hover!) */
@@ -1954,7 +2082,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=12.9"></script>
+  <script src="/js/zayvora-core.js?v=13.0"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2754,7 +2882,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=12.9"></script>
+  <script src="/js/zayvora-extensions.js?v=13.0"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->

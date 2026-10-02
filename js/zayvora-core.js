@@ -9527,19 +9527,19 @@ function generateInstantOpdToken() {
           { key: 'services_research', label: '<svg class="w-4 h-4 inline-block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Research Cloud' }
         ];
         return `
-          <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-8 shadow-lg">
-            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="bg-white dark:bg-slate-900/90 p-3 rounded-2xl border border-[#DCD5C4] dark:border-slate-800 mb-8 shadow-sm">
+            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-[#E8E2D5] dark:border-slate-800/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Clinical Care &amp; Services Hub</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">7 Integrated Modules</span>
+                <span class="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Clinical Care &amp; Services Hub</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 font-mono font-bold">7 Integrated Modules</span>
               </div>
-              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-slate-400 hover:text-emerald-400 transition flex items-center gap-1 font-semibold">
-                <span>️</span> Architecture Map
+              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-[#5F707E] hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition flex items-center gap-1 font-semibold">
+                <span>🏛️</span> Architecture Map
               </button>
             </div>
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               ${items.map(it => `
-                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
+                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md' : 'bg-[#FAF8F5] hover:bg-[#F2ECE0] text-[#1B242A] border border-[#DCD5C4] dark:bg-slate-800/80 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 dark:border-slate-700/60'}">
                   ${it.label}
                 </button>
               `).join('')}
@@ -9557,24 +9557,24 @@ function generateInstantOpdToken() {
           { key: 'shipping_refunds', label: 'Cold-Chain Shipping' }
         ];
         return `
-          <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-8 shadow-lg">
-            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="bg-white dark:bg-slate-900/90 p-3 rounded-2xl border border-[#DCD5C4] dark:border-slate-800 mb-8 shadow-sm">
+            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-[#E8E2D5] dark:border-slate-800/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Botanical Therapeutics Hub</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">AYUSH-GMP Certified</span>
+                <span class="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-600 dark:text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Botanical Therapeutics Hub</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 font-mono font-bold">AYUSH-GMP Certified</span>
               </div>
               <div class="flex items-center gap-3">
-                <button onclick="viewWebsitePage('products');" class="text-[11px] text-emerald-400 font-bold hover:underline">
+                <button onclick="viewWebsitePage('products');" class="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold hover:underline">
                   Products (${herbalsProducts.length})
                 </button>
-                <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-slate-400 hover:text-emerald-400 transition font-semibold">
-                  ️ System Map
+                <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-[#5F707E] hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition font-semibold">
+                  🏛️ System Map
                 </button>
               </div>
             </div>
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               ${items.map(it => `
-                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
+                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md' : 'bg-[#FAF8F5] hover:bg-[#F2ECE0] text-[#1B242A] border border-[#DCD5C4] dark:bg-slate-800/80 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 dark:border-slate-700/60'}">
                   ${it.label}
                 </button>
               `).join('')}
@@ -9592,19 +9592,19 @@ function generateInstantOpdToken() {
           { key: 'knowledge', label: 'UPI Pharmacopoeia Library' }
         ];
         return `
-          <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-8 shadow-lg">
-            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="bg-white dark:bg-slate-900/90 p-3 rounded-2xl border border-[#DCD5C4] dark:border-slate-800 mb-8 shadow-sm">
+            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-[#E8E2D5] dark:border-slate-800/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Research, Evidence &amp; Knowledge Institute</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">RWE &amp; Multi-Center Trials</span>
+                <span class="text-xs font-bold text-amber-800 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> Research, Evidence &amp; Knowledge Institute</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 font-mono font-bold">RWE &amp; Multi-Center Trials</span>
               </div>
-              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-slate-400 hover:text-emerald-400 transition font-semibold">
-                ️ System Map
+              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-[#5F707E] hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition font-semibold">
+                🏛️ System Map
               </button>
             </div>
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               ${items.map(it => `
-                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
+                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md' : 'bg-[#FAF8F5] hover:bg-[#F2ECE0] text-[#1B242A] border border-[#DCD5C4] dark:bg-slate-800/80 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 dark:border-slate-700/60'}">
                   ${it.label}
                 </button>
               `).join('')}
@@ -9619,19 +9619,19 @@ function generateInstantOpdToken() {
           { key: 'care_journey', label: '12-Step Closed-Loop Care' }
         ];
         return `
-          <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-8 shadow-lg">
-            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="bg-white dark:bg-slate-900/90 p-3 rounded-2xl border border-[#DCD5C4] dark:border-slate-800 mb-8 shadow-sm">
+            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-[#E8E2D5] dark:border-slate-800/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Greco-Arab Philosophy &amp; Continuum</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">Mizaj &amp; 12-Stage Care</span>
+                <span class="text-xs font-bold text-sky-800 dark:text-emerald-400 uppercase tracking-wider">Greco-Arab Philosophy &amp; Continuum</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 font-mono font-bold">Mizaj &amp; 12-Stage Care</span>
               </div>
-              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-slate-400 hover:text-emerald-400 transition font-semibold">
-                ️ System Map
+              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-[#5F707E] hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition font-semibold">
+                🏛️ System Map
               </button>
             </div>
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               ${items.map(it => `
-                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
+                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md' : 'bg-[#FAF8F5] hover:bg-[#F2ECE0] text-[#1B242A] border border-[#DCD5C4] dark:bg-slate-800/80 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 dark:border-slate-700/60'}">
                   ${it.label}
                 </button>
               `).join('')}
@@ -9653,19 +9653,19 @@ function generateInstantOpdToken() {
           { key: 'terms', label: 'Terms of Service' }
         ];
         return `
-          <div class="bg-slate-900/90 p-3 rounded-2xl border border-slate-800 mb-8 shadow-lg">
-            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-slate-800/80">
+          <div class="bg-white dark:bg-slate-900/90 p-3 rounded-2xl border border-[#DCD5C4] dark:border-slate-800 mb-8 shadow-sm">
+            <div class="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-[#E8E2D5] dark:border-slate-800/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg> Healthcare Network &amp; Support Hub</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-mono border border-emerald-500/20">24/7 Clinical Desk</span>
+                <span class="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider"><svg class="w-4 h-4 inline-block text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg> Healthcare Network &amp; Support Hub</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20 font-mono font-bold">24/7 Clinical Desk</span>
               </div>
-              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-slate-400 hover:text-emerald-400 transition font-semibold">
-                ️ System Map
+              <button onclick="viewWebsitePage('pages25')" class="text-[11px] text-[#5F707E] hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition font-semibold">
+                🏛️ System Map
               </button>
             </div>
             <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               ${items.map(it => `
-                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md shadow-emerald-950/50' : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-700/60'}">
+                <button onclick="viewWebsitePage('${it.key}')" class="px-3.5 py-1.5 rounded-xl font-medium transition whitespace-nowrap shrink-0 ${currentTab === it.key ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md' : 'bg-[#FAF8F5] hover:bg-[#F2ECE0] text-[#1B242A] border border-[#DCD5C4] dark:bg-slate-800/80 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 dark:border-slate-700/60'}">
                   ${it.label}
                 </button>
               `).join('')}
@@ -11276,19 +11276,19 @@ function generateInstantOpdToken() {
           <div class="space-y-10 pb-16">
             
             <!-- Architecture Blueprint Header -->
-            <div class="bg-gradient-to-r from-[#0F172A] via-[#131D31] to-[#0A0F1D] p-8 rounded-3xl border border-emerald-500/30 space-y-4 shadow-xl">
+            <div class="bg-[#FAF7EE] dark:bg-gradient-to-r dark:from-[#0F172A] dark:via-[#131D31] dark:to-[#0A0F1D] p-8 rounded-3xl border border-[#DCD5C4] dark:border-emerald-500/30 space-y-4 shadow-sm dark:shadow-xl">
               <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">ZAYVORA Health OS™ Architecture</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider">ZAYVORA Health OS™ Architecture</span>
                   </div>
-                  <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-1">Interactive System Architecture Map</h1>
-                  <p class="text-xs md:text-sm text-slate-300 mt-1.5 max-w-3xl leading-relaxed">
+                  <h1 class="text-2xl md:text-3xl font-extrabold text-[#1B242A] dark:text-white mt-1">Interactive System Architecture Map</h1>
+                  <p class="text-xs md:text-sm text-[#475560] dark:text-slate-300 mt-1.5 max-w-3xl leading-relaxed">
                     Unified architectural blueprint organizing all 25 canonical pages into 5 interconnected clinical, botanical, research, and governance domains.
                   </p>
                 </div>
-                <button onclick="viewWebsitePage('home')" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition shrink-0 flex items-center gap-2">
+                <button onclick="viewWebsitePage('home')" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition shrink-0 flex items-center gap-2 cursor-pointer">
                   <span>←</span> Back to Flagship Home
                 </button>
               </div>
@@ -11297,32 +11297,32 @@ function generateInstantOpdToken() {
             <!-- Domain Sections -->
             <div class="space-y-10">
               ${architectureDomains.map((dom, domIdx) => `
-                <div class="bg-[var(--card)] p-6 md:p-8 rounded-3xl border border-[var(--border)] space-y-5">
-                  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-slate-800">
+                <div class="bg-white dark:bg-[var(--card)] p-6 md:p-8 rounded-3xl border border-[#DCD5C4] dark:border-[var(--border)] shadow-sm space-y-5">
+                  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-[#E8E2D5] dark:border-slate-800">
                     <div>
-                      <h2 class="text-lg md:text-xl font-bold text-white">${dom.title}</h2>
-                      <p class="text-xs text-[var(--muted)] mt-1">${dom.desc}</p>
+                      <h2 class="text-lg md:text-xl font-bold text-[#1B242A] dark:text-white">${dom.title}</h2>
+                      <p class="text-xs text-[#5F707E] dark:text-[var(--muted)] mt-1">${dom.desc}</p>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-xs font-bold border border-emerald-500/20 shrink-0">
-                      ${dom.modules.length} Connected Modules
+                    <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20 font-mono text-xs font-bold shrink-0">
+                      ${dom.badge} • ${dom.modules.length} Connected Modules
                     </span>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     ${dom.modules.map(m => `
-                      <div class="p-4 rounded-2xl bg-[#0F172A]/80 border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between space-y-3 group">
+                      <div class="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-[#0F172A]/90 border border-[#E2D9CC] dark:border-slate-800 shadow-sm hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between space-y-3 group">
                         <div>
                           <div class="flex justify-between items-start gap-2 mb-1.5">
-                            <span class="font-bold text-white text-xs group-hover:text-emerald-300 transition-colors">${m.title}</span>
-                            <span class="text-[9px] text-emerald-400 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded shrink-0">${m.path}</span>
+                            <span class="font-bold text-[#1B242A] dark:text-white text-xs group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">${m.title}</span>
+                            <span class="text-[9px] text-emerald-800 dark:text-emerald-300 font-mono bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-300 dark:border-emerald-500/30 px-1.5 py-0.5 rounded shrink-0">${m.path}</span>
                           </div>
-                          <p class="text-[11px] text-slate-300 leading-relaxed">${m.desc}</p>
+                          <p class="text-[11px] text-[#475560] dark:text-slate-300 leading-relaxed">${m.desc}</p>
                         </div>
-                        <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-[11px]">
-                          <span class="text-emerald-400 font-medium flex items-center gap-1">
-                            <span>●</span> Active Module
+                        <div class="pt-2 border-t border-[#E8E2D5] dark:border-slate-800 flex justify-between items-center text-[11px]">
+                          <span class="text-emerald-800 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                            <span class="text-emerald-600 dark:text-emerald-400">●</span> Active Module
                           </span>
-                          <button onclick="viewWebsitePage('${m.key}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition">
+                          <button onclick="viewWebsitePage('${m.key}')" class="px-3 py-1 bg-emerald-700 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition cursor-pointer shadow-sm">
                             Explore Module &rarr;
                           </button>
                         </div>
