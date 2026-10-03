@@ -12445,7 +12445,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Cerebrovascular",
             "price": 1850,
             "desc": "Essential Hypertension (Stage 1 & 2), Stress-induced systolic spikes, Zayt-e-Dam (blood tension). Safoof-e-Tansiyat-ud-Dam.",
-            "dosage": "3g twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
+            "dosage": "1 to 2 capsules twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
             "indications": "Essential Hypertension (Stage 1 & 2), Stress-induced systolic spikes, Zayt-e-Dam (blood tension)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12458,7 +12458,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Pancreatic",
             "price": 1450,
             "desc": "Ziabetus Shakari (Type 2 Diabetes Mellitus), Impaired Fasting Glucose, Peripheral Insulin Resistance. Safoof-e-Qawi-e-Banas.",
-            "dosage": "3g to 5g twice daily 20 minutes before breakfast and dinner with warm water",
+            "dosage": "1 stick sachet (5g) twice daily dissolved in 100ml warm water 20 minutes before breakfast and dinner",
             "indications": "Ziabetus Shakari (Type 2 Diabetes Mellitus), Impaired Fasting Glucose, Peripheral Insulin Resistance",
             "is_hero_launch": true,
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
@@ -12471,7 +12471,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Cardiovascular",
             "price": 2200,
             "desc": "Zof-e-Qalb (Cardiac weakness), Khafqan (Palpitations), Post-cardiac rehabilitation, Endothelial dysfunction. Majoon-e-Muqawwi-e-Qalb.",
-            "dosage": "5g in the morning on empty stomach with milk or Arq Gulab",
+            "dosage": "1 stick sachet (5g) in the morning on empty stomach with warm milk or Arq Gulab",
             "indications": "Zof-e-Qalb (Cardiac weakness), Khafqan (Palpitations), Post-cardiac rehabilitation, Endothelial dysfunction",
             "is_hero_launch": false,
             "form": "Majoon Granules (30 x 5g Daily Stick Sachets)"
@@ -12484,7 +12484,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Hepatobiliary",
             "price": 1350,
             "desc": "Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD), Sluggish bile clearance, Elevated transaminases. Safoof-e-Muqawwi-e-Jigar.",
-            "dosage": "3g twice daily 30 minutes after meals with warm water",
+            "dosage": "1 to 2 capsules twice daily 30 minutes after meals with warm water or Arq Kasni",
             "indications": "Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD), Sluggish bile clearance, Elevated transaminases",
             "is_hero_launch": true,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12497,7 +12497,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Metabolic",
             "price": 1250,
             "desc": "Dasaumat-ud-Dam (Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL). Safoof-e-Islah-e-Dam.",
-            "dosage": "2g to 3g twice daily after heavy meals with warm water",
+            "dosage": "1 to 2 capsules twice daily after heavy meals with warm water",
             "indications": "Dasaumat-ud-Dam (Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12510,7 +12510,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Pulmonary",
             "price": 950,
             "desc": "Zeequn-Nafs (Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion). Lauq-e-Muqawwi-e-Sadr.",
-            "dosage": "5g to 10g licked slowly from a spoon twice daily, followed by warm water or fennel tea",
+            "dosage": "1 sachet dissolved in 100ml warm water, sip slowly twice daily, followed by warm water or fennel tea",
             "indications": "Zeequn-Nafs (Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion)",
             "is_hero_launch": false,
             "form": "Effervescent Micro-Granules (30 Sachets)"
@@ -12523,7 +12523,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Musculoskeletal",
             "price": 1650,
             "desc": "Waja-ul-Mafasil (Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation). Safoof-e-Muhallil-e-Mafasil.",
-            "dosage": "3g twice daily with warm milk or lukewarm water after breakfast and dinner",
+            "dosage": "1 stick sachet (5g) twice daily with warm milk or lukewarm water after breakfast and dinner",
             "indications": "Waja-ul-Mafasil (Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation)",
             "is_hero_launch": true,
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
@@ -12536,7 +12536,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Neuropsychiatric",
             "price": 1750,
             "desc": "Malikhuliya (Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue). Majoon-e-Mufarrih-e-Arwah.",
-            "dosage": "5g twice daily in the morning and 1 hour before sleep with warm milk",
+            "dosage": "1 to 2 capsules twice daily (in the morning and 1 hour before sleep) with warm milk",
             "indications": "Malikhuliya (Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12549,7 +12549,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 3400,
             "desc": "Severe Neuro-Vascular Erectile Dysfunction (Zof-e-Baah Shadeed), Loss of Penile Tumescence. Qurs-e-Taqwiyat-e-Quwwat-e-Baah.",
-            "dosage": "1 tablet at night with 250ml warm saffron milk 2 hours after meal. Maximum 3 tablets per week.",
+            "dosage": "1 tablet at night with 250ml warm saffron milk 2 hours after meal (Maximum 3 tablets per week; Rx restricted)",
             "indications": "Severe Neuro-Vascular Erectile Dysfunction (Zof-e-Baah Shadeed), Loss of Penile Tumescence",
             "is_hero_launch": false,
             "form": "Habb / Coated Micro-Tablets (60 Tabs)"
@@ -12562,10 +12562,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 3800,
             "desc": "Severe Oligospermia (<10 million/ml), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume Deficit. Majoon-e-Taqwiyat-e-Mani-Shadeed.",
-            "dosage": "10g in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
+            "dosage": "1 sachet (10g) in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
             "indications": "Severe Oligospermia (<10 million/ml), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume Deficit",
             "is_hero_launch": false,
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
+            "form": "Majoon / Oral Paste (30 x 10g Sachets)"
       },
       {
             "id": "zay-011",
@@ -12575,10 +12575,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 1150,
             "desc": "General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion. Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal.",
-            "dosage": "3g or 2 capsules daily in the morning with water or milk",
+            "dosage": "1 sachet (3g) daily in the morning with warm water or milk",
             "indications": "General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion",
             "is_hero_launch": false,
-            "form": "Standardized Micro-Granules (30 Sachets)"
+            "form": "Standardized Micro-Granules (30 x 3g Sachets)"
       },
       {
             "id": "zay-012",
@@ -12588,10 +12588,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Neuropsychiatric",
             "price": 1250,
             "desc": "Sahar (Insomnia), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness. Safoof-e-Taskeen-e-Dimagh.",
-            "dosage": "3g in warm milk or chamomile water 45 minutes before bedtime",
+            "dosage": "10ml to 15ml with warm milk or chamomile infusion 45 minutes before bedtime",
             "indications": "Sahar (Insomnia), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness",
             "is_hero_launch": false,
-            "form": "Herbal Infusion / Decoction Elixir (200ml)"
+            "form": "Herbal Infusion / Decoction Elixir (200ml Bottle)"
       },
       {
             "id": "zay-013",
@@ -12601,7 +12601,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 1850,
             "desc": "Moderate Oligospermia (10-15 million/ml), Decreased seminal volume, Semen liquefaction delay. Safoof-e-Muwalid-e-Mani-Mutawassit.",
-            "dosage": "5g twice daily with warm milk",
+            "dosage": "1 to 2 capsules twice daily with warm milk",
             "indications": "Moderate Oligospermia (10-15 million/ml), Decreased seminal volume, Semen liquefaction delay",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12614,7 +12614,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Dermatological",
             "price": 1100,
             "desc": "Intisaar-ush-Sha'r (Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness). Safoof-e-Munbit-e-Sha'r.",
-            "dosage": "3g daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
+            "dosage": "1 stick sachet (5g) daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
             "indications": "Intisaar-ush-Sha'r (Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness)",
             "is_hero_launch": false,
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
@@ -12627,7 +12627,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Urological",
             "price": 1350,
             "desc": "Hisat-e-Kulya wa Masana (Kidney and bladder calculi <8mm), Crystalluria, Burning micturition (Sozish-e-Baul). Safoof-e-Mufattit-e-Hisat.",
-            "dosage": "3g twice daily with a full glass of water, minimum 3 liters daily fluid intake",
+            "dosage": "1 stick sachet (5g) twice daily dissolved in a full glass of water (maintain minimum 3 liters daily fluid intake)",
             "indications": "Hisat-e-Kulya wa Masana (Kidney and bladder calculi <8mm), Crystalluria, Burning micturition (Sozish-e-Baul)",
             "is_hero_launch": false,
             "form": "Targeted Micro-Granules (30 x 5g Daily Sachets)"
@@ -12640,7 +12640,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 1150,
             "desc": "Sailan-ur-Reham (Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion). Safoof-e-Qabiz-e-Reham.",
-            "dosage": "3g twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
+            "dosage": "1 to 2 tablets twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
             "indications": "Sailan-ur-Reham (Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion)",
             "is_hero_launch": false,
             "form": "Micro-Calcified Tablets (60 Tabs)"
@@ -12653,7 +12653,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Metabolic",
             "price": 1450,
             "desc": "Shahm-e-Mufrit (Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess). Safoof-e-Tahleel-e-Shahm.",
-            "dosage": "3g twice daily 30 minutes before major meals with warm water",
+            "dosage": "1 to 2 capsules twice daily 30 minutes before major meals with warm water",
             "indications": "Shahm-e-Mufrit (Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12666,7 +12666,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Endocrine",
             "price": 1550,
             "desc": "Ghudda-e-Darqiya sluggishness (Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishness). Safoof-e-Islah-e-Ghudda-e-Darqiya.",
-            "dosage": "3g twice daily with warm ginger infusion or lukewarm water",
+            "dosage": "1 to 2 capsules twice daily with warm ginger infusion or lukewarm water",
             "indications": "Ghudda-e-Darqiya sluggishness (Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishness)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12679,7 +12679,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 1150,
             "desc": "General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium. Safoof-e-Nisa.",
-            "dosage": "3g daily in the morning with milk or warm water",
+            "dosage": "1 to 2 tablets daily in the morning with milk or warm water",
             "indications": "General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium",
             "is_hero_launch": false,
             "form": "Compressed Tablets (60 Tabs)"
@@ -12691,9 +12691,9 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "unani_name": "Safoof-e-Daf-e-Ziabetus-Mutawassit",
             "category": "Pancreatic",
             "price": 1250,
-            "desc": "Prediabetes (HbA1c 5.7–6.4%), Impaired fasting glucose, Postprandial glucose surges. Safoof-e-Daf-e-Ziabetus-Mutawassit.",
-            "dosage": "3g twice daily 15 minutes before lunch and dinner",
-            "indications": "Prediabetes (HbA1c 5.7–6.4%), Impaired fasting glucose, Postprandial glucose surges",
+            "desc": "Prediabetes (HbA1c 5.7\u20136.4%), Impaired fasting glucose, Postprandial glucose surges. Safoof-e-Daf-e-Ziabetus-Mutawassit.",
+            "dosage": "1 to 2 capsules twice daily 15 minutes before lunch and dinner with water",
+            "indications": "Prediabetes (HbA1c 5.7\u20136.4%), Impaired fasting glucose, Postprandial glucose surges",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
       },
@@ -12705,10 +12705,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Immunological",
             "price": 950,
             "desc": "Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia. Safoof-e-Muqawwi-e-Tabiyat.",
-            "dosage": "3g once or twice daily with warm water or green tea",
+            "dosage": "1 sachet (3g) once or twice daily dissolved in warm water or green tea",
             "indications": "Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia",
             "is_hero_launch": false,
-            "form": "Purified Herbal Granules (30 Sachets)"
+            "form": "Purified Herbal Granules (30 x 3g Sachets)"
       },
       {
             "id": "zay-022",
@@ -12718,7 +12718,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gastrointestinal",
             "price": 1150,
             "desc": "Zalaq-ul-Amaa / Nafkh-e-Shikam (Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Flatulence). Safoof-e-Islah-e-Amaa.",
-            "dosage": "5g twice daily 20 minutes after food with fresh buttermilk or water",
+            "dosage": "1 to 2 capsules twice daily 20 minutes after food with fresh buttermilk or water",
             "indications": "Zalaq-ul-Amaa / Nafkh-e-Shikam (Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Flatulence)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12731,7 +12731,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 1850,
             "desc": "Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence. Habb-e-Azaraqi Mudabbar (Majoon-e-Muhrik-e-Baah).",
-            "dosage": "1 tablet at bedtime with 250ml full-cream milk. Maximum 3 times weekly. Strictly requires registered AYUSH practitioner prescription.",
+            "dosage": "1 tablet at bedtime with 250ml full-cream milk (Maximum 3 times weekly; strictly requires registered AYUSH practitioner prescription)",
             "indications": "Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence",
             "is_hero_launch": false,
             "form": "Coated Micro-Tablets (Alu-Alu Blister, 60 Tabs)"
@@ -12757,7 +12757,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 1950,
             "desc": "Surat-e-Inzal (Premature Ejaculation, IELT < 1 minute), Riqat-e-Mani (Seminal hyperviscosity/thinness). Safoof-e-Mumsik-e-Mani-Shadeed.",
-            "dosage": "5g twice daily with lukewarm milk 1 hour before sleep",
+            "dosage": "1 stick sachet (5g) twice daily with lukewarm milk 1 hour before sleep",
             "indications": "Surat-e-Inzal (Premature Ejaculation, IELT < 1 minute), Riqat-e-Mani (Seminal hyperviscosity/thinness)",
             "is_hero_launch": true,
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
@@ -12770,7 +12770,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Urological",
             "price": 1850,
             "desc": "Waram-e-Ghudda-e-Baristeht (Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesitancy). Safoof-e-Mulayyim-e-Ghudda-e-Baristeht.",
-            "dosage": "3g or 2 capsules twice daily after meals with water",
+            "dosage": "1 to 2 capsules twice daily after meals with water",
             "indications": "Waram-e-Ghudda-e-Baristeht (Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesitancy)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12783,7 +12783,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Andrological",
             "price": 3600,
             "desc": "Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone. Majoon-e-Muqawwi-e-Khusyatain.",
-            "dosage": "5g in the morning on empty stomach with warm milk",
+            "dosage": "1 to 2 capsules in the morning on empty stomach with warm milk",
             "indications": "Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone",
             "is_hero_launch": false,
             "form": "Targeted HPMC Veg Capsules (60 Caps)"
@@ -12796,7 +12796,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 1650,
             "desc": "Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge. Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed.",
-            "dosage": "3g twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
+            "dosage": "1 stick sachet (3g) twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
             "indications": "Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge",
             "is_hero_launch": false,
             "form": "Micro-Granules (30 x 3g Daily Stick Sachets)"
@@ -12809,7 +12809,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 2400,
             "desc": "Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham (PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, Insulin Resistance). Safoof-e-Munazzim-e-Haiz.",
-            "dosage": "4g (1 sachet) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
+            "dosage": "1 stick sachet (5g) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
             "indications": "Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham (PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, Insulin Resistance)",
             "is_hero_launch": true,
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)"
@@ -12822,7 +12822,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 1850,
             "desc": "Zof-e-Reham (Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy). Majoon-e-Muqawwi-e-Reham-Shadeed.",
-            "dosage": "5g in the morning with warm milk",
+            "dosage": "1 to 2 capsules twice daily with warm milk",
             "indications": "Zof-e-Reham (Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy)",
             "is_hero_launch": false,
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)"
@@ -12835,7 +12835,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 1750,
             "desc": "Sinn-e-Yas (Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone Demineralization). Safoof-e-Daf-e-Araz-e-Yas.",
-            "dosage": "3g twice daily with lukewarm water after breakfast and dinner",
+            "dosage": "1 stick sachet (3g) twice daily with lukewarm water after breakfast and dinner",
             "indications": "Sinn-e-Yas (Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone Demineralization)",
             "is_hero_launch": false,
             "form": "Micro-Granules (30 x 3g Daily Stick Sachets)"
@@ -12848,7 +12848,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "category": "Gynecological",
             "price": 3800,
             "desc": "Uqr-e-Nisa (Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Lining). Safoof-e-Mualijat-e-Uqr-e-Nisa.",
-            "dosage": "5g twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
+            "dosage": "1 to 2 tablets twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
             "indications": "Uqr-e-Nisa (Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Lining)",
             "is_hero_launch": false,
             "form": "Compressed Tablets (60 Tabs)"

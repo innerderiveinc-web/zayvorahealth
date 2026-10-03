@@ -26,7 +26,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-001",
         "name": "HyperCalm™",
         "unani_name": "Safoof-e-Tansiyat-ud-Dam",
-        "formulation_type": "Safoof (Standardized Powder)",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "AYUSH_SCHEDULE_E1_RX",
         "is_prescription_required": True,
         "mrp_inr": 1850,
@@ -40,7 +40,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Gul-e-Surkh (Rosa damascena)", "amount_mg": 150, "standardization": "Total Phenolics 5.0%"},
             {"ingredient": "Gaozaban (Borago officinalis)", "amount_mg": 100, "standardization": "Mucilage & Flavonoids"}
         ],
-        "dosage": "3g twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
+        "dosage": "1 to 2 capsules twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
         "contraindications": [
             "Active peptic ulcer disease",
             "Severe endogenous depression / suicidal ideation",
@@ -54,7 +54,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-002",
         "name": "DiabEase™",
         "unani_name": "Safoof-e-Qawi-e-Banas",
-        "formulation_type": "Safoof (Micronized Powder)",
+        "formulation_type": "Micro-Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 1450,
@@ -68,7 +68,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Tukhm-e-Hulba", "amount_mg": 100, "standardization": "Saponins 10%"},
             {"ingredient": "Kushta Baiza-e-Murgh", "amount_mg": 50, "standardization": "Micro-calcified Elemental Calcium"}
         ],
-        "dosage": "3g to 5g twice daily 20 minutes before breakfast and dinner with warm water",
+        "dosage": "1 stick sachet (5g) twice daily dissolved in 100ml warm water 20 minutes before breakfast and dinner",
         "contraindications": [
             "Severe hypoglycemia prone patients without CGM",
             "Diabetic Ketoacidosis (DKA)",
@@ -81,7 +81,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-003",
         "name": "CardioGuard™",
         "unani_name": "Majoon-e-Muqawwi-e-Qalb",
-        "formulation_type": "Majoon (Electuary)",
+        "formulation_type": "Majoon Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 2200,
@@ -95,7 +95,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Badranjboya (Melissa officinalis)", "amount_mg": 200, "standardization": "Rosmarinic Acid 5%"},
             {"ingredient": "Seb juice & Asl base", "amount_mg": 3500, "standardization": "Natural Honey & Pectin Matrix"}
         ],
-        "dosage": "5g in the morning on empty stomach with milk or Arq Gulab",
+        "dosage": "1 stick sachet (5g) in the morning on empty stomach with warm milk or Arq Gulab",
         "contraindications": [
             "Unstable angina requiring immediate catheterization",
             "Severe uncompensated aortic stenosis",
@@ -108,7 +108,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-004",
         "name": "HepaClear™",
         "unani_name": "Safoof-e-Muqawwi-e-Jigar",
-        "formulation_type": "Safoof (Herbal Extract Powder)",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 1350,
@@ -122,7 +122,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Revand Chini (Rheum emodi)", "amount_mg": 100, "standardization": "Emodin & Rhein 3.5%"},
             {"ingredient": "Afsanteen (Artemisia absinthium)", "amount_mg": 100, "standardization": "Absinthin 1.5%"}
         ],
-        "dosage": "3g twice daily 30 minutes after meals with warm water",
+        "dosage": "1 to 2 capsules twice daily 30 minutes after meals with warm water or Arq Kasni",
         "contraindications": [
             "Complete mechanical biliary obstruction",
             "Fulminant hepatic failure",
@@ -135,7 +135,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-005",
         "name": "LipidClear™",
         "unani_name": "Safoof-e-Islah-e-Dam",
-        "formulation_type": "Safoof",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 1250,
@@ -149,7 +149,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Halela Siyah (Terminalia chebula)", "amount_mg": 150, "standardization": "Chebulinic acid 20%"},
             {"ingredient": "Zeera Siyah (Carum carvi)", "amount_mg": 150, "standardization": "Carvone 3%"}
         ],
-        "dosage": "2g to 3g twice daily after heavy meals with warm water",
+        "dosage": "1 to 2 capsules twice daily after heavy meals with warm water",
         "contraindications": [
             "Concurrent full-dose anticoagulant therapy (Warfarin/NOACs) without monitoring",
             "Bleeding diathesis",
@@ -162,7 +162,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-006",
         "name": "LungEase™",
         "unani_name": "Lauq-e-Muqawwi-e-Sadr",
-        "formulation_type": "Lauq (Linctus/Demulcent Paste)",
+        "formulation_type": "Effervescent Micro-Granules (30 Sachets)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 950,
@@ -176,7 +176,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Banafsha (Viola odorata)", "amount_mg": 100, "standardization": "Violanthin & Rutin 2%"},
             {"ingredient": "Natural Honey Base", "amount_mg": 4000, "standardization": "Pure Forest Flora"}
         ],
-        "dosage": "5g to 10g licked slowly from a spoon twice daily, followed by warm water or fennel tea",
+        "dosage": "1 sachet dissolved in 100ml warm water, sip slowly twice daily, followed by warm water or fennel tea",
         "contraindications": [
             "Severe uncontrolled hypertension (due to licorice mineralocorticoid activity in excessive doses)",
             "Uncontrolled diabetes (requires Safoof dry form alternative)",
@@ -189,7 +189,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-007",
         "name": "JointFree™",
         "unani_name": "Safoof-e-Muhallil-e-Mafasil",
-        "formulation_type": "Safoof",
+        "formulation_type": "Micro-Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_PROPRIETARY",
         "is_prescription_required": False,
         "mrp_inr": 1650,
@@ -202,7 +202,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Kundur (Boswellia serrata)", "amount_mg": 250, "standardization": "AKBA (3-O-acetyl-11-keto-beta-boswellic acid) 30%"},
             {"ingredient": "Filfil Daraz (Piper longum)", "amount_mg": 100, "standardization": "Piperine 95%"}
         ],
-        "dosage": "3g twice daily with warm milk or lukewarm water after breakfast and dinner",
+        "dosage": "1 stick sachet (5g) twice daily with warm milk or lukewarm water after breakfast and dinner",
         "contraindications": [
             "Severe renal impairment (eGFR < 30 mL/min)",
             "Pregnancy & lactation",
@@ -215,7 +215,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-008",
         "name": "MindBalance™",
         "unani_name": "Majoon-e-Mufarrih-e-Arwah",
-        "formulation_type": "Majoon (Electuary)",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 1750,
@@ -229,7 +229,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Badranjboya (Melissa officinalis)", "amount_mg": 150, "standardization": "Rosmarinic acid 5%"},
             {"ingredient": "Jadwar (Delphinium denudatum)", "amount_mg": 50, "standardization": "Denudatine alkaloids 1%"}
         ],
-        "dosage": "5g twice daily in the morning and 1 hour before sleep with warm milk",
+        "dosage": "1 to 2 capsules twice daily (in the morning and 1 hour before sleep) with warm milk",
         "contraindications": [
             "Concomitant MAO-inhibitor therapy without clinical taper",
             "Severe bipolar mania",
@@ -246,7 +246,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-009",
         "name": "Night-One X™",
         "unani_name": "Qurs-e-Taqwiyat-e-Quwwat-e-Baah",
-        "formulation_type": "Qurs (Coated Tablet)",
+        "formulation_type": "Habb / Coated Micro-Tablets (60 Tabs)",
         "regulatory_track": "AYUSH_SCHEDULE_E1_RX",
         "is_prescription_required": True,
         "mrp_inr": 3400,
@@ -260,7 +260,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Salab Misri (Orchis mascula)", "amount_mg": 300, "standardization": "Glucomannan 15%"},
             {"ingredient": "Amber (Ambra grisea)", "amount_mg": 10, "standardization": "Ambrein 25%"}
         ],
-        "dosage": "1 tablet at night with 250ml warm saffron milk 2 hours after meal. Maximum 3 tablets per week.",
+        "dosage": "1 tablet at night with 250ml warm saffron milk 2 hours after meal (Maximum 3 tablets per week; Rx restricted)",
         "contraindications": [
             "Severe uncontrolled hypertension (>180/110 mmHg)",
             "Concurrent Nitrate therapy (Nitroglycerin, Isosorbide mononitrate)",
@@ -274,7 +274,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-010",
         "name": "Fertility PRO™",
         "unani_name": "Majoon-e-Taqwiyat-e-Mani-Shadeed",
-        "formulation_type": "Majoon (Spermatogenic Electuary)",
+        "formulation_type": "Majoon / Oral Paste (30 x 10g Sachets)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 3800,
@@ -290,7 +290,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Zafran (Crocus sativus)", "amount_mg": 15, "standardization": "Safranal 2%"},
             {"ingredient": "Kushta Nuqra (Silver Calx)", "amount_mg": 30, "standardization": "Sub-micron Silver Nanoparticles"}
         ],
-        "dosage": "10g in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
+        "dosage": "1 sachet (10g) in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
         "contraindications": [
             "Non-obstructive Azoospermia with elevated FSH (>30 mIU/mL) - requires genetic karyotyping first",
             "Severe untreated varicocele Grade 3 (requires urological ligation evaluation)"
@@ -302,7 +302,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-011",
         "name": "Men Daily™",
         "unani_name": "Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal",
-        "formulation_type": "Safoof / Capsule",
+        "formulation_type": "Standardized Micro-Granules (30 x 3g Sachets)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1150,
@@ -316,7 +316,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Shilajit (purified asphaltum)", "amount_mg": 150, "standardization": "Fulvic Acid 60%"},
             {"ingredient": "Akarkara (Anacyclus pyrethrum)", "amount_mg": 100, "standardization": "Pellitorine 1.5%"}
         ],
-        "dosage": "3g or 2 capsules daily in the morning with water or milk",
+        "dosage": "1 sachet (3g) daily in the morning with warm water or milk",
         "contraindications": ["None reported at recommended dietary levels"],
         "monitoring": ["Energy visual analogue scale", "Annual biochemistry"],
         "citations": ["Journal of the International Society of Sports Nutrition 2015; Withania somnifera ergogenic outcomes"]
@@ -325,7 +325,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-012",
         "name": "Sleep+Stress™",
         "unani_name": "Safoof-e-Taskeen-e-Dimagh",
-        "formulation_type": "Safoof (Effervescent / Water Soluble)",
+        "formulation_type": "Herbal Infusion / Decoction Elixir (200ml Bottle)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1250,
@@ -338,7 +338,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Chamomile Extract", "amount_mg": 150, "standardization": "Apigenin 1.2%"},
             {"ingredient": "Tukhm-e-Khashkhash (Poppy seeds - purified)", "amount_mg": 200, "standardization": "Nutritional Lipid & Tryptophan Matrix"}
         ],
-        "dosage": "3g in warm milk or chamomile water 45 minutes before bedtime",
+        "dosage": "10ml to 15ml with warm milk or chamomile infusion 45 minutes before bedtime",
         "contraindications": [
             "Concurrent use with high-dose benzodiazepines or z-drugs without doctor taper",
             "Sleep apnea requiring nocturnal CPAP (must continue CPAP)"
@@ -350,7 +350,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-013",
         "name": "Fertility Moderate™",
         "unani_name": "Safoof-e-Muwalid-e-Mani-Mutawassit",
-        "formulation_type": "Safoof",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1850,
@@ -363,7 +363,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Tukhm-e-Utangan (Blepharis edulis)", "amount_mg": 200, "standardization": "Total Glycosides 4%"},
             {"ingredient": "Gond Katira (Astragalus gummifer)", "amount_mg": 150, "standardization": "Tragacanthin Polysaccharide"}
         ],
-        "dosage": "5g twice daily with warm milk",
+        "dosage": "1 to 2 capsules twice daily with warm milk",
         "contraindications": ["None major; avoid in severe acute prostatitis until resolved"],
         "monitoring": ["Semen analysis at 60 days"],
         "citations": ["Fertility and Sterility 2011; Mucuna pruriens improves male fertility"]
@@ -372,7 +372,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-014",
         "name": "HairRoot-X™",
         "unani_name": "Safoof-e-Munbit-e-Sha'r",
-        "formulation_type": "Safoof / Nutritional Powder",
+        "formulation_type": "Micro-Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1100,
@@ -385,7 +385,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Halela Siyah (Terminalia chebula)", "amount_mg": 150, "standardization": "Polyphenols 20%"},
             {"ingredient": "Tukhm-e-Kahu (Lactuca sativa seeds)", "amount_mg": 100, "standardization": "Lactucin & Flavonoids"}
         ],
-        "dosage": "3g daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
+        "dosage": "1 stick sachet (5g) daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
         "contraindications": ["None reported"],
         "monitoring": ["Hair pull test", "Trichoscopy / Follicular density"],
         "citations": ["Archives of Dermatological Research 2019; Eclipta alba follicular stimulation"]
@@ -394,7 +394,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-015",
         "name": "UroClear™",
         "unani_name": "Safoof-e-Mufattit-e-Hisat",
-        "formulation_type": "Safoof (Lithotriptic Powder)",
+        "formulation_type": "Targeted Micro-Granules (30 x 5g Daily Sachets)",
         "regulatory_track": "AYUSH_PROPRIETARY",
         "is_prescription_required": False,
         "mrp_inr": 1350,
@@ -407,7 +407,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Hajr-ul-Yahood Bhasma (Lapis judaicus)", "amount_mg": 150, "standardization": "Natural Calcium Silicate complex"},
             {"ingredient": "Javakhar (Potassium carbonate from barley ash)", "amount_mg": 100, "standardization": "Potassium Carbonate 80%"}
         ],
-        "dosage": "3g twice daily with a full glass of water, minimum 3 liters daily fluid intake",
+        "dosage": "1 stick sachet (5g) twice daily dissolved in a full glass of water (maintain minimum 3 liters daily fluid intake)",
         "contraindications": [
             "Obstructive uropathy with hydronephrosis",
             "Stone diameter > 9mm (requires urological intervention)",
@@ -420,7 +420,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-016",
         "name": "FemCare-L™",
         "unani_name": "Safoof-e-Qabiz-e-Reham",
-        "formulation_type": "Safoof",
+        "formulation_type": "Micro-Calcified Tablets (60 Tabs)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1150,
@@ -433,7 +433,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Gond Dhak (Butea monosperma gum)", "amount_mg": 150, "standardization": "Butein & Tannic Acid 15%"},
             {"ingredient": "Phitkari Biryan (Purified roasted alum)", "amount_mg": 50, "standardization": "Purified Potash Alum"}
         ],
-        "dosage": "3g twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
+        "dosage": "1 to 2 tablets twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
         "contraindications": [
             "Trichomoniasis or bacterial vaginosis requiring immediate antimicrobial therapy",
             "Suspected cervical intraepithelial neoplasia (CIN) without Pap smear",
@@ -446,7 +446,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-017",
         "name": "MetaboBurn-M™",
         "unani_name": "Safoof-e-Tahleel-e-Shahm",
-        "formulation_type": "Safoof",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1450,
@@ -459,7 +459,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Ajwain (Trachyspermum ammi)", "amount_mg": 200, "standardization": "Thymol 2.5%"},
             {"ingredient": "Filfil Siyah (Piper nigrum)", "amount_mg": 100, "standardization": "Piperine 95%"}
         ],
-        "dosage": "3g twice daily 30 minutes before major meals with warm water",
+        "dosage": "1 to 2 capsules twice daily 30 minutes before major meals with warm water",
         "contraindications": [
             "Anorexia nervosa or underweight status (BMI < 18.5)",
             "Pregnancy & lactation",
@@ -472,7 +472,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-018",
         "name": "ThyroMet-W™",
         "unani_name": "Safoof-e-Islah-e-Ghudda-e-Darqiya",
-        "formulation_type": "Safoof",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1550,
@@ -485,7 +485,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Trikatu (Zingiber, Piper nigrum, Piper longum)", "amount_mg": 150, "standardization": "Piperine & Gingerols 10%"},
             {"ingredient": "Varuna (Crataeva nurvala)", "amount_mg": 150, "standardization": "Lupeol 1.5%"}
         ],
-        "dosage": "3g twice daily with warm ginger infusion or lukewarm water",
+        "dosage": "1 to 2 capsules twice daily with warm ginger infusion or lukewarm water",
         "contraindications": [
             "Overt Hyperthyroidism / Thyrotoxicosis",
             "Autoimmune Graves disease",
@@ -498,7 +498,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-019",
         "name": "Women Daily™",
         "unani_name": "Safoof-e-Nisa",
-        "formulation_type": "Safoof / Capsule",
+        "formulation_type": "Compressed Tablets (60 Tabs)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1150,
@@ -511,7 +511,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Giloy (Tinospora cordifolia)", "amount_mg": 200, "standardization": "Bitters 3%"},
             {"ingredient": "Iron Bhasma (Kushta Khabs-ul-Hadeed)", "amount_mg": 50, "standardization": "Micro-calcified Elemental Iron"}
         ],
-        "dosage": "3g daily in the morning with milk or warm water",
+        "dosage": "1 to 2 tablets daily in the morning with milk or warm water",
         "contraindications": ["Hemochromatosis (iron overload)"],
         "monitoring": ["Hemoglobin & Ferritin", "Menstrual regularity diary"],
         "citations": ["Journal of Herbal Medicine 2020; Asparagus racemosus in female endocrine homeostasis"]
@@ -520,7 +520,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-020",
         "name": "Sugar Care™",
         "unani_name": "Safoof-e-Daf-e-Ziabetus-Mutawassit",
-        "formulation_type": "Safoof",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1250,
@@ -533,7 +533,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Jamun (Syzygium cumini)", "amount_mg": 200, "standardization": "Jamboline 10%"},
             {"ingredient": "Dalchini (Cinnamomum verum)", "amount_mg": 150, "standardization": "Polyphenols 10%"}
         ],
-        "dosage": "3g twice daily 15 minutes before lunch and dinner",
+        "dosage": "1 to 2 capsules twice daily 15 minutes before lunch and dinner with water",
         "contraindications": ["None major; monitor glucose when combined with prescription oral hypoglycemics"],
         "monitoring": ["Fasting blood glucose, HbA1c at 90 days"],
         "citations": ["Diabetes Care 2017; Pterocarpus marsupium in glycemic moderation"]
@@ -542,7 +542,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-021",
         "name": "Immunity™",
         "unani_name": "Safoof-e-Muqawwi-e-Tabiyat",
-        "formulation_type": "Safoof",
+        "formulation_type": "Purified Herbal Granules (30 x 3g Sachets)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 950,
@@ -556,7 +556,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Haldi (Curcuma longa)", "amount_mg": 150, "standardization": "Curcuminoids 95%"},
             {"ingredient": "Filfil Siyah (Piper nigrum - Bio-enhancer Mu'in)", "amount_mg": 20, "standardization": "Piperine 95%"}
         ],
-        "dosage": "3g once or twice daily with warm water or green tea",
+        "dosage": "1 sachet (3g) once or twice daily dissolved in warm water or green tea",
         "contraindications": ["Autoimmune flare states (active multiple sclerosis) without specialist review"],
         "monitoring": ["Absolute lymphocyte count", "Infection incidence log"],
         "citations": ["Frontiers in Pharmacology 2021; Tinospora cordifolia immunomodulatory cascades"]
@@ -565,7 +565,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-022",
         "name": "GutEase-IBS™",
         "unani_name": "Safoof-e-Islah-e-Amaa",
-        "formulation_type": "Safoof (Prebiotic Botanical Blend)",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1150,
@@ -578,7 +578,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Pudina (Mentha piperita)", "amount_mg": 150, "standardization": "Menthol 1.5%"},
             {"ingredient": "Zeera Safed (Cuminum cyminum)", "amount_mg": 150, "standardization": "Cuminaldehyde 2%"}
         ],
-        "dosage": "5g twice daily 20 minutes after food with fresh buttermilk or water",
+        "dosage": "1 to 2 capsules twice daily 20 minutes after food with fresh buttermilk or water",
         "contraindications": ["Acute bowel obstruction", "Appendicitis symptoms", "Fecal impaction"],
         "monitoring": ["Bristol Stool Form Scale", "Abdominal pain visual analogue score"],
         "citations": ["Digestive Diseases and Sciences 2019; Aegle marmelos in irritable bowel syndrome"]
@@ -605,7 +605,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Darchini (Cinnamomum zeylanicum)", "amount_mg": 100, "standardization": "Cinnamaldehyde 5%"},
             {"ingredient": "Asgandh (Withania somnifera)", "amount_mg": 250, "standardization": "Withanolides 5%"}
         ],
-        "dosage": "1 tablet at bedtime with 250ml full-cream milk. Maximum 3 times weekly. Strictly requires registered AYUSH practitioner prescription.",
+        "dosage": "1 tablet at bedtime with 250ml full-cream milk (Maximum 3 times weekly; strictly requires registered AYUSH practitioner prescription)",
         "contraindications": [
             "Severe cardiovascular disease, unstable angina, heart failure NYHA III/IV",
             "Concurrent phosphodiesterase-5 inhibitors (Sildenafil, Tadalafil) without 24-hr washout",
@@ -646,7 +646,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-025",
         "name": "SemenGuard™",
         "unani_name": "Safoof-e-Mumsik-e-Mani-Shadeed",
-        "formulation_type": "Safoof",
+        "formulation_type": "Micro-Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_PROPRIETARY",
         "is_prescription_required": False,
         "mrp_inr": 1950,
@@ -659,7 +659,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Mochras (Bombax ceiba gum)", "amount_mg": 200, "standardization": "Tannins 20%"},
             {"ingredient": "Kushta Qalai (Tin calx)", "amount_mg": 50, "standardization": "Purified Stannic Oxide complex"}
         ],
-        "dosage": "5g twice daily with lukewarm milk 1 hour before sleep",
+        "dosage": "1 stick sachet (5g) twice daily with lukewarm milk 1 hour before sleep",
         "contraindications": ["None major; avoid combining with heavy CNS depressants"],
         "monitoring": ["Intravaginal Ejaculatory Latency Time (IELT)", "Premature Ejaculation Diagnostic Tool (PEDT)"],
         "citations": ["Journal of Sexual Medicine 2019; Herbal neuro-modulators in premature ejaculation"]
@@ -668,7 +668,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-026",
         "name": "ProstaGuard™",
         "unani_name": "Safoof-e-Mulayyim-e-Ghudda-e-Baristeht",
-        "formulation_type": "Safoof / Capsule",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1850,
@@ -681,7 +681,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Varuna (Crataeva nurvala)", "amount_mg": 250, "standardization": "Lupeol 1.5%"},
             {"ingredient": "Pumpkin Seed Extract (Cucurbita pepo)", "amount_mg": 200, "standardization": "Phytosterols 20%"}
         ],
-        "dosage": "3g or 2 capsules twice daily after meals with water",
+        "dosage": "1 to 2 capsules twice daily after meals with water",
         "contraindications": [
             "Prostate Cancer (mandatory PSA check prior to therapy)",
             "Acute urinary retention requiring Foley catheterization"
@@ -693,7 +693,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-027",
         "name": "TestoVital Classic™",
         "unani_name": "Majoon-e-Muqawwi-e-Khusyatain",
-        "formulation_type": "Majoon (Electuary)",
+        "formulation_type": "Targeted HPMC Veg Capsules (60 Caps)",
         "regulatory_track": "AYUSH_CLASSICAL",
         "is_prescription_required": False,
         "mrp_inr": 3600,
@@ -707,7 +707,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Kushta Nuqra (Silver calx)", "amount_mg": 30, "standardization": "Sub-micron Silver Particles"},
             {"ingredient": "Maghz-e-Chilgoza (Pinus gerardiana)", "amount_mg": 250, "standardization": "Pinolenic Acid 15%"}
         ],
-        "dosage": "5g in the morning on empty stomach with warm milk",
+        "dosage": "1 to 2 capsules in the morning on empty stomach with warm milk",
         "contraindications": [
             "Active or suspected prostate carcinoma",
             "Severe sleep apnea",
@@ -720,7 +720,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-028",
         "name": "LeucoClear™",
         "unani_name": "Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed",
-        "formulation_type": "Safoof",
+        "formulation_type": "Micro-Granules (30 x 3g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_PROPRIETARY",
         "is_prescription_required": False,
         "mrp_inr": 1650,
@@ -733,7 +733,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Kushta Baiza-e-Murgh", "amount_mg": 100, "standardization": "Egg Shell Micro-Calcified Calcium"},
             {"ingredient": "Phitkari Biryan (Roasted alum)", "amount_mg": 100, "standardization": "Purified Potash Alum"}
         ],
-        "dosage": "3g twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
+        "dosage": "1 stick sachet (3g) twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
         "contraindications": ["Undiagnosed irregular genital bleeding", "Malignancy of genital tract"],
         "monitoring": ["Discharge culture and sensitivity if foul smelling", "Speculum exam"],
         "citations": ["AYUSH Clinical Protocols on Sailan-ur-Reham"]
@@ -742,7 +742,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-029",
         "name": "CycloCare-PCOS™",
         "unani_name": "Safoof-e-Munazzim-e-Haiz",
-        "formulation_type": "Safoof / Granules",
+        "formulation_type": "Micro-Granules (30 x 5g Daily Stick Sachets)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 2400,
@@ -757,7 +757,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Dalchini (Cinnamomum verum)", "amount_mg": 150, "standardization": "Polyphenols 10%"},
             {"ingredient": "Filfil Siyah (Piper nigrum - Bio-enhancer Mu'in)", "amount_mg": 15, "standardization": "Piperine 95%"}
         ],
-        "dosage": "4g (1 sachet) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
+        "dosage": "1 stick sachet (5g) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
         "contraindications": [
             "Pregnancy (once conception confirmed, switch to prenatal protocol)",
             "Active ovarian cyst torsion requiring surgery"
@@ -769,7 +769,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-030",
         "name": "UterTone™",
         "unani_name": "Majoon-e-Muqawwi-e-Reham-Shadeed",
-        "formulation_type": "Majoon (Electuary)",
+        "formulation_type": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 1850,
@@ -782,7 +782,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Gond Katira (Astragalus gummifer)", "amount_mg": 200, "standardization": "Tragacanthin 40%"},
             {"ingredient": "Asl-us-Soos (Glycyrrhiza glabra)", "amount_mg": 150, "standardization": "Glycyrrhizin 10%"}
         ],
-        "dosage": "5g in the morning with warm milk",
+        "dosage": "1 to 2 capsules twice daily with warm milk",
         "contraindications": ["Acute active heavy bleeding (menorrhagia) during menstruation (pause during peak flow)"],
         "monitoring": ["Menstrual duration and pain visual analog score"],
         "citations": ["International Journal of Pharmaceutical Sciences and Research 2018; Saraca asoca uterine tonicity"]
@@ -791,7 +791,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-031",
         "name": "MenoPease™",
         "unani_name": "Safoof-e-Daf-e-Araz-e-Yas",
-        "formulation_type": "Safoof",
+        "formulation_type": "Micro-Granules (30 x 3g Daily Stick Sachets)",
         "regulatory_track": "AYUSH_PROPRIETARY",
         "is_prescription_required": False,
         "mrp_inr": 1750,
@@ -804,7 +804,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Badranjboya (Melissa officinalis)", "amount_mg": 200, "standardization": "Rosmarinic Acid 5%"},
             {"ingredient": "Praval Pishti (Purified Coral Calx)", "amount_mg": 150, "standardization": "Bioactive Calcium & Trace Minerals"}
         ],
-        "dosage": "3g twice daily with lukewarm water after breakfast and dinner",
+        "dosage": "1 stick sachet (3g) twice daily with lukewarm water after breakfast and dinner",
         "contraindications": [
             "Estrogen receptor-positive breast cancer history without oncologist clearance",
             "Severe active hepatic impairment"
@@ -816,7 +816,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
         "sku": "ZAY-032",
         "name": "FertiliWomen™",
         "unani_name": "Safoof-e-Mualijat-e-Uqr-e-Nisa",
-        "formulation_type": "Safoof / Granules",
+        "formulation_type": "Compressed Tablets (60 Tabs)",
         "regulatory_track": "FSSAI_NUTRACEUTICAL",
         "is_prescription_required": False,
         "mrp_inr": 3800,
@@ -830,7 +830,7 @@ MASTER_PRODUCTS: Dict[str, Dict[str, Any]] = {
             {"ingredient": "Coenzyme Q10", "amount_mg": 100, "standardization": "Pure Ubiquinone 99%"},
             {"ingredient": "L-Methylfolate (Active Folate)", "amount_mg": 0.5, "standardization": "Pure Active L-5-MTHF"}
         ],
-        "dosage": "5g twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
+        "dosage": "1 to 2 tablets twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
         "contraindications": [
             "Confirmed pregnancy (pause upon positive hCG, transition to maternal regimen)",
             "Bilateral complete fallopian tube occlusion (tubal factor requires surgical or IVF resolution)"
