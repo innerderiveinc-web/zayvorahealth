@@ -1021,7 +1021,7 @@
                 </div>
               </div>
               <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs text-slate-200">
-                <p id="audio-spoken-text">محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔</p>
+                <p id="audio-spoken-text">محترم مریض، السلام علیکم۔ یہ دوا (1 ساشے) صبح اور شام کھانا کھانے کے بعد، نیم گرم دودھ کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔</p>
               </div>
               <button onclick="toggleAudioPlayback(event)" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
                 <span>▶</span> Listen to Audio Posology
@@ -6244,7 +6244,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
                   <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--border)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
                       <strong class="text-white">ManiVital Pro (Vitality & Seminal Viscosity Formulation)</strong>
-                      <div class="text-[11px] text-[var(--muted)] mt-0.5">5g twice daily with lukewarm milk • Qty: 200g Granules</div>
+                      <div class="text-[11px] text-[var(--muted)] mt-0.5">1 stick sachet (10g) twice daily with lukewarm milk • Qty: 1 Box (30 Stick Sachets)</div>
                     </div>
                     <div class="text-right">
                       <span class="text-xs font-mono text-emerald-400 font-bold block">Batch: BMR-2026-MVP-09</span>
@@ -13200,18 +13200,18 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
               <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <div>
-                    <h3 class="font-bold text-white text-base">ManiVital Pro Granules (5g Twice Daily)</h3>
+                    <h3 class="font-bold text-white text-base">ManiVital Pro Granules (1 Stick Sachet Twice Daily)</h3>
                     <span class="text-xs text-slate-400">Patient: Hamza Farooqi (MRN-2026-0814)</span>
                   </div>
                   <div class="flex items-center gap-2 text-xs">
-                    <button onclick="document.getElementById('audio-posology-text').textContent='محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔'" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold">اردو (Urdu)</button>
-                    <button onclick="document.getElementById('audio-posology-text').textContent='नमस्ते। यह औषधि सुबह और शाम भोजन के बाद, आधा चम्मच गुनगुने दूध या ताज़े पानी के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।'" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-bold hover:text-white">हिंदी (Hindi)</button>
-                    <button onclick="document.getElementById('audio-posology-text').textContent='Hello. Please take half a teaspoon twice daily after meals with lukewarm milk or fresh water. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery.'" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-bold hover:text-white">EN</button>
+                    <button onclick="document.getElementById('audio-posology-text').textContent='محترم مریض، السلام علیکم۔ یہ دوا (1 ساشے) صبح اور شام کھانا کھانے کے بعد، نیم گرم دودھ کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔'" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold">اردو (Urdu)</button>
+                    <button onclick="document.getElementById('audio-posology-text').textContent='नमस्ते। यह औषधि (1 सैशे) सुबह और शाम भोजन के बाद, गुनगुने दूध के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।'" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-bold hover:text-white">हिंदी (Hindi)</button>
+                    <button onclick="document.getElementById('audio-posology-text').textContent='Hello. Please take 1 stick sachet dissolved in warm milk twice daily after meals. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery.'" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-bold hover:text-white">EN</button>
                   </div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm text-emerald-300 leading-relaxed font-medium" id="audio-posology-text">
-                  محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔
+                  محترم مریض، السلام علیکم۔ یہ دوا (1 ساشے) صبح اور شام کھانا کھانے کے بعد، نیم گرم دودھ کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔
                 </div>
 
                 <div class="flex items-center gap-3 pt-2">
@@ -13311,9 +13311,9 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
 
       // Default: 'simulator'
       const audioTexts = {
-        ur: "محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔",
-        hi: "नमस्ते। यह औषधि सुबह और शाम भोजन के बाद, आधा चम्मच गुनगुने दूध या ताज़े पानी के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।",
-        en: "Hello. Please take half a teaspoon twice daily after meals with lukewarm milk or fresh water. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery."
+        ur: "محترم مریض، السلام علیکم۔ یہ دوا (1 ساشے) صبح اور شام کھانا کھانے کے بعد، نیم گرم دودھ کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔",
+        hi: "नमस्ते। यह औषधि (1 सैशे) सुबह और शाम भोजन के बाद, गुनगुने दूध के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।",
+        en: "Hello. Please take 1 stick sachet dissolved in warm milk twice daily after meals. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery."
       };
 
       container.innerHTML = `
@@ -13372,7 +13372,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
                     </div>
                     <div class="bg-[#1E293B] p-3 rounded-xl border border-slate-700 space-y-2 text-xs">
                       <strong class="text-white block">ManiVital Pro Granules</strong>
-                      <p class="text-slate-300 text-[11px]">5g twice daily with lukewarm milk.</p>
+                      <p class="text-slate-300 text-[11px]">1 stick sachet (10g) twice daily with lukewarm milk.</p>
                       <button onclick="handleRequestMobileRefill(this)" class="w-full py-1.5 border border-emerald-500/50 text-emerald-400 rounded-lg text-[10px] font-bold">
                         Request Dispensary Refill
                       </button>
@@ -13870,9 +13870,9 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
     function setAudioLanguage(lang) {
       audioPosologyLang = lang;
       const audioTexts = {
-        ur: "محترم مریض، السلام علیکم۔ یہ دوا صبح اور شام کھانا کھانے کے بعد، آدھا چمچ نیم گرم دودھ یا تازہ پانی کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔",
-        hi: "नमस्ते। यह औषधि सुबह और शाम भोजन के बाद, आधा चम्मच गुनगुने दूध या ताज़े पानी के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।",
-        en: "Hello. Please take half a teaspoon twice daily after meals with lukewarm milk or fresh water. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery."
+        ur: "محترم مریض، السلام علیکم۔ یہ دوا (1 ساشے) صبح اور شام کھانا کھانے کے بعد، نیم گرم دودھ کے ساتھ نوش فرمائیں۔ کھٹی، تلی ہوئی اور ٹھنڈی چیزوں سے پرہیز رکھیں۔ اللہ تعالیٰ آپ کو صحت اور شفائے کاملہ عطا فرمائے۔",
+        hi: "नमस्ते। यह औषधि (1 सैशे) सुबह और शाम भोजन के बाद, गुनगुने दूध के साथ लें। खट्टी, तली हुई और ठंडी चीज़ों से परहेज़ रखें। ईश्वर आपको शीघ्र स्वास्थ्य लाभ दे।",
+        en: "Hello. Please take 1 stick sachet dissolved in warm milk twice daily after meals. Strictly avoid cold drinks, sour and fried foods. Wishing you a speedy recovery."
       };
       const el = document.getElementById('audio-spoken-text');
       if (el) el.textContent = audioTexts[lang] || audioTexts.en;
@@ -14218,7 +14218,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,850",
             "price_num": 1850,
-            "dose": "3g twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
+            "dose": "1 to 2 capsules twice daily with lukewarm water or Arq Gaozaban 30 mins after meals",
             "classicalCore": "Asrol, Ustukhuddus, Filfil Siyah, Kishneez Khushk",
             "actives": "Asrol (Reserpine 1.0%), Ustukhuddus (Linalool 3.5%), Filfil Siyah (Piperine 95%)",
             "is_hero_launch": false,
@@ -14235,7 +14235,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹1,450",
             "price_num": 1450,
-            "dose": "3g to 5g twice daily 20 minutes before breakfast and dinner with warm water",
+            "dose": "1 stick sachet (5g) twice daily dissolved in 100ml warm water 20 minutes before breakfast and dinner",
             "classicalCore": "Jamun Seeds, Karela, Methi, Gurmar",
             "actives": "Jamun Seeds (Jamboline & Tannins 15%), Karela (Charantin 2.5%), Methi (4-Hydroxyisoleucine 20%)",
             "is_hero_launch": true,
@@ -14252,7 +14252,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Majoon Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹2,200",
             "price_num": 2200,
-            "dose": "5g in the morning on empty stomach with milk or Arq Gulab",
+            "dose": "1 stick sachet (5g) in the morning on empty stomach with warm milk or Arq Gulab",
             "classicalCore": "Zafran, Marwareed, Yashab Sabz, Arjun Chhal",
             "actives": "Zafran (Crocin & Safranal 3.0%), Marwareed (Bioactive Coral Carbonate), Yashab Sabz (Purified Jade Calx)",
             "is_hero_launch": false,
@@ -14269,7 +14269,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,350",
             "price_num": 1350,
-            "dose": "3g twice daily 30 minutes after meals with warm water",
+            "dose": "1 to 2 capsules twice daily 30 minutes after meals with warm water or Arq Kasni",
             "classicalCore": "Kasni, Mako, Tukhm-e-Kasoos, Zarishk",
             "actives": "Kasni (Cichoric acid 2.0%), Mako (Solanine alkaloids <0.1%, Polyphenols 8%), Tukhm-e-Kasoos (Cuscutin 5%)",
             "is_hero_launch": true,
@@ -14286,7 +14286,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,250",
             "price_num": 1250,
-            "dose": "2g to 3g twice daily after heavy meals with warm water",
+            "dose": "1 to 2 capsules twice daily after heavy meals with warm water",
             "classicalCore": "Lasan, Guggulu, Amla, Zanjabil",
             "actives": "Lasan (Allicin 2.0%), Guggulu (Guggulsterones E & Z 2.5%), Amla (Tannins & Vitamin C 30%)",
             "is_hero_launch": false,
@@ -14303,7 +14303,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Effervescent Micro-Granules (30 Sachets)",
             "price": "₹950",
             "price_num": 950,
-            "dose": "5g to 10g licked slowly from a spoon twice daily, followed by warm water or fennel tea",
+            "dose": "1 sachet dissolved in 100ml warm water, sip slowly twice daily, followed by warm water or fennel tea",
             "classicalCore": "Asl-us-Soos, Sapistan, Unnab, Behidana",
             "actives": "Asl-us-Soos (Glycyrrhizin 10%), Sapistan (Polysaccharide mucilage 20%), Unnab (Jujubosides 3%)",
             "is_hero_launch": false,
@@ -14320,7 +14320,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹1,650",
             "price_num": 1650,
-            "dose": "3g twice daily with warm milk or lukewarm water after breakfast and dinner",
+            "dose": "1 stick sachet (5g) twice daily with warm milk or lukewarm water after breakfast and dinner",
             "classicalCore": "Suranjan Shirin, Asgandh, Zanjabil, Kundur",
             "actives": "Suranjan Shirin (Colchicine < 0.2%), Asgandh (Withanolides 5.0%), Zanjabil (Gingerols 5%)",
             "is_hero_launch": true,
@@ -14337,7 +14337,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,750",
             "price_num": 1750,
-            "dose": "5g twice daily in the morning and 1 hour before sleep with warm milk",
+            "dose": "1 to 2 capsules twice daily (in the morning and 1 hour before sleep) with warm milk",
             "classicalCore": "Brahmi, Shankhpushpi, Ustukhuddus, Gaozaban",
             "actives": "Brahmi (Bacosides A & B 20%), Shankhpushpi (Total Alkaloids 2.5%), Ustukhuddus (Linalool 3.5%)",
             "is_hero_launch": false,
@@ -14354,7 +14354,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Habb / Coated Micro-Tablets (60 Tabs)",
             "price": "₹3,400",
             "price_num": 3400,
-            "dose": "1 tablet at night with 250ml warm saffron milk 2 hours after meal. Maximum 3 tablets per week.",
+            "dose": "1 tablet at night with 250ml warm saffron milk 2 hours after meal (Maximum 3 tablets per week; Rx restricted)",
             "classicalCore": "Zafran, Jund Bedastar, Regmahi, Kuchla Mudabbar",
             "actives": "Zafran (Crocin 3%), Jund Bedastar (Purified Castorin Complex), Regmahi (Calcified Bio-Peptides)",
             "is_hero_launch": false,
@@ -14368,10 +14368,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "unani_name": "Majoon-e-Taqwiyat-e-Mani-Shadeed",
             "axis": "Andrological",
             "category": "AYUSH CLASSICAL",
-            "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
+            "form": "Majoon / Oral Paste (30 x 10g Sachets)",
             "price": "₹3,800",
             "price_num": 3800,
-            "dose": "10g in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
+            "dose": "1 sachet (10g) in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum",
             "classicalCore": "Salab Panja, Khulanjan, Behman Surkh, Behman Safed",
             "actives": "Salab Panja (Mucilaginous Glycoproteins 18%), Khulanjan (Galangin 3%), Behman Surkh (Salvianolic Acids 5%)",
             "is_hero_launch": false,
@@ -14385,10 +14385,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "unani_name": "Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal",
             "axis": "Andrological",
             "category": "FSSAI NUTRACEUTICAL",
-            "form": "Standardized Micro-Granules (30 Sachets)",
+            "form": "Standardized Micro-Granules (30 x 3g Sachets)",
             "price": "₹1,150",
             "price_num": 1150,
-            "dose": "3g or 2 capsules daily in the morning with water or milk",
+            "dose": "1 sachet (3g) daily in the morning with warm water or milk",
             "classicalCore": "Ashwagandha, Gokshura, Safed Musli, Shatavari",
             "actives": "Ashwagandha (Withanolides 5%), Gokshura (Protodioscin 40%), Safed Musli (Saponins 20%)",
             "is_hero_launch": false,
@@ -14402,10 +14402,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "unani_name": "Safoof-e-Taskeen-e-Dimagh",
             "axis": "Neuropsychiatric",
             "category": "FSSAI NUTRACEUTICAL",
-            "form": "Herbal Infusion / Decoction Elixir (200ml)",
+            "form": "Herbal Infusion / Decoction Elixir (200ml Bottle)",
             "price": "₹1,250",
             "price_num": 1250,
-            "dose": "3g in warm milk or chamomile water 45 minutes before bedtime",
+            "dose": "10ml to 15ml with warm milk or chamomile infusion 45 minutes before bedtime",
             "classicalCore": "Ashwagandha, Tagar, Jatamansi, Chamomile Extract",
             "actives": "Ashwagandha (Withanolides 5% (high withanolide-A)), Tagar (Valerenic Acids 0.8%), Jatamansi (Jatamansone 2%)",
             "is_hero_launch": false,
@@ -14422,7 +14422,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,850",
             "price_num": 1850,
-            "dose": "5g twice daily with warm milk",
+            "dose": "1 to 2 capsules twice daily with warm milk",
             "classicalCore": "Safed Musli, Kaunch Beej, Talmakhana, Tukhm-e-Utangan",
             "actives": "Safed Musli (Saponins 25%), Kaunch Beej (L-Dopa 10%), Talmakhana (Mucilaginous Sterols 5%)",
             "is_hero_launch": false,
@@ -14439,7 +14439,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹1,100",
             "price_num": 1100,
-            "dose": "3g daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
+            "dose": "1 stick sachet (5g) daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh",
             "classicalCore": "Amla, Bhringraj, Shikakai, Halela Siyah",
             "actives": "Amla (Tannins 30%, Vitamin C natural), Bhringraj (Wedelolactone 2%), Shikakai (Saponins 15%)",
             "is_hero_launch": false,
@@ -14456,7 +14456,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Targeted Micro-Granules (30 x 5g Daily Sachets)",
             "price": "₹1,350",
             "price_num": 1350,
-            "dose": "3g twice daily with a full glass of water, minimum 3 liters daily fluid intake",
+            "dose": "1 stick sachet (5g) twice daily dissolved in a full glass of water (maintain minimum 3 liters daily fluid intake)",
             "classicalCore": "Kulthi, Gokshura, Pashanbhed, Hajr-ul-Yahood Bhasma",
             "actives": "Kulthi (Phytic Acid & Flavonoids 5%), Gokshura (Saponins 40%), Pashanbhed (Bergenin 8%)",
             "is_hero_launch": false,
@@ -14473,7 +14473,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Calcified Tablets (60 Tabs)",
             "price": "₹1,150",
             "price_num": 1150,
-            "dose": "3g twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
+            "dose": "1 to 2 tablets twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals",
             "classicalCore": "Lodhra, Mochras, Ashok Chhal, Gond Dhak",
             "actives": "Lodhra (Total Alkaloids (Loturine) 1.5%), Mochras (Tannins & Mucilage 20%), Ashok Chhal (Catechin & Tannins 10%)",
             "is_hero_launch": false,
@@ -14490,7 +14490,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,450",
             "price_num": 1450,
-            "dose": "3g twice daily 30 minutes before major meals with warm water",
+            "dose": "1 to 2 capsules twice daily 30 minutes before major meals with warm water",
             "classicalCore": "Garcinia cambogia, Green Coffee Bean, Zeera Siyah, Ajwain",
             "actives": "Garcinia cambogia (Hydroxycitric Acid (HCA) 60%), Green Coffee Bean (Chlorogenic Acid (CGA) 50%), Zeera Siyah (Carvone 3%)",
             "is_hero_launch": false,
@@ -14507,7 +14507,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,550",
             "price_num": 1550,
-            "dose": "3g twice daily with warm ginger infusion or lukewarm water",
+            "dose": "1 to 2 capsules twice daily with warm ginger infusion or lukewarm water",
             "classicalCore": "Kanchnar Chhal, Guggulu, Triphala, Trikatu",
             "actives": "Kanchnar Chhal (Flavonoids 5%), Guggulu (Guggulsterones 2.5%), Triphala (Tannins 35%)",
             "is_hero_launch": false,
@@ -14524,7 +14524,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Compressed Tablets (60 Tabs)",
             "price": "₹1,150",
             "price_num": 1150,
-            "dose": "3g daily in the morning with milk or warm water",
+            "dose": "1 to 2 tablets daily in the morning with milk or warm water",
             "classicalCore": "Shatavari, Ashok Chhal, Lodhra, Giloy",
             "actives": "Shatavari (Shatavarins 10%), Ashok Chhal (Tannins 10%), Lodhra (Loturine 1.5%)",
             "is_hero_launch": false,
@@ -14541,7 +14541,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,250",
             "price_num": 1250,
-            "dose": "3g twice daily 15 minutes before lunch and dinner",
+            "dose": "1 to 2 capsules twice daily 15 minutes before lunch and dinner with water",
             "classicalCore": "Vijaysar, Gurmar, Methi, Jamun",
             "actives": "Vijaysar (Marsupsin & Pterosupin 5%), Gurmar (Gymnemic acids 25%), Methi (Galactomannan 30%)",
             "is_hero_launch": false,
@@ -14555,10 +14555,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "unani_name": "Safoof-e-Muqawwi-e-Tabiyat",
             "axis": "Immunological",
             "category": "FSSAI NUTRACEUTICAL",
-            "form": "Purified Herbal Granules (30 Sachets)",
+            "form": "Purified Herbal Granules (30 x 3g Sachets)",
             "price": "₹950",
             "price_num": 950,
-            "dose": "3g once or twice daily with warm water or green tea",
+            "dose": "1 sachet (3g) once or twice daily dissolved in warm water or green tea",
             "classicalCore": "Giloy, Tulsi, Kalmegh, Amla",
             "actives": "Giloy (Tinosporaside & Cordifolioside 3%), Tulsi (Ursolic acid 2.5%), Kalmegh (Andrographolide 10%)",
             "is_hero_launch": false,
@@ -14575,7 +14575,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,150",
             "price_num": 1150,
-            "dose": "5g twice daily 20 minutes after food with fresh buttermilk or water",
+            "dose": "1 to 2 capsules twice daily 20 minutes after food with fresh buttermilk or water",
             "classicalCore": "Bilva, Ispaghul Husk, Saunf, Pudina",
             "actives": "Bilva (Marmelosin & Tannins 10%), Ispaghul Husk (Soluble dietary fiber 85%), Saunf (Anethole 2%)",
             "is_hero_launch": false,
@@ -14592,7 +14592,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Coated Micro-Tablets (Alu-Alu Blister, 60 Tabs)",
             "price": "₹1,850",
             "price_num": 1850,
-            "dose": "1 tablet at bedtime with 250ml full-cream milk. Maximum 3 times weekly. Strictly requires registered AYUSH practitioner prescription.",
+            "dose": "1 tablet at bedtime with 250ml full-cream milk (Maximum 3 times weekly; strictly requires registered AYUSH practitioner prescription)",
             "classicalCore": "Zafran, Kuchla Mudabbar, Salab Panja, Shingraf Mudabbar",
             "actives": "Zafran (Crocin 3%), Kuchla Mudabbar (Strychnine 1.15%), Salab Panja (Mucilaginous Glycoproteins 18%)",
             "is_hero_launch": false,
@@ -14626,7 +14626,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹1,950",
             "price_num": 1950,
-            "dose": "5g twice daily with lukewarm milk 1 hour before sleep",
+            "dose": "1 stick sachet (5g) twice daily with lukewarm milk 1 hour before sleep",
             "classicalCore": "Tukhm-e-Kahu, Tukhm-e-Khashkhash, Gond Kikar, Mochras",
             "actives": "Tukhm-e-Kahu (Lactucopicrin 1.5%), Tukhm-e-Khashkhash (Total Lipids & Alkaloids), Gond Kikar (Arabinogalactan 35%)",
             "is_hero_launch": true,
@@ -14643,7 +14643,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,850",
             "price_num": 1850,
-            "dose": "3g or 2 capsules twice daily after meals with water",
+            "dose": "1 to 2 capsules twice daily after meals with water",
             "classicalCore": "Saw Palmetto Extract, Nettle Root, Gokshura, Varuna",
             "actives": "Saw Palmetto Extract (Fatty Acids 45%), Nettle Root (Beta-Sitosterol 0.8%), Gokshura (Saponins 40%)",
             "is_hero_launch": false,
@@ -14660,7 +14660,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Targeted HPMC Veg Capsules (60 Caps)",
             "price": "₹3,600",
             "price_num": 3600,
-            "dose": "5g in the morning on empty stomach with warm milk",
+            "dose": "1 to 2 capsules in the morning on empty stomach with warm milk",
             "classicalCore": "Salab Gatta, Khusyat-us-Salab, Zafran, Asgandh",
             "actives": "Salab Gatta (Bioactive Mucilage 20%), Khusyat-us-Salab (Standardized Peptide Fraction), Zafran (Crocin 3%)",
             "is_hero_launch": false,
@@ -14677,7 +14677,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 3g Daily Stick Sachets)",
             "price": "₹1,650",
             "price_num": 1650,
-            "dose": "3g twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
+            "dose": "1 stick sachet (3g) twice daily with rice water (Maa-ul-Arz) 30 minutes before meals",
             "classicalCore": "Lodhra, Ashok Chhal, Mochras, Kushta Baiza-e-Murgh",
             "actives": "Lodhra (Loturine 1.5%), Ashok Chhal (Tannins 10%), Mochras (Tannins & Mucilage 20%)",
             "is_hero_launch": false,
@@ -14694,7 +14694,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 5g Daily Stick Sachets)",
             "price": "₹2,400",
             "price_num": 2400,
-            "dose": "4g (1 sachet) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
+            "dose": "1 stick sachet (5g) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles",
             "classicalCore": "Myo-Inositol, D-Chiro-Inositol, Kanchnar Chhal, Methi",
             "actives": "Myo-Inositol (Pure USP Grade (40:1 ratio match)), D-Chiro-Inositol (Pure USP Grade (40:1 ratio match)), Kanchnar Chhal (Flavonoids 5%)",
             "is_hero_launch": true,
@@ -14711,7 +14711,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)",
             "price": "₹1,850",
             "price_num": 1850,
-            "dose": "5g in the morning with warm milk",
+            "dose": "1 to 2 capsules twice daily with warm milk",
             "classicalCore": "Ashok Chhal, Shatavari, Supari Mudabbar, Gond Katira",
             "actives": "Ashok Chhal (Catechins 10%), Shatavari (Shatavarins 10%), Supari Mudabbar (Arecoline detoxified <0.05%)",
             "is_hero_launch": false,
@@ -14728,7 +14728,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Micro-Granules (30 x 3g Daily Stick Sachets)",
             "price": "₹1,750",
             "price_num": 1750,
-            "dose": "3g twice daily with lukewarm water after breakfast and dinner",
+            "dose": "1 stick sachet (3g) twice daily with lukewarm water after breakfast and dinner",
             "classicalCore": "Shatavari, Black Cohosh, Shankhpushpi, Badranjboya",
             "actives": "Shatavari (Shatavarins 10%), Black Cohosh (Triterpene Glycosides 2.5%), Shankhpushpi (Total Alkaloids 2.5%)",
             "is_hero_launch": false,
@@ -14745,7 +14745,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             "form": "Compressed Tablets (60 Tabs)",
             "price": "₹3,800",
             "price_num": 3800,
-            "dose": "5g twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
+            "dose": "1 to 2 tablets twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days",
             "classicalCore": "Shatavari, Shivlingi, Putranjiva, Ashok Chhal",
             "actives": "Shatavari (Shatavarins 10%), Shivlingi (Bryonin 2%), Putranjiva (Total Glycosides 3%)",
             "is_hero_launch": false,
@@ -14760,9 +14760,18 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
       if (!rx.medicines) rx.medicines = [];
       rx.medicines.push(item);
       if (!rx.medications) rx.medications = [];
+
+      let renderedDose = item.dose || '';
+      if (!renderedDose) {
+        if (item.strength && item.frequency) {
+          renderedDose = `${item.strength} ${item.frequency} with ${item.anupan || 'warm water'}`;
+        } else {
+          renderedDose = `${item.strength || '1 Unit'} with ${item.anupan || 'warm water'}`;
+        }
+      }
       rx.medications.push({
         name: item.name,
-        dose: `${item.strength || item.dose || '5g'} ${item.frequency || 'Twice daily'} with ${item.anupan || 'warm water'}`,
+        dose: renderedDose,
         role: item.track === 'SELF_NUSKHA' ? 'Clinician Bespoke Compounding' : item.track === 'GMP_PRODUCT' ? 'ZAYVORA GMP Product' : 'Classical Qarabadeen Compound',
         note: item.notes || item.ingredients || 'Prescribed by clinician'
       });
@@ -14989,11 +14998,12 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             <button onclick='addPrescriptionMedicine(${JSON.stringify({
               name: p.name,
               form: p.form,
-              strength: p.dose.split(' ')[0] + ' ' + (p.dose.split(' ')[1] || ''),
-              frequency: p.dose,
-              anupan: p.dose.includes('milk') ? 'Warm full-fat milk' : 'Lukewarm water',
-              duration: '30 Days',
-              track: 'GMP_PRODUCT',
+              dose: p.dose,
+              strength: p.form.includes("Capsule") ? "1-2 Capsules" : p.form.includes("Tablet") ? "1-2 Tablets" : p.form.includes("Sachet") ? "1 Sachet" : "1 Unit",
+              frequency: p.dose.toLowerCase().includes("twice") ? "Twice daily" : "Daily",
+              anupan: p.dose.toLowerCase().includes("milk") ? "Warm milk" : p.dose.toLowerCase().includes("arq") ? "Prescribed Arqiat" : "Lukewarm water",
+              duration: "30 Days",
+              track: "GMP_PRODUCT",
               axis: p.axis,
               ingredients: p.actives,
               notes: `${p.code} • ${p.category} • BMR: ${p.bmr}`
