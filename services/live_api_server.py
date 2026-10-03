@@ -1954,6 +1954,18 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     self.wfile.write(f.read())
                 return
 
+        # 32 Master Products Clinical Formulary PDF
+        if path in ("/formulary", "/formulary.pdf", "/products.pdf", "/32-products.pdf", "/products-formulary.pdf"):
+            form_pdf = os.path.join(BASE_DIR, "docs", "ZAYVORA_32_Master_Products_Formulary.pdf")
+            if os.path.exists(form_pdf):
+                self.send_response(200)
+                self.send_header("Content-Type", "application/pdf")
+                self.send_header("Content-Disposition", 'inline; filename="ZAYVORA_32_Master_Products_Formulary.pdf"')
+                self.end_headers()
+                with open(form_pdf, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
         # Master Medical Treatise & Textbook (The ZAYVORA Doctrine)
         if path in ("/book", "/doctrine", "/textbook", "/book.html", "/doctrine.html"):
             book_html = os.path.join(BASE_DIR, "docs", "THE_ZAYVORA_DOCTRINE_MASTER_BOOK.html")

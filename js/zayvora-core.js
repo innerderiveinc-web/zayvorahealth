@@ -9865,9 +9865,14 @@ function generateInstantOpdToken() {
                   <h1 class="text-3xl font-extrabold text-white mt-1">ZAYVORA Herbals Portfolio</h1>
                   <p class="text-xs text-[var(--muted)] mt-1">AYUSH-GMP certified, HPLC active fingerprinted, Schedule E(1) Mudabbar detoxified.</p>
                 </div>
-                <button onclick="viewWebsitePage('contact')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow transition">
-                  Consult Tabeeb for Prescription
-                </button>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <a href="/formulary.pdf" target="_blank" download="ZAYVORA_32_Master_Products_Formulary.pdf" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700 shadow flex items-center gap-2 transition cursor-pointer">
+                    <span>📄</span> Download 32-Product Formulary (PDF)
+                  </a>
+                  <button onclick="viewWebsitePage('contact')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow transition">
+                    Consult Tabeeb for Prescription
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -13092,7 +13097,10 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
                 <h2 class="text-2xl font-bold text-white mt-1">32 Master Clinical Botanical Formulations</h2>
                 <p class="text-xs text-[var(--muted)] mt-1">GMP-certified, heavy-metal tested, standardized botanicals delivered with FEFO batch transparency.</p>
               </div>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
+                <a href="/formulary.pdf" target="_blank" download="ZAYVORA_32_Master_Products_Formulary.pdf" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700 shadow flex items-center gap-1.5 transition cursor-pointer">
+                  <span>📄</span> Formulary PDF
+                </a>
                 <span class="px-3 py-1.5 rounded-xl bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/40">
                   Cart (${herbalsCart.length} items — ₹${totalAmount.toLocaleString('en-IN')})
                 </span>
