@@ -13858,6 +13858,14 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
       window.scrollTo(0, scrollY);
     }
 
+    function resetMizajAssessment() {
+      window.previewMizajAnswers = { temp: 'cold', moisture: 'moist', physique: 'broad', digestion: 'sluggish', sleep: 'deep', disposition: 'calm' };
+      const scrollY = window.scrollY;
+      renderWebsiteApp(document.getElementById('workspace-container'));
+      window.scrollTo(0, scrollY);
+      showNotification('Mizaj assessment reset to default baseline.', 'info');
+    }
+
     function setWebsiteStage(idx) {
       activeWebsiteStage = idx;
       renderWebsiteApp(document.getElementById('workspace-container'));
@@ -14768,7 +14776,7 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
       rx.medications.push({
         name: item.name,
         dose: renderedDose,
-        role: item.track === 'SELF_NUSKHA' ? 'Clinician Bespoke Compounding' : item.track === 'GMP_PRODUCT' ? 'ZAYVORA GMP Product' : 'Classical Qarabadeen Compound',
+        role: item.track === 'SELF_NUSKHA' ? 'Clinician Bespoke Compounding' : (item.track === 'GMP_PRODUCT' || item.track === 'ZAYVORA_PRODUCT') ? 'ZAYVORA GMP Product' : 'Classical Qarabadeen Compound',
         note: item.notes || item.ingredients || 'Prescribed by clinician'
       });
       showNotification(`✓ Added "${item.name}" to Prescription RX-2026-0441.`, 'success');

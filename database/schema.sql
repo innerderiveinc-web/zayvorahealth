@@ -864,3 +864,14 @@ CREATE TABLE IF NOT EXISTS pv_signals (
 CREATE INDEX IF NOT EXISTS idx_pv_substance ON pv_signals(substance_name);
 
 
+
+-- Patient Consents (DPDP Act 2023 & Master Blueprint §11)
+CREATE TABLE IF NOT EXISTS patient_consents (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    purpose TEXT NOT NULL,
+    status TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    notes TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_patient_consents_pid ON patient_consents(patient_id);
