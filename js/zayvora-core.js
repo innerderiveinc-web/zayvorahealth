@@ -269,11 +269,17 @@
 
     function switchRole(newRole, bypassAuth = false) {
       const protectedRoles = ['doctor', 'pharmacy', 'clinic', 'nurse', 'admin', 'manufacturing', 'research', 'patient', 'enterprise', 'hardware', 'mobile'];
-      const wasSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
+      const isSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
 
-      // Seamlessly switch and activate authorized session for department desk
-      if (protectedRoles.includes(newRole) && !wasSuperAdmin && !bypassAuth && state.role !== newRole) {
-        bypassAuth = true;
+      // Security Gate: Protect all clinical & administrative consoles
+      if (protectedRoles.includes(newRole) && !isSuperAdmin && !bypassAuth) {
+        const hasSession = state.currentUser && (state.currentUser.role === newRole || (newRole === 'patient' && state.currentUser.role === 'patient'));
+        if (!hasSession) {
+          toggleLoginModal(true);
+          prefillLogin(newRole);
+          showNotification(`Please enter password and click 'Sign In' to access ${newRole.toUpperCase()} desk.`, 'info');
+          return;
+        }
       }
 
       if (newRole !== 'website' && newRole !== 'herbals') {
@@ -292,25 +298,15 @@
           mobile: { name: 'Mobile Bedside User', title: 'PWA Bedside User', email: 'mobile@zayvorahealth.com' }
         };
         const p = roleProfiles[newRole] || { name: 'Authorized User', title: newRole.toUpperCase(), email: `${newRole}@zayvorahealth.com` };
-        const secureToken = 'zyv.' + btoa(JSON.stringify({ uid: 'USR-' + newRole.toUpperCase(), email: p.email, name: p.name, role: newRole, exp: Math.floor(Date.now() / 1000) + 86400 })) + '.sig';
         
-        // If Super Admin is switching, preserve Super Admin status so switcher stays active!
-        if (wasSuperAdmin) {
-          state.currentUser = {
-            email: 'admin@zayvorahealth.com',
-            name: 'System Administrator (God Mode)',
-            title: `Super Admin Oversight • ${newRole.toUpperCase()} Desk`,
-            role: 'admin',
-            isSuperAdmin: true,
-            activeDesk: newRole,
-            token: state.currentUser.token || secureToken
-          };
-        } else if (bypassAuth && state.currentUser && state.currentUser.token && state.currentUser.role === newRole) {
-          // Already authenticated with a real token (e.g., just logged in via handleCredentialLogin).
-          // Do NOT overwrite — preserve the real JWT and user info from the login response.
-          // Just ensure role consistency.
+        // If Super Admin is switching between desks, preserve Super Admin status!
+        if (isSuperAdmin) {
+          state.currentUser.activeDesk = newRole;
+          state.currentUser.title = `Super Admin Oversight • ${newRole.toUpperCase()} Desk`;
+        } else if (state.currentUser && state.currentUser.token) {
           state.currentUser.role = newRole;
-        } else {
+        } else if (bypassAuth) {
+          const secureToken = 'zyv.' + btoa(JSON.stringify({ uid: 'USR-' + newRole.toUpperCase(), email: p.email, name: p.name, role: newRole, exp: Math.floor(Date.now() / 1000) + 86400 })) + '.sig';
           state.currentUser = { email: p.email, name: p.name, title: p.title, role: newRole, isSuperAdmin: (newRole === 'admin'), token: secureToken };
         }
       }
@@ -16520,17 +16516,31 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
 
     function prefillLogin(roleKey) {
       const roleProfiles = {
-        doctor: { name: 'Hakeem Dr. Irfan Ashraf', title: 'Senior Tabeeb & Lead Clinician (BUMS - AKTC AMU)', email: 'dr.irfan@zayvorahealth.com' },
-        clinic: { name: 'Reception & Patient Intake Desk', title: 'OPD Queue & Token In-Charge', email: 'reception@zayvorahealth.com' },
-        nurse: { name: 'Inpatient Nursing Station', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com' },
-        patient: { name: 'Hamza Farooqi', title: 'Patient (MRN-2026-0814)', email: 'hamza.farooqi@gmail.com' },
-        pharmacy: { name: 'Chief Pharmacist', title: 'Clinical Pharmacy & FEFO In-Charge', email: 'pharmacy@zayvorahealth.com' },
-        manufacturing: { name: 'Head of Botanical QA/QC', title: 'eBMR Batch Release Officer', email: 'manufacturing@zayvorahealth.com' },
-        admin: { name: 'Enterprise Super Administrator', title: 'Platform Security & Governance', email: 'admin@zayvorahealth.com' },
-        research: { name: 'Principal Clinical Investigator', title: 'RWE & Pharmacopoeia Editorial Board', email: 'research@zayvorahealth.com' }
+        doctor: { name: 'Hakeem Dr. Irfan Ashraf', title: 'Senior Tabeeb & Lead Clinician (BUMS - AKTC AMU)', email: 'dr.irfan@zayvorahealth.com', pass: 'doctor123' },
+        clinic: { name: 'Reception & Patient Intake Desk', title: 'OPD Queue & Token In-Charge', email: 'reception@zayvorahealth.com', pass: 'reception123' },
+        nurse: { name: 'Inpatient Nursing Station', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com', pass: 'nurse123' },
+        patient: { name: 'Hamza Farooqi', title: 'Patient (MRN-2026-0814)', email: 'hamza.farooqi@gmail.com', pass: 'password123' },
+        pharmacy: { name: 'Chief Pharmacist', title: 'Clinical Pharmacy & FEFO In-Charge', email: 'pharmacy@zayvorahealth.com', pass: 'pharmacy123' },
+        manufacturing: { name: 'Head of Botanical QA/QC', title: 'eBMR Batch Release Officer', email: 'admin@zayvorahealth.com', pass: 'admin123' },
+        admin: { name: 'Enterprise Super Administrator', title: 'Platform Security & Governance', email: 'admin@zayvorahealth.com', pass: 'admin123' },
+        research: { name: 'Principal Clinical Investigator', title: 'RWE & Pharmacopoeia Editorial Board', email: 'dr.irfan@zayvorahealth.com', pass: 'doctor123' },
+        enterprise: { name: 'Executive Chairman', title: 'Platform Security & Governance', email: 'admin@zayvorahealth.com', pass: 'admin123' }
       };
       const p = roleProfiles[roleKey] || roleProfiles.doctor;
-      executeQuickLogin(roleKey, p.email, p.name, p.title);
+      const emailInput = document.getElementById('login-input-email');
+      const passInput = document.getElementById('login-input-password');
+      if (emailInput) emailInput.value = p.email;
+      if (passInput) passInput.value = p.pass;
+
+      const errBox = document.getElementById('login-modal-error');
+      if (errBox) {
+        errBox.textContent = ;
+        errBox.className = 'p-3 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-xs font-mono block';
+        errBox.classList.remove('hidden');
+      }
+
+      showNotification(, 'info');
+      if (passInput) passInput.focus();
     }
 
     async function executeQuickLogin(roleKey, email, name, title) {
@@ -17411,13 +17421,13 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       let sessionDesk = null;
       try { sessionDesk = sessionStorage.getItem('zayvora_session_desk'); } catch(e) {}
 
-      if (rawHash && validInternalRoles.includes(rawHash)) {
+      if (state.currentUser && rawHash && validInternalRoles.includes(rawHash)) {
         state.role = rawHash;
         try { sessionStorage.setItem('zayvora_session_desk', rawHash); } catch(e) {}
-      } else if (sessionDesk && validInternalRoles.includes(sessionDesk) && (!rawHash || rawHash === sessionDesk)) {
+      } else if (state.currentUser && sessionDesk && validInternalRoles.includes(sessionDesk) && (!rawHash || rawHash === sessionDesk)) {
         state.role = sessionDesk;
       } else {
-        // ALWAYS default to public website homepage on root reload
+        // ALWAYS default to public website homepage on root reload for unauthenticated visitors
         state.role = 'website';
         state.tab = 'home';
         try { sessionStorage.setItem('zayvora_session_desk', 'website'); } catch(e) {}
