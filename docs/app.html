@@ -1737,6 +1737,16 @@
       </div>
 
       <!-- Live Video Viewfinder Container -->
+      <!-- Mode Selector: Document OCR vs Tongue/Face AI -->
+      <div class="flex items-center gap-2 pb-1 text-xs">
+        <button id="btn-mode-ocr" onclick="setScannerMode('ocr')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold transition flex items-center gap-1.5 shadow-sm">
+          <span>📄</span> Document &amp; Lab OCR
+        </button>
+        <button id="btn-mode-lisan" onclick="setScannerMode('lisan')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white font-bold transition flex items-center gap-1.5">
+          <span>👅</span> Tongue (Lisan) &amp; Face AI Scanner
+        </button>
+      </div>
+
       <div class="relative rounded-2xl overflow-hidden bg-black border border-slate-700 shadow-inner flex items-center justify-center min-h-[260px]">
         <video id="camera-scanner-video" class="w-full h-64 sm:h-72 object-cover bg-black" autoplay playsinline muted></video>
         <canvas id="camera-scanner-canvas" class="hidden"></canvas>
@@ -1744,7 +1754,7 @@
         <!-- Laser Reticle Scanning Overlay -->
         <div class="absolute inset-0 pointer-events-none border-2 border-dashed border-emerald-400/60 rounded-xl m-4 flex flex-col justify-between p-3">
           <div class="flex justify-between text-[9px] font-mono text-emerald-400/80">
-            <span>[+] TOP_LEFT</span>
+            <span id="camera-reticle-mode-label">[+] LAB OCR / LISAN RETICLE</span>
             <span>TOP_RIGHT [+]</span>
           </div>
           <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_8px_#34d399] animate-pulse"></div>
