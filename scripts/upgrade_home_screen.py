@@ -565,8 +565,8 @@ def upgrade_file(filepath):
         print(f"Could not find marker in {filepath}")
         return False
 
-    marker_end = "      if (typeof renderDiscoveryWizard === 'function') renderDiscoveryWizard();
-      if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();\n    }"
+    marker_end = """      if (typeof renderDiscoveryWizard === 'function') renderDiscoveryWizard();
+      if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();\n    }"""
     idx_end = content.find(marker_end, idx_start)
     if idx_end == -1:
         print(f"Could not find end marker in {filepath}")
