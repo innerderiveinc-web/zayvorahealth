@@ -3038,5 +3038,73 @@
     </div>
   </div>
 
+<!-- ===================================================================== -->
+  <!-- MODAL: SMART VOICE & TEXT PRESCRIPTION PARSER (FAST MATAB AI)         -->
+  <!-- ===================================================================== -->
+  <div id="voice-prescription-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-lg">🎤</span>
+          <div>
+            <h3 class="text-base font-bold text-white">Smart Voice &amp; Natural Dictation (Fast Matab AI)</h3>
+            <p class="text-xs text-slate-400">Dictate or paste prescription in natural Urdu, Hindi, or English</p>
+          </div>
+        </div>
+        <button onclick="toggleVoicePrescriptionModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <!-- Live Voice Speech Toggle -->
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span id="voice-mic-indicator" class="w-3 h-3 rounded-full bg-slate-600"></span>
+            <span id="voice-status-label" class="text-slate-300 font-medium">Microphone ready. Tap to speak or paste below.</span>
+          </div>
+          <button id="btn-toggle-speech" onclick="toggleSpeechRecognition()" class="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow transition flex items-center gap-1.5">
+            <span>🎙️</span> Start Dictation
+          </button>
+        </div>
+
+        <!-- Dictation Text Area -->
+        <div class="space-y-1.5">
+          <label class="block text-slate-300 font-bold">Spoken / Pasted Clinical Prescription:</label>
+          <textarea id="voice-dictation-input" rows="4" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs leading-relaxed focus:outline-none focus:border-emerald-500 font-sans" placeholder="Example: 1 capsule TensioCalm subah shaam khane ke baad neem garm pani se, aur 1 sachet Glucovora khane se pehle, aur 5g Itrifal Kishneezi raat mein doodh ke sath..."></textarea>
+        </div>
+
+        <!-- Quick Dictation Presets -->
+        <div class="space-y-1">
+          <span class="text-[10px] text-slate-400 font-bold uppercase">Quick Clinical Dictation Templates:</span>
+          <div class="flex flex-wrap gap-2 text-[11px]">
+            <button onclick="applyVoicePreset('TensioCalm 1 capsule twice daily with Arq Gaozaban, Itrifal Kishneezi 5g at bedtime')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+              Cardio-Cephalic Protocol
+            </button>
+            <button onclick="applyVoicePreset('Glucovora 1 sachet twice daily 20 mins before meals with warm water, Hab-e-Khabsul Hadeed 2 tabs after breakfast')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+              Metabolic Diabetes Care
+            </button>
+            <button onclick="applyVoicePreset('SynovoFlex 1 sachet twice daily with warm milk, Roghan Suranjan topical twice daily')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">
+              Arthritis Joint Protocol
+            </button>
+          </div>
+        </div>
+
+        <!-- Parsed Results Preview Container -->
+        <div id="voice-parsed-preview" class="hidden p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Detected Prescription Items:</span>
+          <div id="voice-parsed-items-list" class="space-y-1 text-xs text-white"></div>
+        </div>
+      </div>
+
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center text-xs">
+        <button onclick="toggleVoicePrescriptionModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-400 hover:text-white">
+          Cancel
+        </button>
+        <button onclick="parseAndApplyVoicePrescription()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+          <span>✓</span> Parse &amp; Add to Prescription Slip
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
