@@ -70,6 +70,29 @@ def init_db():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, ("USR-PHARM-REQ", "pharmacy@zayvorahealth", pharm_hash, pharm_salt, "Chief Pharmacist", "+91 98110 88123", "PHARMACIST", "FAC-HQ-01"))
 
+    nurse_hash, nurse_salt = hash_password("nurse123")
+    cursor.execute("""
+    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, ("USR-NURSE-REQ", "nurse@zayvorahealth", nurse_hash, nurse_salt, "Sister Farzana Khan (Inpatient Ward 2A)", "+91 98110 77201", "NURSE", "FAC-HQ-01"))
+
+    cursor.execute("""
+    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, ("USR-NURSE-01", "nurse@zayvorahealth.com", nurse_hash, nurse_salt, "Inpatient Nursing Station", "+91 98110 77202", "NURSE", "FAC-HQ-01"))
+
+    mfg_hash, mfg_salt = hash_password("admin123")
+    cursor.execute("""
+    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, ("USR-MFG-REQ", "manufacturing@zayvorahealth.com", mfg_hash, mfg_salt, "Head of Botanical QA/QC", "+91 98110 88201", "MANUFACTURING", "FAC-HQ-01"))
+
+    res_hash, res_salt = hash_password("doctor123")
+    cursor.execute("""
+    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, ("USR-RES-REQ", "research@zayvorahealth.com", res_hash, res_salt, "Principal Clinical Investigator", "+91 98110 99201", "RESEARCH", "FAC-HQ-01"))
+
     # Test compatibility aliases
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)

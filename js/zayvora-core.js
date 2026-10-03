@@ -16664,8 +16664,15 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
           'admin@zayvorahealth': { pass: 'admin123', name: 'System Admin', role: 'admin', title: 'Enterprise Security Admin' },
           'hamza.farooqi@gmail.com': { pass: 'password123', name: 'Hamza Farooqi', role: 'patient', title: 'Patient MRN-2026-0814' },
           'pharmacy@zayvorahealth.com': { pass: 'pharmacy123', name: 'Zainab Ali', role: 'pharmacy', title: 'Clinical Pharmacist (FEFO)' },
-          'nurse@zayvorahealth.com': { pass: 'nurse123', name: 'Inpatient Nursing Station', role: 'nurse', title: 'Ward 2A Triage In-Charge' },
-          'reception@zayvorahealth.com': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator' }
+          'pharmacy@zayvorahealth': { pass: 'pharmacy123', name: 'Zainab Ali', role: 'pharmacy', title: 'Clinical Pharmacist (FEFO)' },
+          'nurse@zayvorahealth.com': { pass: 'nurse123', name: 'Sister Farzana Khan', role: 'nurse', title: 'Ward 2A Triage In-Charge' },
+          'nurse@zayvorahealth': { pass: 'nurse123', name: 'Sister Farzana Khan', role: 'nurse', title: 'Ward 2A Triage In-Charge' },
+          'reception@zayvorahealth.com': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator' },
+          'reception@zayvorahealth': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator' },
+          'manufacturing@zayvorahealth.com': { pass: 'admin123', name: 'Head of Botanical QA/QC', role: 'manufacturing', title: 'eBMR Batch Release Officer' },
+          'manufacturing@zayvorahealth': { pass: 'admin123', name: 'Head of Botanical QA/QC', role: 'manufacturing', title: 'eBMR Batch Release Officer' },
+          'research@zayvorahealth.com': { pass: 'doctor123', name: 'Principal Clinical Investigator', role: 'research', title: 'RWE & Pharmacopoeia Editorial Board' },
+          'research@zayvorahealth': { pass: 'doctor123', name: 'Principal Clinical Investigator', role: 'research', title: 'RWE & Pharmacopoeia Editorial Board' }
         };
         const matched = offlineCreds[email.toLowerCase()];
         if (matched && (matched.pass === pass || pass === 'Zayvora@123')) {

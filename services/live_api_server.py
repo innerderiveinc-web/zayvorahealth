@@ -8925,7 +8925,37 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         self._send_error(f"Cannot DELETE to {path}", status=404, code="ROUTE_NOT_FOUND")
 
 
+def ensure_essential_accounts():
+    """Guarantee all standard department desk accounts exist in DB at boot."""
+    try:
+        with get_db() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT LOWER(email) FROM users")
+            existing = set(r[0] for r in cur.fetchall())
+
+            essential_users = [
+                ("USR-NURSE-REQ", "nurse@zayvorahealth.com", "nurse123", "Inpatient Nursing Station", "+91 98110 77201", "NURSE", "FAC-HQ-01"),
+                ("USR-NURSE-SHORT", "nurse@zayvorahealth", "nurse123", "Inpatient Nursing Station", "+91 98110 77202", "NURSE", "FAC-HQ-01"),
+                ("USR-MFG-REQ", "manufacturing@zayvorahealth.com", "admin123", "Head of Botanical QA/QC", "+91 98110 88201", "MANUFACTURING", "FAC-HQ-01"),
+                ("USR-MFG-SHORT", "manufacturing@zayvorahealth", "admin123", "Head of Botanical QA/QC", "+91 98110 88202", "MANUFACTURING", "FAC-HQ-01"),
+                ("USR-RES-REQ", "research@zayvorahealth.com", "doctor123", "Principal Clinical Investigator", "+91 98110 99201", "RESEARCH", "FAC-HQ-01"),
+                ("USR-RES-SHORT", "research@zayvorahealth", "doctor123", "Principal Clinical Investigator", "+91 98110 99202", "RESEARCH", "FAC-HQ-01"),
+            ]
+
+            for uid, email, pwd, name, phone, role, fac in essential_users:
+                if email.lower() not in existing:
+                    h, salt = hash_password(pwd)
+                    cur.execute("""
+                        INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (uid, email, h, salt, name, phone, role, fac))
+            conn.commit()
+    except Exception as e:
+        print(f"[WARN] ensure_essential_accounts check: {e}")
+
+
 def run_server(port=8000):
+    ensure_essential_accounts()
     server_address = ("0.0.0.0", port)
     httpd = ThreadedHTTPServer(server_address, ZayvoraApiHandler)
     print(f"============================================================")

@@ -3,7 +3,7 @@
  * High-Reliability PWA Caching Strategy for Bedside & Mobile Clinics.
  */
 
-const CACHE_NAME = 'zayvora-health-os-v13.5-live';
+const CACHE_NAME = 'zayvora-health-os-v13.6-live';
 const OFFLINE_URL = './index.html';
 
 const STATIC_PRECACHE_ASSETS = [
