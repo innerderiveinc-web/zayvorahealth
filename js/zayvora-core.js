@@ -16534,12 +16534,12 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
 
       const errBox = document.getElementById('login-modal-error');
       if (errBox) {
-        errBox.textContent = ;
+        errBox.textContent = "Credentials loaded for " + p.name + ". Click 'Sign In to Healthcare OS' or press Enter to authenticate.";
         errBox.className = 'p-3 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-200 text-xs font-mono block';
         errBox.classList.remove('hidden');
       }
 
-      showNotification(, 'info');
+      showNotification("Credentials for " + p.name + " loaded. Please click 'Sign In' to authenticate.", 'info');
       if (passInput) passInput.focus();
     }
 
