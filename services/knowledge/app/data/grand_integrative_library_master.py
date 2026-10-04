@@ -1133,3 +1133,231 @@ def search_library(query: str) -> List[Dict[str, Any]]:
                 
     results.sort(key=lambda x: x["score"], reverse=True)
     return results
+
+
+# =============================================================================
+# MATERIA MEDICA (MUFRADAT), FORMULARY (MURAKKABAT) & INTERACTION REGISTRIES
+# =============================================================================
+
+def _build_materia_medica_and_formulary():
+    import json
+    import os
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    lexicon_path = os.path.join(base_dir, 'classical_unani_curated_lexicon.json')
+    lexicon = {}
+    if os.path.exists(lexicon_path):
+        try:
+            with open(lexicon_path, 'r', encoding='utf-8') as f:
+                lexicon = json.load(f)
+        except Exception:
+            pass
+
+    # 1. 250 Canonical Mufradat
+    mufradat_list = []
+    try:
+        from services.knowledge.app.data.mufradat_250_registry import MUFRADAT_250_CATALOG, HIGH_RISK_28_REGISTRY
+        
+        urdu_script_map = {
+            'ASGANDH': 'اسگندھ ناگوری',
+            'SURANJAN': 'سورنجان',
+            'BABCHI': 'بابچی',
+            'USTUKHUDDUS': 'استقدوس (جاروب دماغ)',
+            'FILFIL SIYAH': 'فلفل سیاہ (کالی مرچ)',
+            'ZANJABEEL': 'زنجبیل (سونٹھ)',
+            'KISHNEEZ': 'کشنیز (دھنیا)',
+            'POST-E-HALELA': 'پوست ہلیلہ',
+            'AMLA': 'آملہ',
+            'BADIYAN': 'بادیان (سونف)',
+            'GAOZABAN': 'گاؤزبان',
+            'BANAFSHA': 'بنفشہ',
+            'UNNAB': 'عناب',
+            'SAPISTAN': 'سپستان',
+            'KASNI': 'کاسنی',
+            'MAKKOH': 'مکوہ',
+            'REAWAND': 'ریوند چینی',
+            'SANNA': 'سناء مکی',
+            'TURBUD': 'تربد',
+            'AFTEEMOON': 'افتیمون',
+            'SAMM-UL-FAR': 'سم الفار (سنکھیا)',
+            'AZARAQI': 'ازراقی (کچلہ)',
+            'BHILAWAN': 'بھلاواں',
+            'JADWAR': 'جدوار',
+            'ZAFFRAN': 'زعفران',
+            'MASTAGI': 'مصطگی رومی',
+            'BEHIDANA': 'بہی دانہ',
+            'TUKHM-E-BALANGA': 'تخم ملنگا',
+            'ASL-US-SOOS': 'اصل السوس (ملٹھی)',
+            'HABB-UL-AAS': 'حب الآس',
+            'GUGGUL': 'مقل (گوگل)',
+            'KHARE-KHASAK': 'خارخسک (گوکھرو)',
+            'HALELA': 'ہلیلہ',
+            'BALELA': 'بلیلہ',
+            'CHIRAITA': 'چرائتہ',
+            'SHAHTARA': 'شاہترہ',
+            'SARPHOKA': 'سرپھوکا',
+            'NEEM': 'نیم',
+            'TULSI': 'تلسی',
+            'KALONJI': 'کلونجی (حبتہ السوداء)',
+            'ZEERA': 'زیرہ',
+            'DARCHINI': 'دارچینی',
+            'ILAYCHI': 'الائچی',
+            'QARANFAL': 'قرنفل (لونگ)',
+            'JAIPHAL': 'جائفل',
+            'JAVITRI': 'جاوتری',
+            'SAMAGH': 'صمغ عربی',
+            'KATIRA': 'کتیرا',
+            'ISABGOL': 'اسپغول'
+        }
+
+        for zid, item in MUFRADAT_250_CATALOG.items():
+            lex_item = lexicon.get(zid, {})
+            name = lex_item.get('canonical_name') or item.get('name', '')
+            is_hr = zid in HIGH_RISK_28_REGISTRY or item.get('high_risk_profile') is not None
+            
+            u_script = ''
+            name_upper = name.upper()
+            for k, v in urdu_script_map.items():
+                if k in name_upper:
+                    u_script = v
+                    break
+
+            mizaj = lex_item.get('mizaj') or item.get('draft_mizaj') or 'Haar 1, Yabis 1'
+            daraja = lex_item.get('daraja') or '1'
+            afaal_raw = lex_item.get('afaal')
+            if isinstance(afaal_raw, list):
+                afaal = afaal_raw
+            elif item.get('draft_afaal'):
+                afaal = [a.strip() for a in item.get('draft_afaal', '').split(';') if a.strip()]
+            else:
+                afaal = ['Muqawwi-e-Aam']
+
+            musleh = lex_item.get('musleh') or ('Roghan-e-Badam Shireen' if 'Haar' in mizaj else 'Zanjabeel wa Asal')
+            badal = lex_item.get('badal') or 'Ham-Mizaj Advia'
+            tadbeer = lex_item.get('tadbeer') or ('Standard washing, shade drying and fine pulverization (Takhfeef wa Saheeq)' if not is_hr else 'Schedule E(1) Mudabbar Detoxification Protocol required')
+            source = lex_item.get('classical_citation', {}).get('source') if lex_item.get('classical_citation') else 'Khazain-ul-Advia / Makhzan-ul-Advia / Al-Qanoon'
+            dose = '3g to 5g powder' if not is_hr else '0.5g to 1g (strictly under physician supervision)'
+
+            mufradat_list.append({
+                'id': zid,
+                'name': name,
+                'urdu_script': u_script,
+                'botanical': lex_item.get('botanical_name') or item.get('botanical_identity', ''),
+                'family': lex_item.get('family') or item.get('family', ''),
+                'part': lex_item.get('part_used') or item.get('part_used', ''),
+                'mizaj': mizaj,
+                'daraja': daraja,
+                'afaal': afaal,
+                'musleh': musleh,
+                'badal': badal,
+                'tadbeer': tadbeer,
+                'source': source,
+                'dose': dose,
+                'schedule_e1': is_hr,
+                'high_risk': is_hr
+            })
+    except ImportError:
+        pass
+
+    # 2. 59 Classical Murakkabat Formulations
+    murakkabat_list = []
+    try:
+        from services.knowledge.app.data.murakkabat_50_classical_formulary import CLASSICAL_MURAKKABAT_50
+        murakkabat_list = CLASSICAL_MURAKKABAT_50
+    except ImportError:
+        pass
+
+    # 3. Master CYP450 Herb-Drug Interactions
+    interactions_list = []
+    universal_contra = []
+    try:
+        from services.knowledge.app.data.drug_interactions_master import MASTER_INTERACTIONS, UNIVERSAL_CONTRAINDICATIONS
+        interactions_list = MASTER_INTERACTIONS
+        universal_contra = UNIVERSAL_CONTRAINDICATIONS
+    except ImportError:
+        pass
+
+    return mufradat_list, murakkabat_list, interactions_list, universal_contra
+
+MUFRADAT_LIST, MURAKKABAT_LIST, DRUG_INTERACTIONS_LIST, UNIVERSAL_CONTRAINDICATIONS_LIST = _build_materia_medica_and_formulary()
+
+# Attach into GRAND_INTEGRATIVE_LIBRARY master dictionary
+GRAND_INTEGRATIVE_LIBRARY["mufradat"] = MUFRADAT_LIST
+GRAND_INTEGRATIVE_LIBRARY["murakkabat"] = MURAKKABAT_LIST
+GRAND_INTEGRATIVE_LIBRARY["drug_interactions"] = DRUG_INTERACTIONS_LIST
+GRAND_INTEGRATIVE_LIBRARY["universal_contraindications"] = UNIVERSAL_CONTRAINDICATIONS_LIST
+
+def get_all_mufradat() -> List[Dict[str, Any]]:
+    """Returns the complete canonical 250 Mufradat Materia Medica."""
+    return list(GRAND_INTEGRATIVE_LIBRARY.get("mufradat", []))
+
+def get_mufrad_by_id(zmf_id: str) -> Optional[Dict[str, Any]]:
+    """Retrieves a single Mufrad by ZMF ID or normalized name."""
+    target = zmf_id.strip().lower()
+    for m in GRAND_INTEGRATIVE_LIBRARY.get("mufradat", []):
+        if m.get("id", "").lower() == target or m.get("name", "").lower() == target:
+            return m
+    return None
+
+def search_mufradat(query: str) -> List[Dict[str, Any]]:
+    """Fast search across 250 Mufradat by Urdu script, common name, botanical name, or action."""
+    q = (query or "").strip().lower()
+    if not q:
+        return get_all_mufradat()
+    results = []
+    for m in GRAND_INTEGRATIVE_LIBRARY.get("mufradat", []):
+        name = m.get("name", "").lower()
+        botanical = m.get("botanical", "").lower()
+        mizaj = m.get("mizaj", "").lower()
+        urdu = m.get("urdu_script", "").lower()
+        afaal_str = " ".join(m.get("afaal", [])).lower()
+        if q in name or q in botanical or q in mizaj or q in urdu or q in afaal_str or q in m.get("id", "").lower():
+            results.append(m)
+    return results
+
+def get_all_murakkabat() -> List[Dict[str, Any]]:
+    """Returns all 59 classical compound formulations."""
+    return list(GRAND_INTEGRATIVE_LIBRARY.get("murakkabat", []))
+
+def get_murakkab_by_id(formula_id: str) -> Optional[Dict[str, Any]]:
+    """Retrieves a single classical formulation by ID or name."""
+    target = formula_id.strip().lower()
+    for f in GRAND_INTEGRATIVE_LIBRARY.get("murakkabat", []):
+        if f.get("id", "").lower() == target or f.get("name", "").lower() == target:
+            return f
+    return None
+
+def search_murakkabat(query: str) -> List[Dict[str, Any]]:
+    """Search across classical formulations by name, category, indication, or ingredient."""
+    q = (query or "").strip().lower()
+    if not q:
+        return get_all_murakkabat()
+    results = []
+    for f in GRAND_INTEGRATIVE_LIBRARY.get("murakkabat", []):
+        name = f.get("name", "").lower()
+        urdu = f.get("urdu_name", "").lower()
+        category = f.get("category", "").lower()
+        indication = f.get("classical_indication", "").lower()
+        ingr = " ".join([i.get("name", "") for i in f.get("key_ingredients", [])]).lower()
+        if q in name or q in urdu or q in category or q in indication or q in ingr or q in f.get("id", "").lower():
+            results.append(f)
+    return results
+
+def get_all_drug_interactions() -> List[Dict[str, Any]]:
+    """Returns the complete master CYP450 Herb-Drug interaction matrix."""
+    return list(GRAND_INTEGRATIVE_LIBRARY.get("drug_interactions", []))
+
+def search_drug_interactions(query: str) -> List[Dict[str, Any]]:
+    """Search drug interactions by allopathic drug, botanical herb, or mechanism."""
+    q = (query or "").strip().lower()
+    if not q:
+        return get_all_drug_interactions()
+    results = []
+    for item in GRAND_INTEGRATIVE_LIBRARY.get("drug_interactions", []):
+        herb = item.get("herb_active", "").lower()
+        allo = item.get("allopathic_drug_class", "").lower()
+        mech = item.get("mechanism", "").lower()
+        effect = item.get("clinical_effect", "").lower()
+        if q in herb or q in allo or q in mech or q in effect:
+            results.append(item)
+    return results

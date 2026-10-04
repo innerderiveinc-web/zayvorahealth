@@ -24,6 +24,14 @@ from services.knowledge.app.data.grand_integrative_library_master import (
     get_chapter_by_id,
     get_chapter_treatise,
     search_library,
+    get_all_mufradat,
+    get_mufrad_by_id,
+    search_mufradat,
+    get_all_murakkabat,
+    get_murakkab_by_id,
+    search_murakkabat,
+    get_all_drug_interactions,
+    search_drug_interactions,
 )
 
 
@@ -232,6 +240,62 @@ class TestGrandIntegrativeLibrary(unittest.TestCase):
         self.assertIsNotNone(tr_12)
         self.assertIn("CYP450", tr_12["chapter_title_en"])
         self.assertIn("Warfarin", tr_12["molecular_and_cellular_pathophysiology"])
+
+    def test_15_mufradat_materia_medica_completeness(self):
+        """Verifies 250 canonical Mufradat monographs with Mizaj, Afaal, Musleh, Badal, and Tadbeer."""
+        mufradat = get_all_mufradat()
+        self.assertEqual(len(mufradat), 250, "Must have exactly 250 canonical Mufradat monographs")
+
+        # Test lookup by ID
+        asgandh = get_mufrad_by_id("ZMF-001")
+        self.assertIsNotNone(asgandh)
+        self.assertEqual(asgandh["name"], "ASGANDH")
+        self.assertIn("Withania", asgandh["botanical"])
+        self.assertTrue(asgandh["musleh"])
+        self.assertTrue(asgandh["badal"])
+        self.assertTrue(asgandh["tadbeer"])
+
+        # Test high-risk / schedule E-1
+        suranjan = get_mufrad_by_id("ZMF-002")
+        self.assertIsNotNone(suranjan)
+        self.assertTrue(suranjan["schedule_e1"])
+        self.assertTrue(suranjan["high_risk"])
+
+        # Test search
+        res = search_mufradat("Asgandh")
+        self.assertGreaterEqual(len(res), 1)
+        self.assertEqual(res[0]["id"], "ZMF-001")
+
+    def test_16_murakkabat_classical_formulary_completeness(self):
+        """Verifies classical compound formulations with authentic recipe ingredients and indications."""
+        murakkabat = get_all_murakkabat()
+        self.assertGreaterEqual(len(murakkabat), 50, "Must have at least 50 classical compound recipes")
+
+        itrifal = get_murakkab_by_id("nfum-itrifal-kishneezi")
+        self.assertIsNotNone(itrifal)
+        self.assertEqual(itrifal["name"], "Itrifal Kishneezi")
+        self.assertIn("Bayaz-e-Kabir", itrifal["classical_source"])
+        self.assertGreater(len(itrifal["key_ingredients"]), 3)
+
+        res = search_murakkabat("Kishneezi")
+        self.assertGreaterEqual(len(res), 1)
+
+    def test_17_cyp450_drug_herb_interactions_completeness(self):
+        """Verifies master CYP450 drug-herb interaction registry."""
+        interactions = get_all_drug_interactions()
+        self.assertGreaterEqual(len(interactions), 10, "Must have at least 10 master interaction alerts")
+
+        res = search_drug_interactions("Warfarin")
+        self.assertGreaterEqual(len(res), 1)
+        self.assertEqual(res[0]["severity"], "CRITICAL")
+
+    def test_18_multilingual_search(self):
+        """Verifies searching across Urdu script, English, and botanical terms."""
+        res_urdu = search_mufradat("اسگندھ")
+        self.assertGreaterEqual(len(res_urdu), 1)
+
+        res_botanical = search_mufradat("Withania")
+        self.assertGreaterEqual(len(res_botanical), 1)
 
 
 if __name__ == "__main__":

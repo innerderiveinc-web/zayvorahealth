@@ -2240,15 +2240,19 @@
         <button onclick="closeGrandLibraryModal()" class="text-[var(--muted)] hover:text-white p-2 text-lg">✕</button>
       </div>
 
-      <!-- DUAL-LAYER TAB SWITCHER -->
-      <div class="flex items-center gap-2 border-b border-[var(--border)] pb-2 flex-shrink-0">
-        <button id="modal-tab-protocol" onclick="switchModalLayer('protocol')" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-sm flex items-center gap-1.5 transition">
-          <span>⚡ Layer 1: Quick Clinical Protocol</span>
-          <span class="text-[10px] opacity-80">(فوری سريري رہنما)</span>
+      <!-- 4-LAYER INTEGRATED CLINICAL TAB SWITCHER -->
+      <div class="flex items-center gap-2 border-b border-[var(--border)] pb-2 flex-shrink-0 overflow-x-auto scrollbar-none">
+        <button id="modal-tab-protocol" onclick="switchModalLayer('protocol')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-sm flex items-center gap-1.5 shrink-0 transition">
+          <span>⚡ Layer 1: Protocol &amp; Dosages</span>
         </button>
-        <button id="modal-tab-treatise" onclick="switchModalLayer('treatise')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 flex items-center gap-1.5 transition">
-          <span>📖 Layer 2: Full Canonical Treatise</span>
-          <span class="text-[10px] opacity-80">(مفصل نصابی مطالعہ)</span>
+        <button id="modal-tab-treatise" onclick="switchModalLayer('treatise')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 flex items-center gap-1.5 shrink-0 transition">
+          <span>📖 Layer 2: Canonical Treatise</span>
+        </button>
+        <button id="modal-tab-recipes" onclick="switchModalLayer('recipes')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 flex items-center gap-1.5 shrink-0 transition">
+          <span>🥣 Layer 3: Classical Formulary</span>
+        </button>
+        <button id="modal-tab-semiology" onclick="switchModalLayer('semiology')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 flex items-center gap-1.5 shrink-0 transition">
+          <span>🔬 Layer 4: Semiology &amp; Modern Labs</span>
         </button>
       </div>
 
@@ -2257,13 +2261,13 @@
       </div>
       <div class="pt-3 border-t border-[var(--border)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 flex-shrink-0">
         <span class="text-[11px] text-[var(--muted)]">ZAYVORA Health OS • Canonical Dual-Layer Knowledge Base</span>
-        <div class="flex gap-2">
-          <button onclick="switchModalLayer(currentModalLayer === 'protocol' ? 'treatise' : 'protocol')" class="px-4 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-medium">
-            Toggle Protocol / Treatise
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="printCurrentMonograph()" class="px-3.5 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-medium flex items-center gap-1.5">
+            <span>🖨️</span> Print Monograph
           </button>
-          <button onclick="closeGrandLibraryModal()" class="px-4 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--muted)] hover:text-white">Close</button>
+          <button onclick="closeGrandLibraryModal()" class="px-3.5 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--muted)] hover:text-white">Close</button>
           <button onclick="copyCurrentChapterProtocol()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow flex items-center gap-1.5">
-            <span>Copy Protocol to Care Plan</span>
+            <span>➕ Add Protocol to Care Plan</span>
           </button>
         </div>
       </div>
@@ -2272,7 +2276,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=15.3"></script>
+  <script src="/js/zayvora-core.js?v=15.4"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -3072,7 +3076,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=15.3"></script>
+  <script src="/js/zayvora-extensions.js?v=15.4"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
