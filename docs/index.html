@@ -884,7 +884,28 @@
       background-color: #ecfdf5 !important;
       color: #065f46 !important;
     }
-  </style>
+  
+    /* Global Viewport & Scroll Enablement Guard */
+    html {
+      overflow-x: hidden;
+      overflow-y: auto !important;
+      height: auto !important;
+      min-height: 100%;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    body {
+      overflow-x: hidden;
+      overflow-y: auto !important;
+      height: auto !important;
+      min-height: 100vh;
+      position: relative;
+    }
+    #workspace-container {
+      overflow: visible !important;
+      min-height: 50vh;
+    }
+</style>
 
   <style>
     @media print {
@@ -2276,7 +2297,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=15.6"></script>
+  <script src="/js/zayvora-core.js?v=15.7"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -3076,7 +3097,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=15.6"></script>
+  <script src="/js/zayvora-extensions.js?v=15.7"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
