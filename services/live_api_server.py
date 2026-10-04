@@ -1056,20 +1056,13 @@ ROLE_PERMISSIONS = {
     ]
 }
 
-def get_db():
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    if not os.path.exists(DB_PATH):
-        dump_path = os.path.join(os.path.dirname(DB_PATH), "schema_dump.sql")
-        conn = sqlite3.connect(DB_PATH)
-        if os.path.exists(dump_path):
-            with open(dump_path, "r", encoding="utf-8") as f:
-                conn.executescript(f.read())
-        conn.row_factory = sqlite3.Row
-        return conn
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+try:
+    from services.db_adapter import get_universal_db
+except ImportError:
+    from db_adapter import get_universal_db
 
+def get_db():
+    return get_universal_db(DB_PATH)
 # -----------------------------------------------------------------------------
 # PHI Security & Field-Level Deterministic Encryption
 # -----------------------------------------------------------------------------
