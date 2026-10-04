@@ -819,6 +819,16 @@
       <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
         
         <!-- Master Department Desk Selector (Exclusive to Super Admin after Authentication) -->
+                <!-- Global Currency Switcher (Mayo / Cleveland Benchmark) -->
+        <select id="platform-currency-select" onchange="changePlatformCurrency(this.value)" class="bg-slate-900 border border-slate-700 text-emerald-400 font-mono text-[11px] font-bold rounded-xl px-2 py-1.5 focus:outline-none cursor-pointer hover:border-emerald-500 transition shadow-sm" title="Select Global Currency">
+          <option value="INR" selected>₹ INR</option>
+          <option value="USD">$ USD</option>
+          <option value="AED">د.إ AED</option>
+          <option value="SAR">﷼ SAR</option>
+          <option value="GBP">£ GBP</option>
+          <option value="EUR">€ EUR</option>
+        </select>
+
         <div id="role-selector-container" class="hidden items-center gap-2 bg-[#0B132B] px-3 py-1.5 rounded-xl border border-amber-500/50 shadow-sm">
           <span class="text-[10px] text-amber-300 font-extrabold uppercase tracking-wider flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
@@ -3298,6 +3308,126 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+<!-- ===================================================================== -->
+  <!-- 1. MAYO CLINIC BENCHMARK: INTERACTIVE BODY SYMPTOM NAVIGATOR MODAL    -->
+  <!-- ===================================================================== -->
+  <div id="body-navigator-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🗺️</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Interactive Humoral Body Symptom Navigator™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Mayo Clinic Benchmark</span>
+            </h3>
+            <p class="text-xs text-slate-400">Select an anatomical zone to discover classical Greco-Arab root causes &amp; restorative regimens</p>
+          </div>
+        </div>
+        <button onclick="toggleBodyNavigatorModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="body-navigator-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderBodyNavigator() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 2. CLEVELAND CLINIC BENCHMARK: LAB REPORT CORRELATOR & SECOND OPINION  -->
+  <!-- ===================================================================== -->
+  <div id="lab-correlator-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-teal-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🧪</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Integrative Virtual Second Opinion &amp; Lab Correlator™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">Cleveland Clinic Benchmark</span>
+            </h3>
+            <p class="text-xs text-slate-400">Translate allopathic blood biomarkers (SGPT, HbA1c, Uric Acid, TSH) into Greco-Arab humoral root causes</p>
+          </div>
+        </div>
+        <button onclick="toggleLabCorrelatorModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="lab-correlator-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderLabCorrelator() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 3. ZOE / THORNE BENCHMARK: MIZAJ FOOD & KITCHEN COMPATIBILITY MATRIX   -->
+  <!-- ===================================================================== -->
+  <div id="food-compatibility-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-amber-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-500 text-slate-950 flex items-center justify-center font-bold text-lg shadow-md">🥗</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Mizaj-Aligned Food &amp; Kitchen Compatibility Scanner™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">ZOE / Thorne Benchmark</span>
+            </h3>
+            <p class="text-xs text-slate-400">Discover which foods heal your constitution (Mufeed) vs aggravate humors, plus classical antidotes (Musleh)</p>
+          </div>
+        </div>
+        <button onclick="toggleFoodCompatibilityModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="food-compatibility-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderFoodCompatibility() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 4. DIGITAL THERAPEUTICS: ASBAB-E-SITTA 14-DAY RE-BALANCING CHALLENGE   -->
+  <!-- ===================================================================== -->
+  <div id="asbab-challenge-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-purple-500/50 rounded-3xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🏆</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>14-Day Asbab-e-Sitta Humoral Reset Challenge™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">Digital Therapeutics</span>
+            </h3>
+            <p class="text-xs text-slate-400">Daily micro-habits to naturally reset your six essential prerequisites of health</p>
+          </div>
+        </div>
+        <button onclick="toggleAsbabChallengeModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="asbab-challenge-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderAsbabChallenge() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 5. MAYO CLINICAL OUTCOMES BENCHMARK: PROMS REGISTRY DASHBOARD         -->
+  <!-- ===================================================================== -->
+  <div id="clinical-outcomes-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-blue-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center font-bold text-lg shadow-md">📈</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Real-World Clinical Outcomes &amp; PROMs Registry™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">Mayo Outcomes Benchmark</span>
+            </h3>
+            <p class="text-xs text-slate-400">1,240+ multi-center clinical subjects • Objective symptom resolution curves &amp; biochemical verification</p>
+          </div>
+        </div>
+        <button onclick="toggleClinicalOutcomesModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="clinical-outcomes-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderClinicalOutcomes() -->
+      </div>
     </div>
   </div>
 
