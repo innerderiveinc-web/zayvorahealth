@@ -855,6 +855,13 @@
         </div>
 
         <!-- Fast OPD Booking CTA Button (Contextual: Public Website & Reception Desk only) -->
+                <!-- Official Dispensary Cart with Live Count Badge -->
+        <button id="header-cart-btn" onclick="toggleCheckoutModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer" title="ZAYVORA Dispensary Cart &amp; Checkout">
+          <span>🛍️</span>
+          <span class="hidden sm:inline">Dispensary Cart</span>
+          <span id="header-cart-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-slate-950 font-black">0</span>
+        </button>
+
         <button id="header-opd-booking-btn" onclick="if (document.getElementById('opd-booking-card')) { document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' }); } else { viewWebsitePage('home'); setTimeout(() => document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' }), 120); }" class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/30 transition">
           <svg class="w-3.5 h-3.5 inline-block text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           <span class="hidden md:inline">Book OPD Token</span>
@@ -3158,6 +3165,84 @@
 
       <div id="product-quickview-body" class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
         <!-- Rendered dynamically by openProductQuickView(sku) -->
+      </div>
+    </div>
+  </div>
+
+<!-- ===================================================================== -->
+  <!-- FLOATING STICKY DISPENSARY CART BAR                                    -->
+  <!-- ===================================================================== -->
+  <div id="floating-cart-bar" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 hidden bg-slate-950/95 border border-emerald-500/50 rounded-2xl shadow-2xl px-5 py-3 flex items-center justify-between gap-6 backdrop-blur-md max-w-lg w-[92vw] text-slate-100">
+    <div class="flex items-center gap-3">
+      <span class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-base">🛍️</span>
+      <div>
+        <div class="flex items-center gap-2">
+          <strong id="floating-cart-items-count" class="text-xs text-white">0 Formulations</strong>
+          <span class="text-[10px] text-emerald-400 font-bold">• Free Cold-Chain Delivery</span>
+        </div>
+        <div class="text-xs text-slate-300">Total: <strong id="floating-cart-total-amount" class="text-emerald-400 font-mono text-sm">₹0</strong></div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="toggleCheckoutModal()" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+        <span>Proceed to Checkout</span>
+        <span>&rarr;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: B2B CLINIC WHOLESALE & DOCTOR VERIFICATION                    -->
+  <!-- ===================================================================== -->
+  <div id="b2b-wholesale-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-3xl max-w-xl w-full p-6 shadow-2xl overflow-hidden text-slate-100 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">🏛️</span>
+          <div>
+            <h3 class="font-bold text-base text-white">B2B Clinic Wholesale Account</h3>
+            <p class="text-xs text-slate-400">Exclusive 40% Margin for Licensed AYUSH / BUMS Clinicians</p>
+          </div>
+        </div>
+        <button onclick="toggleB2BWholesaleModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <p class="text-slate-300 leading-relaxed">
+          ZAYVORA Healthcare System supplies clinic-dispensing bulk packs and standardized classical formulations directly to verified practitioners across India with direct cold-chain logistics.
+        </p>
+
+        <div class="space-y-2.5 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">Clinician Full Name</label>
+            <input id="b2b-name" type="text" placeholder="e.g. Dr. Irfan Ashraf" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">State Board / NCISM Reg No.</label>
+              <input id="b2b-reg" type="text" placeholder="e.g. BUMS/AMU/2007" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">Mobile Phone (+91)</label>
+              <input id="b2b-phone" type="text" placeholder="e.g. 9811044219" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">Clinic / Hospital Name &amp; Address</label>
+            <input id="b2b-clinic" type="text" placeholder="e.g. ZAYVORA Clinical Suite, Sukhdev Vihar, New Delhi" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" />
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-[11px] text-amber-300">
+          ✓ Verified clinic orders receive 40% margin, free cold-chain dispatch, and itemized B2B GST tax invoices.
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="toggleB2BWholesaleModal(false)" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-400 hover:text-white">Cancel</button>
+          <button onclick="submitB2BWholesaleApplication()" class="px-6 py-2.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
+            Apply for B2B Verification &rarr;
+          </button>
+        </div>
       </div>
     </div>
   </div>
