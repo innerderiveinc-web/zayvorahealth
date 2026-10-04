@@ -17272,40 +17272,20 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         const isSuperAdmin = state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin';
         const initials = (state.currentUser.name || 'U').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
         authContainer.innerHTML = `
-          <div class="relative group shrink-0" id="user-pill-wrapper">
-            <button onclick="document.getElementById('user-pill-menu').classList.toggle('hidden')" class="flex items-center gap-1.5 ${isSuperAdmin ? 'bg-rose-950/80 border-rose-500/50' : 'bg-emerald-950/80 border-emerald-500/40'} border px-2 py-1 rounded-lg shadow-sm cursor-pointer transition hover:brightness-110">
+          <div class="flex items-center gap-1.5 shrink-0">
+            <!-- User Pill Indicator -->
+            <div class="flex items-center gap-1.5 ${isSuperAdmin ? 'bg-rose-950/80 border-rose-500/50' : 'bg-emerald-950/80 border-emerald-500/40'} border px-2.5 py-1.5 rounded-xl shadow-sm" title="${state.currentUser.name} • ${isSuperAdmin ? 'SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}">
               <span class="w-2 h-2 rounded-full ${isSuperAdmin ? 'bg-rose-400' : 'bg-emerald-400'} animate-pulse shrink-0"></span>
-              <span class="text-[11px] font-extrabold text-white max-w-[80px] truncate hidden sm:inline">${initials}</span>
-              <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            <div id="user-pill-menu" class="hidden absolute right-0 mt-1.5 w-52 bg-[#0F172A] border border-slate-700 rounded-xl shadow-2xl z-[60] overflow-hidden text-left">
-              <div class="px-3 py-2.5 border-b border-slate-800">
-                <div class="text-[11px] font-extrabold text-white truncate">${state.currentUser.name}</div>
-                <div class="text-[9px] ${isSuperAdmin ? 'text-rose-300' : 'text-emerald-300'} font-mono font-semibold mt-0.5 truncate">${isSuperAdmin ? '🛡️ SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}</div>
-              </div>
-              <button onclick="togglePreferencesDropdown(); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer">
-                <span>⚙️</span> <span>Regional & Display</span>
-              </button>
-              <button onclick="switchRole('website'); switchTab('home'); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer border-t border-slate-800/60">
-                <span>🌐</span> <span>Public Website</span>
-              </button>
-              <button onclick="handleSignOut()" class="w-full text-left px-3 py-2 text-[11px] text-rose-400 font-bold hover:bg-rose-950/60 flex items-center gap-2 transition cursor-pointer border-t border-slate-800">
-                <span>🚪</span> <span>Log Out</span>
-              </button>
+              <span class="text-[11px] font-extrabold text-white">${initials}</span>
             </div>
+
+            <!-- Prominent Direct Sign Out Button -->
+            <button onclick="handleSignOut()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-rose-950/70 hover:bg-rose-900 border border-rose-500/50 text-rose-300 hover:text-white text-xs font-bold transition shadow-sm cursor-pointer shrink-0" title="Sign Out / End Session">
+              <svg class="w-3.5 h-3.5 inline-block text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Sign Out</span>
+            </button>
           </div>
         `;
-        // Close dropdown on outside click
-        setTimeout(() => {
-          document.addEventListener('click', function closeUserMenu(e) {
-            const wrapper = document.getElementById('user-pill-wrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-              const menu = document.getElementById('user-pill-menu');
-              if (menu) menu.classList.add('hidden');
-              document.removeEventListener('click', closeUserMenu);
-            }
-          });
-        }, 0);
       } else {
         // Public Homepage: clean, prominent Sign In CTA (secondary outline style)
         authContainer.innerHTML = `
