@@ -3557,13 +3557,19 @@ function generateInstantOpdToken() {
               longitudinal Mizaj constitutional profiling, organ-axis screening, and evidence-grounded physician governance.
             </p>
 
-            <!-- Action Matrix -->
+            <!-- Action Matrix: Unified Clinical Self-Assessment & Patient Admission Gateway -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <button onclick="toggleMizajAssessmentModal(true);" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer ring-2 ring-emerald-500/40" title="Al-Ajnas Al-Ashrah: Discover constitutional humoral archetype">
+                <span>🩺</span> Mizaj (Temperament) Audit
+              </button>
+              <button onclick="toggleOrganAxisModal(true);" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2 cursor-pointer ring-2 ring-teal-500/30" title="Systems Biology: Screen humoral stasis across 12 organ networks">
+                <span>🔬</span> 12-Organ-Axis Screener
+              </button>
               <button onclick="openHealthAssessmentModal();" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer ring-2 ring-emerald-400/40">
-                <span>🧠</span> 8-Pillar Health Audit (Free)
+                <span>🧠</span> 8-Pillar Health Audit
               </button>
               <button onclick="viewWebsitePage('products');" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xl shadow-amber-950/40 transition flex items-center gap-2 cursor-pointer">
-                <span>🛍️</span> Order 32 Formulations (Dispensary)
+                <span>🛍️</span> Order 32 Formulations
               </button>
               <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2 cursor-pointer">
                 <span>🎟️</span> Generate OPD Token
