@@ -3695,5 +3695,54 @@
     </div>
   </div>
 
+
+  <!-- ===================================================================== -->
+  <!-- 11. DEDICATED MIZAJ QUESTIONNAIRE MODAL (AL-AJNAS AL-ASHRAH)           -->
+  <!-- ===================================================================== -->
+  <div id="mizaj-assessment-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🩺</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Constitutional Mizaj Assessment™ (Al-Ajnas al-Ashrah)</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Free Diagnostic</span>
+            </h3>
+            <p class="text-xs text-slate-400">Select physical, digestive, and mentation parameters to compute your exact humoral balance percentage</p>
+          </div>
+        </div>
+        <button onclick="toggleMizajAssessmentModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="mizaj-modal-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderMizajAssessmentModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 12. DEDICATED 12-ORGAN-AXIS SCREENER MODAL (SYSTEMS BIOLOGY)          -->
+  <!-- ===================================================================== -->
+  <div id="organ-axis-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-teal-500/50 rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-cyan-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🔬</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>12-Organ-Axis Systems Biology Screener™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">Free Screener</span>
+            </h3>
+            <p class="text-xs text-slate-400">Screen for humoral stasis across 12 organ-axis systems and calculate your health equilibrium score</p>
+          </div>
+        </div>
+        <button onclick="toggleOrganAxisModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="organ-axis-modal-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderOrganAxisModal() -->
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
