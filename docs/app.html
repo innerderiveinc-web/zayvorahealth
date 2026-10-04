@@ -740,6 +740,49 @@
       color: var(--muted);
       border: 1px solid rgba(142, 157, 174, 0.3);
     }
+    /* High-Contrast Sign Out & Auth Badges */
+    .btn-signout {
+      background-color: #dc2626 !important;
+      color: #ffffff !important;
+      border: 1px solid #b91c1c !important;
+    }
+    .btn-signout:hover {
+      background-color: #b91c1c !important;
+      color: #ffffff !important;
+    }
+    .btn-signout * {
+      color: #ffffff !important;
+      stroke: #ffffff !important;
+    }
+    [data-theme="light"] .btn-signout,
+    [data-theme="dark"] .btn-signout {
+      background-color: #dc2626 !important;
+      color: #ffffff !important;
+      border: 1px solid #b91c1c !important;
+    }
+    [data-theme="light"] .btn-signout span,
+    [data-theme="dark"] .btn-signout span,
+    [data-theme="light"] .btn-signout svg,
+    [data-theme="dark"] .btn-signout svg {
+      color: #ffffff !important;
+      stroke: #ffffff !important;
+    }
+    [data-theme="light"] .user-pill-badge {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .user-pill-badge span.user-initials {
+      color: #0f172a !important;
+    }
+    [data-theme="dark"] .user-pill-badge {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+    [data-theme="dark"] .user-pill-badge span.user-initials {
+      color: #ffffff !important;
+    }
   </style>
 
   <style>
@@ -2125,7 +2168,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.7"></script>
+  <script src="/js/zayvora-core.js?v=14.8"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2925,7 +2968,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.7"></script>
+  <script src="/js/zayvora-extensions.js?v=14.8"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->

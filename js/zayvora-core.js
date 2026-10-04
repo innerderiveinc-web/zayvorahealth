@@ -17274,15 +17274,15 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         authContainer.innerHTML = `
           <div class="flex items-center gap-1.5 shrink-0">
             <!-- User Pill Indicator -->
-            <div class="flex items-center gap-1.5 ${isSuperAdmin ? 'bg-rose-950/80 border-rose-500/50' : 'bg-emerald-950/80 border-emerald-500/40'} border px-2.5 py-1.5 rounded-xl shadow-sm" title="${state.currentUser.name} • ${isSuperAdmin ? 'SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}">
-              <span class="w-2 h-2 rounded-full ${isSuperAdmin ? 'bg-rose-400' : 'bg-emerald-400'} animate-pulse shrink-0"></span>
-              <span class="text-[11px] font-extrabold text-white">${initials}</span>
+            <div class="user-pill-badge flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold shadow-sm" title="${state.currentUser.name} • ${isSuperAdmin ? 'SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}">
+              <span class="w-2 h-2 rounded-full ${isSuperAdmin ? 'bg-rose-500' : 'bg-emerald-500'} animate-pulse shrink-0"></span>
+              <span class="user-initials text-[11px] font-extrabold">${initials}</span>
             </div>
 
-            <!-- Prominent Direct Sign Out Button -->
-            <button onclick="handleSignOut()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-rose-950/70 hover:bg-rose-900 border border-rose-500/50 text-rose-300 hover:text-white text-xs font-bold transition shadow-sm cursor-pointer shrink-0" title="Sign Out / End Session">
-              <svg class="w-3.5 h-3.5 inline-block text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              <span>Sign Out</span>
+            <!-- Prominent Direct Sign Out Button (Ultra High-Contrast) -->
+            <button onclick="handleSignOut()" style="background-color: #dc2626 !important; color: #ffffff !important; border: 1px solid #b91c1c !important;" class="btn-signout flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer shrink-0 hover:brightness-110" title="Sign Out / End Session">
+              <svg style="color: #ffffff !important; stroke: #ffffff !important;" class="w-3.5 h-3.5 inline-block shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span style="color: #ffffff !important; font-weight: 700;">Sign Out</span>
             </button>
           </div>
         `;
