@@ -809,7 +809,7 @@
         <!-- Global Diagnostic Hub Launcher -->
         <button onclick="toggleGlobalToolsModal(true)" class="bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm flex items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
           <span>🧠</span>
-          <span class="hidden sm:inline">Diagnostic Tools</span>
+          <span class="hidden md:inline">Diagnostic Tools</span>
           <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px]">10</span>
         </button>
 
@@ -817,22 +817,22 @@
           <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
           <select id="role-selector" onchange="switchRole(this.value, true)" class="bg-transparent text-xs font-bold text-amber-100 focus:outline-none cursor-pointer max-w-[150px] truncate" title="👑 Super Admin Role Switcher">
             <optgroup label="👑 Super Admin & Governance" class="bg-[#0F172A] text-amber-300 font-bold">
-              <option value="admin">🛡️ Admin (/admin)</option>
-              <option value="enterprise">🏛️ Executive / Legal</option>
+              <option value="admin">🛡️ Admin Control</option>
+              <option value="enterprise">🏛️ Executive</option>
             </optgroup>
             <optgroup label="🩺 Clinical Care Desks" class="bg-[#0F172A] text-emerald-300 font-bold">
-              <option value="doctor" selected>🩺 Doctor (/doctor)</option>
-              <option value="nurse">🏥 Nurse (/nurse)</option>
-              <option value="clinic">📋 Reception (/reception)</option>
-              <option value="patient">👤 Patient Portal</option>
+              <option value="doctor" selected>🩺 Doctor</option>
+              <option value="nurse">🏥 Nurse</option>
+              <option value="clinic">📋 Reception</option>
+              <option value="patient">👤 Patient</option>
             </optgroup>
             <optgroup label="💊 Pharmacy & Production" class="bg-[#0F172A] text-cyan-300 font-bold">
-              <option value="pharmacy">💊 Pharmacy OS</option>
+              <option value="pharmacy">💊 Pharmacy</option>
               <option value="manufacturing">🏭 Manufacturing</option>
-              <option value="hardware">📡 IoMT Gateway</option>
+              <option value="hardware">📡 IoMT</option>
             </optgroup>
             <optgroup label="🔬 Research" class="bg-[#0F172A] text-purple-300 font-bold">
-              <option value="research">🔬 Research Cloud</option>
+              <option value="research">🔬 Research</option>
             </optgroup>
           </select>
         </div>
@@ -840,7 +840,7 @@
         <!-- Official Dispensary Cart with Live Count Badge -->
         <button id="header-cart-btn" onclick="toggleCheckoutModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer shrink-0" title="ZAYVORA Dispensary Cart &amp; Checkout">
           <span>🛍️</span>
-          <span class="hidden sm:inline">Dispensary Cart</span>
+          <span class="hidden lg:inline">Cart</span>
           <span id="header-cart-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-slate-950 font-black">0</span>
         </button>
 
@@ -1057,7 +1057,7 @@
               <span class="text-[9px] text-slate-400 block truncate">OPD Tokens &amp; Intake</span>
             </button>
             <button type="button" onclick="prefillLogin('pharmacy')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 text-left transition group">
-              <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy OS</span>
+              <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy</span>
               <span class="text-[9px] text-slate-400 block truncate">FEFO Dispensary &amp; Stock</span>
             </button>
             <button type="button" onclick="prefillLogin('manufacturing')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 text-left transition group">
@@ -1065,11 +1065,11 @@
               <span class="text-[9px] text-slate-400 block truncate">eBMR Batch QC Lab</span>
             </button>
             <button type="button" onclick="prefillLogin('research')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-left transition group">
-              <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research Cloud</span>
+              <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research</span>
               <span class="text-[9px] text-slate-400 block truncate">RWE &amp; Clinical Trials</span>
             </button>
             <button type="button" onclick="prefillLogin('patient')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-400/50 text-left transition group">
-              <span class="text-teal-300 font-bold block text-[11px]">👤 Patient Portal</span>
+              <span class="text-teal-300 font-bold block text-[11px]">👤 Patient</span>
               <span class="text-[9px] text-slate-400 block truncate">Hamza Farooqi (MRN-0814)</span>
             </button>
           </div>
@@ -2127,7 +2127,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.4"></script>
+  <script src="/js/zayvora-core.js?v=14.5"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2927,7 +2927,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.4"></script>
+  <script src="/js/zayvora-extensions.js?v=14.5"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
