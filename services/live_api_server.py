@@ -2009,7 +2009,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     self.send_header("Content-Type", content_type)
                     if ext == ".pdf":
                         self.send_header("Content-Disposition", f'inline; filename="{os.path.basename(candidate)}"')
-                    if clean_path in ("sw.js", "manifest.json") or clean_path.endswith(".js"):
+                    if clean_path in ("sw.js", "manifest.json") or clean_path.endswith(".js") or clean_path.endswith(".html"):
                         self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
                         self.send_header("Pragma", "no-cache")
                         self.send_header("Expires", "0")
