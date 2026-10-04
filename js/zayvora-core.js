@@ -16795,13 +16795,8 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         const res = await apiFetch('/api/v1/knowledge/mufradat-250/catalog-stats');
         if (res.ok) {
           const data = await res.json();
-          if (badge && badgeText) {
-            if (state.role === 'website') {
-              badge.className = "hidden";
-            } else {
-              badge.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40";
-            }
-            badgeText.textContent = `LIVE DB (${data.stats?.total_monographs || 250} MONOGRAPHS)`;
+          if (badge) {
+            badge.className = "hidden";
           }
           // Fetch live patients from zayvora_live.db
           const pRes = await apiFetch('/api/v1/patients');
@@ -17136,6 +17131,7 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       const publicQuicklinks = document.getElementById('public-nav-quicklinks');
       const clinicalNavBadge = document.getElementById('clinical-nav-badge');
       const clinicalDeskIndicator = document.getElementById('clinical-desk-indicator');
+      const isSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
 
       const deskLabels = {
         'doctor': '🩺 Doctor Cockpit',
@@ -17167,18 +17163,23 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
           publicQuicklinks.classList.add('hidden');
           publicQuicklinks.classList.remove('xl:flex');
         }
+        // If Super Admin role switcher is active, hide duplicate center badge to prevent repetition!
         if (clinicalNavBadge) {
-          clinicalNavBadge.classList.remove('hidden');
-          clinicalNavBadge.classList.add('xl:flex');
-          if (clinicalDeskIndicator) {
-            clinicalDeskIndicator.textContent = deskLabels[state.role] || `${state.role.toUpperCase()} Desk`;
+          if (isSuperAdmin) {
+            clinicalNavBadge.classList.add('hidden');
+            clinicalNavBadge.classList.remove('xl:flex');
+          } else {
+            clinicalNavBadge.classList.remove('hidden');
+            clinicalNavBadge.classList.add('xl:flex');
+            if (clinicalDeskIndicator) {
+              clinicalDeskIndicator.textContent = deskLabels[state.role] || `${state.role.toUpperCase()} Desk`;
+            }
           }
         }
       }
       
       // Master Department Desk Selector: Strictly locked to authenticated Super Admin!
       if (roleSelContainer) {
-        const isSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
         if (isSuperAdmin && state.role !== 'website') {
           roleSelContainer.classList.remove('hidden');
           roleSelContainer.classList.add('flex');
@@ -17202,22 +17203,55 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         }
       }
 
-      // Contextual Header Clinical Controls (Library, Search, Alerts, DB Badge)
+      // Contextual Header Diagnostic Launcher (Clinical Desks only: Doctor, Nurse, Patient)
+      const diagBtn = document.getElementById('header-diagnostic-btn');
+      if (diagBtn) {
+        if (['doctor', 'nurse', 'patient'].includes(state.role)) {
+          diagBtn.classList.remove('hidden');
+          diagBtn.classList.add('flex');
+        } else {
+          diagBtn.classList.add('hidden');
+          diagBtn.classList.remove('flex');
+        }
+      }
+
+      // Contextual Dispensary Cart (Website, Pharmacy OS, Patient Portal only)
+      const cartBtn = document.getElementById('header-cart-btn');
+      if (cartBtn) {
+        if (['website', 'pharmacy', 'patient'].includes(state.role)) {
+          cartBtn.classList.remove('hidden');
+          cartBtn.classList.add('flex');
+        } else {
+          cartBtn.classList.add('hidden');
+          cartBtn.classList.remove('flex');
+        }
+      }
+
+      // Contextual Regional & Currency Settings (Public Website only, internal dashboards use User Menu)
+      const prefMenu = document.getElementById('preferences-menu-container');
+      if (prefMenu) {
+        if (state.role === 'website') {
+          prefMenu.classList.remove('hidden');
+        } else {
+          prefMenu.classList.add('hidden');
+        }
+      }
+
+      // Clinical Controls: Library & DB Badge (Cleaned up from header bar to prevent overflow)
       const headerLibBtn = document.getElementById('header-library-btn');
       const headerSearchBtn = document.getElementById('header-search-btn');
       const headerNotifBtn = document.getElementById('header-notif-btn');
       const liveDbBadge = document.getElementById('live-db-badge');
 
+      if (headerLibBtn) { headerLibBtn.classList.add('hidden'); headerLibBtn.classList.remove('flex'); }
+      if (liveDbBadge) { liveDbBadge.classList.add('hidden'); liveDbBadge.classList.remove('flex'); }
+
       if (state.role === 'website') {
-        if (headerLibBtn) { headerLibBtn.classList.add('hidden'); headerLibBtn.classList.remove('flex'); }
         if (headerSearchBtn) { headerSearchBtn.classList.add('hidden'); headerSearchBtn.classList.remove('flex'); }
         if (headerNotifBtn) { headerNotifBtn.classList.add('hidden'); headerNotifBtn.classList.remove('flex'); }
-        if (liveDbBadge) { liveDbBadge.classList.add('hidden'); liveDbBadge.classList.remove('flex'); }
       } else {
-        if (headerLibBtn) { headerLibBtn.classList.remove('hidden'); headerLibBtn.classList.add('flex'); }
         if (headerSearchBtn) { headerSearchBtn.classList.remove('hidden'); headerSearchBtn.classList.add('flex'); }
         if (headerNotifBtn) { headerNotifBtn.classList.remove('hidden'); headerNotifBtn.classList.add('flex'); }
-        if (liveDbBadge) { liveDbBadge.classList.remove('hidden'); liveDbBadge.classList.add('flex'); }
       }
 
       // Contextual Footer Toggle: 25-page Public Directory vs Clinical Telemetry Bar
@@ -17249,7 +17283,10 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
                 <div class="text-[11px] font-extrabold text-white truncate">${state.currentUser.name}</div>
                 <div class="text-[9px] ${isSuperAdmin ? 'text-rose-300' : 'text-emerald-300'} font-mono font-semibold mt-0.5 truncate">${isSuperAdmin ? '🛡️ SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}</div>
               </div>
-              <button onclick="switchRole('website'); switchTab('home'); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer">
+              <button onclick="togglePreferencesDropdown(); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer">
+                <span>⚙️</span> <span>Regional & Display</span>
+              </button>
+              <button onclick="switchRole('website'); switchTab('home'); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer border-t border-slate-800/60">
                 <span>🌐</span> <span>Public Website</span>
               </button>
               <button onclick="handleSignOut()" class="w-full text-left px-3 py-2 text-[11px] text-rose-400 font-bold hover:bg-rose-950/60 flex items-center gap-2 transition cursor-pointer border-t border-slate-800">
