@@ -815,28 +815,17 @@
         <span class="text-emerald-400 font-mono text-[11px] hidden 2xl:inline">21 CFR Part 11 Active</span>
       </div>
 
-      <!-- Persona Switcher, Actions & Real-Time Telemetry Badges -->
-      <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
+      <!-- Persona Switcher, Actions & Utility Bar (Sleek Single-Row Layout) -->
+      <div class="flex items-center gap-2 sm:gap-2.5 w-full lg:w-auto justify-between lg:justify-end shrink-0">
         
-        <!-- Master Department Desk Selector (Exclusive to Super Admin after Authentication) -->
-                <!-- Global Currency Switcher (ZAYVORA Global Multi-Currency Standard) -->
-                <!-- Global Diagnostic & Functional Medicine Hub Launcher (Omnipresent in OS) -->
-        <button onclick="toggleGlobalToolsModal(true)" class="bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-[11px] rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm flex items-center gap-1.5" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
+        <!-- Global Diagnostic Hub Launcher -->
+        <button onclick="toggleGlobalToolsModal(true)" class="bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm flex items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
           <span>🧠</span>
           <span class="hidden sm:inline">Diagnostic Tools</span>
           <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px]">10</span>
         </button>
 
-        <select id="platform-currency-select" onchange="changePlatformCurrency(this.value)" class="bg-slate-900 border border-slate-700 text-emerald-400 font-mono text-[11px] font-bold rounded-xl px-2 py-1.5 focus:outline-none cursor-pointer hover:border-emerald-500 transition shadow-sm" title="Select Global Currency">
-          <option value="INR" selected>₹ INR</option>
-          <option value="USD">$ USD</option>
-          <option value="AED">د.إ AED</option>
-          <option value="SAR">﷼ SAR</option>
-          <option value="GBP">£ GBP</option>
-          <option value="EUR">€ EUR</option>
-        </select>
-
-        <div id="role-selector-container" class="hidden items-center gap-2 bg-[#0B132B] px-3 py-1.5 rounded-xl border border-amber-500/50 shadow-sm">
+        <div id="role-selector-container" class="hidden items-center gap-2 bg-[#0B132B] px-3 py-1.5 rounded-xl border border-amber-500/50 shadow-sm shrink-0">
           <span class="text-[10px] text-amber-300 font-extrabold uppercase tracking-wider flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
             <span>👑 Super Admin Switcher:</span>
@@ -863,76 +852,85 @@
           </select>
         </div>
 
-        <!-- Sign In / Active Role Banner Container -->
-        <div id="auth-container" class="flex items-center">
+        <!-- Official Dispensary Cart with Live Count Badge -->
+        <button id="header-cart-btn" onclick="toggleCheckoutModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer shrink-0" title="ZAYVORA Dispensary Cart &amp; Checkout">
+          <span>🛍️</span>
+          <span class="hidden sm:inline">Dispensary Cart</span>
+          <span id="header-cart-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-slate-950 font-black">0</span>
+        </button>
+
+        <!-- Fast OPD Booking CTA Button -->
+        <button id="header-opd-booking-btn" onclick="if (document.getElementById('opd-booking-card')) { document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' }); } else { viewWebsitePage('home'); setTimeout(() => document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' }), 120); }" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/30 transition shrink-0">
+          <svg class="w-3.5 h-3.5 inline-block text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span class="hidden md:inline">Book OPD Token</span>
+        </button>
+
+        <!-- Sign In / Portals -->
+        <div id="auth-container" class="flex items-center shrink-0">
           <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm">
             <svg class="w-3.5 h-3.5 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
             <span id="auth-btn-label">Sign In / Portals</span>
           </button>
         </div>
 
-        <!-- Fast OPD Booking CTA Button (Contextual: Public Website & Reception Desk only) -->
-                <!-- Official Dispensary Cart with Live Count Badge -->
-                <!-- Free 8-Pillar Health Audit Header CTA -->
-        <button onclick="openHealthAssessmentModal()" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer" title="Free 8-Pillar Whole-Person Health Audit">
-          <span>🧠</span>
-          <span class="hidden lg:inline">Health Audit</span>
-        </button>
+        <!-- Sleek Unified Settings & Utilities Bar -->
+        <div class="hidden md:flex items-center gap-1.5 bg-[#0A0F1D] border border-slate-800 px-2 py-1 rounded-xl shrink-0">
+          <!-- Currency -->
+          <select id="platform-currency-select" onchange="changePlatformCurrency(this.value)" class="bg-transparent text-emerald-400 font-mono text-[11px] font-bold focus:outline-none cursor-pointer hover:text-emerald-300 transition" title="Select Global Currency">
+            <option value="INR" selected class="bg-slate-900">₹ INR</option>
+            <option value="USD" class="bg-slate-900">$ USD</option>
+            <option value="AED" class="bg-slate-900">د.إ AED</option>
+            <option value="SAR" class="bg-slate-900">﷼ SAR</option>
+            <option value="GBP" class="bg-slate-900">£ GBP</option>
+            <option value="EUR" class="bg-slate-900">€ EUR</option>
+          </select>
 
-        <button id="header-cart-btn" onclick="toggleCheckoutModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer" title="ZAYVORA Dispensary Cart &amp; Checkout">
-          <span>🛍️</span>
-          <span class="hidden sm:inline">Dispensary Cart</span>
-          <span id="header-cart-count" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-slate-950 font-black">0</span>
-        </button>
+          <span class="text-slate-700 text-xs">•</span>
 
-        <button id="header-opd-booking-btn" onclick="if (document.getElementById('opd-booking-card')) { document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' }); } else { viewWebsitePage('home'); setTimeout(() => document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' }), 120); }" class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/30 transition">
-          <svg class="w-3.5 h-3.5 inline-block text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          <span class="hidden md:inline">Book OPD Token</span>
-        </button>
-
-        <div class="flex items-center gap-1.5">
-          <!-- Grand Medical Library Trigger (Clinical Desks) -->
-          <button id="header-library-btn" onclick="openMedicalDoctrineModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-950/80 to-teal-950/80 border border-emerald-500/40 text-xs font-bold text-emerald-300 hover:text-white hover:border-emerald-400 items-center gap-1.5 transition shadow-sm" title="Grand Classical & Modern Integrative Medical Library (12 Volumes • 38 Chapters)">
-            <span>📖</span> <span class="hidden sm:inline">Library</span>
-          </button>
-
-          <!-- Help Modal Trigger -->
-          <button id="header-help-btn" onclick="toggleHelpModal()" class="px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs text-slate-300 hover:text-white hover:bg-slate-800 transition" title="Clinical Guidance &amp; Safety Guidelines">
-            Help
-          </button>
-
-          <!-- Search Command Trigger (⌘K) -->
-          <button id="header-search-btn" onclick="toggleSearchModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs text-slate-300 hover:border-emerald-400 items-center gap-1.5 transition" title="Search Patients, Rx, Protocols (⌘K)">
-            <span><svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span> <kbd class="px-1 py-0.5 rounded bg-[#1E293B] text-[9px] font-mono text-emerald-400">⌘K</kbd>
-          </button>
-
-          <!-- Notification Bell Trigger -->
-          <button id="header-notif-btn" onclick="toggleNotificationsModal()" class="hidden relative p-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs hover:border-emerald-400 transition" title="System Alerts &amp; Clinical Notifications">
-            <svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg><span id="header-notif-badge" class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white font-bold text-[8px] flex items-center justify-center">3</span>
-          </button>
-
-          <!-- Dark / Light Mode Segmented Pill Switcher -->
-          <div class="flex items-center bg-[#0A0F1D] rounded-xl border border-slate-800 p-0.5 text-[11px] font-bold shadow-sm" id="theme-pill-container" title="Switch Theme">
-            <button id="theme-btn-dark" onclick="setAppTheme('dark')" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Dark Mode (Obsidian Slate)">
-              <span>🌙</span> <span>Dark</span>
+          <!-- Dark / Light Mode Pill -->
+          <div class="flex items-center bg-[#070B14] rounded-lg border border-slate-800 p-0.5 text-[10px] font-bold" id="theme-pill-container" title="Switch Theme">
+            <button id="theme-btn-dark" onclick="setAppTheme('dark')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Dark Mode (Obsidian Slate)">
+              <span>🌙</span> <span class="hidden xl:inline">Dark</span>
             </button>
-            <button id="theme-btn-light" onclick="setAppTheme('light')" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Light Mode (Warm Alabaster)">
-              <span>☀️</span> <span>Light</span>
+            <button id="theme-btn-light" onclick="setAppTheme('light')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Light Mode (Warm Alabaster)">
+              <span>☀️</span> <span class="hidden xl:inline">Light</span>
             </button>
           </div>
+
+          <span class="text-slate-700 text-xs">•</span>
 
           <!-- Language Selector -->
-          <div class="flex items-center bg-[#0A0F1D] rounded-xl border border-slate-800 p-0.5 text-[10px] font-bold">
-            <button id="lang-btn-en" onclick="switchLanguage('en')" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300">EN</button>
-            <button id="lang-btn-hi" onclick="switchLanguage('hi')" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white">HI</button>
-            <button id="lang-btn-ur" onclick="switchLanguage('ur')" class="px-2 py-0.5 rounded-lg text-slate-400 hover:text-white">UR</button>
+          <div class="flex items-center bg-[#070B14] rounded-lg border border-slate-800 p-0.5 text-[10px] font-bold">
+            <button id="lang-btn-en" onclick="switchLanguage('en')" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">EN</button>
+            <button id="lang-btn-hi" onclick="switchLanguage('hi')" class="px-1.5 py-0.5 rounded text-slate-400 hover:text-white">HI</button>
+            <button id="lang-btn-ur" onclick="switchLanguage('ur')" class="px-1.5 py-0.5 rounded text-slate-400 hover:text-white">UR</button>
           </div>
 
-          <!-- Live DB Health Status Badge -->
-          <div id="live-db-badge" class="hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 shrink-0" title="Connected to zayvora_live.db SQLite Relational Store">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span id="live-db-text">LIVE REST API</span>
-          </div>
+          <span class="text-slate-700 text-xs hidden lg:inline">•</span>
+
+          <!-- Help Modal Trigger -->
+          <button id="header-help-btn" onclick="toggleHelpModal()" class="hidden lg:inline-block px-1.5 py-0.5 text-[11px] text-slate-400 hover:text-white transition" title="Clinical Guidance &amp; Safety Guidelines">
+            Help
+          </button>
+        </div>
+
+        <!-- Clinical Desktop Extra Triggers (Active in doctor/admin role) -->
+        <button id="header-library-btn" onclick="openMedicalDoctrineModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-950/80 to-teal-950/80 border border-emerald-500/40 text-xs font-bold text-emerald-300 hover:text-white hover:border-emerald-400 items-center gap-1.5 transition shadow-sm" title="Grand Classical & Modern Integrative Medical Library">
+          <span>📖</span> <span class="hidden sm:inline">Library</span>
+        </button>
+
+        <button id="header-search-btn" onclick="toggleSearchModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs text-slate-300 hover:border-emerald-400 items-center gap-1.5 transition" title="Search Patients, Rx, Protocols (⌘K)">
+          <span><svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span> <kbd class="px-1 py-0.5 rounded bg-[#1E293B] text-[9px] font-mono text-emerald-400">⌘K</kbd>
+        </button>
+
+        <button id="header-notif-btn" onclick="toggleNotificationsModal()" class="hidden relative p-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs hover:border-emerald-400 transition" title="System Alerts &amp; Clinical Notifications">
+          <svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg><span id="header-notif-badge" class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white font-bold text-[8px] flex items-center justify-center">3</span>
+        </button>
+
+        <!-- Live DB Health Status Badge (Hidden by default, shown in clinical cockpit) -->
+        <div id="live-db-badge" class="hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 shrink-0" title="Connected to zayvora_live.db SQLite Relational Store">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="live-db-text">LIVE REST API</span>
         </div>
 
       </div>
@@ -2122,7 +2120,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=13.8"></script>
+  <script src="/js/zayvora-core.js?v=13.9"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2922,7 +2920,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=13.8"></script>
+  <script src="/js/zayvora-extensions.js?v=13.9"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->

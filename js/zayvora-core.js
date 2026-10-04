@@ -16764,7 +16764,11 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         if (res.ok) {
           const data = await res.json();
           if (badge && badgeText) {
-            badge.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40";
+            if (state.role === 'website') {
+              badge.className = "hidden";
+            } else {
+              badge.className = "flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40";
+            }
             badgeText.textContent = `LIVE DB (${data.stats?.total_monographs || 250} MONOGRAPHS)`;
           }
           // Fetch live patients from zayvora_live.db
