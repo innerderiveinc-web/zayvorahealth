@@ -565,7 +565,7 @@
                 <button onclick="toggleFoodCompatibilityModal(true)" class="p-3 rounded-xl bg-slate-900/90 border border-amber-500/30 hover:border-amber-400 hover:bg-amber-950/20 text-left transition cursor-pointer">
                   <div class="text-lg">🥗</div>
                   <div class="font-bold text-white text-[11px] mt-1">Kitchen Food Matrix</div>
-                  <div class="text-[10px] text-slate-400">ZOE Precision nutrition</div>
+                  <div class="text-[10px] text-slate-400">Constitutional Nutrition</div>
                 </button>
                 <button onclick="toggleGutBrainModal(true)" class="p-3 rounded-xl bg-slate-900/90 border border-rose-500/30 hover:border-rose-400 hover:bg-rose-950/20 text-left transition cursor-pointer">
                   <div class="text-lg">🧠</div>
@@ -1698,7 +1698,7 @@
               <div class="flex justify-between items-center border-b border-slate-800 pb-2">
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">🧠</span>
-                  <h4 class="text-xs font-bold text-white uppercase tracking-wider">Clinician Diagnostic Desk • Functional &amp; Mayo Engines</h4>
+                  <h4 class="text-xs font-bold text-white uppercase tracking-wider">Clinician Diagnostic Desk • ZAYVORA Diagnostic &amp; Clinical Engines</h4>
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="text-[10px] font-mono text-emerald-400">10 Tools Active</span>
@@ -12023,7 +12023,7 @@ function generateInstantOpdToken() {
 
             
             <!-- ===================================================================== -->
-            <!-- GLOBAL CLINICAL BENCHMARKS & FUNCTIONAL MEDICINE SUITE (IFM / MAYO)   -->
+            <!-- ZAYVORA GLOBAL CLINICAL & FUNCTIONAL MEDICINE SUITE   -->
             <!-- ===================================================================== -->
             <div class="mt-8 p-6 rounded-3xl bg-slate-900/90 border border-emerald-500/40 shadow-2xl space-y-5 text-left">
               <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
@@ -12032,7 +12032,7 @@ function generateInstantOpdToken() {
                     <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono font-bold uppercase">
                       Integrative Clinical Suite
                     </span>
-                    <span class="text-xs text-slate-400">Mayo Clinic • Cleveland Clinic • IFM Benchmarks</span>
+                    <span class="text-xs text-slate-400">ZAYVORA Integrative Clinical Intelligence</span>
                   </div>
                   <h3 class="text-base font-extrabold text-white mt-1">Interactive Diagnostic &amp; Functional Medicine Engines</h3>
                 </div>
@@ -12045,21 +12045,21 @@ function generateInstantOpdToken() {
                 <button onclick="toggleBodyNavigatorModal(true)" class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/60 hover:bg-cyan-950/20 text-left transition group cursor-pointer">
                   <div class="text-xl mb-1 group-hover:scale-110 transition">🗺️</div>
                   <div class="font-bold text-xs text-white">Body Navigator</div>
-                  <div class="text-[10px] text-slate-400 mt-0.5">Mayo-Style Triage</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Neuro-Somatic Triage</div>
                 </button>
 
                 <!-- 2. Lab Correlator -->
                 <button onclick="toggleLabCorrelatorModal(true)" class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-teal-500/60 hover:bg-teal-950/20 text-left transition group cursor-pointer">
                   <div class="text-xl mb-1 group-hover:scale-110 transition">🧪</div>
                   <div class="font-bold text-xs text-white">Lab Correlator</div>
-                  <div class="text-[10px] text-slate-400 mt-0.5">Cleveland 2nd Opinion</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Integrative 2nd Opinion</div>
                 </button>
 
                 <!-- 3. Food Matrix -->
                 <button onclick="toggleFoodCompatibilityModal(true)" class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-amber-500/60 hover:bg-amber-950/20 text-left transition group cursor-pointer">
                   <div class="text-xl mb-1 group-hover:scale-110 transition">🥗</div>
                   <div class="font-bold text-xs text-white">Kitchen Matrix</div>
-                  <div class="text-[10px] text-slate-400 mt-0.5">ZOE Precision Food</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Constitutional Nutrition</div>
                 </button>
 
                 <!-- 4. Hazm-e-Arba'a -->
@@ -12549,7 +12549,7 @@ function generateInstantOpdToken() {
 
           <!-- ===================================================================== -->
 
-          <!-- TASK-FIRST CARE DISCOVERY (MAYO CLINIC & CLEVELAND CLINIC BENCHMARK) -->
+          <!-- TASK-FIRST CARE DISCOVERY (ZAYVORA INTEGRATIVE CLINICAL BENCHMARK) -->
           <!-- ===================================================================== -->
           <div class="p-6 md:p-10 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#131D31] to-[#0A0F1D] border-2 border-emerald-500/40 shadow-2xl space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-5">
@@ -19480,7 +19480,7 @@ Authorized Signatory: Dr. Irfan Ashraf (BUMS, AKTC AMU; NCISM: BUMS/AMU/2007)
       const reportId = 'ZYV-DOSSIER-' + Math.floor(100000 + Math.random() * 900000);
       const text = `================================================================================
 ZAYVORA HEALTH OS — WHOLE-PERSON BIO-HUMORAL CLINICAL DOSSIER
-Advanced Integrative Assessment Benchmark (Mayo Clinic / Cleveland Clinic Standard)
+ZAYVORA Advanced Integrative Assessment Standard (National & Global Clinical Benchmark)
 ================================================================================
 Dossier ID: ${reportId}
 Generated At: ${now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST
@@ -19570,7 +19570,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
       showNotification(`Currency switched to ${currencyKey} (${window.currencyRates[currencyKey].flag})`, 'info');
     }
 
-    // ── 1. MAYO CLINIC BENCHMARK: INTERACTIVE BODY SYMPTOM NAVIGATOR ─────────
+    // ── 1. ZAYVORA PROPRIETARY: INTERACTIVE BODY SYMPTOM NAVIGATOR ─────────
     window.activeBodyZone = 'head';
     const bodyNavigatorZones = [
       {
@@ -19758,7 +19758,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
       `;
     }
 
-    // ── 2. CLEVELAND CLINIC BENCHMARK: LAB REPORT CORRELATOR ─────────────────
+    // ── 2. ZAYVORA PROPRIETARY: LAB REPORT CORRELATOR ─────────────────
     window.activeLabTest = 'sgpt';
     const labTestCorrelations = [
       {
@@ -19889,7 +19889,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
       `;
     }
 
-    // ── 3. ZOE / THORNE BENCHMARK: MIZAJ FOOD & KITCHEN SCANNER ──────────────
+    // ── 3. ZAYVORA PROPRIETARY: MIZAJ FOOD & KITCHEN SCANNER ──────────────
     window.foodSearchQuery = '';
     window.selectedMizajFilter = 'ALL';
     const kitchenFoodsDatabase = [
@@ -20045,7 +20045,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
       `;
     }
 
-    // ── 5. MAYO CLINICAL OUTCOMES BENCHMARK: PROMS REGISTRY DASHBOARD ────────
+    // ── 5. ZAYVORA PROPRIETARY: PROMS REGISTRY DASHBOARD ────────
     window.activeCohort = 'joints';
     const clinicalOutcomeCohorts = [
       {
@@ -20236,7 +20236,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
           <!-- Intro Banner -->
           <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
-              <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">IFM Matrix Assimilation &amp; Biotransformation Engine</span>
+              <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">ZAYVORA Metabolic Assimilation &amp; Biotransformation Engine</span>
               <h4 class="text-sm font-bold text-white">Hazm-e-Arba'a: The 4 Cascades of Greco-Arab Metabolism</h4>
               <p class="text-[11px] text-slate-300">In Tibb-e-Unani, disease begins when metabolic waste (Fuzlaat) is halted at one of the four stages of digestion.</p>
             </div>
@@ -20369,7 +20369,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
       container.innerHTML = `
         <div class="space-y-6">
           <div class="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/30">
-            <span class="text-[10px] font-mono text-indigo-400 font-bold uppercase tracking-wider">The Functional Medicine Chronological Genesis (IFM Timeline Benchmark)</span>
+            <span class="text-[10px] font-mono text-indigo-400 font-bold uppercase tracking-wider">ZAYVORA Chronological Genesis Timeline (Saniha-e-Maraz Standard)</span>
             <h4 class="text-sm font-bold text-white">Saniha-e-Maraz: Antecedents, Triggers &amp; Mediators</h4>
             <p class="text-[11px] text-slate-300">Map how your illness evolved over decades from predisposing genetics to the trigger event and ongoing daily mediators.</p>
           </div>
