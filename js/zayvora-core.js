@@ -17138,18 +17138,18 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       const clinicalDeskIndicator = document.getElementById('clinical-desk-indicator');
 
       const deskLabels = {
-        'doctor': '🩺 Doctor Clinical Cockpit (/doctor)',
-        'clinic': '🏥 Reception Desk (/reception)',
-        'nurse': '🩺 Nurse Station & Ward (/nurse)',
-        'patient': '👤 Patient Portal (/patient)',
-        'pharmacy': '💊 Pharmacy OS (/pharmacy)',
-        'manufacturing': '🏭 Manufacturing OS (/manufacturing)',
-        'admin': '🛡️ Control Plane (/admin)',
-        'research': '🔬 Research Cloud (/research)',
-        'herbals': '🌿 Knowledge Base & Library',
+        'doctor': '🩺 Doctor Cockpit',
+        'clinic': '📋 Reception Desk',
+        'nurse': '🏥 Nurse Station',
+        'patient': '👤 Patient Portal',
+        'pharmacy': '💊 Pharmacy OS',
+        'manufacturing': '🏭 Manufacturing',
+        'admin': '🛡️ Admin Control',
+        'research': '🔬 Research Cloud',
+        'herbals': '🌿 Knowledge Base',
         'enterprise': '🌐 Enterprise Grid',
-        'hardware': '🩺 Bio-Sensors & Telemetry',
-        'mobile': '📱 Mobile Companion PWA'
+        'hardware': '📡 Bio-Sensors',
+        'mobile': '📱 Mobile PWA'
       };
 
       // Header Center Navigation Toggle: Website vs Clinical OS

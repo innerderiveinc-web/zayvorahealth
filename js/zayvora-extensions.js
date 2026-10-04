@@ -1,7 +1,7 @@
     // ── PWA Service Worker Registration ─────────────────────────────────────
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js?v=14.2').then(function(reg) {
+        navigator.serviceWorker.register('sw.js?v=14.3').then(function(reg) {
           reg.update();
         }).catch(function(err) {
           console.warn('[ZAYVORA Health OS] ServiceWorker registration notice:', err);
