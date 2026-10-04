@@ -1,5 +1,12 @@
-    // ── PWA Service Worker Registration ─────────────────────────────────────
+    // ── PWA Service Worker Registration & Live Auto-Update ───────────────────
     if ('serviceWorker' in navigator) {
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      });
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js?v=14.6').then(function(reg) {
           reg.update();
