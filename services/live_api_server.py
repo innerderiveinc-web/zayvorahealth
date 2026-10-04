@@ -1756,6 +1756,11 @@ CLINICIAN REVIEW REQUIRED
 Yes — this clinical guidance is synthesized by ZAYVORA Hakeem Sahab™ for decision-support purposes only. In accordance with clinical governance standards, this recommendation requires non-delegable review and digital signature by a licensed practitioner before any clinical action is taken."""
         return response
 
+try:
+    from services.security_shield import check_rate_limit, inspect_payload_safety, apply_enterprise_security_headers
+except ImportError:
+    from security_shield import check_rate_limit, inspect_payload_safety, apply_enterprise_security_headers
+
 class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         req_origin = self.headers.get("Origin", "") if hasattr(self, "headers") and self.headers else ""
@@ -1781,6 +1786,8 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-Facility-ID")
         self.send_header("Access-Control-Max-Age", "86400")
         self.send_header("Vary", "Origin")
+        # Enterprise OWASP, HIPAA & ISO 27001 Security Headers
+        apply_enterprise_security_headers(self)
 
     def _send_json(self, data, status=200):
         body = json.dumps(data, indent=2).encode("utf-8")
@@ -1879,6 +1886,11 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
     # GET Endpoints
     # =========================================================================
     def do_GET(self):
+        client_ip = self.client_address[0] if hasattr(self, "client_address") and self.client_address else "127.0.0.1"
+        if not check_rate_limit(client_ip):
+            self._send_error("Too many requests. Please wait a moment before trying again.", status=429, code="RATE_LIMIT_EXCEEDED")
+            return
+
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         query_params = urllib.parse.parse_qs(parsed.query)
@@ -4469,10 +4481,19 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
     # POST Endpoints
     # =========================================================================
     def do_POST(self):
+        client_ip = self.client_address[0] if hasattr(self, "client_address") and self.client_address else "127.0.0.1"
+        if not check_rate_limit(client_ip):
+            self._send_error("Too many requests. Please wait a moment before trying again.", status=429, code="RATE_LIMIT_EXCEEDED")
+            return
+
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         query_params = urllib.parse.parse_qs(parsed.query)
         body = self._read_json_body()
+        is_safe, safety_err = inspect_payload_safety(body)
+        if not is_safe:
+            self._send_error(safety_err, status=403, code="INJECTION_DETECTED")
+            return
         auth_ctx = self._get_auth_context()
 
         # ── Universal Task Engine: Create Task (Service 8) ───────────────────
