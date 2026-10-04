@@ -3116,5 +3116,51 @@
     </div>
   </div>
 
+<!-- ===================================================================== -->
+  <!-- MODAL: COMMERCIAL CHECKOUT & PAYMENT GATEWAY MODAL                    -->
+  <!-- ===================================================================== -->
+  <div id="commercial-checkout-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">🛍️</span>
+          <div>
+            <h3 class="text-base font-bold text-white">ZAYVORA Official Dispensary Checkout</h3>
+            <p class="text-xs text-slate-400">Encrypted 256-bit SSL • Direct FEFO Cold-Chain Dispatch • Free Delivery Above ₹999</p>
+          </div>
+        </div>
+        <button onclick="toggleCheckoutModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <!-- Modal Body (Dynamic Steps) -->
+      <div id="checkout-modal-body" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderCheckoutStep() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: PRODUCT DETAIL QUICK-VIEW (COMMERCIAL PDP MODAL)               -->
+  <!-- ===================================================================== -->
+  <div id="product-quickview-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">🌿</span>
+          <div>
+            <h3 id="pdp-modal-title" class="text-base font-bold text-white">Product Overview</h3>
+            <p id="pdp-modal-subtitle" class="text-xs text-slate-400">AYUSH-GMP Standardized Formulation</p>
+          </div>
+        </div>
+        <button onclick="toggleProductQuickViewModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <div id="product-quickview-body" class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <!-- Rendered dynamically by openProductQuickView(sku) -->
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
