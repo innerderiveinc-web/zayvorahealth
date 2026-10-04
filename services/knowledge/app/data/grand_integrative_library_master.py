@@ -1275,9 +1275,61 @@ def _build_materia_medica_and_formulary():
     except ImportError:
         pass
 
-    return ultra_mufradat, murakkabat_list, interactions_list, universal_contra, matab_list, parhez_list
+    # 6. Authentic Encyclopedia & Classical Lexicon
+    encyclopedia_list = []
+    try:
+        from services.knowledge.app.engines.evidence_glossary_engine import EvidenceGlossaryEngine
+        for term, val in EvidenceGlossaryEngine.GLOSSARY.items():
+            encyclopedia_list.append({
+                'term_id': 'TERM-' + term.upper().replace(' ', '-').replace("'", ''),
+                'term': term,
+                'category': 'Classical Kulliyat & Theoretical Framework',
+                'english': val.get('english', ''),
+                'definition': val.get('definition', ''),
+                'classical_source': 'Al-Qanoon fit-Tibb / Kulliyat-e-Nafeesi',
+                'systems_biology': 'Functional Systems Physiology & Neuro-Humoral Axis'
+            })
+    except ImportError:
+        pass
 
-MUFRADAT_LIST, MURAKKABAT_LIST, DRUG_INTERACTIONS_LIST, UNIVERSAL_CONTRAINDICATIONS_LIST, MATAB_PROTOCOLS_LIST, PARHEZ_REGIMENS_LIST = _build_materia_medica_and_formulary()
+    try:
+        curated_lexicon_path = os.path.join(os.path.dirname(__file__), 'classical_unani_curated_lexicon.json')
+        if os.path.exists(curated_lexicon_path):
+            with open(curated_lexicon_path, 'r', encoding='utf-8') as f_lex:
+                lexicon_data = json.load(f_lex)
+                for zmf_id, entry in lexicon_data.items():
+                    cit = entry.get('classical_citation', {})
+                    afaal_str = ', '.join(entry.get('afaal', [])) if isinstance(entry.get('afaal'), list) else str(entry.get('afaal', ''))
+                    encyclopedia_list.append({
+                        'term_id': zmf_id,
+                        'term': f"{entry.get('canonical_name', '')} ({entry.get('botanical_name', '')})",
+                        'category': 'Materia Medica & Pharmacognosy Lexicon',
+                        'english': f"{entry.get('family', '')} • Part: {entry.get('part_used', '')}",
+                        'definition': f"Mizaj: {entry.get('mizaj', '')} ({entry.get('daraja', '')}). Afaal: {afaal_str}. Musleh: {entry.get('musleh', '')}. Badal: {entry.get('badal', '')}. Tadbeer: {entry.get('tadbeer', '')}.",
+                        'classical_source': cit.get('source', 'Khazain-ul-Advia / Makhzan-ul-Advia'),
+                        'systems_biology': f"UPI Standard: {entry.get('upi_monograph', 'UPI Monograph Indexed')}"
+                    })
+    except Exception:
+        pass
+
+    try:
+        from services.knowledge.app.core.canonical_terminology_service import CanonicalTerminologyService
+        for code, entry in CanonicalTerminologyService._VOCABULARY.items():
+            encyclopedia_list.append({
+                'term_id': 'CANON-' + entry.canonical_id,
+                'term': f"{entry.clinician_term} / {entry.urdu_nastaliq}",
+                'category': entry.category,
+                'english': entry.patient_term,
+                'definition': entry.patient_explanation,
+                'classical_source': 'ZAYVORA Health OS Regulatory & Terminology Standard',
+                'systems_biology': f"Technical Key: {entry.technical_term} (Hindi: {entry.hindi_devanagari})"
+            })
+    except ImportError:
+        pass
+
+    return ultra_mufradat, murakkabat_list, interactions_list, universal_contra, matab_list, parhez_list, encyclopedia_list
+
+MUFRADAT_LIST, MURAKKABAT_LIST, DRUG_INTERACTIONS_LIST, UNIVERSAL_CONTRAINDICATIONS_LIST, MATAB_PROTOCOLS_LIST, PARHEZ_REGIMENS_LIST, ENCYCLOPEDIA_LIST = _build_materia_medica_and_formulary()
 
 # Attach into GRAND_INTEGRATIVE_LIBRARY master dictionary
 GRAND_INTEGRATIVE_LIBRARY["mufradat"] = MUFRADAT_LIST
@@ -1286,6 +1338,7 @@ GRAND_INTEGRATIVE_LIBRARY["drug_interactions"] = DRUG_INTERACTIONS_LIST
 GRAND_INTEGRATIVE_LIBRARY["universal_contraindications"] = UNIVERSAL_CONTRAINDICATIONS_LIST
 GRAND_INTEGRATIVE_LIBRARY["matab_protocols"] = MATAB_PROTOCOLS_LIST
 GRAND_INTEGRATIVE_LIBRARY["parhez_regimens"] = PARHEZ_REGIMENS_LIST
+GRAND_INTEGRATIVE_LIBRARY["encyclopedia"] = ENCYCLOPEDIA_LIST
 
 def get_all_matab_protocols():
     """Returns the 8 sequential multi-phase Matab compounding protocols."""
@@ -1367,5 +1420,26 @@ def search_drug_interactions(query: str) -> List[Dict[str, Any]]:
         mech = item.get("mechanism", "").lower()
         effect = item.get("clinical_effect", "").lower()
         if q in herb or q in allo or q in mech or q in effect:
+            results.append(item)
+    return results
+
+
+def get_all_encyclopedia_terms() -> List[Dict[str, Any]]:
+    """Returns all authentic classical encyclopedia terms and terminology entries."""
+    return list(GRAND_INTEGRATIVE_LIBRARY.get("encyclopedia", []))
+
+def search_encyclopedia(query: str) -> List[Dict[str, Any]]:
+    """Search authentic encyclopedia entries by term, definition, category, or citation."""
+    q = (query or "").strip().lower()
+    if not q:
+        return get_all_encyclopedia_terms()
+    results = []
+    for item in GRAND_INTEGRATIVE_LIBRARY.get("encyclopedia", []):
+        term = item.get("term", "").lower()
+        eng = item.get("english", "").lower()
+        defn = item.get("definition", "").lower()
+        cat = item.get("category", "").lower()
+        src = item.get("classical_source", "").lower()
+        if q in term or q in eng or q in defn or q in cat or q in src:
             results.append(item)
     return results

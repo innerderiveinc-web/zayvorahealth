@@ -32,6 +32,8 @@ from services.knowledge.app.data.grand_integrative_library_master import (
     search_murakkabat,
     get_all_drug_interactions,
     search_drug_interactions,
+    get_all_encyclopedia_terms,
+    search_encyclopedia,
 )
 
 
@@ -298,6 +300,29 @@ class TestGrandIntegrativeLibrary(unittest.TestCase):
         self.assertGreaterEqual(len(res_botanical), 1)
 
 
+    def test_19_authentic_encyclopedia_registry(self):
+        """Verifies the authentic classical encyclopedia contains curated terms and classical citations."""
+        terms = get_all_encyclopedia_terms()
+        self.assertGreaterEqual(len(terms), 200, "Must contain over 200 authentic encyclopedia entries")
+        
+        # Verify presence of classical Kulliyat terms
+        mizaj_term = next((t for t in terms if 'Mizaj' in t.get('term', '')), None)
+        self.assertIsNotNone(mizaj_term, "Mizaj must be present in encyclopedia")
+        self.assertIn('Constitutional Temperament', mizaj_term.get('english', ''))
+        
+        # Verify presence of Lexicon botanical citations
+        babchi_term = next((t for t in terms if 'Babchi' in t.get('term', '')), None)
+        self.assertIsNotNone(babchi_term, "Babchi must be present in encyclopedia")
+        self.assertIn('Khazain-ul-Advia', babchi_term.get('classical_source', ''))
+
+    def test_20_encyclopedia_search_capabilities(self):
+        """Verifies semantic and keyword searching through encyclopedia entries."""
+        res_humour = search_encyclopedia("humours")
+        self.assertGreaterEqual(len(res_humour), 1)
+        
+        res_khazain = search_encyclopedia("Khazain-ul-Advia")
+        self.assertGreaterEqual(len(res_khazain), 100)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
-
