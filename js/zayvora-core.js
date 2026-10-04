@@ -12007,10 +12007,10 @@ function generateInstantOpdToken() {
               <button onclick="viewWebsitePage('products');" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xl shadow-amber-950/40 transition flex items-center gap-2 cursor-pointer">
                 <span>🛍️</span> Order 32 Formulations (Dispensary)
               </button>
-              <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer">
+              <button onclick="toggleMizajAssessmentModal(true);" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer ring-2 ring-emerald-500/30">
                 <span>🩺</span> Free Assessment of Mizaj
               </button>
-              <button onclick="document.getElementById('organ-axis-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2 cursor-pointer">
+              <button onclick="toggleOrganAxisModal(true);" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2 cursor-pointer ring-2 ring-teal-500/30">
                 <span>🔬</span> Free 12-Organ-Axis Screener
               </button>
               <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2 cursor-pointer">
@@ -20711,7 +20711,7 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
               <h4 class="text-sm font-bold text-white">12 Vital Organ Networks • Objective Screener</h4>
             </div>
             <button onclick="resetAxisAssessment()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
-              🔄 Reset Screener
+              🔄 Clear All Checkmarks
             </button>
           </div>
 
@@ -20719,58 +20719,73 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
           <div class="p-4 rounded-2xl bg-slate-950 border border-teal-500/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
               <span class="text-[10px] font-mono text-slate-400 uppercase">CALCULATED ORGAN-AXIS EQUILIBRIUM:</span>
-              <div class="text-xl font-black text-teal-300">${axisRes.score} / 100</div>
+              <div class="text-2xl font-black text-teal-300">${axisRes.score} <span class="text-xs text-slate-500">/ 100</span></div>
               <span class="text-xs text-slate-300">${axisRes.summary}</span>
             </div>
-            <div class="text-right">
+            <div class="text-left sm:text-right">
               <span class="text-[10px] font-mono text-rose-400 block uppercase">PRIMARY FLAGGED STASIS:</span>
-              <span class="text-xs font-bold text-white">${axisRes.primaryAxis.name.split('(')[0]}</span>
+              <span class="text-xs font-bold text-white">${axisRes.primaryAxis.name}</span>
+              <span class="text-[10px] text-teal-400 block">${axisRes.primaryAxis.english}</span>
             </div>
           </div>
 
-          <!-- 12 Organ Axes Selection & Symptoms -->
+          <!-- 12-Axis Interactive Check Grid -->
           <div class="space-y-3">
-            <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Tap an Axis to Select Active Symptoms:</h5>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Tap Any Symptoms You Currently Experience:</span>
+              <span class="text-xs font-mono text-teal-400">${axisRes.checkedCount} of 12 Flagged</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
               ${organAxesList.map((ax, idx) => {
-                const count = (window.selectedAxisSymptoms && window.selectedAxisSymptoms[idx] && window.selectedAxisSymptoms[idx].length) || 0;
-                const isSelected = window.currentOrganAxisIdx === idx;
+                const isChecked = !!(window.selectedAxisSymptoms && window.selectedAxisSymptoms[ax.id]);
                 return `
-                  <button onclick="setOrganAxis(${idx})" class="p-2.5 rounded-xl border text-left transition flex flex-col justify-between ${isSelected ? 'bg-teal-600 text-white border-teal-400 shadow' : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-900'}">
-                    <span class="text-[10px] font-mono opacity-80">${idx + 1}. ${ax.latin.split(' ')[0]}</span>
-                    <span class="text-xs font-bold line-clamp-1 mt-0.5">${ax.name.split('(')[0]}</span>
-                    ${count > 0 ? `<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-rose-500/30 text-rose-200 mt-1 inline-block w-max font-bold">${count} Symptoms</span>` : ''}
-                  </button>
+                  <div onclick="toggleAxisSymptom('${ax.id}')" class="p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${isChecked ? 'bg-teal-950/50 border-teal-400 shadow-md ring-1 ring-teal-400' : 'bg-slate-950 border-slate-800 hover:border-slate-700'}">
+                    <div class="flex items-start justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">${ax.icon}</span>
+                        <div>
+                          <div class="text-xs font-bold text-white">${ax.name}</div>
+                          <span class="text-[10px] text-teal-400 font-mono">${ax.english}</span>
+                        </div>
+                      </div>
+                      <span class="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold ${isChecked ? 'bg-teal-500 text-slate-950' : 'border border-slate-700 text-transparent'}">
+                        ✓
+                      </span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 mt-2 leading-relaxed">${ax.symptom}</p>
+                  </div>
                 `;
               }).join('')}
             </div>
+          </div>
 
-            <!-- Active Axis Symptom Checklist -->
-            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 mt-3">
-              <div class="border-b border-slate-800 pb-2">
-                <span class="text-xs font-bold text-white">${organAxesList[window.currentOrganAxisIdx].name}</span>
-                <p class="text-[11px] text-slate-400">${organAxesList[window.currentOrganAxisIdx].desc}</p>
+          <!-- Deep Diagnostic Root Cause Card -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div class="border-b border-slate-800 pb-2">
+              <span class="text-[10px] font-mono uppercase text-teal-400 font-bold block">PRIMARY COMPROMISED SYSTEM ANALYSIS:</span>
+              <h5 class="text-sm font-bold text-white">${axisRes.primaryAxis.name} (${axisRes.primaryAxis.english})</h5>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <strong class="text-slate-400 block uppercase text-[10px]">Root Cause Pathophysiology (Su-e-Mizaj):</strong>
+                <p class="text-slate-300 leading-relaxed">${axisRes.primaryAxis.rootCause}</p>
+                <div class="pt-1.5 text-[11px] text-emerald-400 font-mono">Biomarkers: ${axisRes.primaryAxis.markers}</div>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                ${organAxesList[window.currentOrganAxisIdx].symptoms.map(s => {
-                  const sel = window.selectedAxisSymptoms && window.selectedAxisSymptoms[window.currentOrganAxisIdx] && window.selectedAxisSymptoms[window.currentOrganAxisIdx].includes(s);
-                  return `
-                    <div onclick="toggleAxisSymptom(${window.currentOrganAxisIdx}, '${s.replace(/'/g, "\\'")}')" class="p-2.5 rounded-xl border transition flex items-center justify-between cursor-pointer ${sel ? 'bg-rose-950/40 border-rose-500 text-white' : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-850'}">
-                      <span class="text-xs">${s}</span>
-                      <span>${sel ? '✅' : '⚪'}</span>
-                    </div>
-                  `;
-                }).join('')}
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <strong class="text-teal-400 block uppercase text-[10px]">Targeted Intervention (Afaal &amp; Regimen):</strong>
+                <p class="text-slate-300 leading-relaxed">${axisRes.primaryAxis.dualTrack}</p>
+                <div class="pt-1.5 text-[11px] text-cyan-400 font-mono">Clinical Efficacy: ${axisRes.primaryAxis.successRate}</div>
               </div>
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="pt-2 flex flex-col sm:flex-row gap-2">
-            <button onclick="shareAxisOnWhatsApp(${axisRes.score}, '${axisRes.primaryAxis.name.replace(/'/g, "\\'")}', ${axisRes.totalSymptomsFlagged})" class="flex-1 py-2.5 bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
-              <span>💬</span> Send Organ-Axis Report to Dr. Irfan Ashraf
+          <!-- Action Buttons -->
+          <div class="pt-1 flex flex-col sm:flex-row gap-2">
+            <button onclick="shareAxisOnWhatsApp('${axisRes.score}', '${axisRes.primaryAxis.name.replace(/'/g, "\\'")}', '${axisRes.checkedCount}')" class="flex-1 py-2.5 bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2">
+              <span>💬</span> WhatsApp Organ-Axis Report to Dr. Irfan Ashraf
             </button>
-            <button onclick="copyAxisSummary(${axisRes.score}, '${axisRes.primaryAxis.name.replace(/'/g, "\\'")}', '${axisRes.primaryAxis.rootCause.replace(/'/g, "\\'")}')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition">
+            <button onclick="copyAxisSummary('${axisRes.score}', '${axisRes.primaryAxis.name.replace(/'/g, "\\'")}', '${axisRes.primaryAxis.rootCause.replace(/'/g, "\\'")}')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition">
               Copy Report
             </button>
           </div>
