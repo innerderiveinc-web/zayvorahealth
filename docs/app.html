@@ -783,6 +783,94 @@
     [data-theme="dark"] .user-pill-badge span.user-initials {
       color: #ffffff !important;
     }
+    /* Modern Enterprise Role Switcher Pill */
+    #role-selector-container {
+      background: #0f172a !important;
+      border: 1px solid rgba(245, 158, 11, 0.45) !important;
+      transition: all 0.2s ease;
+    }
+    #role-selector-container:hover {
+      border-color: rgba(245, 158, 11, 0.8) !important;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.15) !important;
+    }
+    #role-selector {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent !important;
+      color: #fef3c7 !important;
+      border: none !important;
+      padding-right: 1.25rem !important;
+    }
+    #role-selector option,
+    #role-selector optgroup {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+    }
+    [data-theme="light"] #role-selector-container {
+      background: #ffffff !important;
+      border: 1px solid rgba(217, 119, 6, 0.4) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] #role-selector-container:hover {
+      border-color: #d97706 !important;
+    }
+    [data-theme="light"] #role-selector {
+      color: #92400e !important;
+    }
+    [data-theme="light"] #role-selector option,
+    [data-theme="light"] #role-selector optgroup {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
+
+    /* Sleek Utility Action Buttons (Search & Notifications) */
+    .topbar-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      border-radius: 0.75rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    [data-theme="dark"] .topbar-action-btn {
+      background-color: #111827 !important;
+      border: 1px solid #1f2937 !important;
+      color: #94a3b8 !important;
+    }
+    [data-theme="dark"] .topbar-action-btn:hover {
+      border-color: #10b981 !important;
+      color: #ffffff !important;
+      background-color: #1f2937 !important;
+    }
+    [data-theme="light"] .topbar-action-btn {
+      background-color: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #475569 !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .topbar-action-btn:hover {
+      border-color: #059669 !important;
+      color: #0f172a !important;
+      background-color: #f8fafc !important;
+    }
+
+    /* Diagnostic Pill Refinement */
+    #header-diagnostic-btn {
+      height: 32px;
+    }
+    [data-theme="light"] #header-diagnostic-btn {
+      background-color: #ffffff !important;
+      border: 1px solid rgba(5, 150, 105, 0.3) !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] #header-diagnostic-btn:hover {
+      border-color: #059669 !important;
+    }
+    [data-theme="light"] #header-diagnostic-btn span:last-child {
+      background-color: #ecfdf5 !important;
+      color: #065f46 !important;
+    }
   </style>
 
   <style>
@@ -855,9 +943,9 @@
           <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px]">10</span>
         </button>
 
-        <div id="role-selector-container" class="hidden items-center gap-1.5 bg-[#0B132B] px-2.5 py-1.5 rounded-xl border border-amber-500/50 shadow-sm shrink-0">
+        <div id="role-selector-container" class="hidden relative items-center gap-1.5 px-2.5 py-1.5 rounded-xl shadow-sm shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
-          <select id="role-selector" onchange="switchRole(this.value, true)" class="bg-transparent text-xs font-bold text-amber-100 focus:outline-none cursor-pointer max-w-[150px] truncate" title="👑 Super Admin Role Switcher">
+          <select id="role-selector" onchange="switchRole(this.value, true)" class="text-xs font-bold focus:outline-none cursor-pointer max-w-[155px] truncate pr-5" title="👑 Master Clinical & Governance Switcher">
             <optgroup label="👑 Super Admin & Governance" class="bg-[#0F172A] text-amber-300 font-bold">
               <option value="admin">🛡️ Admin Control</option>
               <option value="enterprise">🏛️ Executive</option>
@@ -877,6 +965,7 @@
               <option value="research">🔬 Research</option>
             </optgroup>
           </select>
+          <svg class="pointer-events-none absolute right-2 w-3.5 h-3.5 text-amber-400/80 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
         </div>
 
         <!-- Official Dispensary Cart with Live Count Badge -->
@@ -967,12 +1056,14 @@
           <span>📖</span>
         </button>
 
-        <button id="header-search-btn" onclick="toggleSearchModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs text-slate-300 hover:border-emerald-400 items-center gap-1.5 transition" title="Search Patients, Rx, Protocols (⌘K)">
-          <span><svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></span> <kbd class="px-1 py-0.5 rounded bg-[#1E293B] text-[9px] font-mono text-emerald-400">⌘K</kbd>
+        <button id="header-search-btn" onclick="toggleSearchModal()" class="hidden topbar-action-btn px-2.5 text-xs items-center gap-1.5" title="Search Patients, Rx, Protocols (⌘K)">
+          <svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <kbd class="px-1.5 py-0.5 rounded bg-[#1E293B] text-[9px] font-mono text-emerald-400 font-bold border border-slate-700/60">⌘K</kbd>
         </button>
 
-        <button id="header-notif-btn" onclick="toggleNotificationsModal()" class="hidden relative p-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs hover:border-emerald-400 transition" title="System Alerts &amp; Clinical Notifications">
-          <svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg><span id="header-notif-badge" class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white font-bold text-[8px] flex items-center justify-center">3</span>
+        <button id="header-notif-btn" onclick="toggleNotificationsModal()" class="hidden relative topbar-action-btn w-8 text-xs" title="System Alerts &amp; Clinical Notifications">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="header-notif-badge" class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-rose-500 text-white font-bold text-[8px] flex items-center justify-center shadow-sm">3</span>
         </button>
 
         <!-- Live DB Health Status Badge (Hidden by default, shown in clinical cockpit) -->
@@ -2168,7 +2259,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.8"></script>
+  <script src="/js/zayvora-core.js?v=14.9"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2968,7 +3059,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.8"></script>
+  <script src="/js/zayvora-extensions.js?v=14.9"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
