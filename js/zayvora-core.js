@@ -12211,42 +12211,42 @@ function generateInstantOpdToken() {
 
             <!-- 9 Core Clinical Focus Areas -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 text-xs">
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Digestive &amp; Gut Health</h3>
                 <p class="text-[11px] text-slate-400">Su-e-Hazm, IBS, GERD, Gastritis, Dysbiosis, Liver Congestion</p>
                 <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
               </div>
 
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Metabolic &amp; Pre-Diabetes</h3>
                 <p class="text-[11px] text-slate-400">Insulin Resistance (HOMA-IR), Obesity, Visceral Adiposity, Dyslipidemia</p>
                 <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
               </div>
 
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Hormonal &amp; Thyroid Axis</h3>
                 <p class="text-[11px] text-slate-400">PCOS, Hypothyroid (Barid-Ratab), Adrenal Fatigue, Cortisol Dysregulation</p>
                 <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
               </div>
 
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Reproductive &amp; Vitality</h3>
                 <p class="text-[11px] text-slate-400">Male Oligospermia, Asthenospermia, Female Anovulation, Vitality Deficits</p>
                 <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
               </div>
 
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Joint &amp; Musculoskeletal</h3>
                 <p class="text-[11px] text-slate-400">Waja-ul-Mafasil, Knee Osteoarthritis, Cervical Spondylosis, Synovial Stiffness</p>
                 <span class="text-[10px] text-emerald-400 font-semibold block pt-1">Explore Care Path →</span>
               </div>
 
-              <div onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
+              <div onclick="toggleMizajAssessmentModal(true);" class="p-4 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-950/20 cursor-pointer transition-all space-y-1.5 group">
                 <div class="text-2xl"></div>
                 <h3 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Sleep, Stress &amp; Cognition</h3>
                 <p class="text-[11px] text-slate-400">Insomnia, Chronic Anxiety (Khafqan), Mental Fog, Burnout Recovery</p>
@@ -12346,7 +12346,7 @@ function generateInstantOpdToken() {
                   Discover your baseline Mizaj (Damawi, Safrawi, Balghami, Sawdawi) and screen your 12 organ axes in minutes to pinpoint subclinical humoral imbalances.
                 </p>
                 <div class="pt-2 border-t border-slate-800">
-                  <button onclick="document.getElementById('mizaj-assessment-section').scrollIntoView({ behavior: 'smooth' });" class="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
+                  <button onclick="toggleMizajAssessmentModal(true);" class="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
                     Take Free Assessment &darr;
                   </button>
                 </div>
