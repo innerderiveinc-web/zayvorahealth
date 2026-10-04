@@ -18739,7 +18739,2091 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       window.print();
     }
 
+function handleRouteFromURL() {
+      const rawHash = (window.location.hash || '').replace(/^#\/?/, '').trim();
+      if (!rawHash) return;
+      
+      const publicMap = {
+        'home': 'home',
+        'about': 'about',
+        'services': 'services',
+        'services/clinical-care': 'services_clinical_care',
+        'services_clinical_care': 'services_clinical_care',
+        'services/ai-healthcare': 'services_ai_healthcare',
+        'services_ai_healthcare': 'services_ai_healthcare',
+        'services/digital-health': 'services_digital_health',
+        'services_digital_health': 'services_digital_health',
+        'services/research': 'services_research',
+        'services_research': 'services_research',
+        'services/pharmacy': 'services_pharmacy',
+        'services_pharmacy': 'services_pharmacy',
+        'services/manufacturing': 'services_manufacturing',
+        'services_manufacturing': 'services_manufacturing',
+        'services/healthcare-communication': 'services_healthcare_communication',
+        'services_healthcare_communication': 'services_healthcare_communication',
+        'products': 'products',
+        'products/unani-care': 'products_unani_care',
+        'products_unani_care': 'products_unani_care',
+        'products/herbal-products': 'products_herbal_products',
+        'products_herbal_products': 'products_herbal_products',
+        'products/nutraceuticals': 'products_nutraceuticals',
+        'products_nutraceuticals': 'products_nutraceuticals',
+        'research': 'research',
+        'research/clinical-research': 'research_clinical_research',
+        'research_clinical_research': 'research_clinical_research',
+        'research/evidence': 'research_evidence',
+        'research_evidence': 'research_evidence',
+        'research/knowledge-intelligence': 'research_knowledge_intelligence',
+        'research_knowledge_intelligence': 'research_knowledge_intelligence',
+        'philosophy': 'philosophy',
+        'care-journey': 'care_journey',
+        'care_journey': 'care_journey',
+        'clinics': 'clinics',
+        'doctors': 'doctors',
+        'team': 'team',
+        'knowledge': 'knowledge',
+        'faqs': 'faqs',
+        'faq': 'faqs',
+        'contact': 'contact',
+        'privacy': 'privacy',
+        'privacy-policy': 'privacy',
+        'terms': 'terms',
+        'terms-and-conditions': 'terms',
+        'disclaimer': 'disclaimer',
+        'shipping': 'shipping',
+        'refunds': 'refunds',
+        'shipping-refunds': 'shipping_refunds',
+        'shipping_refunds': 'shipping_refunds',
+        'grievance': 'grievance',
+        'careers': 'careers',
+        'ethics': 'ethics',
+        'pages25': 'pages25'
+      };
 
+      if (publicMap[rawHash]) {
+        viewWebsitePage(publicMap[rawHash]);
+        return;
+      }
+
+      // Check if hash matches an internal role desk (e.g., #doctor, #pharmacy, #admin, #nurse, #website)
+      const validRoles = ['patient', 'doctor', 'clinic', 'nurse', 'pharmacy', 'research', 'manufacturing', 'admin', 'enterprise', 'herbals', 'mobile', 'hardware', 'website'];
+      if (validRoles.includes(rawHash)) {
+        switchRole(rawHash);
+      }
+    }
+
+    function initializeApp() {
+      // 1. Recover user profile credentials if logged in
+      try {
+        const savedUserStr = localStorage.getItem('zayvora_user');
+        if (savedUserStr) {
+          const u = JSON.parse(savedUserStr);
+          if (u && (u.email || u.role)) {
+            state.currentUser = u;
+          }
+        }
+      } catch (e) {}
+
+      // 2. Prevent Refresh Hijack: Default MUST be public website unless explicit role is requested
+      const rawHash = (window.location.hash || '').replace(/^#\/?/, '').trim();
+      const validInternalRoles = ['doctor', 'clinic', 'nurse', 'pharmacy', 'research', 'manufacturing', 'admin', 'enterprise', 'hardware', 'patient'];
+      let sessionDesk = null;
+      try { sessionDesk = sessionStorage.getItem('zayvora_session_desk'); } catch(e) {}
+
+      if (state.currentUser && rawHash && validInternalRoles.includes(rawHash)) {
+        state.role = rawHash;
+        try { sessionStorage.setItem('zayvora_session_desk', rawHash); } catch(e) {}
+      } else if (state.currentUser && sessionDesk && validInternalRoles.includes(sessionDesk) && (!rawHash || rawHash === sessionDesk)) {
+        state.role = sessionDesk;
+      } else {
+        // ALWAYS default to public website homepage on root reload for unauthenticated visitors
+        state.role = 'website';
+        state.tab = 'home';
+        try { sessionStorage.setItem('zayvora_session_desk', 'website'); } catch(e) {}
+      }
+
+      const sel = document.getElementById('role-selector');
+      if (sel) sel.value = state.role;
+      updateAuthHeaderUI();
+      renderNavigation();
+      renderWorkspace();
+      
+      if (window.location.hash) {
+        handleRouteFromURL();
+      }
+    }
+
+    window.addEventListener('hashchange', handleRouteFromURL);
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
+
+
+// ── ASBAB-E-SITTA INTERACTIVE EQUILIBRIUM TRACKER ────────────────────────
+    window.asbabStates = [true, true, true, true, true, false];
+    function toggleAsbabPillar(index) {
+      if (!window.asbabStates) window.asbabStates = [true, true, true, true, true, false];
+      window.asbabStates[index] = !window.asbabStates[index];
+      const el = document.getElementById(`asbab-pillar-${index}`);
+      if (!el) return;
+      const isDone = window.asbabStates[index];
+      const checkIcon = el.querySelector('.asbab-check-icon');
+      if (isDone) {
+        el.classList.remove('border-slate-800', 'text-slate-400');
+        el.classList.add('border-emerald-500/40', 'text-white');
+        if (checkIcon) {
+          checkIcon.classList.remove('text-slate-500');
+          checkIcon.classList.add('text-emerald-400');
+          checkIcon.innerText = '✓ DONE';
+        }
+      } else {
+        el.classList.remove('border-emerald-500/40', 'text-white');
+        el.classList.add('border-slate-800', 'text-slate-400');
+        if (checkIcon) {
+          checkIcon.classList.remove('text-emerald-400');
+          checkIcon.classList.add('text-slate-500');
+          checkIcon.innerText = '⏳ PENDING';
+        }
+      }
+      const doneCount = window.asbabStates.filter(Boolean).length;
+      const score = Math.round((doneCount / 6) * 100);
+      const scoreEl = document.getElementById('patient-mizaj-score-display');
+      if (scoreEl) scoreEl.innerText = `${score}%`;
+      showNotification(`✓ Updated Asbab-e-Sitta Equilibrium Score: ${score}% (${doneCount}/6 Pillars Completed)`, 'success');
+    }
+
+// ── SMART VOICE & NATURAL LANGUAGE PRESCRIPTION PARSER ──────────────────
+    let isSpeechRecording = false;
+    let speechRecognitionInstance = null;
+
+    function toggleVoicePrescriptionModal() {
+      const modal = document.getElementById('voice-prescription-modal');
+      if (!modal) return;
+      modal.classList.toggle('hidden');
+      const preview = document.getElementById('voice-parsed-preview');
+      if (preview) preview.classList.add('hidden');
+    }
+
+    function applyVoicePreset(text) {
+      const input = document.getElementById('voice-dictation-input');
+      if (input) input.value = text;
+    }
+
+    function toggleSpeechRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showNotification('Web Speech API is not supported in this browser. Please type or paste your dictation.', 'info');
+        return;
+      }
+
+      const btn = document.getElementById('btn-toggle-speech');
+      const ind = document.getElementById('voice-mic-indicator');
+      const lbl = document.getElementById('voice-status-label');
+
+      if (isSpeechRecording) {
+        if (speechRecognitionInstance) speechRecognitionInstance.stop();
+        isSpeechRecording = false;
+        if (btn) btn.innerHTML = '<span>🎙️</span> Start Dictation';
+        if (ind) { ind.classList.remove('bg-rose-500', 'animate-pulse'); ind.classList.add('bg-slate-600'); }
+        if (lbl) lbl.innerText = 'Dictation paused.';
+      } else {
+        speechRecognitionInstance = new SpeechRecognition();
+        speechRecognitionInstance.continuous = true;
+        speechRecognitionInstance.interimResults = true;
+        speechRecognitionInstance.lang = 'en-US'; // handles medical English/Urdu terms
+
+        speechRecognitionInstance.onstart = function() {
+          isSpeechRecording = true;
+          if (btn) btn.innerHTML = '<span>⏹️</span> Stop Dictation';
+          if (ind) { ind.classList.remove('bg-slate-600'); ind.classList.add('bg-rose-500', 'animate-pulse'); }
+          if (lbl) lbl.innerText = '🔴 Listening... Speak naturally.';
+        };
+
+        speechRecognitionInstance.onresult = function(event) {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          const input = document.getElementById('voice-dictation-input');
+          if (input) input.value = (input.value ? input.value + ' ' : '') + transcript;
+        };
+
+        speechRecognitionInstance.onerror = function(event) {
+          console.warn('[Speech Error]:', event.error);
+          isSpeechRecording = false;
+          if (btn) btn.innerHTML = '<span>🎙️</span> Start Dictation';
+          if (lbl) lbl.innerText = 'Speech recognition finished.';
+        };
+
+        speechRecognitionInstance.onend = function() {
+          isSpeechRecording = false;
+          if (btn) btn.innerHTML = '<span>🎙️</span> Start Dictation';
+        };
+
+        speechRecognitionInstance.start();
+      }
+    }
+
+    function parseAndApplyVoicePrescription() {
+      const input = document.getElementById('voice-dictation-input');
+      if (!input || !input.value.trim()) {
+        showNotification('Please dictate or paste prescription text first.', 'warning');
+        return;
+      }
+
+      const text = input.value.trim();
+      const detectedItems = [];
+
+      // Clinical Knowledge Dictionary for Match
+      const CLINICAL_VOCAB = [
+        { key: 'tensiocalm', name: 'TensioCalm™ Veg Capsules', form: 'Capsule', defaultStrength: '1-2 Capsules', defaultFreq: 'Twice daily', defaultAnupan: 'Arq-e-Gaozaban or warm water', track: 'ZAYVORA_PRODUCT', axis: 'Cerebrovascular' },
+        { key: 'glucovora', name: 'Glucovora™ Micro-Granules', form: 'Granules', defaultStrength: '1 Sachet (5g)', defaultFreq: 'Twice daily pre-meals', defaultAnupan: 'Warm water', track: 'ZAYVORA_PRODUCT', axis: 'Pancreatic' },
+        { key: 'cardiovora', name: 'CardioVora™ Majoon Granules', form: 'Granules', defaultStrength: '1 Sachet (5g)', defaultFreq: 'Morning fasting', defaultAnupan: 'Warm milk or Arq Gulab', track: 'ZAYVORA_PRODUCT', axis: 'Cardiovascular' },
+        { key: 'liverprime', name: 'LiverPrime™ Veg Capsules', form: 'Capsule', defaultStrength: '1-2 Capsules', defaultFreq: 'Twice daily', defaultAnupan: 'Warm water or Arq Kasni', track: 'ZAYVORA_PRODUCT', axis: 'Hepatobiliary' },
+        { key: 'synovoflex', name: 'SynovoFlex™ Micro-Granules', form: 'Granules', defaultStrength: '1 Sachet (5g)', defaultFreq: 'Twice daily post-meals', defaultAnupan: 'Lukewarm milk', track: 'ZAYVORA_PRODUCT', axis: 'Musculoskeletal' },
+        { key: 'itrifal kishneezi', name: 'Itrifal Kishneezi', form: 'Itrifal', defaultStrength: '5g', defaultFreq: 'Bedtime', defaultAnupan: 'Lukewarm water', track: 'CLASSICAL_QARABADEEN', axis: 'Cerebrovascular' },
+        { key: 'sharbat banafsha', name: 'Sharbat Banafsha', form: 'Sharbat', defaultStrength: '20ml', defaultFreq: 'Twice daily', defaultAnupan: 'Warm water', track: 'CLASSICAL_QARABADEEN', axis: 'Pulmonary' },
+        { key: 'majoon ushba', name: 'Majoon Ushba', form: 'Majoon', defaultStrength: '5g', defaultFreq: 'Morning fasting', defaultAnupan: 'Fresh water', track: 'CLASSICAL_QARABADEEN', axis: 'Dermatological' },
+        { key: 'hab-e-suranjan', name: 'Hab-e-Suranjan', form: 'Habb / Tablet', defaultStrength: '2 Tablets', defaultFreq: 'Twice daily', defaultAnupan: 'Lukewarm water', track: 'CLASSICAL_QARABADEEN', axis: 'Musculoskeletal' },
+        { key: 'khamira gaozaban', name: 'Khamira Gaozaban Ambari', form: 'Khamira', defaultStrength: '5g', defaultFreq: 'Morning fasting', defaultAnupan: 'Arq Gaozaban', track: 'CLASSICAL_QARABADEEN', axis: 'Cardio-Cephalic' },
+        { key: 'roghan suranjan', name: 'Roghan-e-Suranjan', form: 'Roghan (Oil)', defaultStrength: '5-10ml', defaultFreq: 'Twice daily topical', defaultAnupan: 'Gentle circular friction', track: 'CLASSICAL_QARABADEEN', axis: 'Topical Analgesic' }
+      ];
+
+      const lowerText = text.toLowerCase();
+      CLINICAL_VOCAB.forEach(vocab => {
+        if (lowerText.includes(vocab.key)) {
+          detectedItems.push({
+            name: vocab.name,
+            form: vocab.form,
+            strength: vocab.defaultStrength,
+            frequency: vocab.defaultFreq,
+            anupan: vocab.defaultAnupan,
+            morning: vocab.defaultFreq.toLowerCase().includes('twice') || vocab.defaultFreq.toLowerCase().includes('morning') ? vocab.defaultStrength : '—',
+            noon: '—',
+            night: vocab.defaultFreq.toLowerCase().includes('twice') || vocab.defaultFreq.toLowerCase().includes('bedtime') ? vocab.defaultStrength : '—',
+            duration: '30 Days',
+            track: vocab.track,
+            axis: vocab.axis
+          });
+        }
+      });
+
+      if (detectedItems.length === 0) {
+        // Fallback: add natural consultation note
+        const planText = document.getElementById('consultation-plan-text');
+        if (planText) {
+          planText.value = (planText.value ? planText.value + '\n' : '') + '[DICTATION]: ' + text;
+        }
+        showNotification('Appended dictation to Care Plan Notes.', 'success');
+        toggleVoicePrescriptionModal();
+        return;
+      }
+
+      // Add all detected items to prescription
+      detectedItems.forEach(item => {
+        addPrescriptionMedicine(item);
+      });
+
+      renderFastMatabPrescriptionList();
+      if (typeof calculateIlajBilZidd === 'function') calculateIlajBilZidd();
+
+      showNotification(`✓ Parsed & Added ${detectedItems.length} medications to Prescription RX-2026-0441.`, 'success');
+      toggleVoicePrescriptionModal();
+    }
+
+function dispatchCareBox(patientName, boxTitle) {
+      showNotification(`📦 Dispatched 30-Day Chronic Care Box for ${patientName} (${boxTitle}) via Courier Partner. Tracking Waybill: ZAY-WB-2026-${Math.floor(1000 + Math.random() * 9000)}.`, 'success');
+    }
+
+// ── COMMERCIAL E-COMMERCE, CHECKOUT & B2B WHOLESALE ENGINE ──────────────
+    let checkoutState = {
+      step: 1, // 1: Address & Order Type, 2: Payment, 3: Confirmation
+      isSubscription: false,
+      shipping: {
+        fullName: 'Hamza Farooqi',
+        phone: '+91 98110 44219',
+        email: 'hamza.farooqi@gmail.com',
+        address: 'House 42, Pocket B, Sukhdev Vihar',
+        city: 'New Delhi',
+        state: 'Delhi',
+        pincode: '110025'
+      },
+      paymentMethod: 'UPI',
+      lastOrderId: null
+    };
+
+    function toggleCheckoutModal() {
+      const modal = document.getElementById('commercial-checkout-modal');
+      if (!modal) return;
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        checkoutState.step = 1;
+        renderCheckoutStep();
+      }
+    }
+
+    function toggleProductQuickViewModal() {
+      const modal = document.getElementById('product-quickview-modal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function openProductQuickView(skuOrId) {
+      const prod = herbalsProducts.find(p => p.sku === skuOrId || p.id === skuOrId);
+      if (!prod) return;
+
+      const titleEl = document.getElementById('pdp-modal-title');
+      const subEl = document.getElementById('pdp-modal-subtitle');
+      const bodyEl = document.getElementById('product-quickview-body');
+      if (!bodyEl) return;
+
+      if (titleEl) titleEl.innerText = prod.name;
+      if (subEl) subEl.innerText = `${prod.unani_name || ''} • ${prod.category} Axis • SKU: ${prod.sku}`;
+
+      const discountedPrice = Math.round(prod.price * 0.85);
+
+      bodyEl.innerHTML = `
+        <div class="space-y-4 text-xs">
+          <!-- Price & Packaging Header -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex justify-between items-center">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-emerald-400 font-mono tracking-wider block">Standardized Packaging</span>
+              <strong class="text-white text-sm block">${prod.form || 'HPMC Veg Capsules (60s)'}</strong>
+              <span class="text-[10px] text-slate-400">Batch Ref: BMR-2026-${prod.sku}-01 • Shelf Life: 24 Months</span>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400 line-through">MRP: ₹${prod.price + 200}</span>
+              <div class="text-2xl font-black font-mono text-emerald-400">₹${prod.price.toLocaleString('en-IN')}</div>
+              <span class="text-[10px] text-emerald-300 font-bold">Inclusive of all taxes (GST 5%)</span>
+            </div>
+          </div>
+
+          <!-- Clinical Indications & Posology -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <strong class="text-amber-400 block text-[11px]">Primary Clinical Indications:</strong>
+              <p class="text-slate-200 text-[11px] leading-relaxed">${prod.indications}</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 space-y-1">
+              <strong class="text-teal-400 block text-[11px]">Standard Daily Posology & Badraqa:</strong>
+              <p class="text-slate-200 text-[11px] leading-relaxed">${prod.dosage}</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+            <strong class="text-slate-300 block text-[11px]">Therapeutic Doctrine & Pharmacology:</strong>
+            <p class="text-slate-300 text-[11px] leading-relaxed">${prod.desc}</p>
+          </div>
+
+          <!-- Quality Guarantees Badges -->
+          <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+            <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-emerald-300">✓ HPLC Active Tested</div>
+            <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-emerald-300">✓ Heavy Metals &lt;0.02ppm</div>
+            <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-emerald-300">✓ 100% Vegetarian (HPMC)</div>
+          </div>
+
+          <!-- Purchase Options CTA Bar -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900 to-slate-950 border border-emerald-500/40 space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <div>
+                <span class="text-white font-bold block">Subscribe &amp; Save 15% (Monthly Doorstep Refill)</span>
+                <span class="text-[10px] text-slate-400">Delivered every 30 days. Pause or cancel anytime.</span>
+              </div>
+              <span class="text-base font-mono font-bold text-emerald-400">₹${discountedPrice}/mo</span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="addToHerbalsCart('${prod.id}'); toggleProductQuickViewModal(); toggleCheckoutModal();" class="flex-1 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
+                <span>⚡</span> Instant Buy Now (₹${prod.price})
+              </button>
+              <button onclick="addToHerbalsCart('${prod.id}'); toggleProductQuickViewModal();" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700 transition">
+                + Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const modal = document.getElementById('product-quickview-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function renderCheckoutStep() {
+      const body = document.getElementById('checkout-modal-body');
+      if (!body) return;
+
+      if (herbalsCart.length === 0 && checkoutState.step !== 3) {
+        body.innerHTML = `
+          <div class="py-12 text-center space-y-4">
+            <div class="w-16 h-16 rounded-3xl bg-slate-800 text-slate-400 flex items-center justify-center text-3xl mx-auto border border-slate-700">
+              🛍️
+            </div>
+            <div class="space-y-1">
+              <h4 class="text-base font-bold text-white">Your Dispensary Cart is Empty</h4>
+              <p class="text-xs text-slate-400 max-w-sm mx-auto">Explore our 32 canonical, HPLC-verified Unani formulations crafted by Hakeem Dr. Irfan Ashraf.</p>
+            </div>
+            <div class="pt-2">
+              <button onclick="toggleCheckoutModal(); viewWebsitePage('products');" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition">
+                🌿 Explore 32 Formulations
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const subtotal = herbalsCart.reduce((sum, item) => sum + item.price, 0);
+      const discount = checkoutState.isSubscription ? Math.round(subtotal * 0.15) : 0;
+      const gstTax = Math.round((subtotal - discount) * 0.05); // 5% GST on AYUSH
+      const shippingFee = subtotal > 999 ? 0 : 99;
+      const finalTotal = subtotal - discount + gstTax + shippingFee;
+
+      if (checkoutState.step === 1) {
+        body.innerHTML = `
+          <!-- Cart Items Itemized List with Remove Buttons -->
+          <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <span class="text-slate-400">Selected Formulations (${herbalsCart.length}):</span>
+              <span class="text-base font-bold font-mono text-emerald-400">Subtotal: ₹${subtotal.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+              ${herbalsCart.map((item, idx) => `
+                <div class="flex justify-between items-center p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-emerald-400 font-mono text-[10px]">${item.sku}</span>
+                    <strong class="text-white text-xs">${item.name}</strong>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="font-mono text-emerald-300 font-bold">₹${item.price.toLocaleString('en-IN')}</span>
+                    <button onclick="removeFromHerbalsCart(${idx})" class="text-slate-400 hover:text-rose-400 text-xs px-1.5 py-0.5 rounded hover:bg-slate-800 transition" title="Remove item">✕</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Order Type Choice (One-Time vs Subscribe) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <label onclick="checkoutState.isSubscription=false; renderCheckoutStep()" class="cursor-pointer p-3.5 rounded-xl border ${!checkoutState.isSubscription ? 'border-emerald-500 bg-emerald-950/40 text-white shadow-md' : 'border-slate-800 bg-slate-950 text-slate-400'} flex items-start gap-2.5 transition">
+              <input type="radio" name="order_type" ${!checkoutState.isSubscription ? 'checked' : ''} class="mt-1 text-emerald-600">
+              <div>
+                <strong class="block text-slate-200">One-Time Dispensary Order</strong>
+                <span class="text-[10px] text-slate-400">Single dispatch with batch COA test certificate.</span>
+              </div>
+            </label>
+
+            <label onclick="checkoutState.isSubscription=true; renderCheckoutStep()" class="cursor-pointer p-3.5 rounded-xl border ${checkoutState.isSubscription ? 'border-emerald-500 bg-emerald-950/40 text-white shadow-md' : 'border-slate-800 bg-slate-950 text-slate-400'} flex items-start gap-2.5 transition">
+              <input type="radio" name="order_type" ${checkoutState.isSubscription ? 'checked' : ''} class="mt-1 text-emerald-600">
+              <div>
+                <strong class="block text-emerald-300 flex items-center gap-1">
+                  <span>🔄</span> Subscribe &amp; Save 15% (Monthly)
+                </strong>
+                <span class="text-[10px] text-slate-400">Doorstep replenishment every 30 days. Cancel anytime.</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Shipping Address Form -->
+          <div class="space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <span>📍</span> Doorstep Delivery Details (BlueDart Express Cold-Chain)
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div>
+                <label class="block text-[10px] text-slate-400">Full Name</label>
+                <input id="chk-name" type="text" value="${checkoutState.shipping.fullName}" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400">Mobile Phone (+91)</label>
+                <input id="chk-phone" type="text" value="${checkoutState.shipping.phone}" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] text-slate-400">Delivery Street Address</label>
+                <input id="chk-address" type="text" value="${checkoutState.shipping.address}" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400">City &amp; State</label>
+                <input id="chk-city" type="text" value="${checkoutState.shipping.city}, ${checkoutState.shipping.state}" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500" />
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400">Postal Pincode</label>
+                <input id="chk-pin" type="text" value="${checkoutState.shipping.pincode}" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500" />
+              </div>
+            </div>
+            <div class="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-[10px] text-emerald-300 flex items-center justify-between">
+              <span>✓ Pincode 110025 Verified: Express 48-Hour Delivery Available</span>
+              <span class="font-mono">FREE SHIPPING</span>
+            </div>
+          </div>
+
+          <!-- Pricing Breakdown Summary -->
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 text-xs font-mono">
+            <div class="flex justify-between text-slate-400"><span>Items Subtotal:</span><span>₹${subtotal.toLocaleString('en-IN')}</span></div>
+            ${checkoutState.isSubscription ? `<div class="flex justify-between text-emerald-400"><span>15% Subscription Discount:</span><span>-₹${discount.toLocaleString('en-IN')}</span></div>` : ''}
+            <div class="flex justify-between text-slate-400"><span>GST Tax (5% HSN 30049011):</span><span>₹${gstTax.toLocaleString('en-IN')}</span></div>
+            <div class="flex justify-between text-slate-400"><span>Cold-Chain Thermal Shipping:</span><span class="text-emerald-400 font-bold">${shippingFee === 0 ? 'FREE' : '₹' + shippingFee}</span></div>
+            <div class="pt-1 border-t border-slate-800 flex justify-between items-center text-sm font-bold text-white">
+              <span>Total Payable Amount:</span>
+              <span class="text-emerald-400 text-base">₹${finalTotal.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <!-- Step 1 Footer -->
+          <div class="flex justify-between items-center pt-2">
+            <button onclick="toggleCheckoutModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-400 hover:text-white">Cancel</button>
+            <button onclick="checkoutState.step=2; renderCheckoutStep();" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+              <span>Proceed to Payment (₹${finalTotal.toLocaleString('en-IN')})</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
+        `;
+      } else if (checkoutState.step === 2) {
+        body.innerHTML = `
+          <!-- Step 2: Payment Gateway Interface -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex justify-between items-center text-xs">
+            <div>
+              <span class="text-slate-400 block text-[10px]">PAYING FOR ORDER:</span>
+              <strong class="text-white text-sm">${herbalsCart.length} Formulations &bull; ${checkoutState.isSubscription ? '30-Day Monthly Refill' : 'One-Time Delivery'}</strong>
+            </div>
+            <div class="text-right">
+              <span class="text-slate-400 block text-[10px]">Total Amount</span>
+              <span class="text-xl font-bold font-mono text-emerald-400">₹${finalTotal.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <!-- Payment Options -->
+          <div class="space-y-3">
+            <label class="block text-slate-300 font-bold text-xs">Choose Verified Payment Method:</label>
+
+            <!-- UPI Option -->
+            <div onclick="checkoutState.paymentMethod='UPI'; renderCheckoutStep()" class="cursor-pointer p-4 rounded-2xl border ${checkoutState.paymentMethod === 'UPI' ? 'border-emerald-500 bg-slate-950 ring-1 ring-emerald-500' : 'border-slate-800 bg-slate-950/80'} space-y-3 transition">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                  <input type="radio" name="pay_opt" ${checkoutState.paymentMethod === 'UPI' ? 'checked' : ''} class="text-emerald-600">
+                  <strong class="text-white text-xs">Instant UPI &amp; Dynamic QR Code</strong>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">GPay</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">PhonePe</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">Paytm</span>
+                </div>
+              </div>
+
+              ${checkoutState.paymentMethod === 'UPI' ? `
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                  <div class="w-28 h-28 bg-white p-2 rounded-xl flex items-center justify-center shadow-md shrink-0">
+                    <!-- Clean SVG QR Code Representation -->
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-slate-950" fill="currentColor">
+                      <rect width="100" height="100" fill="white" />
+                      <path d="M10 10h30v30h-30zM15 15h20v20h-20zM60 10h30v30h-30zM65 15h20v20h-20zM10 60h30v30h-30zM15 65h20v20h-20zM45 15h10v10h-10zM45 45h10v10h-10zM15 45h10v10h-10zM75 45h10v10h-10zM45 75h10v10h-10zM65 65h25v5h-25zM65 75h15v5h-15zM85 75h5v15h-5zM65 85h15v5h-15z" />
+                    </svg>
+                  </div>
+                  <div class="space-y-1 text-xs">
+                    <span class="text-emerald-400 font-bold block text-xs">Scan &amp; Pay via any UPI App</span>
+                    <p class="text-slate-300 text-[11px]">UPI ID: <code class="text-white font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-800">zayvora.pay@icici</code></p>
+                    <p class="text-[10px] text-slate-400">Zero transaction surcharge. Instant automated payment reconciliation.</p>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Card / Netbanking Option -->
+            <div onclick="checkoutState.paymentMethod='CARD'; renderCheckoutStep()" class="cursor-pointer p-3.5 rounded-2xl border ${checkoutState.paymentMethod === 'CARD' ? 'border-emerald-500 bg-slate-950 ring-1 ring-emerald-500' : 'border-slate-800 bg-slate-950/80'} flex justify-between items-center transition">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="pay_opt" ${checkoutState.paymentMethod === 'CARD' ? 'checked' : ''} class="text-emerald-600">
+                <strong class="text-white text-xs">Debit / Credit Cards &amp; NetBanking</strong>
+              </div>
+              <span class="text-[10px] text-slate-400">Visa, Mastercard, RuPay</span>
+            </div>
+
+            <!-- Cash on Delivery (COD) -->
+            <div onclick="checkoutState.paymentMethod='COD'; renderCheckoutStep()" class="cursor-pointer p-3.5 rounded-2xl border ${checkoutState.paymentMethod === 'COD' ? 'border-emerald-500 bg-slate-950 ring-1 ring-emerald-500' : 'border-slate-800 bg-slate-950/80'} flex justify-between items-center transition">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="pay_opt" ${checkoutState.paymentMethod === 'COD' ? 'checked' : ''} class="text-emerald-600">
+                <strong class="text-white text-xs">Cash on Delivery (Pay at Doorstep)</strong>
+              </div>
+              <span class="text-[10px] text-emerald-400 font-mono">Available</span>
+            </div>
+          </div>
+
+          <!-- Step 2 Footer -->
+          <div class="flex justify-between items-center pt-3 border-t border-slate-800">
+            <button onclick="checkoutState.step=1; renderCheckoutStep();" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-400 hover:text-white">
+              &larr; Back to Address
+            </button>
+            <button onclick="completeCommercialOrder(${finalTotal});" class="px-7 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+              <span>🔒 Pay &amp; Place Order (₹${finalTotal.toLocaleString('en-IN')})</span>
+            </button>
+          </div>
+        `;
+      } else if (checkoutState.step === 3) {
+        body.innerHTML = `
+          <!-- Step 3: Official Order Confirmation & Tax Invoice Receipt -->
+          <div class="p-6 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3">
+            <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner border border-emerald-500/40">
+              ✓
+            </div>
+            <div>
+              <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">PAYMENT CONFIRMED &bull; ORDER ALLOCATED</span>
+              <h3 class="text-xl font-black text-white mt-0.5">Order ID: #${checkoutState.lastOrderId}</h3>
+              <p class="text-xs text-slate-300 mt-1">Thank you! Your order has entered the FEFO temperature-controlled fulfillment pipeline.</p>
+            </div>
+          </div>
+
+          <!-- Tracking & Delivery Status Card -->
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">BlueDart Waybill: <strong class="text-white font-mono">ZAY-BLU-2026-8812</strong></span>
+              <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-800 text-[10px]">PACKING READY</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-emerald-500 h-full w-2/5 rounded-full"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400">
+              <span>Order Received</span>
+              <span class="text-emerald-400 font-bold">FEFO Packing</span>
+              <span>In Transit</span>
+              <span>Delivered</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <button onclick="downloadGstInvoice('${checkoutState.lastOrderId}', ${finalTotal})" class="p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
+              <span>📄</span> Download GST Tax Invoice
+            </button>
+            <button onclick="showNotification('📲 WhatsApp Order Confirmation sent to ${checkoutState.shipping.phone}!', 'success')" class="p-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+              <span>📲</span> Send WhatsApp Receipt
+            </button>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800 flex justify-end">
+            <button onclick="toggleCheckoutModal(); herbalsCart=[]; switchTab('catalog');" class="px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl transition">
+              Close &amp; Return to Catalog
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function completeCommercialOrder(totalAmount) {
+      checkoutState.lastOrderId = `ZAY-ORD-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      checkoutState.step = 3;
+      renderCheckoutStep();
+
+      // Automatically queue into dispensary orders list
+      showNotification(`✓ Order #${checkoutState.lastOrderId} placed successfully! Queued for FEFO packaging.`, 'success');
+    }
+
+    function downloadGstInvoice(orderId, totalAmount) {
+      const ordId = orderId || checkoutState.lastOrderId || 'ZAY-ORD-2026-8891';
+      const subtotal = herbalsCart.length > 0 ? herbalsCart.reduce((s, i) => s + i.price, 0) : (totalAmount || 1840);
+      const discount = checkoutState.isSubscription ? Math.round(subtotal * 0.15) : 0;
+      const taxable = subtotal - discount;
+      const gst = Math.round(taxable * 0.05);
+      const total = taxable + gst;
+      const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+      const itemsList = (herbalsCart.length > 0 ? herbalsCart : [
+        { sku: 'ZAY-001', name: 'ZAYVORA TensioCalm™', price: 920 },
+        { sku: 'ZAY-002', name: 'ZAYVORA ArthroEase Pro™', price: 920 }
+      ]).map((item, idx) => {
+        const padName = (item.name + '                                  ').slice(0, 32);
+        const padSku = (item.sku + '        ').slice(0, 8);
+        return `${(idx + 1 + '  ').slice(0, 4)} | ${padSku} | ${padName} | 30049011 |  1  | ${item.price.toFixed(2)} | ${item.price.toFixed(2)}`;
+      }).join('\n');
+
+      const invoiceContent = `================================================================================
+                    ZAYVORA HEALTH OS™ — STATUTORY TAX INVOICE
+                        (Government of India • Central GST & State GST)
+================================================================================
+SELLER DETAILS:
+  Organization: ZAYVORA Healthcare System / ZAYVORA Health OS
+  Central Matab: Institutional Area, Sukhdev Vihar, Okhla, New Delhi - 110025
+  Clinical Director: Hakeem Dr. Irfan Ashraf (BUMS, AKTC AMU 2002-2007)
+  NCISM Registration: BUMS/AMU/2007
+  AYUSH GMP Mfg License: DL-AYUSH-2022-881 / Schedule T
+  GSTIN: 07AAECZ1234F1Z5 | PAN: AAECZ1234F
+  Contact: +91 98110 44219 / +91 97738 82657 | support@zayvorahealth.com
+
+BUYER (PATIENT) DETAILS:
+  Name: ${checkoutState.shipping.fullName || 'Valued Patient'}
+  Phone: ${checkoutState.shipping.phone || '+91 98110 44219'}
+  Delivery Address: ${checkoutState.shipping.address || 'Standard Delivery'}, ${checkoutState.shipping.city || 'New Delhi'}, ${checkoutState.shipping.pincode || '110025'}
+  BlueDart Cold-Chain Waybill: ZAY-BLU-2026-8812
+
+INVOICE PARTICULARS:
+  Invoice No: INV-2026-${ordId}
+  Order Reference: ${ordId}
+  Order Type: ${checkoutState.isSubscription ? 'Monthly Subscription Refill (15% Off)' : 'One-Time Dispensary Order'}
+  Date & Time: ${now} IST
+  Payment Mode: ${checkoutState.paymentMethod || 'UPI (zayvora.pay@icici)'} - CONFIRMED
+
+ITEMIZED SCHEDULE:
+--------------------------------------------------------------------------------
+S.No | SKU      | Description                      | HSN Code | Qty | Rate (₹) | Total (₹)
+--------------------------------------------------------------------------------
+${itemsList}
+--------------------------------------------------------------------------------
+Subtotal Amount:                                                     ₹${subtotal.toFixed(2)}
+${discount > 0 ? `Subscription Privilege Discount (15%):                             -₹${discount.toFixed(2)}\n` : ''}Taxable Supply Value:                                                ₹${taxable.toFixed(2)}
+CGST (2.5%):                                                         ₹${(gst / 2).toFixed(2)}
+SGST (2.5%):                                                         ₹${(gst / 2).toFixed(2)}
+Integrated Cold-Chain Thermal Delivery (Above ₹999):                   FREE (₹0.00)
+--------------------------------------------------------------------------------
+TOTAL INVOICE AMOUNT (INCL. ALL TAXES):                              ₹${total.toFixed(2)}
+Amount in Words: Rupees ${(total).toLocaleString('en-IN')} Only.
+--------------------------------------------------------------------------------
+
+STATUTORY AYUSH QUALITY & HERBAL PURITY CERTIFICATE:
+  1. Formulations manufactured under Schedule T (AYUSH GMP) and 21 CFR Part 11 electronic controls.
+  2. Mudabbar detoxification performed as per classical Unani pharmacopoeial protocols (NFUM / UPI).
+  3. Batch HPLC active phytochemical fingerprints verified. Heavy metals <0.02 ppm.
+  4. Cold-chain storage temperature maintained at 2°C - 8°C throughout BlueDart express logistics.
+
+Cryptographic Authentication: SHA256:8f4c28bb901e74a6cd4391e6bb6f
+Authorized Signatory: Dr. Irfan Ashraf (BUMS, AKTC AMU; NCISM: BUMS/AMU/2007)
+================================================================================`;
+
+      try {
+        const blob = new Blob([invoiceContent], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `ZAYVORA_Tax_Invoice_${ordId}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showNotification(`✓ Tax Invoice downloaded: ZAYVORA_Tax_Invoice_${ordId}.txt`, 'success');
+      } catch (err) {
+        showNotification(`✓ Order #${ordId} confirmed! Invoice queued for dispatch.`, 'success');
+      }
+    }
+
+// ── B2B WHOLESALE & LIVE CART ENGINE ─────────────────────────────────────
+    function toggleB2BWholesaleModal(show = true) {
+      const modal = document.getElementById('b2b-wholesale-modal');
+      if (!modal) return;
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    function submitB2BWholesaleApplication() {
+      const name = (document.getElementById('b2b-name')?.value || '').trim();
+      const reg = (document.getElementById('b2b-reg')?.value || '').trim();
+      const phone = (document.getElementById('b2b-phone')?.value || '').trim();
+      if (!name || !reg) {
+        showNotification('Please enter clinician name and NCISM / State registration number.', 'error');
+        return;
+      }
+      showNotification(`✓ B2B Account approved for ${name} (${reg})! 40% Professional Clinic Margin activated.`, 'success');
+      toggleB2BWholesaleModal(false);
+    }
+
+    function updateCartCounters() {
+      const count = herbalsCart.length;
+      const subtotal = herbalsCart.reduce((sum, item) => sum + item.price, 0);
+
+      const hdrCount = document.getElementById('header-cart-count');
+      if (hdrCount) hdrCount.innerText = count;
+
+      const floatBar = document.getElementById('floating-cart-bar');
+      const floatCount = document.getElementById('floating-cart-items-count');
+      const floatTotal = document.getElementById('floating-cart-total-amount');
+
+      if (floatBar) {
+        if (count > 0) {
+          floatBar.classList.remove('hidden');
+          if (floatCount) floatCount.innerText = `${count} Formulation${count > 1 ? 's' : ''}`;
+          if (floatTotal) floatTotal.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+        } else {
+          floatBar.classList.add('hidden');
+        }
+      }
+    }
+
+    function removeFromHerbalsCart(idx) {
+      if (idx >= 0 && idx < herbalsCart.length) {
+        const removed = herbalsCart.splice(idx, 1);
+        updateCartCounters();
+        showNotification(`Removed "${removed[0]?.name || 'Item'}" from cart.`, 'info');
+        if (document.getElementById('commercial-checkout-modal') && !document.getElementById('commercial-checkout-modal').classList.contains('hidden')) {
+          renderCheckoutStep();
+        }
+        if (state.role === 'herbals') {
+          renderHerbalsApp(document.getElementById('workspace-container'));
+        }
+      }
+    }
+
+// ── ZAYVORA DEEP 32-QUESTION BIO-HUMORAL HEALTH ASSESSMENT ENGINE ────────
+    window.healthAssessmentState = {
+      currentStep: 1, // 1 to 8 pillars, step 9 = final dossier
+      userAge: 36,
+      userName: 'Valued Visitor',
+      answers: {
+        // Pillar 1: Mizaj
+        p1_temp: 'moderate',
+        p1_thirst: 'lukewarm_sip',
+        p1_skin: 'balanced_skin',
+        p1_physique: 'balanced_build',
+        // Pillar 2: Digestion
+        p2_postmeal: 'mild_bloat',
+        p2_bowel: 'regular_daily',
+        p2_sensitivity: 'dairy_mucus',
+        p2_appetite: 'sharp_hunger',
+        // Pillar 3: Mental Strength
+        p3_stress: 'moderate_worry',
+        p3_memory: 'sharp_retention',
+        p3_afternoon: 'mild_afternoon_dip',
+        p3_mood: 'stable_calm',
+        // Pillar 4: Sleep
+        p4_latency: 'falls_asleep_15m',
+        p4_waking: 'occasional_waking',
+        p4_dreams: 'peaceful_dreams',
+        p4_morning: 'moderate_fresh',
+        // Pillar 5: Immunity
+        p5_shift: 'occasional_seasonal',
+        p5_healing: 'normal_healing',
+        p5_meds: 'rare_medication',
+        p5_vitality: 'good_resilience',
+        // Pillar 6: Detox
+        p6_sweat: 'natural_sweat',
+        p6_tongue: 'thin_white',
+        p6_breath: 'fresh_neutral',
+        p6_puffiness: 'no_puffiness',
+        // Pillar 7: Hormones & Stamina
+        p7_stamina: 'good_stamina',
+        p7_muscle: 'moderate_tone',
+        p7_vitality: 'balanced_drive',
+        p7_hair_nails: 'strong_hair',
+        // Pillar 8: Lifestyle
+        p8_screen: 'moderate_screen',
+        p8_movement: 'moderate_walks',
+        p8_hydration: 'water_tea',
+        p8_peace: 'balanced_peace'
+      }
+    };
+
+    const healthAssessmentPillars = [
+      {
+        id: 1,
+        title: "Pillar 1: Mizaj & Thermal Equilibrium (مزاجِ بدن)",
+        subtitle: "The foundation of all metabolic chemistry: Internal Heat (Hararat) vs Cold & Moisture.",
+        classicalQuote: "“When the primary qualities are in equilibrium, the body enjoys optimal health.” — Ibn Sina, Al-Qanoon fi al-Tibb",
+        questions: [
+          {
+            key: "p1_temp",
+            label: "How does your body naturally respond to ambient climate and temperature?",
+            options: [
+              { val: "cold_intolerant", text: "Extremely sensitive to cold; hands & feet are always chilly; craves warm blankets", mizaj: "Balghami", score: 60 },
+              { val: "heat_intolerant", text: "Extremely sensitive to heat; easily overheated; agitated and restless during hot summers", mizaj: "Safrawi", score: 65 },
+              { val: "dry_wind_cold", text: "Aches easily in dry winter winds; stiff joints, dry throat, and skin tightness", mizaj: "Sawdawi", score: 55 },
+              { val: "moderate", text: "Adapts smoothly across all seasons; body maintains steady comfortable warmth", mizaj: "Damawi", score: 95 }
+            ]
+          },
+          {
+            key: "p1_thirst",
+            label: "What temperature and type of water does your throat naturally crave?",
+            options: [
+              { val: "ice_cold_gulp", text: "Craves ice-cold refrigerated water; drinks in large gulps to quench burning throat", mizaj: "Safrawi", score: 60 },
+              { val: "warm_sip", text: "Prefers warm or room-temperature sips; dislikes cold drinks which cause heaviness", mizaj: "Balghami", score: 75 },
+              { val: "rarely_thirsty", text: "Often forgets to drink water for hours; dry mouth but rarely feels intense thirst", mizaj: "Sawdawi", score: 65 },
+              { val: "lukewarm_sip", text: "Consistent, natural thirst for clean fresh water; satisfied with normal hydration", mizaj: "Damawi", score: 95 }
+            ]
+          },
+          {
+            key: "p1_skin",
+            label: "How do your skin, complexion, and body tissues feel naturally?",
+            options: [
+              { val: "cool_soft_pale", text: "Soft, smooth, cool to touch, pale complexion with tendency to retain fluid", mizaj: "Balghami", score: 65 },
+              { val: "warm_flushed_oil", text: "Warm to touch, reddish or yellowish undertone, prone to acne or redness", mizaj: "Safrawi", score: 70 },
+              { val: "rough_dry_thin", text: "Dry, rough, thin skin with prominent veins; cracked heels and dry cuticles", mizaj: "Sawdawi", score: 60 },
+              { val: "balanced_skin", text: "Firm, healthy pinkish tint, supple moisture, and balanced elasticity", mizaj: "Damawi", score: 95 }
+            ]
+          },
+          {
+            key: "p1_physique",
+            label: "What best describes your bone structure and weight tendency?",
+            options: [
+              { val: "broad_soft_gain", text: "Broad bone frame, soft musculature; gains weight very easily, struggles to lose it", mizaj: "Balghami", score: 65 },
+              { val: "medium_warm_burn", text: "Medium athletic frame; burns calories quickly; loses weight easily when stressed", mizaj: "Safrawi", score: 75 },
+              { val: "slender_light_veins", text: "Slender, light frame; hard to put on weight or muscle mass; prominent joints", mizaj: "Sawdawi", score: 60 },
+              { val: "balanced_build", text: "Well-proportioned, strong bone density, stable muscle tone and posture", mizaj: "Damawi", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Pillar 2: Digestive Fire & Gastric Metabolism (ہضم و قوتِ طبعیہ)",
+        subtitle: "Evaluates gastric fire (Hazm-e-Meda), hepatic processing, and intestinal microbiome transit.",
+        classicalQuote: "“The stomach is the reservoir of the body; if it is sound, the veins flow with health.” — Hakeem Al-Majusi, Kamil al-Sina'a",
+        questions: [
+          {
+            key: "p2_postmeal",
+            label: "1 to 2 hours after having a standard meal, what sensation dominates your gut?",
+            options: [
+              { val: "stone_bloat", text: "Feels like a heavy stone; severe abdominal bloating, gassiness, and drowsiness", score: 50 },
+              { val: "burning_reflux", text: "Heartburn, acidity rising up the throat, sour belching or epigastric heat", score: 55 },
+              { val: "mild_bloat", text: "Occasional mild fullness, especially after dining out or eating late at night", score: 75 },
+              { val: "light_energy", text: "Completely light and comfortable; feels energized and alert with zero discomfort", score: 95 }
+            ]
+          },
+          {
+            key: "p2_bowel",
+            label: "How would you describe your daily morning bowel habit (Istifragh)?",
+            options: [
+              { val: "strained_constipated", text: "Constipated: Hard, dry pellets, strained evacuation, or only once every 2 days", score: 45 },
+              { val: "irregular_urgency", text: "Unpredictable: Loose, frequent, or sudden post-meal bathroom urgency", score: 60 },
+              { val: "regular_daily", text: "Effortless, complete, well-formed morning evacuation without straining", score: 95 }
+            ]
+          },
+          {
+            key: "p2_sensitivity",
+            label: "What happens when you consume heavy dairy, sweets, cold curd, or rice?",
+            options: [
+              { val: "dairy_mucus", text: "Excess throat phlegm, nasal congestion, heavy sluggish gut, and cough", score: 55 },
+              { val: "chili_burning", text: "Spicy or fried foods cause acute stomach burning, loose motions, or mouth ulcers", score: 55 },
+              { val: "sugar_crash", text: "Refined carbs cause intense afternoon sugar crashes and trembling hunger", score: 65 },
+              { val: "clean_digestion", text: "Digests standard wholesome foods smoothly without acute flare-ups", score: 95 }
+            ]
+          },
+          {
+            key: "p2_appetite",
+            label: "How predictable and sharp is your hunger rhythm throughout the day?",
+            options: [
+              { val: "hangry_sharp", text: "Must eat on time or becomes irritable ('hangry'), shaky, with gastric burning", score: 65 },
+              { val: "sluggish_morning", text: "Zero morning appetite; can go without food until 1:00 PM without feeling hungry", score: 60 },
+              { val: "erratic_skipping", text: "Erratic appetite; forgets to eat for long stretches, then binges impulsively", score: 50 },
+              { val: "sharp_hunger", text: "Clean, rhythmic appetite: feels genuine wholesome hunger at regular meal times", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Pillar 3: Mental Strength & Psychosomatic Resilience (قوتِ نفسانیہ و روح)",
+        subtitle: "Evaluates nervous system tone, cognitive focus, emotional poise, and mental stamina.",
+        classicalQuote: "“Psychic states (Infe'alat-e-Nafsaniyah) alter bodily temperature and humors more swiftly than food.” — Ibn Sina",
+        questions: [
+          {
+            key: "p3_stress",
+            label: "When confronted with acute deadline pressure, conflict, or unforeseen stress:",
+            options: [
+              { val: "anxious_overthink", text: "Spirals into repetitive overthinking, chest tightness, shallow breath, and dread", score: 45 },
+              { val: "fiery_anger", text: "Immediate surge of anger, impatience, raised voice, and irritability", score: 60 },
+              { val: "shutdown_freeze", text: "Emotional numbness, procrastination, withdrawal, and avoidance of decisions", score: 50 },
+              { val: "moderate_worry", text: "Brief anxiety or concern, but regains rational composure within an hour", score: 75 },
+              { val: "poised_calm", text: "Remains grounded, mentally clear, patient, and problem-solving oriented", score: 95 }
+            ]
+          },
+          {
+            key: "p3_memory",
+            label: "How does your memory, learning retention, and mental sharpness operate?",
+            options: [
+              { val: "brain_fog_forget", text: "Frequent brain fog, forgetfulness, losing track of conversations or tasks", score: 50 },
+              { val: "quick_grasp_forget", text: "Learns very quickly on the fly, but forgets details just as quickly later", score: 70 },
+              { val: "deep_slow_retention", text: "Takes time to process deeply, but once learned, remembers details for years", score: 85 },
+              { val: "sharp_retention", text: "Clear mental agility, excellent working memory, and sharp daily focus", score: 95 }
+            ]
+          },
+          {
+            key: "p3_afternoon",
+            label: "Around 2:00 PM – 4:00 PM, what typically happens to your mental energy?",
+            options: [
+              { val: "severe_exhaustion", text: "Heavy cognitive exhaustion; feels like brain shuts down without caffeine/sugar", score: 45 },
+              { val: "mild_afternoon_dip", text: "Mild, natural lull that resolves with a walk, fresh air, or glass of water", score: 80 },
+              { val: "steady_productivity", text: "Maintains clear, sustained focus and productivity throughout the afternoon", score: 95 }
+            ]
+          },
+          {
+            key: "p3_mood",
+            label: "What emotional climate most accurately describes your day-to-day inner state?",
+            options: [
+              { val: "melancholic_low", text: "Tendency toward sadness, quiet worry, self-doubt, and inner heaviness", score: 50 },
+              { val: "restless_hurry", text: "Constant inner hurry, racing mind, feeling like there is never enough time", score: 60 },
+              { val: "stable_calm", text: "Generally cheerful, content, emotionally balanced, and optimistic", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Pillar 4: Sleep Architecture & Circadian Restoration (نوم و یقظہ)",
+        subtitle: "Measures restorative sleep depth, nocturnal hormone release, and vital spirit replenishment.",
+        classicalQuote: "“Deep sleep carries innate heat inward to digest humors and restore the vital faculty.” — Al-Razi, Kitab al-Hawi",
+        questions: [
+          {
+            key: "p4_latency",
+            label: "What happens when you lay your head on the pillow at night?",
+            options: [
+              { val: "racing_insomnia", text: "Tossing and turning for 45+ minutes; racing thoughts, checking phone repeatedly", score: 45 },
+              { val: "falls_asleep_15m", text: "Falls asleep peacefully within 15–20 minutes without struggle", score: 95 },
+              { val: "passes_out_exhausted", text: "Passes out instantly from sheer exhaustion, but wakes up feeling unrested", score: 65 }
+            ]
+          },
+          {
+            key: "p4_waking",
+            label: "Do you experience nocturnal awakenings, especially around 2:00 AM – 4:00 AM?",
+            options: [
+              { val: "liver_hour_awake", text: "Consistently jolts awake between 2:00–4:00 AM with racing mind, heat, or thirst", score: 50 },
+              { val: "shallow_tossing", text: "Light sleeper; wakes up at every minor noise, movement, or bathroom trip", score: 60 },
+              { val: "occasional_waking", text: "Occasionally wakes once, but falls back asleep smoothly", score: 80 },
+              { val: "solid_7hours", text: "Sleeps deeply and uninterrupted for 7 to 8 hours straight", score: 95 }
+            ]
+          },
+          {
+            key: "p4_dreams",
+            label: "What visual themes appear most prominently in your dream life?",
+            options: [
+              { val: "falling_dark_fears", text: "Falling, being chased, dark enclosed spaces, anxiety, or heavy nightmares", mizaj: "Sawdawi", score: 55 },
+              { val: "fire_heat_quarrel", text: "Fires, hot red scenes, arguments, intense energetic battles, or flying", mizaj: "Safrawi", score: 65 },
+              { val: "water_ice_snow", text: "Deep water, oceans, swimming, snow, rain, or calm cloudy skies", mizaj: "Balghami", score: 70 },
+              { val: "peaceful_dreams", text: "Pleasant, harmonious, creative, or restful dreams that leave a good feeling", mizaj: "Damawi", score: 95 }
+            ]
+          },
+          {
+            key: "p4_morning",
+            label: "How do you feel in your body and mind during the first 30 minutes of waking?",
+            options: [
+              { val: "hit_by_truck", text: "Extremely heavy limbs, stiff joints, brain fog; dreads getting out of bed", score: 45 },
+              { val: "moderate_fresh", text: "Needs 10–15 minutes and a wash to fully boot up, then feels ready", score: 80 },
+              { val: "naturally_energized", text: "Wakes up before alarm with clear mind, light body, and natural morning energy", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Pillar 5: Innate Immunity & Healing Resilience (قوتِ مدبرہِ بدن)",
+        subtitle: "Measures Tabiyat Mudabbira-e-Badan — your body's intrinsic auto-healing and immunological defence.",
+        classicalQuote: "“The physician is but the servant of nature; it is Tabiyat that cures the disease.” — Hippocrates",
+        questions: [
+          {
+            key: "p5_shift",
+            label: "How does your body hold up during seasonal weather transitions or travel?",
+            options: [
+              { val: "catches_everything", text: "Immediately catches sore throat, flu, allergies, or cold at every weather change", score: 45 },
+              { val: "occasional_seasonal", text: "Gets sick at most once or twice a year, resolving within 4–5 days", score: 80 },
+              { val: "rock_solid", text: "Virtually never falls sick; adapts to varying climates and seasons robustly", score: 95 }
+            ]
+          },
+          {
+            key: "p5_healing",
+            label: "When you get a cut, skin scrape, bruise, or muscle strain, how fast does it heal?",
+            options: [
+              { val: "slow_healing", text: "Takes weeks to heal; cuts linger, bruise easily, and scars stay discolored", score: 50 },
+              { val: "normal_healing", text: "Standard healing within 5 to 7 days without infection or complication", score: 85 },
+              { val: "rapid_healing", text: "Rapid tissue repair; cuts and bruises close cleanly in record time", score: 95 }
+            ]
+          },
+          {
+            key: "p5_meds",
+            label: "How reliant are you on pharmaceutical interventions (painkillers, antibiotics, antacids)?",
+            options: [
+              { val: "frequent_meds", text: "Takes pills multiple times a month (Headache pills, acidity antacids, allergy meds)", score: 45 },
+              { val: "rare_medication", text: "Only takes conventional medicine in rare emergencies; body resolves issues naturally", score: 95 }
+            ]
+          },
+          {
+            key: "p5_vitality",
+            label: "If you are forced to miss one meal or sleep late for one night, what happens?",
+            options: [
+              { val: "complete_crash", text: "Crashes with severe migraine, gastric burning, dizziness, or intense fatigue", score: 45 },
+              { val: "good_resilience", text: "Noticeable fatigue, but handles the day smoothly and rebounds with a good night's rest", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "Pillar 6: Toxic Burden & Metabolic Clearance (تنقیہ و فضلات)",
+        subtitle: "Evaluates lymphatic drainage, natural perspiration, and elimination of metabolic wastes (Fuzlaat).",
+        classicalQuote: "“Retention of that which ought to be evacuated causes the most grievous humoral combustions.” — Ibn Sina",
+        questions: [
+          {
+            key: "p6_sweat",
+            label: "How does your body naturally sweat during exertion, exercise, or hot weather?",
+            options: [
+              { val: "rarely_sweats_dry", text: "Rarely sweats at all; dry tight pores; overheats internally without perspiration", score: 50 },
+              { val: "pungent_clammy", text: "Excessive, clammy, sour or pungent sweat that stains clothing or irritates skin", score: 60 },
+              { val: "natural_sweat", text: "Clean, natural, odorless sweating that comfortably cools the body down", score: 95 }
+            ]
+          },
+          {
+            key: "p6_tongue",
+            label: "When you inspect your tongue in the mirror first thing in the morning (Lisan):",
+            options: [
+              { val: "thick_white", text: "Thick white or greyish coating; sticky saliva; tasteless or sweetish morning mouth", mizaj: "Balghami", score: 50 },
+              { val: "yellow_bitter", text: "Yellowish coating; dry mouth; bitter taste; red tip or sides", mizaj: "Safrawi", score: 55 },
+              { val: "dark_dry_cracked", text: "Dry, darkish, rough or cracked tongue surface; astringent/sour taste", mizaj: "Sawdawi", score: 50 },
+              { val: "thin_white", text: "Clean pink body with a thin healthy translucent white film; fresh mouth", mizaj: "Damawi", score: 95 }
+            ]
+          },
+          {
+            key: "p6_breath",
+            label: "How would you assess your breath and bodily scent throughout the day?",
+            options: [
+              { val: "sour_morning_breath", text: "Frequent sour/foul morning breath, tongue halitosis, or metallic taste", score: 55 },
+              { val: "fresh_neutral", text: "Clean, fresh, and neutral oral scent with natural hydration", score: 95 }
+            ]
+          },
+          {
+            key: "p6_puffiness",
+            label: "Do you notice fluid accumulation, under-eye bags, or puffy fingers in the morning?",
+            options: [
+              { val: "chronic_puffiness", text: "Frequently wakes with puffy eyelids, swollen fingers, or heavy water retention", score: 50 },
+              { val: "evening_ankle_swell", text: "Swelling in ankles/feet toward the end of the day after standing or sitting", score: 60 },
+              { val: "no_puffiness", text: "Crisp facial contours, light extremities, and zero water retention", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 7,
+        title: "Pillar 7: Hormonal Stability, Stamina & Vitality (قوتِ حیوانیہ و باہ)",
+        subtitle: "Evaluates mitochondrial stamina, endocrine homeostasis, and reproductive vitality.",
+        classicalQuote: "“The reproductive essence (Mani) is the quintessence of all digested humors.” — Al-Majusi",
+        questions: [
+          {
+            key: "p7_stamina",
+            label: "When climbing 3 flights of stairs or engaging in 20 minutes of brisk activity:",
+            options: [
+              { val: "severe_breathless", text: "Severe breathlessness, heart pounding in ears, heavy trembling legs", score: 45 },
+              { val: "good_stamina", text: "Heart rate elevates naturally, recovers breath smoothly within 2 minutes", score: 95 }
+            ]
+          },
+          {
+            key: "p7_muscle",
+            label: "How would you describe your muscular recovery and physical tone?",
+            options: [
+              { val: "sore_for_days", text: "Muscles stay achy, stiff, and sore for 3 to 4 days after modest exertion", score: 50 },
+              { val: "moderate_tone", text: "Mild soreness that resolves cleanly within 24 hours; good functional tone", score: 95 }
+            ]
+          },
+          {
+            key: "p7_vitality",
+            label: "How stable is your natural vitality, reproductive health, and libido drive?",
+            options: [
+              { val: "chronic_low_drive", text: "Noticeable loss of vitality, chronic hormonal fatigue, low drive and enthusiasm", score: 45 },
+              { val: "fluctuating_stress", text: "Fluctuates with work stress and sleep deprivation, but recovers on weekends", score: 75 },
+              { val: "balanced_drive", text: "Robust natural vitality, stable hormonal balance, and vigorous physical enthusiasm", score: 95 }
+            ]
+          },
+          {
+            key: "p7_hair_nails",
+            label: "What is the health status of your hair, scalp, and fingernails?",
+            options: [
+              { val: "shedding_brittle", text: "Excessive hair fall/thinning, dry brittle nails with ridges, or chronic dandruff", score: 50 },
+              { val: "premature_grey", text: "Premature greying or thinning hair accompanied by internal body heat", score: 65 },
+              { val: "strong_hair", text: "Thick, lustrous hair, strong smooth nails with healthy pink lunula beds", score: 95 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 8,
+        title: "Pillar 8: Environmental, Social & Lifestyle Harmony (اسبابِ ستہ ضروریہ)",
+        subtitle: "Evaluates your daily alignment with natural light, movement, air quality, and social peace.",
+        classicalQuote: "“Life is maintained by six essential prerequisites (Asbab-e-Sittah الضرورية); neglect of any one unbalances nature.” — Ibn Sina",
+        questions: [
+          {
+            key: "p8_screen",
+            label: "What is your daily balance between artificial screen blue-light vs natural sunlight?",
+            options: [
+              { val: "extreme_screen_nosun", text: "10+ hours staring at digital screens; less than 15 minutes of direct outdoor sunlight", score: 45 },
+              { val: "moderate_screen", text: "6–8 hours screen work, but spends 20–30 minutes outdoors during morning/evening", score: 80 },
+              { val: "sunlight_priority", text: "Active outdoor habits, daily morning sun exposure, and strict digital sunset curfews", score: 95 }
+            ]
+          },
+          {
+            key: "p8_movement",
+            label: "How much of your typical working day is spent seated in one stationary posture?",
+            options: [
+              { val: "sedentary_8hours", text: "Seated continuously for 8+ hours with minimal movement or postural breaks", score: 45 },
+              { val: "moderate_walks", text: "Desk work, but takes frequent stretch breaks and clocks 6,000–8,000 daily steps", score: 85 },
+              { val: "active_day", text: "Vigorous, active daily routine with 10,000+ steps and physical movement", score: 95 }
+            ]
+          },
+          {
+            key: "p8_hydration",
+            label: "What is the primary vehicle of your daily fluid and drink intake?",
+            options: [
+              { val: "caffeine_sodas", text: "Relies heavily on multiple coffees, strong chais, energy drinks, or sweet sodas", score: 50 },
+              { val: "water_tea", text: "2.5 to 3 liters of clean water, herbal infusions, and minimal stimulants", score: 95 }
+            ]
+          },
+          {
+            key: "p8_peace",
+            label: "How would you describe your emotional support network and daily inner peace?",
+            options: [
+              { val: "isolated_overwhelmed", text: "Isolated, carrying immense pressure alone; constant background anxiety and worry", score: 45 },
+              { val: "moderate_support", text: "Busy life with normal family/social bonds, occasional stress that resolves", score: 80 },
+              { val: "balanced_peace", text: "Deep inner spiritual serenity, loving family/community support, and clear purpose", score: 95 }
+            ]
+          }
+        ]
+      }
+    ];
+
+    function openHealthAssessmentModal() {
+      const modal = document.getElementById('health-assessment-modal');
+      if (!modal) return;
+      window.healthAssessmentState.currentStep = 1;
+      renderAssessmentStep();
+      modal.classList.remove('hidden');
+    }
+
+    function toggleHealthAssessmentModal(show = true) {
+      const modal = document.getElementById('health-assessment-modal');
+      if (!modal) return;
+      if (show) openHealthAssessmentModal();
+      else modal.classList.add('hidden');
+    }
+
+    function renderAssessmentStep() {
+      const state = window.healthAssessmentState;
+      const body = document.getElementById('health-assessment-body');
+      const subtitle = document.getElementById('assessment-step-subtitle');
+      const progressBar = document.getElementById('assessment-progress-bar');
+      const prevBtn = document.getElementById('assessment-prev-btn');
+      const nextBtn = document.getElementById('assessment-next-btn');
+      const counterLabel = document.getElementById('assessment-counter-label');
+      const footer = document.getElementById('health-assessment-footer');
+
+      if (!body) return;
+
+      if (state.currentStep <= 8) {
+        if (footer) footer.classList.remove('hidden');
+        const pillar = healthAssessmentPillars.find(p => p.id === state.currentStep) || healthAssessmentPillars[0];
+        
+        if (subtitle) subtitle.innerHTML = `<strong>${pillar.title}</strong> — ${pillar.subtitle}`;
+        if (progressBar) progressBar.style.width = `${Math.round((state.currentStep / 8) * 100)}%`;
+        if (counterLabel) counterLabel.innerText = `Pillar ${state.currentStep} of 8 (4 Questions • ${Math.round((state.currentStep / 8) * 100)}%)`;
+        if (prevBtn) prevBtn.disabled = (state.currentStep === 1);
+        if (nextBtn) {
+          nextBtn.innerHTML = state.currentStep === 8 ? '<span>Analyze &amp; Generate Dossier</span> <span>⚡</span>' : '<span>Next Pillar</span> <span>&rarr;</span>';
+        }
+
+        body.innerHTML = `
+          <div class="space-y-6">
+            <!-- Pillar Intro Card with Classical Doctrine Quote -->
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">Clinical Diagnostic Pillar 0${pillar.id}</span>
+                <span class="text-[10px] text-slate-500 font-mono">4 Diagnostic Nodes</span>
+              </div>
+              <h4 class="text-sm font-bold text-white">${pillar.title}</h4>
+              <p class="text-xs text-slate-300 leading-relaxed">${pillar.subtitle}</p>
+              ${pillar.classicalQuote ? `
+                <div class="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-[11px] text-emerald-300 italic font-serif">
+                  ${pillar.classicalQuote}
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- 4 Questions for this Pillar -->
+            <div class="space-y-5">
+              ${pillar.questions.map((q, qIdx) => `
+                <div class="space-y-2.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80">
+                  <label class="block text-xs font-bold text-slate-200">
+                    <span class="text-emerald-400 font-mono mr-1.5">${(pillar.id - 1) * 4 + qIdx + 1}.</span> ${q.label}
+                  </label>
+                  <div class="grid grid-cols-1 gap-2 pt-1">
+                    ${q.options.map(opt => {
+                      const isSelected = state.answers[q.key] === opt.val;
+                      return `
+                        <div onclick="selectAssessmentAnswer('${q.key}', '${opt.val}')" class="p-3 rounded-xl border transition cursor-pointer flex items-center justify-between ${isSelected ? 'border-emerald-500 bg-emerald-950/40 text-white shadow-md ring-1 ring-emerald-500' : 'border-slate-800 bg-slate-900/80 hover:bg-slate-900 hover:border-slate-700 text-slate-300'}">
+                          <div class="flex items-center gap-2.5">
+                            <span class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${isSelected ? 'border-emerald-500 bg-emerald-500 text-slate-950 font-bold text-[10px]' : 'border-slate-700'}">
+                              ${isSelected ? '✓' : ''}
+                            </span>
+                            <span class="text-xs leading-relaxed">${opt.text}</span>
+                          </div>
+                          ${opt.mizaj ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 border border-slate-700 text-emerald-300 font-semibold shrink-0 ml-2">${opt.mizaj}</span>` : ''}
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        // Step 9: Render Comprehensive 32-Point Visual Health Dossier Report
+        calculateAndRenderHealthDossier();
+      }
+    }
+
+    function selectAssessmentAnswer(key, val) {
+      window.healthAssessmentState.answers[key] = val;
+      renderAssessmentStep();
+    }
+
+    function nextAssessmentStep() {
+      if (window.healthAssessmentState.currentStep < 8) {
+        window.healthAssessmentState.currentStep++;
+        renderAssessmentStep();
+      } else {
+        window.healthAssessmentState.currentStep = 9;
+        renderAssessmentStep();
+      }
+    }
+
+    function prevAssessmentStep() {
+      if (window.healthAssessmentState.currentStep > 1) {
+        window.healthAssessmentState.currentStep--;
+        renderAssessmentStep();
+      }
+    }
+
+    function calculateAndRenderHealthDossier() {
+      const state = window.healthAssessmentState;
+      const body = document.getElementById('health-assessment-body');
+      const subtitle = document.getElementById('assessment-step-subtitle');
+      const progressBar = document.getElementById('assessment-progress-bar');
+      const footer = document.getElementById('health-assessment-footer');
+
+      if (!body) return;
+      if (footer) footer.classList.add('hidden');
+      if (subtitle) subtitle.innerHTML = '<strong>Comprehensive 32-Point Health Dossier Generated</strong> • Verified by Hakeem Dr. Irfan Ashraf';
+      if (progressBar) progressBar.style.width = '100%';
+
+      // Calculate Pillar Scores across all 32 questions
+      const pillarScores = [];
+      let totalWeightedScore = 0;
+
+      healthAssessmentPillars.forEach(pil => {
+        let pilSum = 0;
+        pil.questions.forEach(q => {
+          const ansKey = state.answers[q.key];
+          const matchedOpt = q.options.find(o => o.val === ansKey) || q.options[0];
+          pilSum += matchedOpt.score;
+        });
+        const avgScore = Math.round(pilSum / pil.questions.length);
+        pillarScores.push({ id: pil.id, name: pil.title.split(':')[1].trim(), score: avgScore });
+        totalWeightedScore += avgScore;
+      });
+
+      const overallScore = Math.round(totalWeightedScore / 8);
+      const calendarAge = state.userAge || 36;
+      let ageDelta = 0;
+      if (overallScore < 60) ageDelta = 7;
+      else if (overallScore < 70) ageDelta = 4;
+      else if (overallScore < 85) ageDelta = 1;
+      else ageDelta = -4; // Younger biological vitality!
+      const functionalAge = calendarAge + ageDelta;
+
+      // Determine Primary Su-e-Mizaj & Root Cause
+      let dominantMizaj = "Balghami (Cold-Moist / Phlegmatic)";
+      let rootCause = "Sluggish gastric agni (Hazm-e-Meda), accumulated Phlegm (Khilt-e-Balgham), morning fatigue, and blue-light circadian disruption.";
+      let matchedSku = "ZAY-001";
+      let matchedProd = "ZAYVORA TensioCalm™";
+      let recommendedDiet = "Favor warm carminative teas (Ajwain, Zanjabeel/Ginger, Cumin, Cinnamon). Strictly eliminate iced water, sour curds, and heavy refined starches.";
+
+      if (state.answers.p1_temp === 'heat_intolerant' || state.answers.p2_postmeal === 'burning_reflux' || state.answers.p4_dreams === 'fire_heat_quarrel') {
+        dominantMizaj = "Safrawi (Hot-Dry / Bilious)";
+        rootCause = "Elevated biliary heat (Khilt-e-Safra), gastric hyperacidity, sympathetic nervous overdrive, and nocturnal liver-hour waking.";
+        matchedSku = "ZAY-003";
+        matchedProd = "ZAYVORA LiverPrime Core™";
+        recommendedDiet = "Favor cooling mucilaginous badraqa (Tukhm-e-Balanga, Arq Shahtarra, Cucumber, Pomegranate, Isabgol). Strictly avoid fried chillies, vinegar, and excessive red meat.";
+      } else if (state.answers.p1_temp === 'dry_wind_cold' || state.answers.p3_stress === 'anxious_overthink' || state.answers.p4_dreams === 'falling_dark_fears') {
+        dominantMizaj = "Sawdawi (Cold-Dry / Melancholic)";
+        rootCause = "Elevated Black Bile combustion (Khilt-e-Sawda), nervous hypersensitivity, dry connective tissue, and prolonged sleep latency.";
+        matchedSku = "ZAY-005";
+        matchedProd = "ZAYVORA NeuroCalmX™";
+        recommendedDiet = "Favor warm almond milk with saffron & honey, stewed apples, and warm foot massage with Roghan Banafsha. Avoid stale reheated foods, excessive lentils, and caffeine.";
+      } else if (overallScore >= 85) {
+        dominantMizaj = "Motadil Damawi (Balanced Sanguine)";
+        rootCause = "Strong physiological equilibrium with minor seasonal adaptations needed to maintain optimal longevity.";
+        matchedSku = "ZAY-007";
+        matchedProd = "ZAYVORA VitaMani Max™";
+        recommendedDiet = "Maintain current balanced seasonal dietary regimen with 2.5L daily hydration and fresh seasonal greens.";
+      }
+
+      body.innerHTML = `
+        <div class="space-y-6 text-xs pb-4">
+          
+          <!-- Master Scorecard Header Banner -->
+          <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/90 via-slate-900 to-teal-950/90 border border-emerald-500/50 flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl">
+            <div class="flex items-center gap-5">
+              <!-- Radial Dial Badge -->
+              <div class="w-24 h-24 rounded-full border-4 ${overallScore >= 80 ? 'border-emerald-400 bg-emerald-950/80 text-emerald-300' : overallScore >= 65 ? 'border-amber-400 bg-amber-950/80 text-amber-300' : 'border-rose-400 bg-rose-950/80 text-rose-300'} flex flex-col items-center justify-center font-mono font-black shadow-lg shrink-0">
+                <span class="text-3xl leading-none">${overallScore}</span>
+                <span class="text-[9px] uppercase tracking-wider text-slate-400 mt-1">out of 100</span>
+              </div>
+              <div>
+                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400 block">ZAYVORA 32-Node Whole-Person Vitality Score</span>
+                <h3 class="text-xl font-black text-white mt-0.5">${overallScore >= 80 ? 'Optimal Humoral Equilibrium' : overallScore >= 65 ? 'Moderate Functional Dyscrasia' : 'Substantial Humoral Imbalance (Needs Tanqiya)'}</h3>
+                <p class="text-xs text-slate-300 mt-1">Dominant Temperament: <strong class="text-emerald-300">${dominantMizaj}</strong></p>
+              </div>
+            </div>
+
+            <!-- Biological Age Card -->
+            <div class="p-4 rounded-2xl bg-slate-950/90 border border-slate-800 text-center shrink-0 w-full md:w-auto">
+              <span class="text-[10px] text-slate-400 block">Functional Vitality Age:</span>
+              <div class="text-2xl font-black font-mono ${ageDelta > 0 ? 'text-amber-400' : 'text-emerald-400'}">${functionalAge} Years</div>
+              <span class="text-[10px] text-slate-400">Calendar Age: ${calendarAge} (${ageDelta > 0 ? '+' + ageDelta + ' yrs stress load' : 'Youthful Longevity!'})</span>
+            </div>
+          </div>
+
+          <!-- 8-Pillar Visual Breakdown -->
+          <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white text-xs flex items-center justify-between">
+              <span>8-Pillar Functional Breakdown (32 Clinical Nodes)</span>
+              <span class="text-[10px] text-slate-400 font-normal">Scores &gt;80 indicates optimal harmony</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              ${pillarScores.map(p => `
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+                  <div class="flex justify-between items-center">
+                    <strong class="text-slate-200 text-[11px] truncate">${p.name}</strong>
+                    <span class="font-mono font-bold text-xs ${p.score >= 80 ? 'text-emerald-400' : p.score >= 65 ? 'text-amber-400' : 'text-rose-400'}">${p.score}%</span>
+                  </div>
+                  <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="${p.score >= 80 ? 'bg-emerald-500' : p.score >= 65 ? 'bg-amber-400' : 'bg-rose-500'} h-full rounded-full" style="width: ${p.score}%"></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Root-Cause Diagnosis & Integrative Roadmap -->
+          <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <span>🔍</span> Primary Clinical Finding &amp; Root-Cause Analysis
+            </h4>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              ${rootCause}
+            </p>
+
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+              <strong class="text-emerald-400 text-xs block">Immediate 7-Day Dietary &amp; Lifestyle Directive (Parhez wa Ghiza):</strong>
+              <p class="text-slate-300 text-xs leading-relaxed bg-slate-900 p-3 rounded-xl border border-slate-800">
+                ${recommendedDiet}
+              </p>
+            </div>
+          </div>
+
+          <!-- Targeted Formulation Recommendation -->
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/50 via-slate-900 to-slate-950 border border-emerald-500/40 space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Targeted Botanical Re-Balancing Formulation</span>
+                <h4 class="text-base font-bold text-white mt-0.5">${matchedProd}</h4>
+                <p class="text-xs text-slate-300 mt-0.5">Formulated to address your specific ${dominantMizaj} constitutional deviation.</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold border border-emerald-500/40">
+                ${matchedSku}
+              </span>
+            </div>
+            <div class="flex gap-2 pt-1">
+              <button onclick="addToHerbalsCart('${matchedSku.toLowerCase()}'); toggleHealthAssessmentModal(false); toggleCheckoutModal();" class="flex-1 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>⚡</span> Instant Order Re-Balancing Kit
+              </button>
+              <button onclick="openProductQuickView('${matchedSku}')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition cursor-pointer">
+                View Monograph
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Controls & Sharing Bar -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+            <button onclick="downloadHealthDossier(${overallScore}, '${dominantMizaj}', ${functionalAge})" class="p-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer">
+              <span>📄</span> Download Health Report
+            </button>
+            <button onclick="shareHealthDossierWhatsApp(${overallScore}, '${dominantMizaj}')" class="p-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2 cursor-pointer">
+              <span>💬</span> WhatsApp to Dr. Irfan
+            </button>
+            <button onclick="window.healthAssessmentState.currentStep=1; renderAssessmentStep();" class="p-3 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
+              <span>🔄</span> Retake Audit
+            </button>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function shareHealthDossierWhatsApp(score, mizaj) {
+      const msg = encodeURIComponent(`Salam Dr. Irfan Ashraf Sahib, I just completed the ZAYVORA 8-Pillar Whole-Person Health Audit on ZAYVORA Health OS. My Overall Vitality Score is ${score}/100 and my dominant temperament is ${mizaj}. I would like to consult with you for my personalized treatment plan.`);
+      window.open(`https://wa.me/919773882657?text=${msg}`, '_blank');
+    }
+
+    function downloadHealthDossier(score, mizaj, functionalAge) {
+      const now = new Date();
+      const reportId = 'ZYV-DOSSIER-' + Math.floor(100000 + Math.random() * 900000);
+      const text = `================================================================================
+ZAYVORA HEALTH OS — WHOLE-PERSON BIO-HUMORAL CLINICAL DOSSIER
+ZAYVORA Advanced Integrative Assessment Standard (National & Global Clinical Benchmark)
+================================================================================
+Dossier ID: ${reportId}
+Generated At: ${now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST
+Supervising Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU, 2002–2007)
+NCISM Registration: BUMS/AMU/2007 | Clinical Line: +91 97738 82657 / +91 98110 44219
+Matab Facility: ZAYVORA Clinical Command, Greater Noida / Delhi NCR, India
+================================================================================
+
+1. PATIENT VITALITY PROFILE & BIOMETRIC SCORE
+--------------------------------------------------------------------------------
+Overall Health & Vitality Equilibrium Score: ${score} / 100
+Dominant Bio-Humoral Temperament (Mizaj-e-Ghalib): ${mizaj}
+Functional Biological Health Age: ${functionalAge} Years
+Classical Doctrine Citation:
+"Health is a state in which the human body possesses a temperament and structure
+such that all physiological functions proceed from it in an unhindered manner."
+— Ibn Sina (Avicenna), Al-Qanoon fi al-Tibb (The Canon of Medicine, Book I)
+
+2. CORE ASBAB-E-SITTA (6 ESSENTIAL PILLARS) LIFESTYLE PRESCRIPTION
+--------------------------------------------------------------------------------
+• Hawa-e-Muheet (Ambient Air & Breathing): Morning diaphragmatic ventilation 15 min.
+• Makool wa Mashroob (Nutrition & Hydration): Temperament-matched thermal nutrition.
+• Harkat wa Sukoon-e-Badani (Physical Movement): 30 min daily brisk metabolic walk.
+• Harkat wa Sukoon-e-Nafsani (Psychic Equilibrium): Stress mitigation & mindful prayer.
+• Naum wa Yaqza (Sleep & Wakefulness): 7.5 hrs sleep aligned with circadian rhythm.
+• Ehtebas wa Istifragh (Retention & Evacuation): Regular bowel habits & cellular detox.
+
+3. CLINICAL ADVISORY & NEXT STEPS
+--------------------------------------------------------------------------------
+This personalized assessment represents an integrative functional health audit.
+To confirm therapeutic intervention, schedule an OPD token or tele-consultation
+directly with Dr. Irfan Ashraf on ZAYVORA Health OS.
+Website: https://web-production-d5823.up.railway.app
+Direct WhatsApp Matab Desk: https://wa.me/919773882657
+================================================================================
+© 2026 ZAYVORA HEALTH OS. Verified under AYUSH & NCISM Statutory Guidelines.
+================================================================================`;
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ZAYVORA_Health_Dossier_${reportId}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    window.downloadHealthDossier = downloadHealthDossier;
+    window.shareHealthDossierWhatsApp = shareHealthDossierWhatsApp;
+
+
+// ── GLOBAL CURRENCY ENGINE (USD, AED, SAR, GBP, EUR, INR) ────────────────
+    window.activeCurrency = 'INR';
+    window.currencyRates = {
+      INR: { symbol: '₹', rate: 1.0, flag: '🇮🇳' },
+      USD: { symbol: '$', rate: 0.012, flag: '🇺🇸' },
+      AED: { symbol: 'د.إ', rate: 0.044, flag: '🇦🇪' },
+      SAR: { symbol: '﷼', rate: 0.045, flag: '🇸🇦' },
+      GBP: { symbol: '£', rate: 0.0094, flag: '🇬🇧' },
+      EUR: { symbol: '€', rate: 0.011, flag: '🇪🇺' }
+    };
+
+    function formatPrice(inrAmount) {
+      const cur = window.currencyRates[window.activeCurrency] || window.currencyRates.INR;
+      const converted = Math.round(inrAmount * cur.rate);
+      if (window.activeCurrency === 'INR') {
+        return `₹${inrAmount.toLocaleString('en-IN')}`;
+      } else {
+        return `${cur.symbol} ${converted.toLocaleString()}`;
+      }
+    }
+
+    function changePlatformCurrency(currencyKey) {
+      if (!window.currencyRates[currencyKey]) return;
+      window.activeCurrency = currencyKey;
+      const select = document.getElementById('platform-currency-select');
+      if (select) select.value = currencyKey;
+      
+      updateCartCounters();
+      if (document.getElementById('commercial-checkout-modal') && !document.getElementById('commercial-checkout-modal').classList.contains('hidden')) {
+        renderCheckoutStep();
+      }
+      if (state.role === 'website') {
+        renderWebsiteApp(document.getElementById('workspace-container'));
+      }
+      showNotification(`Currency switched to ${currencyKey} (${window.currencyRates[currencyKey].flag})`, 'info');
+    }
+
+    // ── 1. ZAYVORA PROPRIETARY: INTERACTIVE BODY SYMPTOM NAVIGATOR ─────────
+    window.activeBodyZone = 'head';
+    const bodyNavigatorZones = [
+      {
+        id: 'head',
+        icon: '🧠',
+        name: 'Head, Brain & Nervous System (رأس و اعصاب)',
+        classicalCondition: 'Su-e-Mizaj Barid Dimaghi & Suda (Cerebrovascular Tension / Melancholia)',
+        symptoms: ['Tension headaches', 'Brain fog & memory fatigue', 'Restless sleep latency', 'Sensory burnout & anxiety'],
+        homeRemedy: 'Massage forehead & temples with warm Roghan Banafsha; drink warm almond milk with 2 strands of zafran/saffron.',
+        matchedSku: 'ZAY-005',
+        matchedProduct: 'ZAYVORA NeuroCalmX™',
+        unaniAction: 'Muqawwi-e-Dimagh (Cerebral Neuro-Tonic) & Mufarreh (Vital Spirit Restorer)'
+      },
+      {
+        id: 'chest',
+        icon: '🫀',
+        name: 'Heart, Chest & Respiration (صدر و قلب)',
+        classicalCondition: 'Khafgan Haar / Barid (Cardiac Palpitations & Arterial Elasticity Dyscrasia)',
+        symptoms: ['Morning chest tightness', 'Fast bounding heart rate', 'Shortness of breath on exertion', 'Cold extremities with racing pulse'],
+        homeRemedy: 'Arq Gulab (20ml) with 1 tsp Sharbat Anar; practice 10 minutes of morning diaphragmatic breathing before 8:00 AM.',
+        matchedSku: 'ZAY-001',
+        matchedProduct: 'ZAYVORA TensioCalm™',
+        unaniAction: 'Mufarreh Qalb (Cardiotonic Stabilizer) & Munaffis-e-Balgham (Bronchial Clearance)'
+      },
+      {
+        id: 'stomach',
+        icon: '🍲',
+        name: 'Stomach, Gut & Digestion (معدہ و امعاء)',
+        classicalCondition: 'Zo\'af-e-Hazm & Nafkh-e-Shikam (Gastric Hypo-Agni & Chronic Meteorism)',
+        symptoms: ['Post-meal stone heaviness', 'Gas & painful lower bloating', 'Acid regurgitation', 'Sluggish morning evacuation'],
+        homeRemedy: 'Drink warm water steeped with 1/2 tsp Ajwain, 1/2 tsp Cumin, and 1 slice of fresh Ginger 20 mins before meals.',
+        matchedSku: 'ZAY-008',
+        matchedProduct: 'ZAYVORA GastriNorm Core™',
+        unaniAction: 'Kasir-e-Riyah (Carminative Antiflatulent) & Muqawwi-e-Meda (Gastric Tonic)'
+      },
+      {
+        id: 'liver',
+        icon: '🫁',
+        name: 'Liver, Bile & Metabolism (کبد و مرارہ)',
+        classicalCondition: 'Su-e-Mizaj Haar Kabidi (Hepatic Bilious Heat & Sluggish Glycemic Metabolism)',
+        symptoms: ['Bitter morning taste in mouth', 'Yellow-coated tongue', 'Afternoon extreme fatigue', 'Elevated fatty liver enzymes / SGPT'],
+        homeRemedy: 'Soak 1 tsp Tukhm-e-Kasni (Cichorium intybus) in 1 glass of water overnight; strain and drink on empty stomach.',
+        matchedSku: 'ZAY-003',
+        matchedProduct: 'ZAYVORA LiverPrime Core™',
+        unaniAction: 'Mufattih Sudad-e-Kabid (Hepatic Deobstruent) & Musaffi-e-Dam (Hepatobiliary Cleanser)'
+      },
+      {
+        id: 'joints',
+        icon: '🦴',
+        name: 'Joints, Spine & Musculoskeletal (مفاصل و عظام)',
+        classicalCondition: 'Waja-ul-Mafasil Barid Balghami (Cold-Phlegmatic Synovial Inflammation)',
+        symptoms: ['Knee joint clicking & morning stiffness', 'Lower back tightness', 'Pain aggravated by rainy/cold weather', 'Reduced flexibility'],
+        homeRemedy: 'Warm compress with Roghan Suranjan; consume 1/4 tsp Turmeric + pinch of Black Pepper in warm milk before sleep.',
+        matchedSku: 'ZAY-002',
+        matchedProduct: 'ZAYVORA ArthroEase Pro™',
+        unaniAction: 'Musakkin-e-Waja (Analgesic) & Muhallil-e-Warm (Anti-Inflammatory Botanical Resins)'
+      },
+      {
+        id: 'kidney',
+        icon: '💧',
+        name: 'Kidneys, Bladder & Detox (گرودہ و مثانہ)',
+        classicalCondition: 'Ihtibas-e-Bawl & Fuzlaat (Renal Hyperuricemia & Metabolic Fluid Stagnation)',
+        symptoms: ['Puffy morning eyelids', 'Lower back dull ache', 'Elevated serum uric acid', 'Frequent nocturnal urination'],
+        homeRemedy: 'Drink barley water (Ma-ul-Sha\'eer) with lemon juice; maintain strict 2.5L daily lukewarm water intake.',
+        matchedSku: 'ZAY-004',
+        matchedProduct: 'ZAYVORA NephroPure Ultra™',
+        unaniAction: 'Mudirr-e-Bawl (Mild Diuretic Lithotriptic) & Daf-e-Taffun (Urinary Antimicrobial)'
+      },
+      {
+        id: 'vitality',
+        icon: '⚡',
+        name: 'Reproductive & Hormonal Vitality (قوتِ باہ و اعضائے تناسلیہ)',
+        classicalCondition: 'Zo\'af-e-Bah & Nuqs-e-Hararat-e-Ghariziyah (Exhaustion of Innate Vital Energy)',
+        symptoms: ['Chronic physical stamina crash', 'Low libido & drive', 'Muscular weakness', 'Premature age-related fatigue'],
+        homeRemedy: 'Consume 5 soaked almonds + 1 date + 2 walnuts mashed with 1 tsp raw honey and warm milk in the morning.',
+        matchedSku: 'ZAY-007',
+        matchedProduct: 'ZAYVORA VitaMani Max™',
+        unaniAction: 'Muqawwi-e-Bah (Vital Adaptogenic Tonic) & Muwallid-e-Mani (Spermatogenic Equilibrium)'
+      }
+    ];
+
+    function toggleBodyNavigatorModal(show = true) {
+      const modal = document.getElementById('body-navigator-modal');
+      if (!modal) return;
+      if (show) {
+        renderBodyNavigator();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderBodyNavigator() {
+      const container = document.getElementById('body-navigator-content');
+      if (!container) return;
+      const zone = bodyNavigatorZones.find(z => z.id === window.activeBodyZone) || bodyNavigatorZones[0];
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Zone Selector Strip -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800">
+            ${bodyNavigatorZones.map(z => `
+              <button onclick="window.activeBodyZone='${z.id}'; renderBodyNavigator();" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 ${z.id === window.activeBodyZone ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg ring-1 ring-emerald-400' : 'bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'}">
+                <span>${z.icon}</span>
+                <span>${z.name.split('(')[0].trim()}</span>
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Active Zone Deep Dossier -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Left 2 Cols: Clinical Assessment -->
+            <div class="md:col-span-2 space-y-4">
+              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider block">Greco-Arab Pathological Classification</span>
+                    <h3 class="text-base font-bold text-white mt-0.5">${zone.name}</h3>
+                  </div>
+                  <span class="text-3xl">${zone.icon}</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                  <strong class="text-emerald-300 block mb-1">Classical Diagnosis:</strong>
+                  <p class="text-slate-200 leading-relaxed">${zone.classicalCondition}</p>
+                </div>
+              </div>
+
+              <!-- Symptoms Presentation -->
+              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                <h4 class="font-bold text-white text-xs flex items-center gap-2">
+                  <span>⚠️</span> Common Physical Signs &amp; Complaints
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  ${zone.symptoms.map(s => `
+                    <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 flex items-center gap-2">
+                      <span class="text-emerald-400 font-bold">•</span>
+                      <span>${s}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Kitchen Food & Home Regimen -->
+              <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-950 to-slate-950 border border-emerald-500/30 space-y-2">
+                <h4 class="font-bold text-emerald-300 text-xs flex items-center gap-2">
+                  <span>🌿</span> Immediate Classical Home Regimen (Ilaj bil-Ghiza)
+                </h4>
+                <p class="text-slate-200 text-xs leading-relaxed bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  ${zone.homeRemedy}
+                </p>
+              </div>
+            </div>
+
+            <!-- Right 1 Col: Matched Product & Fast Consultation -->
+            <div class="space-y-4">
+              <div class="p-5 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-3">
+                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Standardized Botanical Formulation</span>
+                <div>
+                  <h4 class="text-base font-bold text-white">${zone.matchedProduct}</h4>
+                  <span class="text-xs font-mono text-emerald-300 font-bold">SKU: ${zone.matchedSku}</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">${zone.unaniAction}</p>
+
+                <div class="pt-2 border-t border-slate-800 space-y-2">
+                  <button onclick="addToHerbalsCart('${zone.matchedSku.toLowerCase()}'); toggleBodyNavigatorModal(false); toggleCheckoutModal();" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span>⚡</span> Instant Order (Free Delivery)
+                  </button>
+                  <button onclick="openProductQuickView('${zone.matchedSku}')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                    View Monograph &amp; COA
+                  </button>
+                </div>
+              </div>
+
+              <!-- Doctor Irfan Direct Consultation Card -->
+              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-2">
+                <strong class="text-white text-xs block">Need 1-on-1 Pulse &amp; Tongue Evaluation?</strong>
+                <p class="text-[11px] text-slate-400">Consult Hakeem Dr. Irfan Ashraf (BUMS, AKTC AMU) directly.</p>
+                <a href="https://wa.me/919773882657?text=Salam%20Dr.%20Irfan%20Ashraf,%20I%20used%20the%20Body%20Navigator%20for%20${encodeURIComponent(zone.name)}%20and%20would%20like%20a%20consultation." target="_blank" class="w-full py-2 bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
+                  <span>💬</span> WhatsApp Dr. Irfan
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ── 2. ZAYVORA PROPRIETARY: LAB REPORT CORRELATOR ─────────────────
+    window.activeLabTest = 'sgpt';
+    const labTestCorrelations = [
+      {
+        id: 'sgpt',
+        name: 'Liver Function: SGPT / ALT (Alanine Aminotransferase)',
+        allopathicNorm: '7 to 56 U/L',
+        sampleElevated: '84 U/L (High / Fatty Liver Infiltration)',
+        unaniRootCause: 'Su-e-Mizaj Haar Kabidi (Hepatic Bilious Combustion with sluggish detoxification)',
+        allopathicRisk: 'Early Non-Alcoholic Fatty Liver Disease (NAFLD), hepatocellular oxidative strain.',
+        unaniRoadmap: 'Prescribe Kasni & Shahtarra infusion (Mufattih Sudad-e-Kabid). Strictly eliminate fried trans-fats and evening refined carbohydrates.',
+        matchedSku: 'ZAY-003',
+        matchedProduct: 'ZAYVORA LiverPrime Core™'
+      },
+      {
+        id: 'hba1c',
+        name: 'Metabolic: HbA1c (Glycated Hemoglobin)',
+        allopathicNorm: 'Under 5.7% (Normal)',
+        sampleElevated: '7.8% (Type 2 Diabetes Mellitus / Insulin Resistance)',
+        unaniRootCause: 'Zo\'af-e-Quwwat-e-Hazima & Ihtibas-e-Balgham (Impaired fourth digestion & arterial accumulation)',
+        allopathicRisk: 'Microvascular endothelial inflammation, peripheral neuropathy, and renal hyperfiltration.',
+        unaniRoadmap: 'Implement fasting intervals (Sawm) + Gymnema & Jamun seed bitter active principles. Daily 30 min brisk walk after morning hydration.',
+        matchedSku: 'ZAY-006',
+        matchedProduct: 'ZAYVORA GlucoVora Elite™'
+      },
+      {
+        id: 'uric',
+        name: 'Renal / Metabolic: Serum Uric Acid',
+        allopathicNorm: '3.5 to 7.2 mg/dL',
+        sampleElevated: '8.6 mg/dL (Hyperuricemia / Gout Risk)',
+        unaniRootCause: 'Ihtibas-e-Fuzlaat-e-Damawi (Inadequate renal filtration of purine nitrogenous wastes)',
+        allopathicRisk: 'Gouty arthritis attacks, synovial micro-tophaceous urate crystals, nephrolithiasis risk.',
+        unaniRoadmap: 'Alkalinize morning urine with barley water (Ma-ul-Sha\'eer) + Colchicum autumnale (Suranjan Mudabbar). Complete cessation of red meat and beer/sodas.',
+        matchedSku: 'ZAY-002',
+        matchedProduct: 'ZAYVORA ArthroEase Pro™'
+      },
+      {
+        id: 'tsh',
+        name: 'Endocrine: Thyroid Stimulating Hormone (TSH)',
+        allopathicNorm: '0.4 to 4.0 mIU/L',
+        sampleElevated: '6.8 mIU/L (Subclinical Hypothyroidism)',
+        unaniRootCause: 'Su-e-Mizaj Barid Balghami (Sluggish basal metabolic rate, cold extremities, and water retention)',
+        allopathicRisk: 'Reduced basal metabolic rate, dyslipidemia, chronic morning fatigue, and hair thinning.',
+        unaniRoadmap: 'Stimulate innate metabolic heat with Withania somnifera (Asgandh) and Commiphora mukul (Guggulu). Sun exposure before 9:00 AM.',
+        matchedSku: 'ZAY-007',
+        matchedProduct: 'ZAYVORA VitaMani Max™'
+      },
+      {
+        id: 'triglycerides',
+        name: 'Cardiovascular: Serum Triglycerides',
+        allopathicNorm: 'Under 150 mg/dL',
+        sampleElevated: '260 mg/dL (Elevated Cardiovascular Risk)',
+        unaniRootCause: 'Ghalba-e-Balgham & Lazoojat-e-Dam (Excess viscous unctuous humors circulating in vessels)',
+        allopathicRisk: 'Atherosclerotic plaque accumulation, arterial stiffness, and hepatic steatosis.',
+        unaniRoadmap: 'Administer Allium sativum (Seer) and Terminalia arjuna extract with warm water. Eliminate refined seed oils; substitute with extra virgin cold-pressed Olive Oil.',
+        matchedSku: 'ZAY-001',
+        matchedProduct: 'ZAYVORA TensioCalm™'
+      }
+    ];
+
+    function toggleLabCorrelatorModal(show = true) {
+      const modal = document.getElementById('lab-correlator-modal');
+      if (!modal) return;
+      if (show) {
+        renderLabCorrelator();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderLabCorrelator() {
+      const container = document.getElementById('lab-correlator-content');
+      if (!container) return;
+      const test = labTestCorrelations.find(t => t.id === window.activeLabTest) || labTestCorrelations[0];
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Test Selection Buttons -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800">
+            ${labTestCorrelations.map(t => `
+              <button onclick="window.activeLabTest='${t.id}'; renderLabCorrelator();" class="px-3.5 py-2 rounded-xl text-xs font-bold transition shrink-0 ${t.id === window.activeLabTest ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg ring-1 ring-teal-400' : 'bg-slate-950 border border-slate-800 text-slate-300 hover:text-white'}">
+                ${t.id.toUpperCase()} Analysis
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Dual-Layer Interpretation Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Modern Allopathic Interpretation -->
+            <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+              <span class="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider block">Modern Allopathic Biomarker Standard</span>
+              <h4 class="text-sm font-bold text-white">${test.name}</h4>
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1 font-mono text-xs">
+                <div class="flex justify-between"><span class="text-slate-400">Normal Range:</span><span class="text-emerald-400 font-bold">${test.allopathicNorm}</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Sample Elevated:</span><span class="text-rose-400 font-bold">${test.sampleElevated}</span></div>
+              </div>
+              <p class="text-slate-300 text-xs leading-relaxed"><strong class="text-slate-200">Clinical Risk:</strong> ${test.allopathicRisk}</p>
+            </div>
+
+            <!-- Greco-Arab Root Cause & Tanqiya -->
+            <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-950 to-slate-950 border border-emerald-500/40 space-y-3">
+              <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Greco-Arab Dual-Layer Clinical Resolution</span>
+              <h4 class="text-sm font-bold text-white">${test.unaniRootCause}</h4>
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">
+                <strong class="text-teal-300 block">Restorative Regimen (Tanqiya &amp; Taghzia):</strong>
+                <p class="text-slate-200 leading-relaxed">${test.unaniRoadmap}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Matched Formulation CTA Bar -->
+          <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+              <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase block">Targeted Normalization Formulation</span>
+              <h4 class="text-base font-bold text-white mt-0.5">${test.matchedProduct} (${test.matchedSku})</h4>
+              <p class="text-xs text-slate-400">Standardized HPLC-tested botanical complex designed for biochemical biomarker normalization.</p>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <button onclick="addToHerbalsCart('${test.matchedSku.toLowerCase()}'); toggleLabCorrelatorModal(false); toggleCheckoutModal();" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs rounded-xl shadow transition">
+                ⚡ Order Now
+              </button>
+              <button onclick="openProductQuickView('${test.matchedSku}')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition">
+                View Monograph
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ── 3. ZAYVORA PROPRIETARY: MIZAJ FOOD & KITCHEN SCANNER ──────────────
+    window.foodSearchQuery = '';
+    window.selectedMizajFilter = 'ALL';
+    const kitchenFoodsDatabase = [
+      { name: "Basmati Rice (Chawal)", mizajCategory: "Cold 1°, Dry 1° (Barid Yabis)", status: "Balghami: Moderate | Safrawi: Beneficial", musleh: "Zeera (Cumin), Black Pepper or Cloves" },
+      { name: "Cow's Milk (Doodh)", mizajCategory: "Hot 1°, Moist 1° (Haar Ratb)", status: "Safrawi: Beneficial | Balghami: Harmful (Mucus)", musleh: "Ginger (Zanjabeel) or Honey" },
+      { name: "Curd / Yogurt (Dahi)", mizajCategory: "Cold 2°, Moist 2° (Barid Ratb)", status: "Balghami: Aggravating | Safrawi: Cooling", musleh: "Ajwain, Black Pepper or Cumin" },
+      { name: "Red Meat / Mutton (Gosht)", mizajCategory: "Hot 2°, Moist 1° (Haar Ratb)", status: "Damawi: High Blood Volume | Safrawi: Heat", musleh: "Vinegar, Mint or Coriander" },
+      { name: "Fish (Machhli)", mizajCategory: "Cold 2°, Moist 2° (Barid Ratb)", status: "Safrawi: Cooling | Balghami: Excess Phlegm", musleh: "Ajwain, Garlic or Mustard Oil" },
+      { name: "Ginger (Zanjabeel / Adrak)", mizajCategory: "Hot 3°, Dry 2° (Haar Yabis)", status: "Balghami: Highly Therapeutic | Safrawi: Cautious", musleh: "Honey or Almond Oil" },
+      { name: "Honey (Shehed)", mizajCategory: "Hot 2°, Dry 2° (Haar Yabis)", status: "Balghami: Excellent Deobstruent | Safrawi: Moderate", musleh: "Lemon Juice or Vinegar (Sikanjabeen)" },
+      { name: "Spinach (Palak)", mizajCategory: "Cold 1°, Moist 2° (Barid Ratb)", status: "Safrawi: Beneficial Laxative | Balghami: Sluggish", musleh: "Garlic, Cinnamon or Ghee" },
+      { name: "Eggs (Anday)", mizajCategory: "Yolk: Hot 2°, Moist 1° | White: Cold 2°", status: "Balanced Vitality Nourisher", musleh: "Black Pepper & Cloves" },
+      { name: "Coffee / Black Tea", mizajCategory: "Hot 1°, Dry 2° (Haar Yabis)", status: "Sawdawi: Dehydrating | Balghami: Dries Phlegm", musleh: "Cardamom (Elaichi) & Milk" },
+      { name: "Almonds (Badaam)", mizajCategory: "Hot 1°, Moist 1° (Haar Ratb)", status: "Brain & Essence Tonic across all Mizaj", musleh: "Soaking overnight & peeling skin" },
+      { name: "Garlic (Lehsun)", mizajCategory: "Hot 3°, Dry 3° (Haar Yabis)", status: "Balghami: Dissolves Atheroma | Safrawi: Burning", musleh: "Cooking in Olive Oil or Vinegar" }
+    ];
+
+    function toggleFoodCompatibilityModal(show = true) {
+      const modal = document.getElementById('food-compatibility-modal');
+      if (!modal) return;
+      if (show) {
+        renderFoodCompatibility();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderFoodCompatibility() {
+      const container = document.getElementById('food-compatibility-content');
+      if (!container) return;
+      const q = window.foodSearchQuery.toLowerCase().trim();
+
+      const filtered = kitchenFoodsDatabase.filter(f => {
+        return !q || f.name.toLowerCase().includes(q) || f.musleh.toLowerCase().includes(q);
+      });
+
+      container.innerHTML = `
+        <div class="space-y-5">
+          <!-- Search & Filter Controls -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+              <span class="absolute left-3.5 top-2.5 text-slate-400">🔍</span>
+              <input type="text" value="${window.foodSearchQuery}" oninput="window.foodSearchQuery=this.value; renderFoodCompatibility();" placeholder="Search kitchen ingredients (Milk, Rice, Ginger, Fish, Coffee)..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-500" />
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+              <span>💡</span>
+              <span>Every food item has a natural antidote (Musleh)</span>
+            </div>
+          </div>
+
+          <!-- Food Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            ${filtered.map(f => `
+              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/50 transition">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-bold text-white text-xs">${f.name}</h4>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-semibold">${f.mizajCategory}</span>
+                </div>
+                <div class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
+                  <strong class="text-slate-400 block text-[10px]">Humoral Effect:</strong>
+                  <span>${f.status}</span>
+                </div>
+                <div class="p-2 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-[11px] text-emerald-300">
+                  <strong class="text-emerald-400 block text-[10px]">Classical Antidote (Musleh مصلح):</strong>
+                  <span>${f.musleh}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ── 4. DIGITAL THERAPEUTICS: ASBAB-E-SITTA 14-DAY CHALLENGE ──────────────
+    const asbab14DayProtocol = [
+      { day: 1, title: "Day 1: Morning Zanjabeel Lukewarm Hydration", pillar: "Ma'kool wa Mashroob (Diet & Fluid)", desc: "Drink 250ml lukewarm water infused with fresh ginger slice to kindle gastric agni.", done: true },
+      { day: 2, title: "Day 2: 20-Min Solar Circadian Reset", pillar: "Hawa-e-Muheet (Ambient Air & Light)", desc: "Step outdoors before 9:00 AM for 20 mins of direct natural sunlight exposure.", done: true },
+      { day: 3, title: "Day 3: 100-Paces Post-Meal Walk", pillar: "Harakat wa Sukoon Badani (Movement)", desc: "Walk 100 gentle paces after lunch to assist gastric mechanical churning.", done: false },
+      { day: 4, title: "Day 4: Digital Sunset & 10:00 PM Screen Curfew", pillar: "Naum wa Yaqzah (Sleep Rhythm)", desc: "Turn off all blue-light screens at 9:30 PM; retire to bed before 10:15 PM.", done: false },
+      { day: 5, title: "Day 5: Mucilaginous Colon Tanqiya", pillar: "Ihtibas wa Istifragh (Elimination)", desc: "Soak 1 tsp Isabgol / Tukhm-e-Balanga in warm water before bedtime.", done: false },
+      { day: 6, title: "Day 6: Deep Diaphragmatic Breathwork", pillar: "Infe'alat-e-Nafsaniyah (Psychosomatic Peace)", desc: "10 mins of slow 4-7-8 nasal breathing to nourish the vital spirit (Ruh).", done: false },
+      { day: 7, title: "Day 7: Digestive Sabbath / Light Fasting", pillar: "Hazm & Tanqiya-e-Meda", desc: "Consume only light vegetable broth or moong khichdi to rest the digestive organs.", done: false },
+      { day: 8, title: "Day 8: Badraqa Vehicle Re-Balancing", pillar: "Ma'kool wa Mashroob", desc: "Pair your formulations with their specific classical vehicle (Warm milk or Arq Mako).", done: false },
+      { day: 9, title: "Day 9: Postural Alignment & Spine Stretch", pillar: "Harakat wa Sukoon", desc: "Perform 15 mins of spine elongation and posture stretches to enhance blood flow.", done: false },
+      { day: 10, title: "Day 10: Nocturnal Cold Foot Soak", pillar: "Tadbeer & Circulation", desc: "Warm foot bath with Roghan Banafsha to draw blood from head to extremities.", done: false },
+      { day: 11, title: "Day 11: Elimination of Refined Seed Oils", pillar: "Ma'kool wa Mashroob", desc: "Cook exclusively in cold-pressed Mustard, Olive, or pure Desi Cow Ghee.", done: false },
+      { day: 12, title: "Day 12: Gratitude & Social Silence", pillar: "Infe'alat-e-Nafsaniyah", desc: "Spend 30 minutes in mindful quietude, expressing gratitude to preserve vital spirit.", done: false },
+      { day: 13, title: "Day 13: 8,000 Step Milestone", pillar: "Harakat wa Sukoon", desc: "Clock 8,000 steps distributed across morning and evening sessions.", done: false },
+      { day: 14, title: "Day 14: Clinical Equilibrium Milestone Re-Evaluation", pillar: "Meezan-e-Sehat", desc: "Retake the 32-Question ZAYVORA Health Audit to celebrate your improved score!", done: false }
+    ];
+
+    function toggleAsbabChallengeModal(show = true) {
+      const modal = document.getElementById('asbab-challenge-modal');
+      if (!modal) return;
+      if (show) {
+        renderAsbabChallenge();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function toggleChallengeDay(dayNum) {
+      const item = asbab14DayProtocol.find(p => p.day === dayNum);
+      if (item) {
+        item.done = !item.done;
+        renderAsbabChallenge();
+        showNotification(`Day ${dayNum} marked as ${item.done ? 'Completed ✓' : 'Pending'}. Streak updated!`, 'success');
+      }
+    }
+
+    function renderAsbabChallenge() {
+      const container = document.getElementById('asbab-challenge-content');
+      if (!container) return;
+      const completedCount = asbab14DayProtocol.filter(p => p.done).length;
+      const pct = Math.round((completedCount / 14) * 100);
+
+      container.innerHTML = `
+        <div class="space-y-5">
+          <!-- Progress Streak Header -->
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-purple-950/80 via-slate-900 to-indigo-950/80 border border-purple-500/40 flex justify-between items-center text-xs">
+            <div>
+              <span class="text-[10px] font-mono font-bold text-purple-300 uppercase tracking-wider block">14-Day Digital Therapeutic Protocol</span>
+              <h3 class="text-base font-bold text-white mt-0.5">${completedCount} of 14 Days Completed (${pct}%)</h3>
+              <p class="text-slate-400 mt-0.5">Maintain 14 consecutive days of Asbab-e-Sitta alignment to earn your Certified Equilibrium Badge.</p>
+            </div>
+            <div class="w-16 h-16 rounded-full border-4 border-purple-400 bg-purple-950/80 flex items-center justify-center font-mono font-bold text-white text-base shrink-0 shadow-lg">
+              ${completedCount}/14
+            </div>
+          </div>
+
+          <!-- 14-Day Timeline List -->
+          <div class="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
+            ${asbab14DayProtocol.map(p => `
+              <div onclick="toggleChallengeDay(${p.day})" class="p-3.5 rounded-xl border transition cursor-pointer flex items-center justify-between ${p.done ? 'bg-purple-950/30 border-purple-500/50 text-white' : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'}">
+                <div class="flex items-center gap-3">
+                  <span class="w-6 h-6 rounded-lg border flex items-center justify-center text-xs font-bold shrink-0 ${p.done ? 'bg-purple-600 border-purple-400 text-white' : 'border-slate-700 text-slate-500'}">
+                    ${p.done ? '✓' : p.day}
+                  </span>
+                  <div>
+                    <strong class="text-xs ${p.done ? 'text-purple-200' : 'text-white'} block">${p.title}</strong>
+                    <span class="text-[10px] text-slate-400 block">${p.pillar} &bull; ${p.desc}</span>
+                  </div>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold ${p.done ? 'bg-purple-900/60 text-purple-300' : 'bg-slate-900 text-slate-500'}">
+                  ${p.done ? 'COMPLETED' : 'PENDING'}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ── 5. ZAYVORA PROPRIETARY: PROMS REGISTRY DASHBOARD ────────
+    window.activeCohort = 'joints';
     const clinicalOutcomeCohorts = [
       {
         id: 'joints',
@@ -18844,9 +20928,6 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         </div>
       `;
     }
-
-
-
 
 
 // =========================================================================
