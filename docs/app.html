@@ -856,6 +856,12 @@
 
         <!-- Fast OPD Booking CTA Button (Contextual: Public Website & Reception Desk only) -->
                 <!-- Official Dispensary Cart with Live Count Badge -->
+                <!-- Free 8-Pillar Health Audit Header CTA -->
+        <button onclick="openHealthAssessmentModal()" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 text-cyan-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer" title="Free 8-Pillar Whole-Person Health Audit">
+          <span>🧠</span>
+          <span class="hidden lg:inline">Health Audit</span>
+        </button>
+
         <button id="header-cart-btn" onclick="toggleCheckoutModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-xs shadow-sm transition cursor-pointer" title="ZAYVORA Dispensary Cart &amp; Checkout">
           <span>🛍️</span>
           <span class="hidden sm:inline">Dispensary Cart</span>
@@ -3244,6 +3250,54 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+<!-- ===================================================================== -->
+  <!-- MODAL: COMPREHENSIVE 8-PILLAR WHOLE-PERSON HEALTH ASSESSMENT (DOSSIER) -->
+  <!-- ===================================================================== -->
+  <div id="health-assessment-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🧠</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>ZAYVORA Whole-Person Bio-Humoral Health Audit™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Free Clinical Assessment</span>
+            </h3>
+            <p id="assessment-step-subtitle" class="text-xs text-slate-400">Pillar 1 of 8: Mizaj &amp; Thermal Equilibrium</p>
+          </div>
+        </div>
+        <button onclick="toggleHealthAssessmentModal(false)" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <!-- Live Multi-Step Progress Bar -->
+      <div class="w-full bg-slate-800 h-1.5 overflow-hidden">
+        <div id="assessment-progress-bar" class="bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 h-full w-[12%] transition-all duration-300"></div>
+      </div>
+
+      <!-- Modal Body (Dynamic Questions / Dossier Results) -->
+      <div id="health-assessment-body" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderAssessmentStep() -->
+      </div>
+
+      <!-- Modal Footer Controls -->
+      <div id="health-assessment-footer" class="px-6 py-3.5 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
+        <button id="assessment-prev-btn" onclick="prevAssessmentStep()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-400 hover:text-white text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed">
+          &larr; Previous Pillar
+        </button>
+        <div class="flex items-center gap-2">
+          <span id="assessment-counter-label" class="text-[11px] text-slate-400 font-mono">Pillar 1 / 8</span>
+          <button id="assessment-next-btn" onclick="nextAssessmentStep()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+            <span>Continue</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
