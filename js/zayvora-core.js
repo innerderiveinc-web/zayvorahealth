@@ -17236,23 +17236,39 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       // Active Role Banner: only visible after authentication
       if (state.currentUser && state.role !== 'website') {
         const isSuperAdmin = state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin';
+        const initials = (state.currentUser.name || 'U').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
         authContainer.innerHTML = `
-          <div class="flex items-center gap-2.5 ${isSuperAdmin ? 'bg-gradient-to-r from-rose-950/80 to-slate-900 border border-rose-500/50' : 'bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/50'} px-3 py-1.5 rounded-xl shadow-md">
-            <span class="w-2.5 h-2.5 rounded-full ${isSuperAdmin ? 'bg-rose-400' : 'bg-emerald-400'} animate-pulse"></span>
-            <div class="text-left hidden sm:block">
-              <span class="text-[11px] font-extrabold text-white block leading-tight">${state.currentUser.name}</span>
-              <span class="text-[9px] ${isSuperAdmin ? 'text-rose-300' : 'text-emerald-300'} font-mono font-semibold block leading-tight">
-                ${isSuperAdmin ? '🛡️ SUPER ADMIN • FULL OVERSIGHT' : `DEPARTMENT: ${state.currentUser.role.toUpperCase()} • ${state.currentUser.title || ''}`}
-              </span>
+          <div class="relative group shrink-0" id="user-pill-wrapper">
+            <button onclick="document.getElementById('user-pill-menu').classList.toggle('hidden')" class="flex items-center gap-1.5 ${isSuperAdmin ? 'bg-rose-950/80 border-rose-500/50' : 'bg-emerald-950/80 border-emerald-500/40'} border px-2 py-1 rounded-lg shadow-sm cursor-pointer transition hover:brightness-110">
+              <span class="w-2 h-2 rounded-full ${isSuperAdmin ? 'bg-rose-400' : 'bg-emerald-400'} animate-pulse shrink-0"></span>
+              <span class="text-[11px] font-extrabold text-white max-w-[80px] truncate hidden sm:inline">${initials}</span>
+              <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="user-pill-menu" class="hidden absolute right-0 mt-1.5 w-52 bg-[#0F172A] border border-slate-700 rounded-xl shadow-2xl z-[60] overflow-hidden text-left">
+              <div class="px-3 py-2.5 border-b border-slate-800">
+                <div class="text-[11px] font-extrabold text-white truncate">${state.currentUser.name}</div>
+                <div class="text-[9px] ${isSuperAdmin ? 'text-rose-300' : 'text-emerald-300'} font-mono font-semibold mt-0.5 truncate">${isSuperAdmin ? '🛡️ SUPER ADMIN' : (state.currentUser.role || '').toUpperCase()}</div>
+              </div>
+              <button onclick="switchRole('website'); switchTab('home'); document.getElementById('user-pill-menu').classList.add('hidden');" class="w-full text-left px-3 py-2 text-[11px] text-slate-300 font-bold hover:bg-slate-800 flex items-center gap-2 transition cursor-pointer">
+                <span>🌐</span> <span>Public Website</span>
+              </button>
+              <button onclick="handleSignOut()" class="w-full text-left px-3 py-2 text-[11px] text-rose-400 font-bold hover:bg-rose-950/60 flex items-center gap-2 transition cursor-pointer border-t border-slate-800">
+                <span>🚪</span> <span>Log Out</span>
+              </button>
             </div>
-            <button onclick="switchRole('website'); switchTab('home');" class="ml-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-slate-300 font-bold transition flex items-center gap-1 shadow-sm" title="View Public Website">
-              <span>🌐</span> <span class="hidden md:inline">Public Site</span>
-            </button>
-            <button onclick="handleSignOut()" class="ml-1 px-2.5 py-1 rounded-lg bg-rose-950/80 hover:bg-rose-900 border border-rose-500/40 text-[10px] text-rose-300 font-bold transition flex items-center gap-1 shadow-sm" title="Sign Out of Active Role">
-              <span>Log Out</span>
-            </button>
           </div>
         `;
+        // Close dropdown on outside click
+        setTimeout(() => {
+          document.addEventListener('click', function closeUserMenu(e) {
+            const wrapper = document.getElementById('user-pill-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+              const menu = document.getElementById('user-pill-menu');
+              if (menu) menu.classList.add('hidden');
+              document.removeEventListener('click', closeUserMenu);
+            }
+          });
+        }, 0);
       } else {
         // Public Homepage: clean, prominent Sign In CTA (secondary outline style)
         authContainer.innerHTML = `

@@ -922,9 +922,8 @@
           </div>
         </div>
 
-        <!-- Clinical Desktop Extra Triggers (Active in doctor/admin role) -->
-        <button id="header-library-btn" onclick="openMedicalDoctrineModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-950/80 to-teal-950/80 border border-emerald-500/40 text-xs font-bold text-emerald-300 hover:text-white hover:border-emerald-400 items-center gap-1.5 transition shadow-sm" title="Grand Classical & Modern Integrative Medical Library">
-          <span>📖</span> <span class="hidden sm:inline">Library</span>
+        <button id="header-library-btn" onclick="openMedicalDoctrineModal()" class="hidden px-2 py-1.5 rounded-xl bg-[#0A0F1D] border border-emerald-500/40 text-xs font-bold text-emerald-300 hover:text-white hover:border-emerald-400 items-center gap-1 transition shadow-sm shrink-0" title="Grand Classical & Modern Integrative Medical Library">
+          <span>📖</span>
         </button>
 
         <button id="header-search-btn" onclick="toggleSearchModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-[#0A0F1D] border border-slate-800 text-xs text-slate-300 hover:border-emerald-400 items-center gap-1.5 transition" title="Search Patients, Rx, Protocols (⌘K)">
@@ -936,9 +935,9 @@
         </button>
 
         <!-- Live DB Health Status Badge (Hidden by default, shown in clinical cockpit) -->
-        <div id="live-db-badge" class="hidden items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 shrink-0" title="Connected to zayvora_live.db SQLite Relational Store">
+        <div id="live-db-badge" class="hidden items-center gap-1 px-1.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 shrink-0" title="LIVE DB Connected — zayvora_live.db">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="live-db-text">LIVE REST API</span>
+          <span id="live-db-text" class="text-[9px] font-bold text-emerald-400 font-mono hidden lg:inline">LIVE</span>
         </div>
 
       </div>
@@ -2128,7 +2127,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.3"></script>
+  <script src="/js/zayvora-core.js?v=14.4"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2928,7 +2927,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.3"></script>
+  <script src="/js/zayvora-extensions.js?v=14.4"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
