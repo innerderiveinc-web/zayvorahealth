@@ -781,24 +781,16 @@
   <header class="backdrop-blur-md bg-[#0F172A]/95 border-b border-emerald-500/20 px-4 md:px-8 py-3 sticky top-0 z-50 shadow-xl transition-all">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3">
       
-      <!-- Facility & Product Brand with Executive IP Attribution -->
+      <!-- Facility & Product Brand -->
       <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="switchRole('website'); switchTab('home');" title="ZAYVORA Health OS — Return to Home">
         <div class="w-10 h-10 rounded-xl bg-[#0A0F1D] border border-emerald-500/40 flex items-center justify-center p-1 shadow-md overflow-hidden shrink-0 group-hover:border-emerald-400 transition">
           <img src="zayvora-logo.png" alt="ZAYVORA" class="w-full h-full object-contain" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');" />
           <div class="hidden w-full h-full flex items-center justify-center font-serif font-black text-emerald-400 text-lg bg-emerald-950/40 rounded-lg">🌿</div>
         </div>
-        <div class="shrink-0">
-          <div class="flex items-center gap-2">
-            <span class="font-extrabold tracking-tight text-lg text-white group-hover:text-emerald-300 transition whitespace-nowrap">ZAYVORA Health OS™</span>
-            <span class="hidden sm:inline-flex items-center text-[10px] font-mono px-2 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 whitespace-nowrap">
-              Enterprise Clinical OS v5.0
-            </span>
-          </div>
-          <p class="text-[11px] text-slate-300 flex items-center gap-1.5 whitespace-nowrap">
-            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg> ZAYVORA Healthcare System</span>
-            <span class="text-slate-600 hidden lg:inline">&bull;</span>
-            <span class="text-emerald-400 font-medium hidden lg:inline">Hakeem Dr. Irfan Ashraf (Founder &amp; Chief Architect)</span>
-          </p>
+        <div class="flex flex-col justify-center">
+          <span class="font-black tracking-tight text-xl text-white group-hover:text-emerald-300 transition whitespace-nowrap flex items-center gap-1.5">
+            ZAYVORA <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-md">Health OS™</span>
+          </span>
         </div>
       </div>
 
@@ -2143,7 +2135,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.1"></script>
+  <script src="/js/zayvora-core.js?v=14.2"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2943,7 +2935,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.1"></script>
+  <script src="/js/zayvora-extensions.js?v=14.2"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
