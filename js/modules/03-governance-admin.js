@@ -3565,12 +3565,6 @@ function generateInstantOpdToken() {
               <button onclick="viewWebsitePage('products');" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-xl shadow-amber-950/40 transition flex items-center gap-2 cursor-pointer">
                 <span>🛍️</span> Order 32 Formulations (Dispensary)
               </button>
-              <button onclick="toggleMizajAssessmentModal(true);" class="px-5 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-950/50 transition flex items-center gap-2 cursor-pointer ring-2 ring-emerald-500/30">
-                <span>🩺</span> Free Assessment of Mizaj
-              </button>
-              <button onclick="toggleOrganAxisModal(true);" class="px-5 py-3.5 rounded-xl border-2 border-teal-500/50 bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 font-bold text-xs transition flex items-center gap-2 cursor-pointer ring-2 ring-teal-500/30">
-                <span>🔬</span> Free 12-Organ-Axis Screener
-              </button>
               <button onclick="document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' });" class="px-5 py-3.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition flex items-center gap-2 cursor-pointer">
                 <span>🎟️</span> Generate OPD Token
               </button>
@@ -3705,65 +3699,6 @@ function generateInstantOpdToken() {
               <span class="text-slate-400 uppercase text-[10px] font-bold tracking-wider">Direct Clinical Access</span>
               <div class="text-xl sm:text-2xl font-extrabold text-white">+91 97738 82657</div>
               <span class="text-[10px] text-emerald-400 font-mono">Direct Telemedicine &amp; OPD Booking</span>
-            </div>
-          </div>
-
-          <!-- ===================================================================== -->
-          <!-- 5. FREE CLINICAL SELF-ASSESSMENT SUITE (STREAMLINED MODAL LAUNCHERS)  -->
-          <!-- ===================================================================== -->
-          <div class="space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-slate-800 pb-3">
-              <div>
-                <span class="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">CLINICAL SELF-ASSESSMENT GATEWAYS</span>
-                <h3 class="text-xl sm:text-2xl font-extrabold text-white">Free Constitutional &amp; Organ-Axis Screeners</h3>
-                <p class="text-xs text-slate-300 mt-0.5">Instant, non-invasive bio-humoral diagnostics based on classical Greco-Arab doctrines.</p>
-              </div>
-              <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">100% FREE • NO LOGIN REQUIRED</span>
-            </div>
-
-            <!-- Two High-Impact Diagnostic Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Card 1: Mizaj Assessment -->
-              <div id="mizaj-assessment-section" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] to-[#1E293B] border-2 border-emerald-500/40 shadow-xl space-y-4 flex flex-col justify-between">
-                <div class="space-y-3">
-                  <div class="flex items-center justify-between">
-                    <span class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold">🩺</span>
-                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">AL-AJNAS AL-ASHRAH</span>
-                  </div>
-                  <div>
-                    <h4 class="text-lg font-bold text-white">Free Assessment of Mizaj (Temperament)</h4>
-                    <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                      Discover your constitutional bio-humoral archetype (Damawi, Safrawi, Balghami, Sawdawi) and receive personalized dietary directives (Ilaj bil-Ghiza).
-                    </p>
-                  </div>
-                </div>
-                <div class="pt-2">
-                  <button onclick="toggleMizajAssessmentModal(true)" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                    <span>Take 60-Second Mizaj Audit</span> <span>&rarr;</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Card 2: 12-Organ-Axis Screener -->
-              <div id="organ-axis-assessment-section" class="p-6 rounded-3xl bg-gradient-to-br from-[#0F172A] to-[#1E293B] border-2 border-teal-500/40 shadow-xl space-y-4 flex flex-col justify-between">
-                <div class="space-y-3">
-                  <div class="flex items-center justify-between">
-                    <span class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold">🔬</span>
-                    <span class="px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 font-mono text-[10px] font-bold">SYSTEMS BIOLOGY</span>
-                  </div>
-                  <div>
-                    <h4 class="text-lg font-bold text-white">Free 12-Organ-Axis Clinical Screener</h4>
-                    <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                      Screen for humoral stasis across 12 organ networks (Brain-Gut, Cardio-Vascular, Hepato-Biliary, Renal-Detox) and calculate your systemic balance score.
-                    </p>
-                  </div>
-                </div>
-                <div class="pt-2">
-                  <button onclick="toggleOrganAxisModal(true)" class="w-full py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                    <span>Launch 12-Organ-Axis Screener</span> <span>&rarr;</span>
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
 
