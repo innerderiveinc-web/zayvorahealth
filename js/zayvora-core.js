@@ -16403,6 +16403,38 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       showNotification(greetings[lang] || 'Language updated', 'info');
     }
 
+    // 5b. Preferences Dropdown Controller
+    function togglePreferencesDropdown(force) {
+      const panel = document.getElementById('preferences-dropdown-panel');
+      if (!panel) return;
+      const isHidden = panel.classList.contains('hidden');
+      const shouldOpen = (force !== undefined) ? force : isHidden;
+      if (shouldOpen) {
+        panel.classList.remove('hidden');
+      } else {
+        panel.classList.add('hidden');
+      }
+    }
+
+    function updatePreferencesSummary() {
+      const summary = document.getElementById('preferences-current-summary');
+      const currSelect = document.getElementById('platform-currency-select');
+      if (!summary) return;
+      const lang = (state && state.lang ? state.lang : 'en').toUpperCase();
+      const curr = currSelect ? currSelect.value : 'INR';
+      summary.textContent = `${lang} • ${curr === 'INR' ? '₹ INR' : curr}`;
+    }
+
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('preferences-menu-container');
+      const panel = document.getElementById('preferences-dropdown-panel');
+      if (container && panel && !panel.classList.contains('hidden')) {
+        if (!container.contains(e.target)) {
+          panel.classList.add('hidden');
+        }
+      }
+    });
+
     // 6. Live Hakeem Sahab AI Copilot
     function focusAiCopilot() {
       const input = document.getElementById('ai-quick-input') || document.getElementById('hakeem-direct-query-input');

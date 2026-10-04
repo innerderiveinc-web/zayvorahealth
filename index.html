@@ -873,45 +873,68 @@
           </button>
         </div>
 
-        <!-- Sleek Unified Settings & Utilities Bar -->
-        <div class="hidden md:flex items-center gap-1.5 bg-[#0A0F1D] border border-slate-800 px-2 py-1 rounded-xl shrink-0">
-          <!-- Currency -->
-          <select id="platform-currency-select" onchange="changePlatformCurrency(this.value)" class="bg-transparent text-emerald-400 font-mono text-[11px] font-bold focus:outline-none cursor-pointer hover:text-emerald-300 transition" title="Select Global Currency">
-            <option value="INR" selected class="bg-slate-900">₹ INR</option>
-            <option value="USD" class="bg-slate-900">$ USD</option>
-            <option value="AED" class="bg-slate-900">د.إ AED</option>
-            <option value="SAR" class="bg-slate-900">﷼ SAR</option>
-            <option value="GBP" class="bg-slate-900">£ GBP</option>
-            <option value="EUR" class="bg-slate-900">€ EUR</option>
-          </select>
-
-          <span class="text-slate-700 text-xs">•</span>
-
-          <!-- Dark / Light Mode Pill -->
-          <div class="flex items-center bg-[#070B14] rounded-lg border border-slate-800 p-0.5 text-[10px] font-bold" id="theme-pill-container" title="Switch Theme">
-            <button id="theme-btn-dark" onclick="setAppTheme('dark')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Dark Mode (Obsidian Slate)">
-              <span>🌙</span> <span class="hidden xl:inline">Dark</span>
-            </button>
-            <button id="theme-btn-light" onclick="setAppTheme('light')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white flex items-center gap-1 transition cursor-pointer" title="Light Mode (Warm Alabaster)">
-              <span>☀️</span> <span class="hidden xl:inline">Light</span>
-            </button>
-          </div>
-
-          <span class="text-slate-700 text-xs">•</span>
-
-          <!-- Language Selector -->
-          <div class="flex items-center bg-[#070B14] rounded-lg border border-slate-800 p-0.5 text-[10px] font-bold">
-            <button id="lang-btn-en" onclick="switchLanguage('en')" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">EN</button>
-            <button id="lang-btn-hi" onclick="switchLanguage('hi')" class="px-1.5 py-0.5 rounded text-slate-400 hover:text-white">HI</button>
-            <button id="lang-btn-ur" onclick="switchLanguage('ur')" class="px-1.5 py-0.5 rounded text-slate-400 hover:text-white">UR</button>
-          </div>
-
-          <span class="text-slate-700 text-xs hidden lg:inline">•</span>
-
-          <!-- Help Modal Trigger -->
-          <button id="header-help-btn" onclick="toggleHelpModal()" class="hidden lg:inline-block px-1.5 py-0.5 text-[11px] text-slate-400 hover:text-white transition" title="Clinical Guidance &amp; Safety Guidelines">
-            Help
+        <!-- Sleek Unified Settings & Utilities Dropdown -->
+        <div class="relative shrink-0" id="preferences-menu-container">
+          <button id="preferences-dropdown-trigger" onclick="togglePreferencesDropdown()" class="px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer" title="Language, Currency & Display Preferences">
+            <span>🌐</span>
+            <span class="font-mono text-emerald-400 font-bold text-[11px]" id="preferences-current-summary">EN • ₹ INR</span>
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
+
+          <!-- Dropdown Panel -->
+          <div id="preferences-dropdown-panel" class="hidden absolute right-0 mt-2 w-72 bg-[#0F172A] border border-emerald-500/30 rounded-2xl p-4 shadow-2xl z-50 space-y-3.5 backdrop-blur-xl text-left">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs">⚙️</span>
+                <span class="text-xs font-extrabold text-white tracking-wide">Regional & Display Settings</span>
+              </div>
+              <button onclick="togglePreferencesDropdown(false)" class="text-slate-400 hover:text-white text-xs font-bold p-1 cursor-pointer">✕</button>
+            </div>
+
+            <!-- Currency -->
+            <div>
+              <label class="block text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">Billing Currency</label>
+              <select id="platform-currency-select" onchange="changePlatformCurrency(this.value); updatePreferencesSummary();" class="w-full bg-[#0A0F1D] border border-slate-700 text-emerald-300 font-mono text-xs font-bold rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer hover:border-emerald-500 transition shadow-sm">
+                <option value="INR" selected class="bg-slate-900">₹ INR — Indian Rupee</option>
+                <option value="USD" class="bg-slate-900">$ USD — US Dollar</option>
+                <option value="AED" class="bg-slate-900">د.إ AED — UAE Dirham</option>
+                <option value="SAR" class="bg-slate-900">﷼ SAR — Saudi Riyal</option>
+                <option value="GBP" class="bg-slate-900">£ GBP — British Pound</option>
+                <option value="EUR" class="bg-slate-900">€ EUR — Euro</option>
+              </select>
+            </div>
+
+            <!-- Language -->
+            <div>
+              <label class="block text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">Language (Zaban)</label>
+              <div class="grid grid-cols-3 gap-1.5 p-1 bg-[#0A0F1D] rounded-xl border border-slate-800 text-[11px] font-bold">
+                <button id="lang-btn-en" onclick="switchLanguage('en'); updatePreferencesSummary();" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 transition cursor-pointer">English</button>
+                <button id="lang-btn-hi" onclick="switchLanguage('hi'); updatePreferencesSummary();" class="py-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">हिन्दी</button>
+                <button id="lang-btn-ur" onclick="switchLanguage('ur'); updatePreferencesSummary();" class="py-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">اردو</button>
+              </div>
+            </div>
+
+            <!-- Theme Switcher -->
+            <div>
+              <label class="block text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">Appearance Theme</label>
+              <div class="grid grid-cols-2 gap-1.5 p-1 bg-[#0A0F1D] rounded-xl border border-slate-800 text-[11px] font-bold" id="theme-pill-container">
+                <button id="theme-btn-dark" onclick="setAppTheme('dark')" class="py-1 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition cursor-pointer">
+                  <span>🌙</span> <span>Dark Mode</span>
+                </button>
+                <button id="theme-btn-light" onclick="setAppTheme('light')" class="py-1 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition cursor-pointer">
+                  <span>☀️</span> <span>Light Mode</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Clinical Help -->
+            <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400">Clinical Guidelines</span>
+              <button id="header-help-btn" onclick="toggleHelpModal(); togglePreferencesDropdown(false);" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-800 hover:bg-slate-700 text-teal-300 border border-slate-700 transition cursor-pointer">
+                📖 Open Help
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Clinical Desktop Extra Triggers (Active in doctor/admin role) -->
@@ -2120,7 +2143,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.0"></script>
+  <script src="/js/zayvora-core.js?v=14.1"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2920,7 +2943,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.0"></script>
+  <script src="/js/zayvora-extensions.js?v=14.1"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
