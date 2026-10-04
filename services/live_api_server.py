@@ -8948,6 +8948,13 @@ def ensure_essential_accounts():
 
 
 def run_server(port=8000):
+    # Autonomous Database Integrity Check & Snapshot Backup
+    try:
+        from services.db_backup_guard import run_integrity_and_backup
+        run_integrity_and_backup()
+    except Exception as _b_err:
+        print(f"[Safety Guard] Startup backup notice: {_b_err}")
+
     ensure_essential_accounts()
     server_address = ("0.0.0.0", port)
     httpd = ThreadedHTTPServer(server_address, ZayvoraApiHandler)

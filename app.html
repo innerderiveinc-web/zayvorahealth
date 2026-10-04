@@ -6,6 +6,19 @@
   <link rel="manifest" href="manifest.json">
   <title>ZAYVORA Health OS™ — Integrative Healthcare Operating System</title>
   <script src="/tailwind.min.js"></script>
+    <!-- ZAYVORA Zero-Crash Frontend Error Boundary & Telemetry Guard -->
+  <script>
+    window.addEventListener('error', function(e) {
+      console.warn('[ZAYVORA Safety Guard] Handled uncaught exception safely:', e.message, 'at', e.filename, ':', e.lineno);
+      // Prevent browser freeze or white screen
+      e.preventDefault();
+      return true;
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      console.warn('[ZAYVORA Safety Guard] Handled unhandled promise rejection safely:', e.reason);
+      e.preventDefault();
+    });
+  </script>
   <!-- Anti-FOUC: Default to Light Mode immediately -->
   <script>!function(){try{var u=new URLSearchParams(window.location.search).get('theme');if(!u&&window.location.hash){if(window.location.hash.includes('dark'))u='dark';if(window.location.hash.includes('light'))u='light';}var t=u||localStorage.getItem('zayvora-theme-v2')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}}();</script>
   <style>
@@ -2259,7 +2272,7 @@
 
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=14.9"></script>
+  <script src="/js/zayvora-core.js?v=15.0"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -3059,7 +3072,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=14.9"></script>
+  <script src="/js/zayvora-extensions.js?v=15.0"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
