@@ -859,6 +859,37 @@ def get_mufrad_by_name(name: str) -> dict[str, Any] | None:
     return None
 
 
+try:
+    try:
+        from services.knowledge.app.core.upi_vol4_monographs import (
+            UPI_PART2_VOL4_MONOGRAPHS,
+            CLASSICAL_WEIGHTS_METRIC_MAP,
+            convert_classical_weight,
+            TADBIR_E_ADVIYAH_SOP,
+            CANONICAL_LIBRARY_REGISTRY,
+            get_upi_vol4_compound_by_name,
+            get_all_upi_vol4_monographs,
+        )
+    except ImportError:
+        from app.core.upi_vol4_monographs import (
+            UPI_PART2_VOL4_MONOGRAPHS,
+            CLASSICAL_WEIGHTS_METRIC_MAP,
+            convert_classical_weight,
+            TADBIR_E_ADVIYAH_SOP,
+            CANONICAL_LIBRARY_REGISTRY,
+            get_upi_vol4_compound_by_name,
+            get_all_upi_vol4_monographs,
+        )
+except Exception:
+    UPI_PART2_VOL4_MONOGRAPHS = []
+    CLASSICAL_WEIGHTS_METRIC_MAP = {}
+    convert_classical_weight = lambda q, u: {"quantity": q, "unit": u}
+    TADBIR_E_ADVIYAH_SOP = {}
+    CANONICAL_LIBRARY_REGISTRY = {}
+    get_upi_vol4_compound_by_name = lambda x: None
+    get_all_upi_vol4_monographs = lambda: []
+
+
 def get_compound_formulations() -> list[dict[str, Any]]:
     compounds_map = {comp["id"]: comp for comp in NFUM_COMPOUND_REGISTRY}
     try:
@@ -871,6 +902,36 @@ def get_compound_formulations() -> list[dict[str, Any]]:
                 compounds_map[comp["id"]] = comp
     except Exception:
         pass
+
+    # Merge UPI Part-II, Vol-IV Statutory Compound Formulations (Ministry of AYUSH)
+    try:
+        for item in UPI_PART2_VOL4_MONOGRAPHS:
+            clean_name = item["name"].lower().replace(" ", "-").replace("(", "").replace(")", "").replace("'", "")
+            cid = f"upi-v4-{clean_name}"
+            if cid not in compounds_map:
+                compounds_map[cid] = {
+                    "id": cid,
+                    "name": item["name"],
+                    "urdu_name": item["urdu_name"],
+                    "category": item["form"],
+                    "classical_indication": ", ".join(item["therapeutic_uses"]),
+                    "canonical_reference": f"Unani Pharmacopoeia of India Part-II, Vol-IV; {item.get('nfum_code', '')}",
+                    "key_ingredients": [{"name": ing["ingredient"], "is_schedule_e1": ing.get("is_schedule_e1", False)} for ing in item.get("composition", [])],
+                    "dose": item.get("dose", "") + " (" + item.get("mode_of_administration", "") + ")",
+                    "schedule_e1_warning": item.get("schedule_e1_warning", False),
+                    "precautions": f"UPI Part-II Vol-IV statutory standard. Physicochemical total ash max {item.get('physicochemical_specs', {}).get('total_ash_max_pct', 8)}%.",
+                    "analytical_release_specs": {
+                        "heavy_metals_ppm": {"lead_max": 10.0, "arsenic_max": 3.0, "cadmium_max": 0.3, "mercury_max": 1.0},
+                        "total_ash_max_pct": item.get("physicochemical_specs", {}).get("total_ash_max_pct", 8.0),
+                        "acid_insoluble_ash_max_pct": item.get("physicochemical_specs", {}).get("acid_insoluble_ash_max_pct", 2.0),
+                        "tlc_rf_values": item.get("tlc_fingerprint", {}).get("rf_values", []),
+                        "tlc_solvent_system": item.get("tlc_fingerprint", {}).get("solvent_system", ""),
+                        "qc_specification_standard": "Unani Pharmacopoeia of India (UPI) Part-II, Vol-IV",
+                    }
+                }
+    except Exception:
+        pass
+
     return list(compounds_map.values())
 
 

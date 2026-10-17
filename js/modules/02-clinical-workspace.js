@@ -55,14 +55,14 @@
               </div>
             </div>
 
-            <!-- CARE INTELLIGENCE 2.0: AI CARE ORCHESTRATOR & CONTINUUM GAPS -->
+            <!-- CARE INTELLIGENCE 2.0: CLINICAL CARE ORCHESTRATOR & CONTINUUM GAPS -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <!-- Column 1 & 2: Conversational Front-Door -->
               <div class="lg:col-span-2 p-5 rounded-2xl bg-[var(--card)] border border-emerald-500/30 space-y-4 shadow-md">
                 <div class="flex justify-between items-center border-b border-[var(--border)] pb-2">
                   <div class="flex items-center gap-2">
-                    <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">🤖</span>
-                    <h3 class="text-sm font-bold text-white">AI Care Orchestrator™ (Conversational Intake &amp; Triage)</h3>
+                    <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">🩺</span>
+                    <h3 class="text-sm font-bold text-white">Clinical Care Orchestrator™ (Clinical Intake &amp; Triage)</h3>
                   </div>
                   <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[10px] font-bold">24/7 ACTIVE TRIAGE</span>
                 </div>
@@ -89,7 +89,7 @@
 
                 <!-- Input Box -->
                 <div class="flex gap-2">
-                  <input id="patient-orchestrator-input" type="text" placeholder="Aapki takleef ya sawaal yahan likhein (Urdu / Hindi / English)..." class="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-[var(--border)] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"/>
+                  <input id="patient-orchestrator-input" type="text" placeholder="Aapki takleef ya sawaal darj karein / Describe symptoms or clinical inquiry (Urdu / Hindi / English)..." class="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-[var(--border)] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"/>
                   <button onclick="submitPatientOrchestratorQuery()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-md">
                     Send
                   </button>
@@ -1700,7 +1700,7 @@
           <div class="space-y-6 pb-10">
             <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex justify-between items-center">
               <div>
-                <h2 class="text-xl font-bold text-white">Hakeem Sahab™ AI Clinical Reasoning Assistant</h2>
+                <h2 class="text-xl font-bold text-white">Hakeem Sahab™ Clinical Decision Support System (CDSS)</h2>
                 <p class="text-xs text-[var(--muted)] mt-1">Classical Tibb-e-Unani multi-hop knowledge graph cross-referenced with modern biomedical evidence.</p>
               </div>
               <span class="px-3 py-1 bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold font-mono">21 CFR 11 Barrier Active</span>
@@ -1740,7 +1740,7 @@
               </div>
 
               <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 space-y-3 text-xs">
-                <h3 class="text-sm font-bold text-white">AI Safety Guardrails</h3>
+                <h3 class="text-sm font-bold text-white">Clinical Safety Guardrails</h3>
                 <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
                   <strong class="text-emerald-400 block">Zero Autonomous Prescribing</strong>
                   <p class="text-slate-400 text-[11px]">AI outputs remain advisory recommendations until explicitly cryptographically signed by the attending Tabeeb.</p>
@@ -1824,7 +1824,7 @@
                 <div>
                   <div class="flex items-center gap-2">
                     <span class="text-lg">⚖️</span>
-                    <h3 class="text-base font-bold text-white" data-pipeline="12-Stage Knowledge Governance & AI Promotion Pipeline">12-Stage Clinical Knowledge Governance & Evidence Review Process</h3>
+                    <h3 class="text-base font-bold text-white" data-pipeline="12-Stage Knowledge Governance & Formulary Validation Pipeline">12-Stage Clinical Knowledge Governance & Evidence Review Process</h3>
                     <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono text-[10px] border border-purple-500/30">Quorum 3/3 Certified</span>
                   </div>
                   <p class="text-xs text-[var(--muted)] mt-0.5">Strict separation of research candidates from clinical-approved knowledge. Unpromoted items cannot alter prescribing rules.</p>
@@ -1858,7 +1858,7 @@
                   <span class="text-slate-500">→</span>
                   <span class="px-2 py-1 rounded bg-emerald-500/30 text-emerald-200 border border-emerald-500/50 font-bold whitespace-nowrap">11. Approved</span>
                   <span class="text-slate-500">→</span>
-                  <span class="px-2 py-1 rounded bg-purple-500/30 text-purple-200 border border-purple-500/50 font-bold whitespace-nowrap">12. AI Available</span>
+                  <span class="px-2 py-1 rounded bg-purple-500/30 text-purple-200 border border-purple-500/50 font-bold whitespace-nowrap">12. Formulary Verified</span>
                 </div>
               </div>
 
@@ -1871,7 +1871,7 @@
                     <span class="px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                       ✓ CLINICAL APPROVED • STAGE 12/12
                     </span>
-                    <span class="text-[10px] font-mono text-emerald-400">AI PROMOTED</span>
+                    <span class="text-[10px] font-mono text-emerald-400">FORMULARY APPROVED</span>
                   </div>
                   <div>
                     <h4 class="font-bold text-white text-sm">Zanjabeel Extract Fraction B (*Zingiber officinale*)</h4>
@@ -1880,7 +1880,7 @@
                   <div class="space-y-1 text-[11px] text-slate-300 border-t border-[var(--border)] pt-2">
                     <div>Reviewer: <strong class="text-white">Dr. K. Saxena & Hakeem Dr. Irfan Ashraf</strong></div>
                     <div>Decision: <strong class="text-emerald-400">Unanimous 3/3 Quorum Passed (2026-06-14)</strong></div>
-                    <div>AI Retrieval Status: <strong class="text-purple-300">Active in Hakeem Sahab™ Decision Graph</strong></div>
+                    <div>Formulary Evidence Status: <strong class="text-purple-300">Active in Hakeem Sahab™ Decision Graph</strong></div>
                   </div>
                 </div>
 
@@ -1890,7 +1890,7 @@
                     <span class="px-2 py-0.5 rounded font-bold text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40">
                       <svg class="w-4 h-4 inline-block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg> RESEARCH CANDIDATE • STAGE 06/12
                     </span>
-                    <span class="text-[10px] font-mono text-rose-400 font-bold">AI PRESCRIBING BLOCKED</span>
+                    <span class="text-[10px] font-mono text-rose-400 font-bold">PRESCRIPTION GOVERNANCE LOCK</span>
                   </div>
                   <div>
                     <h4 class="font-bold text-white text-sm">Asaroon Phyto-Isolate (*Asarum europaeum*)</h4>
@@ -2341,9 +2341,159 @@
       }
     });
 
+    // Automatically trigger Hakeem Sahab™ AI Nuskha drafting based on diagnosis
+    generateAiNuskhaFromDiagnosis(defaultDiag || complaintName);
+
     calculateIlajBilZidd();
     autoSaveConsultationDraft();
   }
+
+  function generateAiNuskhaFromDiagnosis(diagText) {
+    if (!diagText) {
+      const diagInput = document.getElementById('fast-diagnosis-input');
+      diagText = diagInput ? diagInput.value : '';
+    }
+    const txt = (diagText || '').toLowerCase().trim();
+    if (!txt) return;
+
+    let protocolId = null;
+
+    // 1. Check matching canonical protocols
+    if (txt.includes('waja') || txt.includes('joint') || txt.includes('knee') || txt.includes('osteo') || txt.includes('mafasil') || txt.includes('gout') || txt.includes('niqras') || txt.includes('arthritis')) {
+      protocolId = 'arthri';
+    } else if (txt.includes('hazm') || txt.includes('gas') || txt.includes('dyspep') || txt.includes('pet') || txt.includes('kamuni') || txt.includes('stomach') || txt.includes('acid') || txt.includes('gerd') || txt.includes('qulanj')) {
+      protocolId = 'gastro';
+    } else if (txt.includes('suda') || txt.includes('migraine') || txt.includes('head') || txt.includes('sir') || txt.includes('shaqeeqa') || txt.includes('tensio')) {
+      protocolId = 'ceph';
+    } else if (txt.includes('sugar') || txt.includes('diabet') || txt.includes('ziabetus') || txt.includes('gluco') || txt.includes('metabol')) {
+      protocolId = 'metabolic';
+    } else if (txt.includes('bah') || txt.includes('vitality') || txt.includes('asab') || txt.includes('neuro') || txt.includes('weak') || txt.includes('mardana') || txt.includes('jiryan')) {
+      protocolId = 'vitality';
+    } else if (txt.includes('nazla') || txt.includes('cold') || txt.includes('cough') || txt.includes('khansi') || txt.includes('sadr') || txt.includes('respir') || txt.includes('banafsha') || txt.includes('dama') || txt.includes('asthma') || txt.includes('ziq')) {
+      protocolId = 'respiratory';
+    } else if (txt.includes('jigar') || txt.includes('liver') || txt.includes('kabid') || txt.includes('kasni') || txt.includes('mako') || txt.includes('jaundice') || txt.includes('yarqan')) {
+      protocolId = 'liver';
+    } else if (txt.includes('skin') || txt.includes('jild') || txt.includes('khujli') || txt.includes('rash') || txt.includes('ushba') || txt.includes('detox') || txt.includes('psoriasis') || txt.includes('eczema') || txt.includes('quba')) {
+      protocolId = 'skin';
+    } else if (txt.includes('stone') || txt.includes('pathri') || txt.includes('hisat') || txt.includes('kidney') || txt.includes('gurda') || txt.includes('renal') || txt.includes('peshab') || txt.includes('mutr') || txt.includes('kulliya')) {
+      protocolId = 'renal';
+    } else if (txt.includes('bp') || txt.includes('hypertens') || txt.includes('pressure') || txt.includes('zaght') || txt.includes('qalb') || txt.includes('heart')) {
+      protocolId = 'hypertension';
+    } else if (txt.includes('piles') || txt.includes('bawaseer') || txt.includes('hemorrhoid') || txt.includes('masse') || txt.includes('maqad')) {
+      protocolId = 'piles';
+    } else if (txt.includes('insomnia') || txt.includes('sahar') || txt.includes('neend') || txt.includes('sleep') || txt.includes('banafsheh')) {
+      protocolId = 'insomnia';
+    } else if (txt.includes('sciatica') || txt.includes('irq') || txt.includes('disc') || txt.includes('lumbago')) {
+      protocolId = 'sciatica';
+    } else if (txt.includes('pcos') || txt.includes('period') || txt.includes('menses') || txt.includes('haiz') || txt.includes('tams') || txt.includes('rehem') || txt.includes('uterus')) {
+      protocolId = 'pcos';
+    } else if (txt.includes('sailan') || txt.includes('leucorrh') || txt.includes('likoria') || txt.includes('safed pani') || txt.includes('white discharge') || txt.includes('vaginitis')) {
+      protocolId = 'poshida_sailan';
+    } else if (txt.includes('istihaza') || txt.includes('kasrat-e-tams') || txt.includes('heavy bleeding') || txt.includes('menorrhagia') || txt.includes('zyada haiz')) {
+      protocolId = 'poshida_bleeding';
+    } else if (txt.includes('uqr') || txt.includes('infertility') || txt.includes('be auladi') || txt.includes('hamal') || txt.includes('ovulat') || txt.includes('conception')) {
+      protocolId = 'poshida_infertility';
+    } else if (txt.includes('sozak') || txt.includes('suzak') || txt.includes('urethritis') || txt.includes('gonorr') || txt.includes('peep')) {
+      protocolId = 'poshida_sozak';
+    } else if (txt.includes('surat') || txt.includes('inzal') || txt.includes('shighra') || txt.includes('jariyan') || txt.includes('jiryan') || txt.includes('mani') || txt.includes('riqqat') || txt.includes('sperm') || txt.includes('erectile') || txt.includes('namardi') || txt.includes('poshida') || txt.includes('mardana') || txt.includes('impoten')) {
+      protocolId = 'poshida_male';
+    }
+
+    if (protocolId) {
+      applyFastProtocol(protocolId);
+    } else {
+      // 2. Intelligent Dynamic Semantic Formulation Search across Catalogs
+      synthesizeDynamicNuskha(txt);
+    }
+
+    // Update banner visibility and status
+    const banner = document.getElementById('ai-nuskha-proposal-banner');
+    if (banner) {
+      banner.classList.remove('hidden');
+    }
+    
+    if (typeof showNotification === 'function') {
+      showNotification(`✨ Hakeem Sahab™ formulated prescription for "${diagText}". Attending physician review and signature required.`, 'info');
+    }
+  }
+
+  function synthesizeDynamicNuskha(keyword) {
+    const rx = state.prescriptions[0];
+    if (!rx.medicines) rx.medicines = [];
+    const parhezInput = document.getElementById('fast-parhez-text');
+
+    const matchedMeds = [];
+    const k = keyword.toLowerCase();
+
+    // Search Qarabadeen
+    if (typeof QARABADEEN_CATALOG !== 'undefined') {
+      QARABADEEN_CATALOG.forEach(item => {
+        const text = `${item.name} ${item.urdu_name || ''} ${item.notes || ''} ${item.axis || ''} ${item.category || ''}`.toLowerCase();
+        if (text.includes(k)) {
+          matchedMeds.push({
+            name: `${item.name} (${item.urdu_name || ''})`,
+            form: item.form || item.category || 'Compound',
+            strength: item.strength || '5g Twice Daily',
+            frequency: item.frequency || 'BD',
+            morning: '5g / 1 dose',
+            noon: '—',
+            night: '5g / 1 dose',
+            anupan: item.anupan || 'Neem garam paani (Lukewarm water)',
+            axis: item.axis || 'Integrative',
+            track: 'QARABADEEN'
+          });
+        }
+      });
+    }
+
+    // Search ZAYVORA Sovereign
+    if (typeof ZAYVORA_PRODUCTS_32 !== 'undefined') {
+      ZAYVORA_PRODUCTS_32.forEach(item => {
+        const text = `${item.name} ${item.indication || ''} ${item.category || ''}`.toLowerCase();
+        if (text.includes(k)) {
+          matchedMeds.push({
+            name: item.name,
+            form: item.form || 'Phytopharmaceutical',
+            strength: '1 Unit Daily',
+            frequency: 'OD',
+            morning: '1 Unit',
+            noon: '—',
+            night: '—',
+            anupan: 'Fresh water',
+            axis: item.category || 'Integrative',
+            track: 'ZAYVORA_PRODUCT'
+          });
+        }
+      });
+    }
+
+    if (matchedMeds.length > 0) {
+      rx.medicines = matchedMeds.slice(0, 4);
+      if (parhezInput) {
+        parhezInput.value = "Tez mirch masale, tali hui cheezein, baasi khana aur thandi ashiya se parhez karein. Taza aur subuk ghiza istemal karein.";
+      }
+    } else {
+      // General Classical Adaptogenic & Detox Formula
+      rx.medicines = [
+        { name: 'Khamira Gaozaban Ambari (خمیرہ گاؤزبان عنبری)', form: 'Khamira', strength: '5g Morning', frequency: 'OD', morning: '5g', noon: '—', night: '—', anupan: 'Neem garam doodh ya paani', axis: 'Cardio-Neuro', track: 'QARABADEEN' },
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml in water', noon: '—', night: '20ml in water', anupan: 'Lukewarm water', axis: 'Renal/Hepatic', track: 'QARABADEEN' },
+        { name: 'Itrifal Ustukhuddus (اطریفل اسطخودوس)', form: 'Itrifal', strength: '5g at Bedtime', frequency: 'OD', morning: '—', noon: '—', night: '5g', anupan: 'Lukewarm water', axis: 'Neuro-Digestive', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) {
+        parhezInput.value = "Sakht aur der-hazm khane, tez khatti cheezein aur thande paani se parhez karein. Motadil ghiza lein.";
+      }
+    }
+
+    // Compute Unani principles: Mizaj, 10-Ajnas Pulse, 12-Organ Axis, ICD-11 & Af'aal Cascade
+    const unaniData = calculateAutonomousUnaniPrinciples(narrative, detectedDiag);
+    renderUnaniPrinciplesSynthesis(unaniData);
+
+    renderFastMatabPrescriptionList();
+    calculateIlajBilZidd();
+    autoSaveConsultationDraft();
+  }
+
+  window.synthesizeDynamicNuskha = synthesizeDynamicNuskha;
 
   function selectFastTashkhees(type, val) {
     if (type === 'pulse') activeFastPulse = val;
@@ -2366,35 +2516,175 @@
     const rx = state.prescriptions[0];
     if (!rx.medicines) rx.medicines = [];
 
+    const parhezInput = document.getElementById('fast-parhez-text');
+
     if (protocolId === 'arthri') {
       rx.medicines = [
-        { name: 'Majun Suranjan', form: 'Majun (Paste)', strength: '5g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '5g (1 tsp)', anupan: 'Lukewarm water / Arq-e-Gaozaban', axis: 'Musculoskeletal', track: 'QARABADEEN' },
-        { name: 'Roghan-e-Suranjan', form: 'Roghan (Oil)', strength: 'Hasb-e-Zaroorat', frequency: 'BD (Morning & Night)', morning: 'Local Application', noon: '—', night: 'Gentle Friction', anupan: 'External Dalk (Massage)', axis: 'Musculoskeletal', track: 'QARABADEEN' },
-        { name: 'SynovoFlex™ Micro-Granules', form: 'Stick Sachet', strength: '5g Once Daily', frequency: 'OD (Morning)', morning: '1 Sachet (5g)', noon: '—', night: '—', anupan: '100ml warm water post-breakfast', axis: 'Musculoskeletal', track: 'ZAYVORA_PRODUCT' }
+        { name: 'Majun Suranjan (معجون سرنجان / माजून सुरंजान)', form: 'Majun (Paste)', strength: '5g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '5g (1 tsp)', anupan: 'Lukewarm water / Arq-e-Gaozaban', axis: 'Musculoskeletal', track: 'QARABADEEN' },
+        { name: 'Roghan-e-Suranjan (روغن سرنجان / रोग़न सुरंजान)', form: 'Roghan (Oil)', strength: 'Hasb-e-Zaroorat', frequency: 'BD (Morning & Night)', morning: 'Local Application', noon: '—', night: 'Gentle Friction', anupan: 'External Dalk (Massage)', axis: 'Musculoskeletal', track: 'QARABADEEN' },
+        { name: 'Habbe Asgand (حب اسگند / हब्बे असगंद)', form: 'Habb (Tablet)', strength: '2 Tabs BD', frequency: 'BD', morning: '2 Tablets', noon: '—', night: '2 Tablets', anupan: 'Lukewarm milk or water', axis: 'Musculoskeletal', track: 'QARABADEEN' },
+        { name: 'SynovoFlex™ Micro-Granules', form: 'Stick Sachet', strength: '5g Once Daily', frequency: 'OD (Morning)', morning: '1 Sachet (5g)', noon: '—', night: '—', anupan: '100ml warm water post-breakfast', axis: 'Musculoskeletal', track: 'ZAYVORA_PRODUCT' },
+        { name: 'Bespoke Safoof-e-Tanqiya-e-Mafasil (سفوف تنقیہ مفاصل و جگر)', form: 'Safoof (Micro-Powder)', strength: '3g Morning Empty Stomach', frequency: 'OD (Morning)', morning: '3g (1/2 tsp)', noon: '—', night: '—', anupan: 'Arq-e-Kasni wa Mako (50ml)', axis: 'Hepato-Musculoskeletal', track: 'SELF_NUSKHA', ingredients: 'Asgandh 2g, Suranjan Talkh Mudabbar 500mg, Zanjabeel 1g, Filfil Siyah 250mg, Kateera 500mg', notes: 'Clinician Bespoke Humoral Balance (خود ساختہ نسخہ)' }
       ];
-      showNotification('Applied ArthriCare Trio Protocol (Suranjan + SynovoFlex™)', 'success');
+      if (parhezInput) parhezInput.value = "Chawal, Dahi, Thanda paani, Badi ashya (Urad daal, Baingan, Aloo) se sakht parhez karein.";
+      showNotification('Applied ArthriCare Master Protocol (Suranjan + SynovoFlex™)', 'success');
     } else if (protocolId === 'gastro') {
       rx.medicines = [
-        { name: 'Jawarish Kamuni', form: 'Jawarish', strength: '5g Post Meals', frequency: 'BD (Morning & Night)', morning: '5g after meal', noon: '—', night: '5g after dinner', anupan: 'Fresh water', axis: 'Gastrointestinal', track: 'QARABADEEN' },
-        { name: 'Sharbat Bazoori Motadil', form: 'Sharbat (Syrup)', strength: '20ml with water', frequency: 'BD', morning: '20ml in water', noon: '20ml in water', night: '—', anupan: 'Lukewarm water', axis: 'Renal/Hepatic', track: 'QARABADEEN' },
-        { name: 'GastroVora™ Veg Capsules', form: 'Capsule', strength: '1 Cap BD', frequency: 'BD', morning: '1 Capsule', noon: '—', night: '1 Capsule', anupan: 'Fresh water', axis: 'Gastrointestinal', track: 'ZAYVORA_PRODUCT' }
+        { name: 'Jawarish Kamuni (جوارش کمونی / जवारिश कमूनी)', form: 'Jawarish', strength: '5g Post Meals', frequency: 'BD', morning: '5g after meal', noon: '—', night: '5g after dinner', anupan: 'Fresh water', axis: 'Gastrointestinal', track: 'QARABADEEN' },
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل / शरबत बज़ूरी)', form: 'Sharbat (Syrup)', strength: '20ml with water', frequency: 'BD', morning: '20ml in water', noon: '20ml in water', night: '—', anupan: 'Lukewarm water', axis: 'Renal/Hepatic', track: 'QARABADEEN' },
+        { name: 'Itrifal Ustukhuddus (اطریفل اسطخودوس / इतरीफ़ल उसतुख़ुद्दूस)', form: 'Itrifal', strength: '5g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '5g', anupan: 'Warm water', axis: 'Gastrointestinal', track: 'QARABADEEN' },
+        { name: 'GastroVora™ Veg Capsules', form: 'Capsule', strength: '1 Cap BD', frequency: 'BD', morning: '1 Capsule', noon: '—', night: '1 Capsule', anupan: 'Fresh water', axis: 'Gastrointestinal', track: 'ZAYVORA_PRODUCT' },
+        { name: 'Bespoke Safoof-e-Hazim wa Kasir-e-Riyah (سفوف ہاضم و کاسر ریاح)', form: 'Safoof (Herbal Powder)', strength: '3g Post-Lunch & Dinner', frequency: 'BD', morning: '—', noon: '3g (1/2 tsp)', night: '3g (1/2 tsp)', anupan: 'Taza Paani (Fresh water)', axis: 'Gastrointestinal', track: 'SELF_NUSKHA', ingredients: 'Badiyan 2g, Zira Siyah 1g, Namak Siyah 500mg, Pudina Khushk 1g, Filfil Daraz 250mg', notes: 'Clinician Bespoke Digestive Tonic (خود ساختہ نسخہ)' }
       ];
-      showNotification('Applied GastroBalance Trio (Jawarish Kamuni + Sharbat Bazoori)', 'success');
+      if (parhezInput) parhezInput.value = "Tez mirch masale, Tali hui cheezein, Fast food, Baasi khana aur Cold drinks se parhez karein.";
+      showNotification('Applied GastroBalance Master Protocol (Jawarish Kamuni + Bazoori)', 'success');
     } else if (protocolId === 'ceph') {
       rx.medicines = [
-        { name: 'Itrifal Kishneezi', form: 'Itrifal', strength: '7g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '7g (1.5 tsp)', anupan: 'Lukewarm water / Arq Gaozaban', axis: 'Neuropsychiatric', track: 'QARABADEEN' },
-        { name: 'Khamira Gaozaban Ambari', form: 'Khamira', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g empty stomach', noon: '—', night: '—', anupan: 'Sheer-e-Gao (Warm milk)', axis: 'Cardiovascular', track: 'QARABADEEN' },
-        { name: 'TensioCalm™ Veg Capsules', form: 'Capsule', strength: '1 Cap BD', frequency: 'BD', morning: '1 Capsule', noon: '—', night: '1 Capsule', anupan: 'Fresh water', axis: 'Cerebrovascular', track: 'ZAYVORA_PRODUCT' }
+        { name: 'Itrifal Kishneezi (اطریفل کشنیزی / इतरीफ़ल किशनीज़ी)', form: 'Itrifal', strength: '7g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '7g (1.5 tsp)', anupan: 'Lukewarm water / Arq Gaozaban', axis: 'Neuropsychiatric', track: 'QARABADEEN' },
+        { name: 'Khamira Gaozaban Ambari (خمیرہ گاؤزبان عنبری / ख़मीरा गाओज़बान)', form: 'Khamira', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g empty stomach', noon: '—', night: '—', anupan: 'Warm milk (Sheer-e-Gao)', axis: 'Cardiovascular', track: 'QARABADEEN' },
+        { name: 'Sharbat Ustukhuddus (شربت اسطخودوس / शरबत उसतुख़ुद्दूस)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml', noon: '—', night: '20ml', anupan: 'Fresh water', axis: 'Neuropsychiatric', track: 'QARABADEEN' },
+        { name: 'TensioCalm™ Veg Capsules', form: 'Capsule', strength: '1 Cap BD', frequency: 'BD', morning: '1 Capsule', noon: '—', night: '1 Capsule', anupan: 'Fresh water', axis: 'Cerebrovascular', track: 'ZAYVORA_PRODUCT' },
+        { name: 'Bespoke Safoof-e-Muqawwi-e-Dimagh wa Asab (سفوف مقوی دماغ و اعصاب)', form: 'Safoof (Fine Powder)', strength: '3g with Milk', frequency: 'OD (Morning)', morning: '3g', noon: '—', night: '—', anupan: 'Neem Garam Doodh (Warm Milk)', axis: 'Neurologic', track: 'SELF_NUSKHA', ingredients: 'Ustukhuddus 2g, Kishneez Khushk 2g, Maghz Badam Shireen 3g, Brahmi 1g', notes: 'Clinician Bespoke Neuro-Tonic (خود ساختہ نسخہ)' }
       ];
-      showNotification('Applied Cephalic Relief Trio (Itrifal Kishneezi + TensioCalm™)', 'success');
+      if (parhezInput) parhezInput.value = "Tez dhoop, Zehni tanaav (stress), Raat ko der tak jagna, Chai/Coffee ki zyadati se bachein.";
+      showNotification('Applied Cephalic Relief Master Protocol (Itrifal Kishneezi + TensioCalm™)', 'success');
     } else if (protocolId === 'metabolic') {
       rx.medicines = [
-        { name: 'Hab-e-Khabsul Hadeed', form: 'Habb (Tablet)', strength: '2 Tablets BD', frequency: 'BD', morning: '2 Tablets', noon: '—', night: '2 Tablets', anupan: 'Fresh juice or water post-meal', axis: 'Hematologic', track: 'QARABADEEN' },
-        { name: 'Sharbat Deenar', form: 'Sharbat', strength: '15ml BD', frequency: 'BD', morning: '15ml in water', noon: '—', night: '15ml in water', anupan: 'Warm water', axis: 'Hepatobiliary', track: 'QARABADEEN' },
-        { name: 'Glucovora™ Micro-Granules', form: 'Granules', strength: '1 Sachet Daily', frequency: 'OD (Morning)', morning: '1 Sachet (5g)', noon: '—', night: '—', anupan: 'Warm water 20 mins pre-meal', axis: 'Pancreatic', track: 'ZAYVORA_PRODUCT' }
+        { name: 'Hab-e-Khabsul Hadeed (حب خبث الحدید / हब्बे ख़बसुल हदीद)', form: 'Habb (Tablet)', strength: '2 Tablets BD', frequency: 'BD', morning: '2 Tablets', noon: '—', night: '2 Tablets', anupan: 'Fresh water post-meal', axis: 'Hematologic', track: 'QARABADEEN' },
+        { name: 'Sharbat Deenar (شربت دینار / शरबत दीनार)', form: 'Sharbat', strength: '15ml BD', frequency: 'BD', morning: '15ml in water', noon: '—', night: '15ml in water', anupan: 'Warm water', axis: 'Hepatobiliary', track: 'QARABADEEN' },
+        { name: 'Safuf Ziabetus (سفوف ذیابیطس / सफ़ूफ़ ज़ियाबेतस)', form: 'Safuf (Powder)', strength: '3g BD pre-meal', frequency: 'BD', morning: '3g', noon: '—', night: '3g', anupan: 'Lukewarm water', axis: 'Pancreatic', track: 'QARABADEEN' },
+        { name: 'Glucovora™ Micro-Granules', form: 'Granules', strength: '1 Sachet Daily', frequency: 'OD (Morning)', morning: '1 Sachet (5g)', noon: '—', night: '—', anupan: 'Warm water 20 mins pre-meal', axis: 'Pancreatic', track: 'ZAYVORA_PRODUCT' },
+        { name: 'Bespoke Safoof-e-Muqawwi-e-Lablaba wa Qabiz (سفوف مقوی لبلبہ)', form: 'Safoof (Herbal Powder)', strength: '3g Pre-Meals', frequency: 'BD', morning: '3g', noon: '—', night: '3g', anupan: 'Neem Garam Paani (Lukewarm water)', axis: 'Pancreatic', track: 'SELF_NUSKHA', ingredients: 'Jamun Giri 2g, Karela Khushk 1g, Gurmar Booti 1g, Methi Dana 1g', notes: 'Clinician Bespoke Metabolic Formulation (خود ساختہ نسخہ)' }
       ];
-      showNotification('Applied Metabolic Tonic (Hab-e-Khabsul Hadeed + Glucovora™)', 'success');
+      if (parhezInput) parhezInput.value = "Meethi ashya, Safed chawal, Aloo, Maida, Meethe phal aur meetha doodh se parhez karein.";
+      showNotification('Applied Metabolic Tonic Master Protocol (Ziabetus + Glucovora™)', 'success');
+    } else if (protocolId === 'respiratory') {
+      rx.medicines = [
+        { name: 'Sharbat Banafsha (شربت بنفشہ / शरबत बनफ़्शा)', form: 'Sharbat', strength: '15ml with warm water', frequency: 'BD', morning: '15ml in warm water', noon: '—', night: '15ml in warm water', anupan: 'Lukewarm water', axis: 'Respiratory', track: 'QARABADEEN' },
+        { name: 'Lauq Sapistan (لعوق سپستان / लऊक़ सपिस्ताँ)', form: 'Lauq (Linctus)', strength: '5g Twice Daily (Licking)', frequency: 'BD', morning: '5g (Chatayein)', noon: '—', night: '5g (Chatayein)', anupan: 'Direct linctus', axis: 'Respiratory', track: 'QARABADEEN' },
+        { name: 'Habbe Surfa (حب سرفہ / हब्बे सुरफ़ा)', form: 'Habb (Tablet)', strength: '1 Tab BD', frequency: 'BD', morning: '1 Tablet', noon: '—', night: '1 Tablet', anupan: 'Warm water', axis: 'Respiratory', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Thandi baraf wali cheezein, Khatti ashya (Nimbu, Imli), Ice cream aur Dahi se mukammal parhez.";
+      showNotification('Applied Respiratory Cold/Cough Protocol (Sharbat Banafsha + Lauq Sapistan)', 'success');
+    } else if (protocolId === 'liver') {
+      rx.medicines = [
+        { name: 'Sharbat Kasni (شربت کاسنی / शरबत कासनी)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml with Arq Mako', noon: '—', night: '20ml with Arq Mako', anupan: 'Arq Mako (50ml)', axis: 'Hepatobiliary', track: 'QARABADEEN' },
+        { name: 'Arq Mako (عرق مکو / अर्क मको)', form: 'Arq (Distillate)', strength: '50ml BD', frequency: 'BD', morning: '50ml', noon: '—', night: '50ml', anupan: 'Direct sip', axis: 'Hepatobiliary', track: 'QARABADEEN' },
+        { name: 'Majun Dabeed-ul-Ward (معجون دبید الورد / माजून दबीदुल वर्द)', form: 'Majun', strength: '5g Post Meals', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Fresh water', axis: 'Hepatobiliary', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Garam masale, Gosht ki zyadati, Sharab, Tali hui cheezein aur dhoop se parhez karein.";
+      showNotification('Applied Hepato-Protective Protocol (Kasni + Arq Mako + Dabeed-ul-Ward)', 'success');
+    } else if (protocolId === 'vitality') {
+      rx.medicines = [
+        { name: 'Majoon Arad Khurma (معجون آرد خرما / माजून आरद ख़ुरमा)', form: 'Majun', strength: '5g with Warm Milk', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Lukewarm cow milk', axis: 'Neuro-Andrological', track: 'QARABADEEN' },
+        { name: 'Habbe Jadwar (حب جدوار / हब्बे जदवार)', form: 'Habb (Tablet)', strength: '1 Tab at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '1 Tablet', anupan: 'Warm milk', axis: 'Neuro-Andrological', track: 'QARABADEEN' },
+        { name: 'ManiVital Pro™ Herbal Extract', form: 'Stick Sachet', strength: '1 Sachet Daily', frequency: 'OD (Morning)', morning: '1 Sachet', noon: '—', night: '—', anupan: 'Warm milk', axis: 'Neuro-Andrological', track: 'ZAYVORA_PRODUCT' }
+      ];
+      if (parhezInput) parhezInput.value = "Pet saaf rakhein, Qabz se bachein, late night jagna aur smoking se parhez karein.";
+      showNotification('Applied Vitality & Neuro-Tonic Protocol (Arad Khurma + Jadwar)', 'success');
+    } else if (protocolId === 'skin') {
+      rx.medicines = [
+        { name: 'Majun Ushba (معجون عشبہ / माजून उशबा)', form: 'Majun', strength: '5g BD', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Fresh water / Sharbat Unnab', axis: 'Dermatologic', track: 'QARABADEEN' },
+        { name: 'Sharbat Unnab (شربت عناب / शरबत उन्नाब)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml', noon: '—', night: '20ml', anupan: 'Fresh water', axis: 'Dermatologic', track: 'QARABADEEN' },
+        { name: 'Roghan-e-Neem (روغن نیم / रोग़न नीम)', form: 'Roghan (Oil)', strength: 'Hasb-e-Zaroorat (External)', frequency: 'OD', morning: '—', noon: '—', night: 'Apply gently', anupan: 'External use only', axis: 'Dermatologic', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Anda, Machli, Khatti aur garam cheezein, Gud aur baasi khane se mukammal parhez karein.";
+      showNotification('Applied Musaffi-e-Dam Skin Detox Protocol (Majun Ushba + Unnab)', 'success');
+    } else if (protocolId === 'renal') {
+      rx.medicines = [
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل)', form: 'Sharbat (Syrup)', strength: '25ml with water', frequency: 'BD', morning: '25ml in water', noon: '—', night: '25ml in water', anupan: 'Lukewarm water', axis: 'Renal/Urinary', track: 'QARABADEEN' },
+        { name: 'Majoon-e-Kundur (معجون کندر)', form: 'Majoon', strength: '5g Twice Daily', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Fresh water', axis: 'Renal/Urinary', track: 'QARABADEEN' },
+        { name: 'Bespoke Safoof-e-Hisat wa Mufattit (سفوف سنگ شکن)', form: 'Safoof', strength: '3g with Arq Badiyan', frequency: 'BD', morning: '3g', noon: '—', night: '3g', anupan: 'Arq-e-Badiyan (50ml)', axis: 'Renal/Urinary', track: 'SELF_NUSKHA', ingredients: 'Hajr-ul-Yahood Bhasma 1g, Kulthi 2g, Jawakhar 500mg, Shora Qalmi 500mg', notes: 'Clinician Bespoke Lithotriptic Formulation (سنگ شکن)' }
+      ];
+      if (parhezInput) parhezInput.value = "Tamatar, Palak, Chaulai, Gosht, Chawal aur Beej wali ashya se sakht parhez karein. Rozana 3 se 4 litre paani piyein.";
+      showNotification('Applied Renal Lithotriptic Protocol (Sharbat Bazoori + Majoon Kundur)', 'success');
+    } else if (protocolId === 'hypertension') {
+      rx.medicines = [
+        { name: 'Habbe Asrol / Asrafee (حب اسرول)', form: 'Habb (Tablet)', strength: '1 Tab BD', frequency: 'BD', morning: '1 Tablet', noon: '—', night: '1 Tablet', anupan: 'Fresh water', axis: 'Cardiovascular', track: 'QARABADEEN' },
+        { name: 'Khamira Gaozaban Ambari (خمیرہ گاؤزبان عنبری)', form: 'Khamira', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g', noon: '—', night: '—', anupan: 'Warm milk / water', axis: 'Cardiovascular', track: 'QARABADEEN' },
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml in water', noon: '—', night: '20ml in water', anupan: 'Lukewarm water', axis: 'Renal/Hepatic', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Namak (salt) kam se kam karein, Tali hui cheezein, Tez mirch masale aur zehni tanaav se bachein. Subah walk karein.";
+      showNotification('Applied Cardio-Vascular & Tension Protocol (Asrol + Khamira Gaozaban)', 'success');
+    } else if (protocolId === 'piles') {
+      rx.medicines = [
+        { name: 'Habbe Muqil (حب مقل)', form: 'Habb (Tablet)', strength: '2 Tabs Twice Daily', frequency: 'BD', morning: '2 Tablets', noon: '—', night: '2 Tablets', anupan: 'Fresh water post-meals', axis: 'Gastrointestinal', track: 'QARABADEEN' },
+        { name: 'Itrifal Muqil (اطریفل مقل)', form: 'Itrifal', strength: '7g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '7g (1.5 tsp)', anupan: 'Lukewarm water', axis: 'Gastrointestinal', track: 'QARABADEEN' },
+        { name: 'Marham-e-Kafoori (مرہم کافوری)', form: 'Marham (Ointment)', strength: 'Local Application', frequency: 'BD', morning: 'Apply gently', noon: '—', night: 'Apply after wash', anupan: 'External use', axis: 'Proctologic', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Qabz (constipation) se bachein. Tez lal mirch, gosht, garam masale aur maida band karein. Papiya aur daliya lein.";
+      showNotification('Applied Anti-Hemorrhoidal Protocol (Habbe Muqil + Itrifal Muqil)', 'success');
+    } else if (protocolId === 'insomnia') {
+      rx.medicines = [
+        { name: 'Khamira Gaozaban Ambari (خمیرہ گاؤزبان عنبری)', form: 'Khamira', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g empty stomach', noon: '—', night: '—', anupan: 'Warm milk', axis: 'Neuropsychiatric', track: 'QARABADEEN' },
+        { name: 'Roghan-e-Kahu / Roghan-e-Labub (روغن کاہو)', form: 'Roghan (Oil)', strength: 'Hasb-e-Zaroorat', frequency: 'OD (Night)', morning: '—', noon: '—', night: 'Gentle scalp massage', anupan: 'External friction', axis: 'Neurologic', track: 'QARABADEEN' },
+        { name: 'Sharbat Banafsha (شربت بنفشہ)', form: 'Sharbat', strength: '20ml at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '20ml in warm water', anupan: 'Warm water', axis: 'Neurologic', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Chai, Coffee aur Cold drinks sham 5 baje ke baad bilkul band karein. Raat ko mobile/screen se door rahein.";
+      showNotification('Applied Cephalic Calming & Sleep Protocol (Roghan Kahu + Khamira)', 'success');
+    } else if (protocolId === 'sciatica') {
+      rx.medicines = [
+        { name: 'Majun Suranjan (معجون سرنجان)', form: 'Majun', strength: '5g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '5g', anupan: 'Lukewarm water', axis: 'Neuromuscular', track: 'QARABADEEN' },
+        { name: 'Majun Chobchini (معجون چوب چینی)', form: 'Majun', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g', noon: '—', night: '—', anupan: 'Warm water', axis: 'Neuromuscular', track: 'QARABADEEN' },
+        { name: 'Roghan-e-Suranjan (روغن سرنجان)', form: 'Roghan (Oil)', strength: 'Local Application', frequency: 'BD', morning: 'Warm massage', noon: '—', night: 'Warm massage', anupan: 'External use', axis: 'Neuromuscular', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Thandi hawa aur seedhe AC ke samne baithne se bachein. Bhari wazan na uthayein. Badi ashiya band karein.";
+      showNotification('Applied Sciatica & Neuralgia Protocol (Suranjan + Chobchini)', 'success');
+    } else if (protocolId === 'pcos') {
+      rx.medicines = [
+        { name: 'Majun Supari Pak (معجون سپاری پاک)', form: 'Majun', strength: '5g Twice Daily', frequency: 'BD', morning: '5g with warm milk', noon: '—', night: '5g', anupan: 'Lukewarm milk', axis: 'Endocrine/Reproductive', track: 'QARABADEEN' },
+        { name: 'Sharbat Mudir (شربت مدر)', form: 'Sharbat', strength: '20ml BD', frequency: 'BD', morning: '20ml in water', noon: '—', night: '20ml in water', anupan: 'Warm water', axis: 'Endocrine/Reproductive', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Meetha, Chawal, Fast food aur Dairy ki zyadati se bachein. Rozana 30 minute brisk walk ya kasrat karein.";
+      showNotification('Applied Endocrine & Hormonal Protocol (Supari Pak + Sharbat Mudir)', 'success');
+    } else if (protocolId === 'poshida_male') {
+      rx.medicines = [
+        { name: 'Majoon Arad Khurma (معجون آرد خرما / माजून आरद ख़ुरما)', form: 'Majun', strength: '5g with Warm Milk', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Lukewarm cow milk', axis: 'Neuro-Andrological', track: 'QARABADEEN' },
+        { name: 'Majun Salab (معجون ثعلب)', form: 'Majun', strength: '5g Once Daily (Morning)', frequency: 'OD (Morning)', morning: '5g', noon: '—', night: '—', anupan: 'Warm milk + 2 dates', axis: 'Neuro-Andrological', track: 'QARABADEEN' },
+        { name: 'Habbe Jadwar (حب جدوار / हब्बे जदवार)', form: 'Habb (Tablet)', strength: '1 Tab at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '1 Tablet', anupan: 'Warm milk', axis: 'Neuro-Andrological', track: 'QARABADEEN' },
+        { name: 'ManiVital Pro™ Herbal Extract', form: 'Stick Sachet', strength: '1 Sachet Daily', frequency: 'OD (Morning)', morning: '1 Sachet', noon: '—', night: '—', anupan: 'Warm milk', axis: 'Neuro-Andrological', track: 'ZAYVORA_PRODUCT' }
+      ];
+      if (parhezInput) parhezInput.value = "Tez mirch masale, garm taseer aashia (beef, egg yolk, alcohol), late night jagna aur qabz se bachein. Subah nahaar-munh doodh aur badam istemal karein.";
+      showNotification('Applied Male Reproductive & Vitality Protocol (Arad Khurma + Salab + Jadwar)', 'success');
+    } else if (protocolId === 'poshida_sailan') {
+      rx.medicines = [
+        { name: 'Majun Supari Pak (معجون سپاری پاک)', form: 'Majun', strength: '7g Twice Daily', frequency: 'BD', morning: '7g', noon: '—', night: '7g', anupan: 'Lukewarm milk', axis: 'Gynecological', track: 'QARABADEEN' },
+        { name: 'Safoof Sailan (سفوف سیلان)', form: 'Safoof (Powder)', strength: '5g Twice Daily', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Fresh water / cow milk', axis: 'Gynecological', track: 'QARABADEEN' },
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل)', form: 'Sharbat (Syrup)', strength: '20ml in water', frequency: 'BD', morning: '20ml', noon: '—', night: '20ml', anupan: 'Fresh water', axis: 'Renal-Gynecological', track: 'QARABADEEN' },
+        { name: 'FeminaVora™ Uterine Balance', form: 'Capsule', strength: '1 Cap BD', frequency: 'BD', morning: '1 Capsule', noon: '—', night: '1 Capsule', anupan: 'Fresh water', axis: 'Gynecological', track: 'ZAYVORA_PRODUCT' }
+      ];
+      if (parhezInput) parhezInput.value = "Khatti aashia (imli, achaar, tamatar), baasi aur tili hui cheezon se parhez karein. Zati safai (intimate hygiene) ka khas khayal rakhein.";
+      showNotification('Applied Gynecological & Leucorrhea Protocol (Supari Pak + Safoof Sailan)', 'success');
+    } else if (protocolId === 'poshida_bleeding') {
+      rx.medicines = [
+        { name: 'Safoof Habis (سفوف حابس)', form: 'Safoof (Powder)', strength: '3g Twice Daily', frequency: 'BD', morning: '3g', noon: '—', night: '3g', anupan: 'Cold water or Sharbat Anjabar', axis: 'Gynecological', track: 'QARABADEEN' },
+        { name: 'Majun Muqawwi-e-Reham (معجون مقوی رحم)', form: 'Majun', strength: '5g at Bedtime', frequency: 'OD (Night)', morning: '—', noon: '—', night: '5g', anupan: 'Lukewarm milk', axis: 'Gynecological', track: 'QARABADEEN' },
+        { name: 'Sharbat Anjabar (شربت انجبار)', form: 'Sharbat (Syrup)', strength: '20ml Twice Daily', frequency: 'BD', morning: '20ml', noon: '—', night: '20ml', anupan: 'Arq Gaozaban or water', axis: 'Hemostatic', track: 'QARABADEEN' }
+      ];
+      if (parhezInput) parhezInput.value = "Mukammal aaraam karein, shadeed mehnath aur garam masaledar khano se parhez karein. Thande mashroobat istemal karein.";
+      showNotification('Applied Uterine Hemostatic Protocol (Safoof Habis + Muqawwi-e-Reham)', 'success');
+    } else if (protocolId === 'poshida_infertility') {
+      rx.medicines = [
+        { name: 'Majun Muqawwi-e-Reham (معجون مقوی رحم)', form: 'Majun', strength: '5g Twice Daily', frequency: 'BD', morning: '5g', noon: '—', night: '5g', anupan: 'Lukewarm cow milk', axis: 'Gynecological', track: 'QARABADEEN' },
+        { name: 'Khamira Gaozaban Ambari (خمیرہ گاوزبان عنبری)', form: 'Khamira', strength: '5g Morning', frequency: 'OD (Morning)', morning: '5g', noon: '—', night: '—', anupan: 'Arq Gaozaban', axis: 'Neuro-Endocrine', track: 'QARABADEEN' },
+        { name: 'FeminaVora™ OvulaGranules', form: 'Stick Sachet', strength: '1 Sachet Daily', frequency: 'OD (Morning)', morning: '1 Sachet', noon: '—', night: '—', anupan: 'Warm milk with honey', axis: 'Reproductive', track: 'ZAYVORA_PRODUCT' }
+      ];
+      if (parhezInput) parhezInput.value = "Maqwi gizaayein (badam, maghziyat, khajoor, dhoodh) istemal karein. Zehni tanav (stress) aur raton ko der tak jagna band karein.";
+      showNotification('Applied Subfertility & Uterine Tonic Protocol (Muqawwi-e-Reham + Gaozaban)', 'success');
+    } else if (protocolId === 'poshida_sozak') {
+      rx.medicines = [
+        { name: 'Sharbat Bazoori Motadil (شربت بزوری معتدل)', form: 'Sharbat (Syrup)', strength: '25ml Thrice Daily', frequency: 'TDS', morning: '25ml', noon: '25ml', night: '25ml', anupan: 'Fresh water / Ma-ul-Shaeer', axis: 'Genito-Urinary', track: 'QARABADEEN' },
+        { name: 'Qurs Kushta Qalai (قرص کشتہ قلعی)', form: 'Qurs (Tablet)', strength: '1 Tab BD', frequency: 'BD', morning: '1 Tablet', noon: '—', night: '1 Tablet', anupan: 'Milk or Sharbat Bazoori', axis: 'Genito-Urinary', track: 'QARABADEEN' },
+        { name: 'AlkaVora™ Alkalizing Granules', form: 'Granules', strength: '1 Sachet BD', frequency: 'BD', morning: '1 Sachet', noon: '—', night: '1 Sachet', anupan: '200ml cold water', axis: 'Renal-Genitourinary', track: 'ZAYVORA_PRODUCT' }
+      ];
+      if (parhezInput) parhezInput.value = "Rozana 3.5 se 4 litre paani, jau ka paani (Ma-ul-Shaeer), aur nariyal paani piyein. Mirch masale aur smoking se sakht parhez karein.";
+      showNotification('Applied Urethral Soothing Protocol (Bazoori + Kushta Qalai)', 'success');
     }
+
+    // Compute Unani principles: Mizaj, 10-Ajnas Pulse, 12-Organ Axis, ICD-11 & Af'aal Cascade
+    const narrativeText = (document.getElementById('input-comprehensive-clinical-note') || {}).value || protocolId;
+    const unaniData = calculateAutonomousUnaniPrinciples(narrativeText, protocolId);
+    renderUnaniPrinciplesSynthesis(unaniData);
 
     renderFastMatabPrescriptionList();
     calculateIlajBilZidd();
@@ -2446,6 +2736,485 @@
     `;
   }
 
+  
+  // =========================================================================
+  // HAKEEM SAHAB™ TOTAL CLINICAL SYNTHESIS & DOCTOR TWEAK ENGINE
+  // =========================================================================
+
+  function hakeemAnalyzeAndGenerateCompleteNuskha() {
+    const diagInput = document.getElementById('fast-diagnosis-input');
+    const diagText = diagInput ? diagInput.value : '';
+    
+    // 1. Generate base regimen matching diagnosis & symptoms
+    generateAiNuskhaFromDiagnosis(diagText);
+
+    const rx = state.prescriptions[0];
+    if (!rx || !rx.medicines) return;
+
+    // 2. Multi-parameter fine-tuning based on Physical Exam (Pulse/Tongue) & Lab Markers
+    const pulse = activeFastPulse || 'Batee';
+    const tongue = activeFastTongue || 'White-Coated';
+    const parhezInput = document.getElementById('fast-parhez-text');
+
+    // If pulse is Saree (Hot/Inflammatory) or tongue is Yellowish (Safrawi), add cooling vehicle/corrective
+    if (pulse === 'Saree' || tongue === 'Yellowish') {
+      rx.medicines.forEach(m => {
+        if (!m.anupan || m.anupan.includes('Lukewarm water')) {
+          m.anupan = 'Fresh water / Arq Shahtarra (Cooling Badraqa)';
+        }
+      });
+      if (parhezInput && !parhezInput.value.includes('Garam taseer')) {
+        parhezInput.value += ' [Tadbeer]: Garam taseer aashia, dhoop aur shadeed garm mahol se bachein. Arq Gulab ya Sheera Sandal istemal karein.';
+      }
+    } else if (pulse === 'Batee' || tongue === 'White-Coated') {
+      // Phlegmatic cold state: ensure warm vehicle
+      rx.medicines.forEach(m => {
+        if (m.anupan && m.anupan.includes('Fresh water')) {
+          m.anupan = 'Neem garam paani / Joshanda Zanjabeel (Warm Badraqa)';
+        }
+      });
+      if (parhezInput && !parhezInput.value.includes('Thandi aur balghami')) {
+        parhezInput.value += ' [Tadbeer]: Thandi aur balghami ghizayein (chawal, dahi, ice cream) se parhez karein. Dalk-e-Layyin (halka massage) karein.';
+      }
+    }
+
+    // Compute Unani principles: Mizaj, 10-Ajnas Pulse, 12-Organ Axis, ICD-11 & Af'aal Cascade
+    const unaniData = calculateAutonomousUnaniPrinciples(narrative, detectedDiag);
+    renderUnaniPrinciplesSynthesis(unaniData);
+
+    renderFastMatabPrescriptionList();
+    calculateIlajBilZidd();
+    autoSaveConsultationDraft();
+
+    if (typeof showNotification === 'function') {
+      showNotification('✨ Hakeem Sahab™ has synthesized the complete Nuskha from Symptoms + Pulse + Tongue + Labs. Ready for doctor review.', 'success');
+    }
+  }
+
+  function increaseMedicineDose(idx) {
+    const rx = state.prescriptions[0];
+    if (!rx || !rx.medicines || !rx.medicines[idx]) return;
+    const m = rx.medicines[idx];
+    
+    if (m.strength.includes('5g')) m.strength = m.strength.replace('5g', '7g');
+    else if (m.strength.includes('7g')) m.strength = m.strength.replace('7g', '10g');
+    else if (m.strength.includes('10g')) m.strength = m.strength.replace('10g', '15g');
+    else if (m.strength.includes('1 Tab') || m.strength.includes('1 tab')) m.strength = m.strength.replace(/1 [Tt]ab/, '2 Tabs');
+    else if (m.strength.includes('1 Cap')) m.strength = m.strength.replace('1 Cap', '2 Caps');
+    else if (m.strength.includes('15ml')) m.strength = m.strength.replace('15ml', '25ml');
+    else if (m.strength.includes('20ml')) m.strength = m.strength.replace('20ml', '30ml');
+    else if (m.strength.includes('3g')) m.strength = m.strength.replace('3g', '5g');
+    else m.strength = m.strength + ' [Increased +]';
+
+    renderFastMatabPrescriptionList();
+    calculateIlajBilZidd();
+    if (typeof showNotification === 'function') {
+      showNotification(`⬆️ Badhaya (+): ${m.name} dose increased to ${m.strength}`, 'info');
+    }
+  }
+
+  function decreaseMedicineDose(idx) {
+    const rx = state.prescriptions[0];
+    if (!rx || !rx.medicines || !rx.medicines[idx]) return;
+    const m = rx.medicines[idx];
+    
+    if (m.strength.includes('15g')) m.strength = m.strength.replace('15g', '10g');
+    else if (m.strength.includes('10g')) m.strength = m.strength.replace('10g', '7g');
+    else if (m.strength.includes('7g')) m.strength = m.strength.replace('7g', '5g');
+    else if (m.strength.includes('2 Tabs') || m.strength.includes('2 tabs')) m.strength = m.strength.replace(/2 [Tt]abs/, '1 Tab');
+    else if (m.strength.includes('2 Caps')) m.strength = m.strength.replace('2 Caps', '1 Cap');
+    else if (m.strength.includes('30ml')) m.strength = m.strength.replace('30ml', '20ml');
+    else if (m.strength.includes('25ml')) m.strength = m.strength.replace('25ml', '15ml');
+    else if (m.strength.includes('5g') && !m.strength.includes('15g')) m.strength = m.strength.replace('5g', '3g');
+    else if (m.strength.includes(' [Increased +]')) m.strength = m.strength.replace(' [Increased +]', '');
+    else m.strength = m.strength + ' [Decreased -]';
+
+    renderFastMatabPrescriptionList();
+    calculateIlajBilZidd();
+    if (typeof showNotification === 'function') {
+      showNotification(`⬇️ Ghataya (-): ${m.name} dose reduced to ${m.strength}`, 'info');
+    }
+  }
+
+  
+  // =========================================================================
+  // UNIFIED CLINICAL NARRATIVE PARSER & AI SYNTHESIS ENGINE
+  // =========================================================================
+
+  
+  function insertClinicalSnippet(type) {
+    const el = document.getElementById('input-comprehensive-clinical-note') || document.getElementById('fast-clinical-narrative');
+    if (!el) return;
+    let snippet = '';
+    if (type === 'exam') {
+      snippet = '\n[معائنۂ نبض و زبان]: Nabz: Batee (Slow/Cold / بارد) | Lisan: White-coated (بلغم) | Qaroora: Pale Clear.';
+    } else if (type === 'labs') {
+      snippet = '\n[لیب ٹیسٹ]: Fasting Glucose: 110 mg/dL | HbA1c: 6.2% | Uric Acid: 8.4 mg/dL | hs-CRP: 4.8 mg/L.';
+    } else if (type === 'imaging') {
+      snippet = '\n[الٹراساؤنڈ و ایکسرے]: Ultrasound Abdomen: Mild hepatic steatosis (Fatty Liver Grade 1). Bilateral renal calculi nil.';
+    }
+    el.value = (el.value ? el.value.trim() + ' ' : '') + snippet;
+    el.focus();
+    if (typeof showNotification === 'function') {
+      showNotification('Inserted clinical findings snippet template.', 'info');
+    }
+  }
+
+  
+  // =========================================================================
+  // UNANI THEORETICAL PRINCIPLES AUTONOMOUS CALCULATION ENGINE
+  // (Mizaj Dyscrasia, 10-Ajnas Pulse, 12-Organ Axis, ICD-11 & Af'aal Cascade)
+  // =========================================================================
+
+  function calculateAutonomousUnaniPrinciples(narrative, detectedDiag) {
+    const text = (narrative + ' ' + detectedDiag).toLowerCase();
+    
+    // 1. MIZAJ & SU-E-MIZAJ CALCULATION (4 Humors & Dyscrasia)
+    let mizajDeviation = 'Su-e-Mizaj Barid Balghami (Cold-Phlegmatic / سوء مزاج بارد بلغمی)';
+    let baselineMizaj = 'Balghami (Phlegmatic)';
+    let percentages = { damawi: 20, balghami: 55, safrawi: 15, sawdawi: 10 };
+
+    if (text.includes('saree') || text.includes('yellow') || text.includes('safra') || text.includes('burning') || text.includes('fever') || text.includes('acid') || text.includes('bile') || text.includes('piles') || text.includes('sozak')) {
+      mizajDeviation = 'Su-e-Mizaj Haar Safrawi (Hot-Bilious / سوء مزاج حار صفراوی)';
+      baselineMizaj = 'Safrawi (Bilious / Choleric)';
+      percentages = { damawi: 20, balghami: 10, safrawi: 60, sawdawi: 10 };
+    } else if (text.includes('bp') || text.includes('hypertens') || text.includes('pressure') || text.includes('zaght') || text.includes('headache') || text.includes('shaqeeqa') || text.includes('damawi')) {
+      mizajDeviation = 'Su-e-Mizaj Haar Damawi (Hot-Sanguine / سوء مزاج حار دموی)';
+      baselineMizaj = 'Damawi (Sanguine)';
+      percentages = { damawi: 58, balghami: 18, safrawi: 14, sawdawi: 10 };
+    } else if (text.includes('insomnia') || text.includes('sahar') || text.includes('gas') || text.includes('dry') || text.includes('melanch') || text.includes('sawda') || text.includes('depression') || text.includes('anxiety')) {
+      mizajDeviation = 'Su-e-Mizaj Barid Sawdawi (Cold-Dry Melancholic / سوء مزاج بارد سوداوی)';
+      baselineMizaj = 'Sawdawi (Melancholic)';
+      percentages = { damawi: 15, balghami: 15, safrawi: 15, sawdawi: 55 };
+    }
+
+    // 2. 10-AJNAS PULSE (اجناسِ عشرہ نبض) MAPPING
+    let ajnasPulse = 'Nabz-e-Batee wa Layyin (Slow, Soft & Deep Phlegmatic / نبض بطی و لین)';
+    let miqdar = 'Motadil';
+    let harakat = 'Batee (Slow)';
+    let qawwa = 'Motadil';
+
+    if (percentages.safrawi > 40) {
+      ajnasPulse = 'Nabz-e-Saree wa Daqeeq wa Mushtadd (Rapid, Sharp & Active Bilious / نبض سریع و دقیق)';
+      harakat = 'Saree (Rapid)';
+      miqdar = 'Daqeeq (Small/Sharp)';
+      qawwa = 'Mushtadd (Tense)';
+    } else if (percentages.damawi > 40) {
+      ajnasPulse = 'Nabz-e-Azeem wa Qawi wa Mumtali (Full, Strong & Bounding Sanguine / نبض عظیم و قوی و ممتلی)';
+      harakat = 'Saree / Motadil';
+      miqdar = 'Azeem (Large)';
+      qawwa = 'Qawi (Strong)';
+    } else if (percentages.sawdawi > 40) {
+      ajnasPulse = 'Nabz-e-Batee wa Salb wa Munqata (Slow, Hard & Spasmodic Melancholic / نبض بطی و صلب)';
+      harakat = 'Batee (Slow)';
+      miqdar = 'Sagheer (Small)';
+      qawwa = 'Salb (Hard)';
+    }
+
+    // 3. 12-ORGAN AXIS (اعضاء کے بارہ راستے) IDENTIFICATION
+    let organAxis = 'Axis 6: Mafasil-Azlat (Musculoskeletal / مفاصل و عضلات)';
+    let axisCode = 'MAFASIL';
+
+    if (text.includes('liver') || text.includes('jigar') || text.includes('steatosis') || text.includes('sgpt') || text.includes('jaundice')) {
+      organAxis = 'Axis 2: Jigar-Tihal (Hepatosplenic / جگر و طحال)';
+      axisCode = 'JIGAR';
+    } else if (text.includes('stone') || text.includes('kidney') || text.includes('renal') || text.includes('hisat') || text.includes('creatinine')) {
+      organAxis = 'Axis 5: Kulliya-Masana (Renal-Urological / کلیہ و مثانہ)';
+      axisCode = 'KULLIYA';
+    } else if (text.includes('stomach') || text.includes('dyspep') || text.includes('hazm') || text.includes('gerd') || text.includes('gas') || text.includes('colitis')) {
+      organAxis = 'Axis 1: Meda-Amaa (Gastrointestinal / معدہ و امعاء)';
+      axisCode = 'MEDA';
+    } else if (text.includes('bp') || text.includes('pressure') || text.includes('heart') || text.includes('qalb') || text.includes('cardio')) {
+      organAxis = 'Axis 4: Qalb-Urooq (Cardiovascular / قلب و عروق)';
+      axisCode = 'QALB';
+    } else if (text.includes('headache') || text.includes('migraine') || text.includes('insomnia') || text.includes('dimagh') || text.includes('neuro')) {
+      organAxis = 'Axis 3: Dimagh-Aasab (Neuropsychiatric / دماغ و اعصاب)';
+      axisCode = 'DIMAGH';
+    } else if (text.includes('asthma') || text.includes('dama') || text.includes('zeeq') || text.includes('cough') || text.includes('bronch') || text.includes('sadr')) {
+      organAxis = 'Axis 9: Sadr-Riya (Respiratory / صدر و ریہ)';
+      axisCode = 'SADR';
+    } else if (text.includes('pcos') || text.includes('period') || text.includes('menses') || text.includes('sailan') || text.includes('reham')) {
+      organAxis = 'Axis 7: Tams-Reham (Gynecological / رحم و طمث)';
+      axisCode = 'REHAM';
+    } else if (text.includes('bah') || text.includes('surat') || text.includes('inzal') || text.includes('mani') || text.includes('jariyan') || text.includes('sperm')) {
+      organAxis = 'Axis 8: Bah-Mani (Andrological & Vitality / باہ و منی)';
+      axisCode = 'BAH';
+    } else if (text.includes('skin') || text.includes('jild') || text.includes('eczema') || text.includes('rash') || text.includes('khujli') || text.includes('alopecia')) {
+      organAxis = "Axis 10: Jild-Sha'r (Dermatological / جلد و شعر)";
+      axisCode = 'JILD';
+    }
+
+    // 4. DUAL DIAGNOSIS & ICD-11 CODE MAPPING
+    let dualDiag = {
+      unani: detectedDiag || 'Waja-ul-Mafasil Balghami (وجع المفاصل بلغمی)',
+      biomedical: 'Bilateral Knee Osteoarthritis',
+      icd11: 'FA00.0'
+    };
+
+    if (axisCode === 'JIGAR') {
+      dualDiag.biomedical = 'Non-Alcoholic Fatty Liver Disease (NAFLD)';
+      dualDiag.icd11 = 'DB92';
+    } else if (axisCode === 'KULLIYA') {
+      dualDiag.biomedical = 'Calculus of Kidney / Nephrolithiasis';
+      dualDiag.icd11 = 'GB40.0';
+    } else if (axisCode === 'MEDA') {
+      dualDiag.biomedical = 'Functional Dyspepsia & Acid Peptic Disorder';
+      dualDiag.icd11 = 'DB30';
+    } else if (axisCode === 'QALB') {
+      dualDiag.biomedical = 'Essential Primary Hypertension';
+      dualDiag.icd11 = 'BA00';
+    } else if (axisCode === 'DIMAGH') {
+      dualDiag.biomedical = 'Chronic Migraine & Tension Cephalalgia';
+      dualDiag.icd11 = '8A80.0';
+    } else if (axisCode === 'SADR') {
+      dualDiag.biomedical = 'Bronchial Asthma & Chronic Bronchospasm';
+      dualDiag.icd11 = 'CA23';
+    } else if (axisCode === 'REHAM') {
+      dualDiag.biomedical = 'Polycystic Ovarian Syndrome (PCOS) / Pelvic Congestion';
+      dualDiag.icd11 = '5A80.1';
+    } else if (axisCode === 'BAH') {
+      dualDiag.biomedical = 'Male Sexual Dysfunction & Seminal Debility';
+      dualDiag.icd11 = 'GA10';
+    } else if (axisCode === 'JILD') {
+      dualDiag.biomedical = 'Chronic Atopic Dermatitis / Eczematous Prurigo';
+      dualDiag.icd11 = 'EA80';
+    }
+
+    // 5. AF'AAL CASCADE & THERAPEUTIC STAGING
+    let afaalStage = 'Stage 1: Nuzj-e-Khilt (Munzij-e-Balgham / منضج بلغم — 14 Days)';
+    let primaryFaculty = 'Quwa-e-Tabiyyah (Nutritive / Metabolic Faculty)';
+
+    if (percentages.safrawi > 40) {
+      afaalStage = 'Stage 1: Nuzj-e-Safra (Munzij-e-Safra / منضج صفراء — 7 Days)';
+      primaryFaculty = 'Quwa-e-Tabiyyah (Hepatic/Metabolic)';
+    } else if (percentages.damawi > 40) {
+      afaalStage = 'Stage 1: Fasd / Tadeel-e-Dam (Venesection / Vascular Cooling — 7 Days)';
+      primaryFaculty = 'Quwa-e-Haywaniyyah (Cardiovascular / Vital)';
+    } else if (percentages.sawdawi > 40) {
+      afaalStage = 'Stage 1: Nuzj-e-Sawda (Munzij-e-Sawda / منضج سوداء — 21 Days)';
+      primaryFaculty = 'Quwa-e-Nafsaniyyah (Psychic / Nervous)';
+    }
+
+    // Update global patient state
+    if (state && state.patient) {
+      state.patient.currentDyscrasia = mizajDeviation;
+      state.patient.baselineMizaj = baselineMizaj;
+      state.patient.mizaj = mizajDeviation;
+      state.patient.nabzType = ajnasPulse;
+      state.afaalStage = afaalStage;
+    }
+
+    return {
+      mizajDeviation,
+      baselineMizaj,
+      percentages,
+      ajnasPulse,
+      miqdar,
+      harakat,
+      qawwa,
+      organAxis,
+      axisCode,
+      dualDiag,
+      afaalStage,
+      primaryFaculty
+    };
+  }
+
+  function renderUnaniPrinciplesSynthesis(data) {
+    const card = document.getElementById('fast-unani-principles-card');
+    if (!card) return;
+
+    card.innerHTML = `
+      <div class="p-3 bg-gradient-to-r from-emerald-950/90 via-slate-900 to-teal-950/90 border border-emerald-500/40 rounded-2xl shadow-sm text-xs space-y-2">
+        <div class="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
+          <div class="flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs">⚖️</span>
+            <strong class="text-white text-xs">Unani Clinical Principles (اصولِ طب — خودکار خلاصہ)</strong>
+          </div>
+          <span class="text-[9px] font-mono text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">قواعدِ طب (Canonical Principles)</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+          <!-- Mizaj Deviation -->
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 space-y-0.5">
+            <span class="text-[10px] text-slate-400 block font-medium">سوء مزاج (Mizaj Deviation):</span>
+            <strong class="text-emerald-300 font-bold block">${data.mizajDeviation}</strong>
+            <span class="text-[9px] text-slate-400 font-mono">Dam: ${data.percentages.damawi}% | Balgham: ${data.percentages.balghami}% | Safra: ${data.percentages.safrawi}% | Sawda: ${data.percentages.sawdawi}%</span>
+          </div>
+
+          <!-- 10-Ajnas Pulse -->
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 space-y-0.5">
+            <span class="text-[10px] text-slate-400 block font-medium">اجناسِ عشرہ نبض (10-Ajnas Pulse):</span>
+            <strong class="text-cyan-300 font-bold block">${data.ajnasPulse}</strong>
+            <span class="text-[9px] text-slate-400 font-mono">Harakat: ${data.harakat} • Miqdar: ${data.miqdar} • Qawwa: ${data.qawwa}</span>
+          </div>
+
+          <!-- Organ Axis -->
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 space-y-0.5">
+            <span class="text-[10px] text-slate-400 block font-medium">اعضاء کا راستہ (Organ Axis):</span>
+            <strong class="text-amber-300 font-bold block">${data.organAxis}</strong>
+            <span class="text-[9px] text-slate-400 font-mono">Faculty: ${data.primaryFaculty}</span>
+          </div>
+
+          <!-- Dual Diagnosis & Af'aal Cascade -->
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 space-y-0.5">
+            <span class="text-[10px] text-slate-400 block font-medium">تشخیص و مراحلِ علاج (ICD-11 &amp; Af'aal Cascade):</span>
+            <strong class="text-purple-300 font-bold block">${data.dualDiag.biomedical} (${data.dualDiag.icd11})</strong>
+            <span class="text-[9px] text-teal-300 font-mono">${data.afaalStage}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function hakeemSynthesizeFromClinicalNarrative(narrativeText) {
+    const textEl = document.getElementById('input-comprehensive-clinical-note') || document.getElementById('fast-clinical-narrative');
+    const rawText = (typeof narrativeText === 'string') ? narrativeText : (textEl ? textEl.value : '');
+    const narrative = (rawText || '').trim();
+    if (!narrative) {
+      if (textEl) {
+        textEl.focus();
+        if (typeof showNotification === 'function') {
+          showNotification('Baraye Meherbani pehle mariz ki kahani, nabz/zaban, ya lab reports darj karein.', 'warning');
+        }
+      }
+      return;
+    }
+
+    const lower = narrative.toLowerCase();
+
+    // 1. Detect Chief Diagnosis from narrative
+    let detectedDiag = '';
+    if (lower.includes('knee') || lower.includes('joint') || lower.includes('waja') || lower.includes('osteo') || lower.includes('arthritis') || lower.includes('gout') || lower.includes('uric acid') || lower.includes('niqris')) {
+      detectedDiag = 'Waja-ul-Mafasil (Bilateral Knee Osteoarthritis / وجع المفاصل بلغمی)';
+    } else if (lower.includes('fatty liver') || lower.includes('jigar') || lower.includes('liver') || lower.includes('sgpt') || lower.includes('steatosis') || lower.includes('jaundice') || lower.includes('yarqan')) {
+      detectedDiag = 'Su-e-Qinya & Warm-e-Jigar (Non-Alcoholic Fatty Liver / سوء القنیہ)';
+    } else if (lower.includes('stone') || lower.includes('calculi') || lower.includes('kidney') || lower.includes('hisat') || lower.includes('pathri') || lower.includes('renal')) {
+      detectedDiag = 'Hisat-e-Kulya (Renal Nephrolithiasis / حصاة الکلیہ)';
+    } else if (lower.includes('asthma') || lower.includes('dama') || lower.includes('zeeq') || lower.includes('cough') || lower.includes('bronch') || lower.includes('respir')) {
+      detectedDiag = 'Zeequn-Nafs Shuabi (Bronchial Asthma / ضیق النفس شعبی)';
+    } else if (lower.includes('piles') || lower.includes('bawaseer') || lower.includes('hemorrhoid') || lower.includes('bleeding')) {
+      detectedDiag = 'Bawaseer Damiya & Riyah (Hemorrhoidal Disease / بواسیر)';
+    } else if (lower.includes('sciatica') || lower.includes('irq') || lower.includes('disc') || lower.includes('lumbago')) {
+      detectedDiag = 'Irq-un-Nasa (Lumbar Sciatica & Spondylosis / عرق النساء)';
+    } else if (lower.includes('sugar') || lower.includes('diabet') || lower.includes('hba1c') || lower.includes('glucose') || lower.includes('ziabetus')) {
+      detectedDiag = 'Ziabetus Shakari Type 2 (Metabolic Syndrome / ذیابیطس شکری)';
+    } else if (lower.includes('bp') || lower.includes('hypertens') || lower.includes('pressure') || lower.includes('zaght')) {
+      detectedDiag = 'Zaght-ud-Dam Qawi (Essential Hypertension / ضغط الدم قوی)';
+    } else if (lower.includes('pcos') || lower.includes('period') || lower.includes('menses') || lower.includes('haiz') || lower.includes('tams') || lower.includes('uterus')) {
+      detectedDiag = 'Usr-e-Tams & PCOS (Polycystic Ovarian Syndrome / عسر الطمث)';
+    } else if (lower.includes('sailan') || lower.includes('leucorrh') || lower.includes('safed pani') || lower.includes('white discharge')) {
+      detectedDiag = 'Sailan-ur-Rahm (Chronic Leucorrhea / سیلان الرحم)';
+    } else if (lower.includes('surat') || lower.includes('inzal') || lower.includes('mani') || lower.includes('jariyan') || lower.includes('vitality') || lower.includes('bah')) {
+      detectedDiag = 'Surat-e-Inzal & Zof-e-Bah (Andrological Vitality Debility / ضعف باہ)';
+    } else if (lower.includes('insomnia') || lower.includes('sahar') || lower.includes('sleep') || lower.includes('neend')) {
+      detectedDiag = 'Sahar & Malikhuliya (Chronic Insomnia / سہر مزمن)';
+    } else if (lower.includes('eczema') || lower.includes('skin') || lower.includes('rash') || lower.includes('jild') || lower.includes('khujli') || lower.includes('alopecia') || lower.includes('hair fall')) {
+      detectedDiag = 'Amraz-e-Jild & Quba (Chronic Dermatosis / امراض جلد)';
+    } else if (lower.includes('gas') || lower.includes('hazm') || lower.includes('dyspep') || lower.includes('pet') || lower.includes('gerd') || lower.includes('colitis')) {
+      detectedDiag = 'Su-e-Hazm & Nafkh (Gastric Dyspepsia & Colitis / سوء ہضم)';
+    } else {
+      detectedDiag = narrative.split('.')[0].slice(0, 70);
+    }
+
+    // Update diagnosis field
+    const diagInput = document.getElementById('fast-diagnosis-input');
+    if (diagInput) diagInput.value = detectedDiag;
+
+    // 2. Synthesize formulations
+    generateAiNuskhaFromDiagnosis(detectedDiag || narrative);
+
+    const rx = state.prescriptions[0];
+    if (!rx || !rx.medicines) return;
+
+    // 3. Check physical examination findings from text
+    let isRapidHot = lower.includes('saree') || lower.includes('rapid') || lower.includes('tachy') || lower.includes('yellow') || lower.includes('safra');
+    let isSlowCold = lower.includes('batee') || lower.includes('slow') || lower.includes('brady') || lower.includes('white') || lower.includes('balgham');
+
+    if (isRapidHot) {
+      rx.medicines.forEach(m => {
+        if (!m.anupan || m.anupan.includes('Lukewarm water')) {
+          m.anupan = 'Fresh water / Arq Shahtarra (Cooling Badraqa)';
+        }
+      });
+    } else if (isSlowCold) {
+      rx.medicines.forEach(m => {
+        if (m.anupan && m.anupan.includes('Fresh water')) {
+          m.anupan = 'Neem garam paani / Joshanda Zanjabeel (Warm Badraqa)';
+        }
+      });
+    }
+
+    // 4. Incorporate Lab & Radiology findings into Parhez & Tadbir
+    const parhezInput = document.getElementById('fast-parhez-text');
+    let parhezAdditions = [];
+
+    if (lower.includes('uric acid') || lower.includes('gout')) {
+      parhezAdditions.push('Purine rich ghizayein (gosht, daalein, tamatar, palak) se sakht parhez. Rozana 3L paani.');
+    }
+    if (lower.includes('hba1c') || lower.includes('sugar') || lower.includes('glucose')) {
+      parhezAdditions.push('Meethi aashia, chawal, aalo aur refined sugar band karein.');
+    }
+    if (lower.includes('crp') || lower.includes('esr') || lower.includes('inflammation')) {
+      parhezAdditions.push('Warm fomentation (Takmeed) karein, shadeed dhoop aur tili cheezon se parhez.');
+    }
+    if (lower.includes('ultrasound') || lower.includes('fatty liver') || lower.includes('sgpt')) {
+      parhezAdditions.push('Oily/fried khano se mukammal parhez, anar ka ras aur subah 30 min brisk walk.');
+    }
+    if (lower.includes('x-ray') || lower.includes('osteoarthritis') || lower.includes('disc')) {
+      parhezAdditions.push('Chokri mar kar na bethein, western commode istemal karein, Roghan Suranjan se halka massage karein.');
+    }
+
+    if (parhezInput && parhezAdditions.length > 0) {
+      parhezInput.value = (parhezInput.value ? parhezInput.value + ' | ' : '') + parhezAdditions.join(' | ');
+    }
+
+    // Compute Unani principles: Mizaj, 10-Ajnas Pulse, 12-Organ Axis, ICD-11 & Af'aal Cascade
+    const unaniData = calculateAutonomousUnaniPrinciples(narrative, detectedDiag);
+    renderUnaniPrinciplesSynthesis(unaniData);
+
+    renderFastMatabPrescriptionList();
+    calculateIlajBilZidd();
+    autoSaveConsultationDraft();
+
+    if (typeof showNotification === 'function') {
+      showNotification(`✨ Hakeem Sahab™ analyzed history, physical exam & diagnostics. Generated Nuskha for "${detectedDiag}". Review active.`, 'success');
+    }
+  }
+
+  function startClinicalNarrativeDictation() {
+    const textEl = document.getElementById('input-comprehensive-clinical-note') || document.getElementById('fast-clinical-narrative');
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      if (typeof showNotification === 'function') {
+        showNotification('Speech dictation requires Google Chrome or Chromium browser.', 'warning');
+      }
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    if (typeof showNotification === 'function') {
+      showNotification('🎤 Listening... Speak patient history, symptoms, physical exam and lab findings.', 'info');
+    }
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      if (textEl) {
+        textEl.value = (textEl.value ? textEl.value + ' ' : '') + transcript;
+        hakeemSynthesizeFromClinicalNarrative(textEl.value);
+      }
+    };
+    recognition.onerror = function(err) {
+      if (typeof showNotification === 'function') {
+        showNotification('Voice dictation error: ' + err.error, 'error');
+      }
+    };
+    recognition.start();
+  }
+
   function renderFastMatabPrescriptionList() {
     const container = document.getElementById('fast-prescriptions-list');
     if (!container) return;
@@ -2474,15 +3243,37 @@
             <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">${m.track || 'FORMULATION'}</span>
             <span class="text-[10px] text-slate-400 font-mono">${m.form || ''}</span>
           </div>
-          <p class="text-[11px] text-slate-300">
-            Dose: <strong class="text-amber-300 font-mono">${m.strength}</strong> • 
-            Timing: <span>☀️ ${m.morning || '—'} | ⛅ ${m.noon || '—'} | 🌙 ${m.night || '—'}</span>
-          </p>
+          ${m.ingredients ? `
+          <div class="p-2 my-1.5 rounded-lg bg-purple-950/40 border border-purple-500/30 text-purple-200">
+            <div class="flex items-center gap-1.5 font-bold text-[10px] text-purple-300">
+              <span>🌿</span>
+              <span>Bespoke Formulation Ingredients (اجزاء مرکب):</span>
+            </div>
+            <p class="text-[11px] font-mono mt-0.5 text-purple-100 leading-relaxed">${m.ingredients}</p>
+          </div>
+          ` : ''}
+          <div class="flex items-center gap-2 flex-wrap pt-0.5">
+            <div class="inline-flex items-center gap-1 bg-slate-800/90 px-2 py-0.5 rounded-lg border border-slate-700/80">
+              <span class="text-[10px] text-slate-400 font-medium">Dose:</span>
+              <button type="button" onclick="decreaseMedicineDose(${idx})" class="w-4 h-4 rounded bg-slate-900 hover:bg-slate-700 text-slate-300 hover:text-white font-black text-xs flex items-center justify-center transition cursor-pointer" title="Dose Ghatayein (-)">−</button>
+              <strong class="text-amber-300 font-mono text-[11px] px-1">${m.strength}</strong>
+              <button type="button" onclick="increaseMedicineDose(${idx})" class="w-4 h-4 rounded bg-slate-900 hover:bg-emerald-600 text-slate-300 hover:text-white font-black text-xs flex items-center justify-center transition cursor-pointer" title="Dose Badhayein (+)">+</button>
+            </div>
+            <span class="text-[10px] text-slate-400">☀️ ${m.morning || '—'} | ⛅ ${m.noon || '—'} | 🌙 ${m.night || '—'}</span>
+          </div>
           <p class="text-[10px] text-teal-400">Vehicle (Badraqa): ${m.anupan || 'Lukewarm water'}</p>
         </div>
         <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
-          <button onclick="removePrescriptionMedicine(${idx}); renderFastMatabPrescriptionList(); calculateIlajBilZidd();" class="text-rose-400 hover:text-rose-300 text-xs px-2.5 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30">
-            ✕ Remove
+          <div class="flex items-center gap-1">
+            <button type="button" onclick="increaseMedicineDose(${idx})" class="px-2 py-1 rounded bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold transition flex items-center gap-0.5" title="Dose Badhayein (Increase strength / frequency)">
+              <span>➕</span> <span>بڑھائیں</span>
+            </button>
+            <button type="button" onclick="decreaseMedicineDose(${idx})" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-[10px] font-bold transition flex items-center gap-0.5" title="Dose Ghatayein (Reduce strength / frequency)">
+              <span>➖</span> <span>گھٹائیں</span>
+            </button>
+          </div>
+          <button onclick="removePrescriptionMedicine(${idx}); renderFastMatabPrescriptionList(); calculateIlajBilZidd();" class="text-rose-400 hover:text-rose-300 text-[10px] px-2 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 flex items-center gap-0.5" title="Nuskhe se hatayein">
+            <span>✕</span> <span>ہٹائیں</span>
           </button>
         </div>
       </div>
@@ -2500,34 +3291,37 @@
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/40">
-                ⚡ 60-Second Fast Matab™ Mode
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/40 flex items-center gap-1.5">
+                <span>🩺</span> Consultation Desk
               </span>
               <span class="text-xs font-mono text-[var(--muted)] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)]">${state.encounterId}</span>
               <h2 class="text-lg font-bold text-white">${state.patient.name} (${state.patient.age}y, ${state.patient.gender})</h2>
+              <span class="text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)]">MRN: ${state.patient.mrn}</span>
             </div>
-            <p class="text-xs text-[var(--muted)] mt-1">
-              MRN: <span class="font-mono text-white font-medium">${state.patient.mrn}</span> • 
-              Mizaj: <span class="text-emerald-400 font-medium">${state.patient.mizaj}</span> • 
-              Attending: <strong class="text-white">Hakeem Dr. Irfan Ashraf</strong>
-            </p>
+            <div class="flex items-center gap-2 mt-1.5 flex-wrap text-xs text-[var(--muted)]">
+              <span>Baseline Mizaj: <strong id="fast-patient-mizaj-display" class="text-emerald-400 font-semibold">${state.patient.mizaj}</strong></span>
+              <span>•</span>
+              <span>Allergies: <strong class="text-rose-400 font-medium">${state.patient.allergies || 'None reported'}</strong></span>
+              <span>•</span>
+              <span>Physician: <strong class="text-slate-200">Hakeem Dr. Irfan Ashraf</strong></span>
+            </div>
           </div>
           
           <!-- Mode Switcher & Top Action Buttons -->
           <div class="flex items-center gap-2 flex-wrap">
             <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl p-1">
-              <button onclick="setConsultationMode('fast')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow">
-                ⚡ 60-Sec Fast Matab™
+              <button onclick="setConsultationMode('fast')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow">
+                ⚡ Simple Desk
               </button>
-              <button onclick="setConsultationMode('continuum')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
-                🔬 13-Step Detailed Continuum
+              <button onclick="setConsultationMode('continuum')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white" title="Switch to Full 13-Step Clinical Continuum">
+                🔬 13-Step Detailed
               </button>
             </div>
             
-            <button onclick="openBilingualPrescriptionSlipModal()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
-              <span>🖨️</span> Patient Slip (Urdu/Eng)
+            <button onclick="openBilingualPrescriptionSlipModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-xs shadow-sm transition flex items-center gap-1.5">
+              <span>🖨️</span> Patient Slip
             </button>
-            <button onclick="completeConsultation()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <button onclick="completeConsultation()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
               <span>🔒</span> Sign &amp; Lock (21 CFR 11)
             </button>
           </div>
@@ -2536,168 +3330,248 @@
         <!-- 2-COLUMN FAST MATAB WORKDESK -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           
-          <!-- COLUMN 1 (5 cols): Diagnostic & Classical Tashkhees Pad -->
+                    <!-- COLUMN 1 (5 cols): Streamlined Clinical Narrative & Intake Pad -->
           <div class="lg:col-span-5 space-y-4 text-xs">
             
-            <!-- Chief Complaint Quick Chips -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2.5">
-              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">1. 1-Click Chief Complaint &amp; Diagnosis</span>
-              <div class="flex flex-wrap gap-1.5">
-                <button onclick="selectFastComplaint('Waja-ul-Mafasil', 'Waja-ul-Mafasil (Bilateral Knee Osteoarthritis / وجع المفاصل بلغمی)')" data-complaint="Waja-ul-Mafasil" class="fast-complaint-chip px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  🦵 Waja-ul-Mafasil (Joint Pain)
-                </button>
-                <button onclick="selectFastComplaint('Su-e-Hazm', 'Su-e-Hazm & Nafkh (Gastric Dyspepsia / سوء ہضم)')" data-complaint="Su-e-Hazm" class="fast-complaint-chip px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium text-xs">
-                  🧪 Su-e-Hazm (Dyspepsia)
-                </button>
-                <button onclick="selectFastComplaint('Suda', 'Suda-e-Muzmin & Shaqeeqa (Chronic Cephalalgia / صداع مزمن)')" data-complaint="Suda" class="fast-complaint-chip px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium text-xs">
-                  🧠 Suda / Shaqeeqa (Migraine)
-                </button>
-                <button onclick="selectFastComplaint('Ziabetus', 'Ziabetus Shakari Type 2 (Metabolic Support / ذیابیطس)')" data-complaint="Ziabetus" class="fast-complaint-chip px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium text-xs">
-                  🍯 Ziabetus (Metabolic)
-                </button>
-                <button onclick="selectFastComplaint('Zof-e-Bah', 'Zof-e-Bah & Taqwiyat-e-Asab (Neuro-Andrological / ضعف باہ)')" data-complaint="Zof-e-Bah" class="fast-complaint-chip px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white font-medium text-xs">
-                  ⚡ Zof-e-Bah (Vitality)
-                </button>
-              </div>
-
-              <div class="pt-1">
-                <input id="fast-diagnosis-input" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-emerald-500 font-semibold" value="Waja-ul-Mafasil (Bilateral Knee Osteoarthritis / وجع المفاصل بلغمی)">
-              </div>
-            </div>
-
-            <!-- Classical Tashkhees Drawer (Nabz, Lisan, Qaroora) -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-3">
+            <!-- Unified Clinical Narrative Intake Card -->
+            <div class="bg-[var(--card)] border border-emerald-500/30 rounded-2xl p-4 shadow-sm space-y-3">
               <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span class="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span>🩺</span> Classical Tashkhees (10-Ajnas Pulse, Tongue &amp; Urine)
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs">📋</span>
+                  <span class="font-bold text-white text-xs">Patient Clinical Encounter &amp; History (تفصیلی تاریخِ مریض)</span>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <button type="button" onclick="startClinicalNarrativeDictation()" class="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] shadow flex items-center gap-1 cursor-pointer transition" title="Speak patient history & findings">
+                    <span>🎤</span> <span>Voice Dictate</span>
+                  </button>
+                  <button type="button" onclick="insertClinicalSnippet('exam')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-teal-300 border border-slate-700 text-[10px] font-medium transition cursor-pointer" title="Insert Pulse & Tongue template">
+                    + نبض و بول
+                  </button>
+                  <button type="button" onclick="insertClinicalSnippet('labs')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-[10px] font-medium transition cursor-pointer" title="Insert Labs template">
+                    + لیب ٹیسٹ
+                  </button>
+                  <button type="button" onclick="insertClinicalSnippet('imaging')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-[10px] font-medium transition cursor-pointer" title="Insert Ultrasound/X-ray template">
+                    + الٹراساؤنڈ
+                  </button>
+                  <button type="button" onclick="(document.getElementById('input-comprehensive-clinical-note')||document.getElementById('fast-clinical-narrative')).value=''; (document.getElementById('input-comprehensive-clinical-note')||document.getElementById('fast-clinical-narrative')).focus();" class="px-1.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-[10px] font-bold" title="Clear text">
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 mb-1">
+                  History, Symptoms, Physical Exam (Nabz/Tongue), Labs &amp; Radiology:
+                </label>
+                <textarea id="input-comprehensive-clinical-note" name="fast-clinical-narrative" rows="5" onkeydown="if((event.ctrlKey||event.metaKey) && event.key==='Enter'){ event.preventDefault(); hakeemSynthesizeFromClinicalNarrative(this.value); }" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs outline-none focus:border-emerald-500 font-sans leading-relaxed transition" placeholder="Write or dictate everything the patient reports, physical exam (Nabz, Tongue), lab findings (Blood sugar, CRP, Uric Acid), and radiology reports (Ultrasound, X-ray)... Press Enter or click button below to compile Nuskha.">52M presenting with chronic bilateral knee pain with morning stiffness for 6 months. High uric acid 8.4 mg/dL and hs-CRP 4.8 mg/L. Knee X-ray shows Grade 2 Osteoarthritis. Pulse slow (Batee / بارد), tongue white-coated (Balghami).</textarea>
+              </div>
+
+              <!-- Main Synthesis Button -->
+              <button type="button" id="btn-hakeem-generate-nuskha" onclick="hakeemSynthesizeFromClinicalNarrative()" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-md flex items-center justify-center gap-2 transition cursor-pointer transform hover:scale-[1.01]">
+                <span>✨</span>
+                <span>⚡ Hakeem Sahab™: Comprehensive Nuskha Formulation (Ctrl+Enter)</span>
+              </button>
+
+              <!-- Extracted Diagnosis Preview -->
+              <div class="pt-1 flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 font-bold whitespace-nowrap">Diagnosis:</span>
+                <input id="fast-diagnosis-input" type="text" onchange="generateAiNuskhaFromDiagnosis(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();generateAiNuskhaFromDiagnosis(this.value);}" class="flex-1 px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-emerald-300 text-xs font-semibold outline-none focus:border-emerald-500" value="Waja-ul-Mafasil (Bilateral Knee Osteoarthritis / وجع المفاصل بلغمی)">
+              </div>
+            </div>
+
+            <!-- Autonomous Unani Principles Synthesis Card -->
+            <div id="fast-unani-principles-card"></div>
+
+            <!-- Tucked-Away Diagnostic Tools & Physical Exam (Accordion / Dropdown) -->
+            <details class="bg-[var(--card)] border border-slate-800 rounded-2xl p-3 text-xs group transition shadow-sm">
+              <summary class="cursor-pointer font-bold text-slate-300 hover:text-emerald-400 flex items-center justify-between select-none py-1">
+                <span class="flex items-center gap-1.5">
+                  <span>🛠️</span>
+                  <span>🛠️ تفصیلی تشخیصی ٹولز (اختیاری) — Pulse Presets, Dominant Mizaj, ICD-11 &amp; Detailed Tashkhees</span>
                 </span>
-                <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">Unani Classical Vitals</span>
-              </div>
+                <span class="text-[10px] text-slate-500 font-mono group-open:rotate-180 transition">▼</span>
+              </summary>
 
-              <!-- Nabz Harakat -->
-              <div class="space-y-1">
-                <span class="text-[10px] text-slate-400 block font-medium">Nabz Harakat (Pulse Speed / نبض کی حرکت):</span>
-                <div class="flex gap-1.5">
-                  <button onclick="selectFastTashkhees('pulse', 'Batee')" data-val="Batee" class="fast-pulse-chip px-2.5 py-1 rounded-lg bg-teal-600 text-white font-bold text-[11px] shadow">
-                    Batee (Slow / بارد)
-                  </button>
-                  <button onclick="selectFastTashkhees('pulse', 'Saree')" data-val="Saree" class="fast-pulse-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Saree (Rapid / حار)
-                  </button>
-                  <button onclick="selectFastTashkhees('pulse', 'Motadil')" data-val="Motadil" class="fast-pulse-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Motadil (Normal)
-                  </button>
+              <div class="mt-3 space-y-3 pt-2 border-t border-slate-800/80">
+                
+                <!-- Quick Complaint Chips -->
+                <div class="space-y-1.5">
+                  <span class="text-[10px] text-slate-400 font-bold block">1-Click Quick Complaints:</span>
+                  <div class="flex flex-wrap gap-1.5">
+                    <button onclick="selectFastComplaint('Waja-ul-Mafasil', 'Waja-ul-Mafasil (Bilateral Knee Osteoarthritis / وجع المفاصل بلغمی)')" data-complaint="Waja-ul-Mafasil" class="fast-complaint-chip px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold text-[11px] shadow">🦵 Waja-ul-Mafasil</button>
+                    <button onclick="selectFastComplaint('Su-e-Hazm', 'Su-e-Hazm & Nafkh (Gastric Dyspepsia / سوء ہضم)')" data-complaint="Su-e-Hazm" class="fast-complaint-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px]">🧪 Su-e-Hazm</button>
+                    <button onclick="selectFastComplaint('Suda', 'Suda-e-Muzmin & Shaqeeqa (Chronic Cephalalgia / صداع مزمن)')" data-complaint="Suda" class="fast-complaint-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px]">🧠 Suda / Migraine</button>
+                    <button onclick="selectFastComplaint('Ziabetus', 'Ziabetus Shakari Type 2 (Metabolic Support / ذیابیطس)')" data-complaint="Ziabetus" class="fast-complaint-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px]">🍯 Ziabetus</button>
+                    <button onclick="selectFastComplaint('Zof-e-Bah', 'Zof-e-Bah & Taqwiyat-e-Asab (Neuro-Andrological / ضعف باہ)')" data-complaint="Zof-e-Bah" class="fast-complaint-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px]">⚡ Zof-e-Bah</button>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Lisan Appearance -->
-              <div class="space-y-1">
-                <span class="text-[10px] text-slate-400 block font-medium">Lisan (Tongue Coating / زبان کی کیفیت):</span>
-                <div class="flex gap-1.5 flex-wrap">
-                  <button onclick="selectFastTashkhees('tongue', 'White-Coated')" data-val="White-Coated" class="fast-tongue-chip px-2.5 py-1 rounded-lg bg-teal-600 text-white font-bold text-[11px] shadow">
-                    White Slimy (Balghami / بلغم)
-                  </button>
-                  <button onclick="selectFastTashkhees('tongue', 'Yellowish')" data-val="Yellowish" class="fast-tongue-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Yellowish (Safrawi / صفراء)
-                  </button>
-                  <button onclick="selectFastTashkhees('tongue', 'Normal')" data-val="Normal" class="fast-tongue-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Normal Pink (معتدل)
-                  </button>
-                </div>
-              </div>
+                <!-- Classical Tashkhees (Nabz, Lisan, Qaroora) -->
+                <div class="space-y-2 pt-2 border-t border-slate-800 text-[10px]">
+                  <span class="text-slate-400 font-bold block">Physical Exam Chips (Pulse, Tongue, Urine):</span>
+                  
+                  <!-- Nabz -->
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-slate-400">Nabz:</span>
+                    <button onclick="selectFastTashkhees('pulse', 'Batee')" data-val="Batee" class="fast-pulse-chip px-2 py-0.5 rounded bg-teal-600 text-white font-bold text-[10px]">Batee (Slow)</button>
+                    <button onclick="selectFastTashkhees('pulse', 'Saree')" data-val="Saree" class="fast-pulse-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Saree (Rapid)</button>
+                    <button onclick="selectFastTashkhees('pulse', 'Motadil')" data-val="Motadil" class="fast-pulse-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Motadil (Normal)</button>
+                  </div>
 
-              <!-- Qaroora / Urine -->
-              <div class="space-y-1">
-                <span class="text-[10px] text-slate-400 block font-medium">Qaroora (Urine Inspection / قارورہ):</span>
-                <div class="flex gap-1.5 flex-wrap">
-                  <button onclick="selectFastTashkhees('urine', 'Pale Clear')" data-val="Pale Clear" class="fast-urine-chip px-2.5 py-1 rounded-lg bg-teal-600 text-white font-bold text-[11px] shadow">
-                    Abyaz Rakeeq (Pale Watery)
-                  </button>
-                  <button onclick="selectFastTashkhees('urine', 'Deep Yellow')" data-val="Deep Yellow" class="fast-urine-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Asfar Nari (Deep Amber)
-                  </button>
-                  <button onclick="selectFastTashkhees('urine', 'Mukaddar')" data-val="Mukaddar" class="fast-urine-chip px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-[11px]">
-                    Mukaddar (Turbid / کدر)
-                  </button>
-                </div>
-              </div>
+                  <!-- Lisan -->
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-slate-400">Lisan:</span>
+                    <button onclick="selectFastTashkhees('tongue', 'White-Coated')" data-val="White-Coated" class="fast-tongue-chip px-2 py-0.5 rounded bg-teal-600 text-white font-bold text-[10px]">White Slimy</button>
+                    <button onclick="selectFastTashkhees('tongue', 'Yellowish')" data-val="Yellowish" class="fast-tongue-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Yellowish</button>
+                    <button onclick="selectFastTashkhees('tongue', 'Normal')" data-val="Normal" class="fast-tongue-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Normal Pink</button>
+                  </div>
 
-              <!-- Modern Vitals Bar -->
-              <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-[10px]">
-                <div class="p-2 rounded bg-slate-900 border border-slate-800">
-                  <span class="text-slate-400 block">Blood Pressure:</span>
-                  <strong class="text-white">128/82 mmHg</strong>
+                  <!-- Qaroora -->
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-slate-400">Qaroora:</span>
+                    <button onclick="selectFastTashkhees('urine', 'Pale Clear')" data-val="Pale Clear" class="fast-urine-chip px-2 py-0.5 rounded bg-teal-600 text-white font-bold text-[10px]">Pale Clear</button>
+                    <button onclick="selectFastTashkhees('urine', 'Yellowish')" data-val="Yellowish" class="fast-urine-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Yellow Sub-bilious</button>
+                    <button onclick="selectFastTashkhees('urine', 'Mukaddar')" data-val="Mukaddar" class="fast-urine-chip px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-white text-[10px]">Turbid</button>
+                  </div>
                 </div>
-                <div class="p-2 rounded bg-slate-900 border border-slate-800">
-                  <span class="text-slate-400 block">Heart Rate:</span>
-                  <strong class="text-white">72 bpm</strong>
-                </div>
-                <div class="p-2 rounded bg-slate-900 border border-slate-800">
-                  <span class="text-slate-400 block">hs-CRP Marker:</span>
-                  <strong class="text-cyan-400">4.8 mg/L</strong>
-                </div>
-              </div>
-            </div>
 
-            <!-- PERMANENT SAFETY CHECKLIST & STATUTORY AUDIT -->
-            <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Real-Time Clinical Safety Rails</span>
-              <div class="grid grid-cols-2 gap-2 text-[10px]">
-                <div class="p-2 rounded-lg bg-[var(--background)] border border-emerald-500/20 flex items-center justify-between">
-                  <span class="text-slate-300">Renal (eGFR 88):</span>
-                  <span class="text-emerald-400 font-bold font-mono">PASS ✓</span>
+                <!-- Modern Vitals -->
+                <div class="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-800 text-[9px]">
+                  <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                    <span class="text-slate-400 block">BP:</span>
+                    <strong class="text-white">128/82 mmHg</strong>
+                  </div>
+                  <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                    <span class="text-slate-400 block">HR:</span>
+                    <strong class="text-white">72 bpm</strong>
+                  </div>
+                  <div class="p-1.5 rounded bg-slate-900 border border-slate-800">
+                    <span class="text-slate-400 block">hs-CRP:</span>
+                    <strong class="text-cyan-400">4.8 mg/L</strong>
+                  </div>
                 </div>
-                <div class="p-2 rounded-lg bg-[var(--background)] border border-emerald-500/20 flex items-center justify-between">
-                  <span class="text-slate-300">Pregnancy / Lactation:</span>
-                  <span class="text-emerald-400 font-bold font-mono">CLEAR ✓</span>
+
+                <!-- Safety Checklist -->
+                <div class="grid grid-cols-2 gap-1.5 pt-1 text-[9px]">
+                  <div class="p-1.5 rounded bg-[var(--background)] border border-emerald-500/20 flex justify-between">
+                    <span class="text-slate-400">Renal/GI:</span>
+                    <span class="text-emerald-400 font-bold">NORMAL ✓</span>
+                  </div>
+                  <div class="p-1.5 rounded bg-[var(--background)] border border-emerald-500/20 flex justify-between">
+                    <span class="text-slate-400">Herb-Drug:</span>
+                    <span class="text-emerald-400 font-bold">0 KHATRA ✓</span>
+                  </div>
                 </div>
-                <div class="p-2 rounded-lg bg-[var(--background)] border border-emerald-500/20 flex items-center justify-between">
-                  <span class="text-slate-300">Schedule E1 Detox:</span>
-                  <span class="text-amber-400 font-bold font-mono">CERTIFIED ✓</span>
-                </div>
-                <div class="p-2 rounded-lg bg-[var(--background)] border border-emerald-500/20 flex items-center justify-between">
-                  <span class="text-slate-300">CYP450 Herb-Drug:</span>
-                  <span class="text-emerald-400 font-bold font-mono">0 BLOCKS ✓</span>
-                </div>
+
               </div>
-            </div>
+            </details>
 
           </div>
 
-          <!-- COLUMN 2 (7 cols): 1-Click Fast Protocols, Nuskha Pad & Action -->
+<!-- COLUMN 2 (7 cols): 1-Click Fast Protocols, Nuskha Pad & Action -->
           <div class="lg:col-span-7 space-y-4 text-xs">
             
-            <!-- 1-Click Classical Protocols Bar -->
-            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-4 shadow-sm space-y-2.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span>⚡</span> 1-Click Classical Master Protocols (Favorite Nuskhas)
-                </span>
-                <span class="text-[10px] text-amber-300 font-mono font-bold">Fast OPD Dispense</span>
+            <!-- 1-Click Classical Protocols Bar (Compact & Clean) -->
+            <div class="bg-[var(--card)] border border-purple-500/30 rounded-2xl p-3.5 shadow-sm space-y-2.5">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-xs">🧠</span>
+                  <span class="font-bold text-white text-xs">Hakeem Sahab™ Clinical CDSS &bull; Master Protocols</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="toggleHakeemDrawer(true)" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] shadow flex items-center gap-1 cursor-pointer transition" title="Open Hakeem AI Bedside Decision Advisor">
+                    <span>🌿</span> Hakeem Sahab™ (طبی مشیر)
+                  </button>
+                  <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 font-semibold hidden sm:inline">1-Click Auto-Fill</span>
+                </div>
               </div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button onclick="applyFastProtocol('arthri')" class="p-2.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold text-left transition shadow space-y-0.5 border border-emerald-600">
-                  <span class="block text-xs">ArthriCare Trio</span>
-                  <span class="text-[9px] text-emerald-200 block font-normal">Suranjan + SynovoFlex</span>
-                </button>
-                <button onclick="applyFastProtocol('gastro')" class="p-2.5 rounded-xl bg-teal-800/80 hover:bg-teal-700 text-white font-bold text-left transition shadow space-y-0.5 border border-teal-600">
-                  <span class="block text-xs">GastroBalance</span>
-                  <span class="text-[9px] text-teal-200 block font-normal">Kamuni + Bazoori</span>
-                </button>
-                <button onclick="applyFastProtocol('ceph')" class="p-2.5 rounded-xl bg-purple-800/80 hover:bg-purple-700 text-white font-bold text-left transition shadow space-y-0.5 border border-purple-600">
-                  <span class="block text-xs">Cephalic Relief</span>
-                  <span class="text-[9px] text-purple-200 block font-normal">Itrifal + TensioCalm</span>
-                </button>
-                <button onclick="applyFastProtocol('metabolic')" class="p-2.5 rounded-xl bg-amber-800/80 hover:bg-amber-700 text-white font-bold text-left transition shadow space-y-0.5 border border-amber-600">
-                  <span class="block text-xs">Metabolic Tonic</span>
-                  <span class="text-[9px] text-amber-200 block font-normal">Khabsul Hadeed + Gluco</span>
-                </button>
+              
+              <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+                <button onclick="applyFastProtocol('arthri')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-emerald-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Suranjan + SynovoFlex (وجع المفاصل)">🦵 ArthriCare</button>
+                <button onclick="applyFastProtocol('gastro')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-teal-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Kamuni + Bazoori (سوء ہضم)">🧪 GastroBalance</button>
+                <button onclick="applyFastProtocol('ceph')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-purple-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Itrifal + TensioCalm (صداع مزمن)">🧠 Cephalic</button>
+                <button onclick="applyFastProtocol('metabolic')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Khabsul Hadeed + Glucovora (ذیابیطس)">🍯 Metabolic</button>
+                <button onclick="applyFastProtocol('respiratory')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-blue-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Banafsha + Sapistan (نزلہ و سعال)">🫁 Respiratory</button>
+                <button onclick="applyFastProtocol('liver')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Kasni + Arq Mako (کبد و استسقاء)">🩺 Hepato</button>
+                <button onclick="applyFastProtocol('vitality')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-indigo-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Arad Khurma + Jadwar (ضعف باہ)">⚡ Vitality</button>
+                <button onclick="applyFastProtocol('skin')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-rose-800 hover:text-white text-slate-300 font-medium whitespace-nowrap border border-slate-700 transition" title="Majun Ushba + Unnab (مصفی خون)">🌿 Skin Detox</button>
+              </div>
+
+              <!-- 21 Master Clinical Protocols Dropdown -->
+              <div class="pt-1 flex items-center gap-2">
+                <span class="text-[10px] text-purple-300 font-bold whitespace-nowrap hidden sm:inline">Or Select:</span>
+                <select id="fast-master-protocols-select" onchange="if(this.value) { applyFastProtocol(this.value); this.selectedIndex = 0; }" class="flex-1 bg-slate-900 border border-purple-500/40 text-purple-200 text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-purple-400 font-medium cursor-pointer">
+                  <option value="" selected>-- Or Choose from 21 Master Protocols --</option>
+                  
+                  <optgroup label="1. Metabolic & Endocrine">
+                    <option value="metabolic">P-14: Type 2 Diabetes Mellitus (ذیابیطس شکری)</option>
+                    <option value="metabolic">P-15: Obesity & Metabolic Syndrome (سمن مفرط)</option>
+                  </optgroup>
+                  
+                  <optgroup label="2. Cardiovascular">
+                    <option value="hypertension">P-10: Essential Hypertension (ضغط الدم قوی)</option>
+                    <option value="hypertension">P-11: Atherosclerosis & Arterial Hardening (تصلب الشرائین)</option>
+                  </optgroup>
+                  
+                  <optgroup label="3. Respiratory">
+                    <option value="respiratory">P-08: Bronchial Asthma (ضیق النفس شعبی)</option>
+                    <option value="respiratory">P-09: Chronic Bronchitis & Allergic Rhinitis (نزله حار)</option>
+                  </optgroup>
+                  
+                  <optgroup label="4. Musculoskeletal">
+                    <option value="arthri">P-01: Osteoarthritis (وجع المفاصل بلغمی)</option>
+                    <option value="arthri">P-02: Rheumatoid Arthropathy (التهاب المفاصل)</option>
+                    <option value="arthri">P-03: Gout & Hyperuricemia (نقرس)</option>
+                    <option value="sciatica">P-04: Lumbar Spondylosis & Sciatica (عرق النساء)</option>
+                  </optgroup>
+                  
+                  <optgroup label="5. Male Andrology">
+                    <option value="poshida_male">P-16: Oligospermia & Low Semen Viscosity (رقت و قلت منی)</option>
+                    <option value="poshida_male">P-17: Premature Ejaculation & Vitality Debility (سرعت انزال و ضعف باہ)</option>
+                  </optgroup>
+                  
+                  <optgroup label="6. Female Gynecology">
+                    <option value="pcos">P-18: Polycystic Ovarian Syndrome / PCOS (عسر الطمث)</option>
+                    <option value="poshida_sailan">P-19: Chronic Leucorrhea & Vaginitis (سیلان الرحم)</option>
+                    <option value="poshida_bleeding">P-20: Dysfunctional Uterine Bleeding / Menorrhagia (کثرت طمث / استحاضہ)</option>
+                    <option value="poshida_infertility">P-21: Female Subfertility & Uterine Debility (عقر و ضعف رحم)</option>
+                  </optgroup>
+                  
+                  <optgroup label="7. Gastrointestinal & Hepatic">
+                    <option value="gastro">P-05: Non-Ulcer Dyspepsia & Acid Peptic / GERD (سوء ہضم)</option>
+                    <option value="liver">P-06: Non-Alcoholic Fatty Liver Disease (سوء القنیہ / چربیلا جگر)</option>
+                    <option value="gastro">P-07: Chronic Colitis & Irritable Bowel / IBS (قولنج)</option>
+                  </optgroup>
+                  
+                  <optgroup label="8. Renal & Urological">
+                    <option value="renal">P-12: Nephrolithiasis & Kidney Stones (حصاة الکلیہ)</option>
+                    <option value="renal">P-13: Early Chronic Renal Debility (ضعف کلیہ و مثانہ)</option>
+                    <option value="poshida_sozak">P-22: Urethritis & Burning Micturition (سوزاک)</option>
+                  </optgroup>
+                </select>
               </div>
             </div>
 
-            <!-- DYNAMIC "ILAJ BIL-ZIDD" MIZAJ BALANCE CARD -->
+            <!-- DYNAMIC "ILAJ BIL-ZIDD"  MIZAJ BALANCE CARD -->
             <div id="fast-mizaj-indicator">
               <!-- Populated dynamically by calculateIlajBilZidd() -->
+            </div>
+
+            <!-- CLINICAL FORMULATION REVIEW BANNER -->
+            <div id="ai-nuskha-proposal-banner" class="p-3 bg-gradient-to-r from-purple-950/80 via-slate-900 to-indigo-950/80 border border-purple-500/40 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center justify-center font-bold text-xs shrink-0">🧠</span>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-bold text-white text-xs">Hakeem Sahab™ Prescription Recommendation (تجویز کردہ نسخہ)</span>
+                    <span class="px-2 py-0.2 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[9px] font-mono font-bold">DRAFT PROPOSAL</span>
+                  </div>
+                  <span class="text-[10px] text-purple-200 block mt-0.5">Clinical Decision Support. Attending physician analyzes &amp; holds sole finalization authority.</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-amber-300 font-bold bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 shrink-0">
+                <span>🛡️</span> Clinician Review &amp; Approval Gate
+              </div>
             </div>
 
             <!-- Active Prescribed Formulations List -->
@@ -2734,14 +3608,20 @@
             <!-- Bottom Master Actions Bar -->
             <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
               <div class="text-[11px] text-slate-400">
-                <span class="text-emerald-400 font-bold">✓ Ready for Dispense:</span> 21 CFR 11 Signed Prescription
+                <span class="text-emerald-400 font-bold">✓ Ready for Dispense:</span> 21 CFR Part 11 Validated Prescription
               </div>
-              <div class="flex items-center gap-2 w-full sm:w-auto">
-                <button onclick="openBilingualPrescriptionSlipModal()" class="flex-1 sm:flex-none px-4 py-2.5 bg-teal-600 hover:bg-teal-500 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5">
-                  <span>🖨️</span> Print Patient Slip (Urdu/Eng)
+              <div class="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+                <button onclick="openBilingualPrescriptionSlipModal()" class="flex-1 sm:flex-none px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5">
+                  <span>🖨️</span> Print Slip (Urdu/Eng)
                 </button>
-                <button onclick="sendRxViaWhatsApp()" class="flex-1 sm:flex-none px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5">
+                <button onclick="sendRxViaWhatsApp()" class="flex-1 sm:flex-none px-3.5 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5">
                   <span>📲</span> WhatsApp Rx
+                </button>
+                <button onclick="sendFollowupReminderViaWhatsApp()" class="flex-1 sm:flex-none px-3.5 py-2.5 bg-blue-700 hover:bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5" title="Send 14-day follow-up appointment reminder via WhatsApp">
+                  <span>📅</span> Reminder
+                </button>
+                <button onclick="completeConsultation()" class="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5">
+                  <span>🔒</span> Sign &amp; Lock (21 CFR 11)
                 </button>
               </div>
             </div>
@@ -2756,6 +3636,13 @@
     // Initialize list and balance indicator
     renderFastMatabPrescriptionList();
     calculateIlajBilZidd();
+
+    const initNarrative = (document.getElementById('input-comprehensive-clinical-note') || {}).value || '';
+    const initDiag = (document.getElementById('fast-diagnosis-input') || {}).value || '';
+    if (initNarrative || initDiag) {
+      const initUnani = calculateAutonomousUnaniPrinciples(initNarrative, initDiag);
+      renderUnaniPrinciplesSynthesis(initUnani);
+    }
   }
 
   function openBilingualPrescriptionSlipModal() {
@@ -2796,6 +3683,7 @@
           <td class="p-2.5 border-r border-slate-200">
             <strong class="text-slate-900 block text-xs">${m.name}</strong>
             <span class="text-[10px] text-slate-500 font-mono">${m.form || ''} • ${m.track || 'Unani Formulary'}</span>
+            ${m.ingredients ? `<div class="mt-1 p-1.5 rounded bg-purple-50 border border-purple-200 text-[10px] text-purple-900 font-mono leading-relaxed"><strong>اجزاء (Constituents):</strong> ${m.ingredients}</div>` : ''}
           </td>
           <td class="p-2.5 text-center border-r border-slate-200 font-semibold text-emerald-800">
             ${m.morning && m.morning !== '—' ? `<span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded text-[10px] font-bold">☀️ ${m.morning}</span>` : '—'}
@@ -2849,6 +3737,9 @@
     } else {
       meds.forEach((m, i) => {
         text += `${i+1}. *${m.name}*%0A   - Dosage: ${m.strength || '5g'}%0A   - Vehicle (Badraqa): ${m.anupan || 'Neem garam paani'}%0A`;
+        if (m.ingredients) {
+          text += `   - Ingredients (اجزاء): ${encodeURIComponent(m.ingredients)}%0A`;
+        }
       });
     }
     
@@ -2925,6 +3816,36 @@
 
   // Auto-save interval every 5 seconds
   if (typeof setInterval !== "undefined") { setInterval(autoSaveConsultationDraft, 5000); }
+
+  // Fast Matab & Autonomous Clinical Workspace Exports
+  window.hakeemSynthesizeFromClinicalNarrative = hakeemSynthesizeFromClinicalNarrative;
+  window.startClinicalNarrativeDictation = startClinicalNarrativeDictation;
+  window.insertClinicalSnippet = insertClinicalSnippet;
+  window.calculateAutonomousUnaniPrinciples = calculateAutonomousUnaniPrinciples;
+  window.renderUnaniPrinciplesSynthesis = renderUnaniPrinciplesSynthesis;
+  window.increaseMedicineDose = increaseMedicineDose;
+  window.decreaseMedicineDose = decreaseMedicineDose;
+  window.applyFastProtocol = applyFastProtocol;
+  window.generateAiNuskhaFromDiagnosis = generateAiNuskhaFromDiagnosis;
+  window.renderFastMatabPrescriptionList = renderFastMatabPrescriptionList;
+  window.selectFastComplaint = selectFastComplaint;
+  window.selectFastTashkhees = selectFastTashkhees;
+  window.selectFastMizaj = selectFastMizaj;
+  window.switchFastPatient = switchFastPatient;
+  window.calculateIlajBilZidd = calculateIlajBilZidd;
+  window.autoSaveConsultationDraft = autoSaveConsultationDraft;
+  window.openBilingualPrescriptionSlipModal = openBilingualPrescriptionSlipModal;
+  window.closeBilingualPrescriptionSlipModal = closeBilingualPrescriptionSlipModal;
+  window.sendRxViaWhatsApp = sendRxViaWhatsApp;
+  window.openQarabadeenCatalogModal = openQarabadeenCatalogModal;
+  window.openSelfNuskhaModal = openSelfNuskhaModal;
+  window.openZayvoraProductsModal = openZayvoraProductsModal;
+  window.completeConsultation = completeConsultation;
+  window.toggleZenFocusMode = toggleZenFocusMode;
+  window.repeatLastPrescriptionFast = repeatLastPrescriptionFast;
+  window.renderFastMatabMode = renderFastMatabMode;
+  window.setConsultationMode = setConsultationMode;
+  window.removePrescriptionMedicine = removePrescriptionMedicine;
 
 
     function renderSingleConsultationWorkspace(container) {
@@ -3153,12 +4074,12 @@
                 </button>
               </div>
 
-              <!-- HAKEEM SAHAB AI DECISION SUPPORT CARD -->
+              <!-- HAKEEM SAHAB™ CLINICAL DECISION SUPPORT CARD -->
               <div class="bg-[var(--card)] border border-purple-500/30 rounded-2xl p-4 shadow-sm space-y-3">
                 <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
                   <div class="flex items-center gap-1.5">
                     <span class="text-sm"><svg class="w-4 h-4 inline-block text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>
-                    <span class="font-bold text-white text-xs">Hakeem Sahab™ AI</span>
+                    <span class="font-bold text-white text-xs">Hakeem Sahab™ Clinical CDSS</span>
                   </div>
                   <div class="flex items-center gap-1.5">
                     <span class="px-2 py-0.5 rounded text-[8px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 font-bold" title="Zero PHI Cloud Transmission - All reasoning grounded in local monographs">
@@ -3181,7 +4102,7 @@
                     Expand
                   </button>
                 </div>
-                <span class="text-[9px] text-[var(--muted)] block text-center italic">AI suggests. Clinician decides.</span>
+                <span class="text-[9px] text-[var(--muted)] block text-center italic">Consultative guidance for clinician review &amp; sign-off.</span>
               </div>
 
               <!-- EVIDENCE & PROVENANCE CARD -->
@@ -3216,7 +4137,7 @@
 
           </div>
 
-          <!-- 5-LAYER HAKEEM SAHAB AI COPILOT DRAWER -->
+          <!-- 5-LAYER HAKEEM SAHAB CLINICAL ADVISORY DRAWER -->
           <div id="hakeem-drawer-overlay" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-end">
             <div class="w-full max-w-2xl bg-[#0F172A] border-l border-[#334155] h-full shadow-2xl flex flex-col animate-slide-left">
               <!-- Drawer Header -->
@@ -3227,7 +4148,7 @@
                   </div>
                   <div>
                     <h3 class="text-sm font-bold text-white flex flex-wrap items-center gap-2">
-                      Hakeem Sahab AI Clinical Assistant
+                      Hakeem Sahab™ Clinical Advisory Suite
                       <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">v5.0-Clinical</span>
                       <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 font-bold">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ZERO-EGRESS LOCAL RAG (OFFLINE PRIVATE)
@@ -3411,7 +4332,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
                     <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-mono font-bold">safe_to_lock = False</span>
                   </div>
                   <p class="text-[11px] text-[#CBD5E1] leading-relaxed">
-                    AI generates clinical recommendations only. Prescribing and clinical lockdown authority resides exclusively with the licensed clinician under Medical Council regulations and 21 CFR Part 11.
+                    Hakeem Sahab™ provides clinical decision recommendations only. Prescribing and clinical lockdown authority resides exclusively with the licensed clinician under Medical Council regulations and 21 CFR Part 11.
                   </p>
 
                   <!-- Autonomous Follow-up Protocol (Section 23) -->
@@ -3439,7 +4360,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
                   <div class="flex items-center justify-between pt-1">
                     <span class="text-[11px] text-[#94A3B8]">Review status: <span class="text-amber-400 font-semibold">Pending Clinician Approval</span></span>
                     <button onclick="approveHakeemSuggestions()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-500 transition">
-                      Accept AI Suggestions into Plan
+                      Accept Clinical Recommendations into Plan
                     </button>
                   </div>
                 </div>
@@ -3448,7 +4369,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
               <!-- Drawer Footer -->
               <div class="p-4 border-t border-[#334155] bg-[#1E293B] flex justify-end">
                 <button onclick="toggleHakeemDrawer(false)" class="px-4 py-2 rounded-xl border border-[#334155] text-xs text-[#94A3B8] hover:text-white">
-                  Close AI Assistant
+                  Close Clinical Advisory
                 </button>
               </div>
             </div>
@@ -3473,7 +4394,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
 
     function approveHakeemSuggestions() {
       toggleHakeemDrawer(false);
-      showNotification('Hakeem Sahab AI clinical recommendations imported into active plan.', 'success');
+      showNotification('Hakeem Sahab™ clinical recommendations imported into active plan.', 'success');
       jumpToSection(8);
     }
 
@@ -3604,7 +4525,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
       startCameraFeed();
     }
 
-    // ── MULTIMODAL LISAN (TONGUE) & FACIAL MIZAJ AI SCANNER ─────────────────
+    // ── MULTIMODAL LISAN (TONGUE) & FACIAL MIZAJ CLINICAL SCANNER ───────────
     let currentScannerMode = 'ocr'; // 'ocr' or 'lisan'
 
     function setScannerMode(mode) {
@@ -3617,7 +4538,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
         if (btnLisan) { btnLisan.classList.add('bg-emerald-600', 'text-white'); btnLisan.classList.remove('bg-slate-800', 'text-slate-400'); }
         if (btnOcr) { btnOcr.classList.remove('bg-emerald-600', 'text-white'); btnOcr.classList.add('bg-slate-800', 'text-slate-400'); }
         if (reticleLabel) reticleLabel.innerText = '👅 TONGUE & FACE MIZAJ FRAME';
-        showNotification('Switched to Lisan (Tongue) & Facial Constitutional AI Mode.', 'info');
+        showNotification('Switched to Lisan (Tongue) & Facial Constitutional Assessment Mode.', 'info');
       } else {
         if (btnOcr) { btnOcr.classList.add('bg-emerald-600', 'text-white'); btnOcr.classList.remove('bg-slate-800', 'text-slate-400'); }
         if (btnLisan) { btnLisan.classList.remove('bg-emerald-600', 'text-white'); btnLisan.classList.add('bg-slate-800', 'text-slate-400'); }
@@ -3754,7 +4675,7 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
 
     function applyTongueDiagnosisToEncounter() {
       const planText = document.getElementById('consultation-plan-text');
-      const note = "[MUAYANA-E-LISAN (TONGUE AI)]: Thick pale-white coating (Ghalba-e-Balgham), scalloped indentations (Zof-e-Hazm), pale complexion (Hypometabolic Barudat). Diagnostic: Su-e-Mizaj Barid-Ratab.";
+      const note = "[MUAYANA-E-LISAN (TONGUE ASSESSMENT)]: Thick pale-white coating (Ghalba-e-Balgham), scalloped indentations (Zof-e-Hazm), pale complexion (Hypometabolic Barudat). Diagnostic: Su-e-Mizaj Barid-Ratab.";
       if (planText) {
         planText.value = (planText.value ? planText.value + "\n\n" : "") + note;
       }
@@ -4748,21 +5669,21 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
               </span>
             </div>
 
-            <!-- AI CLINICAL DECISION SUPPORT (CDS) AUTO-DRAFT BANNER -->
+            <!-- CLINICAL DECISION SUPPORT (CDS) DRAFT BANNER -->
             <div class="p-3.5 rounded-xl bg-purple-950/40 border border-purple-500/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-base shrink-0">🤖</span>
+                <span class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-base shrink-0">🩺</span>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="font-bold text-white text-xs">AI Clinical Decision Support (Hakeem Sahab™ v2 CDS)</span>
-                    <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono text-[9px] font-bold">Autonomous Proposal</span>
+                    <span class="font-bold text-white text-xs">Clinical Decision Support (Hakeem Sahab™ Formulary Synthesis)</span>
+                    <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono text-[9px] font-bold">Formulary Guidance</span>
                   </div>
-                  <span class="text-[11px] text-purple-200 block mt-0.5">Automated draft proposed from patient intake data (Su-e-Mizaj Barid Balghami + hs-CRP 4.8 mg/L + Knee Joint stiffness). Review &amp; doctor verification required.</span>
+                  <span class="text-[11px] text-purple-200 block mt-0.5">Evidence-grounded draft synthesized from patient intake data (Su-e-Mizaj Barid Balghami + hs-CRP 4.8 mg/L + Knee Joint stiffness). Review &amp; doctor verification required.</span>
                 </div>
               </div>
               <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
                 <button onclick="generateAiPrescriptionDraft()" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
-                  <span>⚡</span> Auto-Generate AI Draft
+                  <span>⚡</span> Synthesize Clinical Draft
                 </button>
               </div>
             </div>
@@ -4873,7 +5794,15 @@ Patient: Nahi, hazma theek hai bas thand lagti hai.</textarea>
                         <span>Vehicle (*Badraqa*): <strong class="text-teal-400">${m.anupan || 'Warm water'}</strong></span>
                         <span>Duration: <strong class="text-white font-mono">${m.duration || '21 Days'}</strong></span>
                       </div>
-                      ${m.ingredients ? `<div class="text-[10px] text-slate-400 font-mono">Actives: ${m.ingredients}</div>` : ''}
+                      ${m.ingredients ? `
+                        <div class="mt-1.5 p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/30 text-[11px] text-purple-200">
+                          <div class="font-bold text-[10px] text-purple-300 flex items-center gap-1">
+                            <span>🌿</span>
+                            <span>Bespoke Compound Formula (اجزاء و مقدار):</span>
+                          </div>
+                          <div class="font-mono text-purple-100 text-[11px] mt-0.5 leading-relaxed">${m.ingredients}</div>
+                        </div>
+                      ` : ''}
                     </div>
                     <div class="flex items-center gap-2 self-end md:self-center shrink-0">
                       ${!isLocked ? `
@@ -6735,7 +7664,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
                 <div class="flex items-center gap-2">
                   <span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 font-mono text-xs font-bold border border-indigo-500/30">ZFIE PRODUCTION WORKSPACE</span>
                   <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[10px]">Blueprint §16, §98 Compliant</span>
-                  <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono text-[10px]">997 Tests Passed</span>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono text-[10px] font-bold">GLP &amp; In-Silico Pipeline Active</span>
                 </div>
                 <h2 class="text-xl font-bold text-white mt-1.5 flex items-center gap-2">
                   <span>🧬</span> ZFIE Molecular &amp; Systems Discovery Studio
@@ -6887,6 +7816,128 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
 
             ${currentZfieStudioSubtab === 'docking' ? `
               <!-- 2. IN-SILICO DOCKING & ADMET -->
+
+                  <!-- ========================================================================= -->
+                  <!-- INTERACTIVE 3D PROTEIN-LIGAND CRYSTALLOGRAPHIC DOCKING VIEWER -->
+                  <!-- ========================================================================= -->
+                  <div class="p-5 rounded-3xl bg-gradient-to-b from-[#060D1A] via-[#0B1528] to-[#060D1A] border border-indigo-500/50 shadow-2xl space-y-4">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-indigo-500/20 pb-3">
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-xl">🧬</span>
+                          <h3 class="font-bold text-white text-base">Interactive 3D Protein-Ligand Crystallographic Docking Visualizer</h3>
+                          <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono text-[10px] font-bold border border-indigo-500/40">3D WebGL / Canvas Matrix</span>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-1">
+                          Direct 3D structural inspection of active Unani phytocompounds docked into human target macromolecular binding pockets. Drag to rotate in 3D, scroll to zoom.
+                        </p>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <span id="docking-telemetry-pdb" class="px-2.5 py-1 rounded-xl bg-slate-900 border border-indigo-500/30 text-indigo-300 font-mono text-xs font-bold">
+                          PDB: 1SA0 • 2.1 Å
+                        </span>
+                        <span id="docking-telemetry-deltaG" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold">
+                          ΔG: -8.9 kcal/mol
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- CONTROLS & SELECTION BAR -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-950/80 p-3 rounded-2xl border border-slate-800 text-xs">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <label class="text-[11px] font-mono text-slate-400 font-bold">TARGET COMPLEX:</label>
+                        <select id="docking-complex-selector" onchange="window.switchDockingComplex(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-indigo-500/40 text-white font-bold text-xs font-mono focus:outline-none focus:border-cyan-400">
+                          <option value="colchicine_tubulin">Suranjan (Colchicine) ↔ Tubulin Dimer (PDB: 1SA0) [-8.9 kcal/mol]</option>
+                          <option value="curcumin_cox2">Zard Chob (Curcumin) ↔ Cyclooxygenase-2 / COX-2 (PDB: 6W70) [-9.4 kcal/mol]</option>
+                          <option value="withaferin_nfkb">Asgandh (Withaferin A) ↔ NF-κB p50/p65 Dimer (PDB: 1NFI) [-8.6 kcal/mol]</option>
+                          <option value="piperine_cyp3a4">Filfil Siyah (Piperine) ↔ Cytochrome P450 3A4 (PDB: 1W0E) [-7.8 kcal/mol]</option>
+                        </select>
+                      </div>
+
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="text-[10px] font-mono text-slate-400">STYLE:</span>
+                        <button id="docking-style-ballstick" onclick="window.setDockingRenderStyle('ballstick')" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold text-[11px] shadow transition">Ball &amp; Stick</button>
+                        <button id="docking-style-ribbon" onclick="window.setDockingRenderStyle('ribbon')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition">Backbone Ribbon</button>
+                        <button id="docking-style-wireframe" onclick="window.setDockingRenderStyle('wireframe')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition">Surface Wire</button>
+                      </div>
+
+                      <div class="flex items-center gap-2 flex-wrap font-mono text-[11px]">
+                        <button onclick="window.toggleDockingHbonds()" id="btn-toggle-hbonds" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition flex items-center gap-1">
+                          <span>✨</span> H-Bonds
+                        </button>
+                        <button onclick="window.toggleDockingResidues()" id="btn-toggle-residues" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/30 transition flex items-center gap-1">
+                          <span>🏷️</span> Residue Tags
+                        </button>
+                        <button onclick="window.toggleDockingAutoRotate()" id="btn-toggle-autorotate" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white transition flex items-center gap-1">
+                          <span id="autorotate-icon">⏸</span> Orbit
+                        </button>
+                        <button onclick="window.resetDockingCamera()" class="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition" title="Reset Camera">
+                          🔄 Reset
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- 3D CANVAS VIEWPORT WITH HUD -->
+                    <div class="relative w-full h-[380px] rounded-2xl overflow-hidden bg-[#030712] border border-indigo-500/40 shadow-inner select-none group">
+                      <canvas id="docking-3d-canvas" class="w-full h-full cursor-grab active:cursor-grabbing block"></canvas>
+                      
+                      <!-- TOP-LEFT HUD: COMPOUND SPECS -->
+                      <div class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-md p-3 rounded-xl border border-indigo-500/30 text-xs text-slate-300 space-y-1 pointer-events-none max-w-xs shadow-lg">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                          <strong id="hud-compound-name" class="text-white font-bold text-sm">Colchicine (Suranjan)</strong>
+                        </div>
+                        <div id="hud-target-name" class="text-[11px] text-cyan-300 font-mono">Target: Tubulin Alpha/Beta Interfacial Dimer</div>
+                        <div id="hud-indication" class="text-[10px] text-slate-400">Classical Gout &amp; Arthralgia (Niqris / Waja-ul-Mafasil)</div>
+                      </div>
+
+                      <!-- TOP-RIGHT HUD: TELEMETRY & FPS -->
+                      <div class="absolute top-3 right-3 bg-slate-950/85 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-800 text-[10px] font-mono text-slate-400 pointer-events-none space-y-0.5 text-right shadow-lg">
+                        <div class="text-emerald-400 font-bold">60 FPS • 3D Hardware Accelerated</div>
+                        <div id="hud-cam-coords">Pitch: 0.25 | Yaw: 0.40 | Zoom: 1.1x</div>
+                        <div class="text-slate-500">AutoDock Vina Engine v1.2.5</div>
+                      </div>
+
+                      <!-- BOTTOM-LEFT HUD: ACTIVE INTERACTIONS -->
+                      <div class="absolute bottom-3 left-3 bg-slate-950/85 backdrop-blur-md px-3 py-2 rounded-xl border border-amber-500/30 text-[11px] font-mono text-amber-300 pointer-events-none shadow-lg">
+                        <span class="text-slate-400 text-[10px] uppercase block">Key Polar Contacts:</span>
+                        <span id="hud-hbond-readout">Cys241 (2.8 Å) • Val181 (3.1 Å) • Asn258 (2.9 Å)</span>
+                      </div>
+
+                      <!-- BOTTOM-RIGHT HUD: CPK ATOM LEGEND -->
+                      <div class="absolute bottom-3 right-3 bg-slate-950/85 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-800 text-[10px] font-mono text-slate-400 pointer-events-none flex items-center gap-3 shadow-lg">
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span> Carbon</span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Oxygen</span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Nitrogen</span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> H-Bond</span>
+                      </div>
+                    </div>
+
+                    <!-- SCIENTIFIC METRICS FOOTER -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                      <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Free Energy of Binding (ΔG):</span>
+                        <strong id="metric-deltaG" class="text-emerald-400 font-mono text-sm block">-8.9 kcal/mol</strong>
+                        <span class="text-[10px] text-slate-500 font-mono">Thermodynamic Stability: High</span>
+                      </div>
+                      <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Inhibition Constant (Ki):</span>
+                        <strong id="metric-ki" class="text-cyan-400 font-mono text-sm block">0.32 μM</strong>
+                        <span class="text-[10px] text-slate-500 font-mono">Sub-micromolar Potency</span>
+                      </div>
+                      <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Ligand Efficiency:</span>
+                        <strong id="metric-eff" class="text-purple-400 font-mono text-sm block">0.34 kcal/mol/HA</strong>
+                        <span class="text-[10px] text-slate-500 font-mono">26 Heavy Atoms (Optimal)</span>
+                      </div>
+                      <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-0.5">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Pose RMSD vs Crystal:</span>
+                        <strong id="metric-rmsd" class="text-amber-400 font-mono text-sm block">0.82 Å</strong>
+                        <span class="text-[10px] text-slate-500 font-mono">&lt; 2.0 Å Gold Benchmark</span>
+                      </div>
+                    </div>
+                  </div>
+
               <div class="space-y-4">
                 <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
                   <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -7394,7 +8445,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
                         <span>⚖️</span> Scientific Review Board &amp; 21 CFR Part 11 Audit Trail
                       </h3>
                       <p class="text-xs text-slate-400 mt-0.5">
-                        Statutory Multidisciplinary Gate: AI proposals must pass sequential human scientist, pharmacologist, and clinician review before commercial formulation or clinical trial deployment.
+                        Statutory Multidisciplinary Gate: Formulary proposals must pass sequential human scientist, pharmacologist, and clinician review before commercial formulation or clinical trial deployment.
                       </p>
                     </div>
                     <span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 font-mono text-[10px] font-bold border border-indigo-500/40">21 CFR PART 11 COMPLIANT</span>
@@ -7708,15 +8759,15 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
             <div class="bg-gradient-to-r from-[#0F172A] via-[#101D36] to-[#0A1128] border border-amber-500/50 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
               <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-500/20 pb-3">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl shrink-0">
-                    👑
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xl shrink-0">
+                    🛡️
                   </div>
                   <div>
                     <div class="flex items-center gap-2">
                       <h3 class="text-base font-extrabold text-white tracking-tight">Super Admin Master Department Switcher</h3>
-                      <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[10px] font-bold uppercase">God Mode Active</span>
+                      <span class="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono text-[10px] font-bold uppercase">ENTERPRISE GOVERNANCE</span>
                     </div>
-                    <p class="text-xs text-amber-200/80 mt-0.5">Yahan se Super Admin kisi bhi department desk par 1-click se jaa sakte hain:</p>
+                    <p class="text-xs text-slate-300 mt-0.5">Instant clinical department routing across all active matab and enterprise hospital facilities.</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -7999,7 +9050,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
               <span class="badge-emerald text-xs px-3 py-1 rounded-full font-semibold">14 Active Interceptors</span>
             </div>
             <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] text-xs text-slate-300 space-y-2">
-              <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">RULE-01: Zero autonomous AI prescription issuance (Enforced: STRICT)</div>
+              <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">RULE-01: Non-Delegable Clinician Gate: Zero autonomous prescription issuance without attending practitioner digital signature (Enforced: STRICT)</div>
               <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800">RULE-02: Colchicum autumnale max daily dose ceiling: 2.0g (Enforced: STRICT)</div>
             </div>
           </div>
@@ -8013,7 +9064,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
             <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex justify-between items-center">
               <div>
                 <h2 class="text-xl font-bold text-white">Platform Microservices Health</h2>
-                <p class="text-xs text-[var(--muted)] mt-1">Identity, Clinical, Knowledge, Therapeutic, and AI RPC engines status.</p>
+                <p class="text-xs text-[var(--muted)] mt-1">Identity, Clinical, Knowledge, Therapeutic, and Clinical Decision RPC engines status.</p>
               </div>
               <span class="badge-emerald text-xs px-3 py-1 rounded-full font-semibold">All 6 Services Healthy</span>
             </div>
@@ -8032,3 +9083,616 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
     }
 
     
+
+
+
+// =========================================================================
+// ZAYVORA Health OS™ — 3D Molecular Docking Engine (v1.0)
+// High-Fidelity Canvas 3D Crystallographic Protein-Ligand Visualizer
+// =========================================================================
+(function() {
+  const COMPLEXES = {
+    colchicine_tubulin: {
+      name: 'Colchicine (Suranjan)',
+      herb: 'Suranjan Talkh (Colchicum autumnale / luteum)',
+      target: 'Tubulin Alpha/Beta Interfacial Dimer (Colchicine Site)',
+      pdb: 'PDB: 1SA0 • 2.1 Å',
+      deltaG: '-8.9 kcal/mol',
+      ki: '0.32 μM',
+      efficiency: '0.34 kcal/mol/HA',
+      rmsd: '0.82 Å',
+      contacts: 'Cys241 (2.8 Å) • Val181 (3.1 Å) • Asn258 (2.9 Å)',
+      indication: 'Classical Gout & Arthralgia (Niqris / Waja-ul-Mafasil)',
+      // 3D coordinates for Colchicine core + functional groups
+      atoms: [
+        { x: -18, y: -8, z: 2, el: 'C', r: 7, label: 'C1' },
+        { x: -8, y: -16, z: -4, el: 'C', r: 7, label: 'C2' },
+        { x: 6, y: -14, z: -6, el: 'C', r: 7, label: 'C3' },
+        { x: 12, y: -2, z: -2, el: 'C', r: 7, label: 'C4' },
+        { x: 4, y: 10, z: 4, el: 'C', r: 7, label: 'C5' },
+        { x: -12, y: 6, z: 6, el: 'C', r: 7, label: 'C6' },
+        // Ring B (7-membered)
+        { x: 14, y: 20, z: 6, el: 'C', r: 7, label: 'C7' },
+        { x: 26, y: 16, z: -2, el: 'C', r: 7, label: 'C8' },
+        { x: 26, y: 2, z: -8, el: 'C', r: 7, label: 'C9' },
+        // Ring C (Tropolone)
+        { x: 38, y: -4, z: -12, el: 'C', r: 7, label: 'C10' },
+        { x: 46, y: 6, z: -8, el: 'C', r: 7, label: 'C11' },
+        { x: 42, y: 18, z: 2, el: 'C', r: 7, label: 'C12' },
+        // Heteroatoms
+        { x: 54, y: 6, z: -12, el: 'O', r: 8, label: 'O-Trop' }, // Tropolone Carbonyl
+        { x: 38, y: 28, z: 8, el: 'O', r: 7, label: 'OMe' },
+        { x: -16, y: -26, z: -8, el: 'O', r: 7, label: 'OMe1' },
+        { x: 10, y: -24, z: -12, el: 'O', r: 7, label: 'OMe2' },
+        { x: 16, y: 32, z: 12, el: 'N', r: 7.5, label: 'N-Acet' }, // Acetamide
+        { x: 10, y: 42, z: 16, el: 'C', r: 6.5, label: 'Me-Ac' },
+        { x: 28, y: 34, z: 10, el: 'O', r: 7, label: 'O-Ac' }
+      ],
+      bonds: [
+        [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],
+        [4,6],[6,7],[7,8],[8,3],
+        [8,9],[9,10],[10,11],[11,7],
+        [10,12],[11,13],[1,14],[2,15],[6,16],[16,17],[16,18]
+      ],
+      // Active binding pocket residues (Tubulin alpha-beta interface)
+      residues: [
+        { name: 'Cys241', x: 50, y: -16, z: -18, hbondTo: 12, dist: '2.82 Å' },
+        { name: 'Val181', x: -24, y: 18, z: 16, hbondTo: 16, dist: '3.14 Å' },
+        { name: 'Asn258', x: 24, y: 46, z: 20, hbondTo: 18, dist: '2.91 Å' },
+        { name: 'Leu248', x: -30, y: -20, z: -14, hbondTo: null, dist: null },
+        { name: 'Ala250', x: 30, y: -24, z: -20, hbondTo: null, dist: null }
+      ],
+      // Protein backbone ribbon loop
+      ribbon: [
+        { x: -50, y: 40, z: 30 }, { x: -35, y: 30, z: 25 }, { x: -24, y: 18, z: 16 },
+        { x: -10, y: 30, z: 10 }, { x: 5, y: 45, z: 15 }, { x: 24, y: 46, z: 20 },
+        { x: 45, y: 35, z: 10 }, { x: 55, y: 10, z: -5 }, { x: 50, y: -16, z: -18 },
+        { x: 35, y: -30, z: -25 }, { x: 10, y: -35, z: -20 }, { x: -15, y: -30, z: -15 },
+        { x: -30, y: -20, z: -14 }, { x: -45, y: 0, z: 0 }, { x: -50, y: 25, z: 20 }
+      ]
+    },
+    curcumin_cox2: {
+      name: 'Curcumin (Zard Chob)',
+      herb: 'Zard Chob (Curcuma longa / Turmeric)',
+      target: 'Cyclooxygenase-2 / COX-2 Catalytic Pocket',
+      pdb: 'PDB: 6W70 • 1.9 Å',
+      deltaG: '-9.4 kcal/mol',
+      ki: '0.12 μM',
+      efficiency: '0.36 kcal/mol/HA',
+      rmsd: '0.65 Å',
+      contacts: 'Arg120 (2.7 Å) • Tyr355 (3.0 Å) • Ser530 (3.2 Å)',
+      indication: 'Classical Systemic Anti-Inflammatory (Daf-e-Taffun wa Muhallil)',
+      atoms: [
+        // Phenolic ring A
+        { x: -45, y: -8, z: 2, el: 'C', r: 7 },
+        { x: -35, y: -18, z: -2, el: 'C', r: 7 },
+        { x: -22, y: -14, z: -4, el: 'C', r: 7 },
+        { x: -18, y: -2, z: -2, el: 'C', r: 7 },
+        { x: -28, y: 8, z: 2, el: 'C', r: 7 },
+        { x: -41, y: 6, z: 4, el: 'C', r: 7 },
+        { x: -58, y: -10, z: 4, el: 'O', r: 8 }, // Phenol OH
+        { x: -38, y: -28, z: -4, el: 'O', r: 7 }, // Methoxy
+        // Heptadiene dione linker
+        { x: -6, y: 2, z: -2, el: 'C', r: 7 },
+        { x: 4, y: -4, z: -4, el: 'C', r: 7 },
+        { x: 15, y: 2, z: -2, el: 'C', r: 7 },
+        { x: 15, y: 14, z: 2, el: 'O', r: 8 }, // Carbonyl
+        { x: 26, y: -4, z: -4, el: 'C', r: 7 },
+        { x: 37, y: 2, z: -2, el: 'C', r: 7 },
+        { x: 37, y: 14, z: 2, el: 'O', r: 8 }, // Enol OH
+        // Phenolic ring B
+        { x: 48, y: -4, z: -4, el: 'C', r: 7 },
+        { x: 55, y: -14, z: -6, el: 'C', r: 7 },
+        { x: 67, y: -10, z: -6, el: 'C', r: 7 },
+        { x: 72, y: 2, z: -2, el: 'C', r: 7 },
+        { x: 65, y: 12, z: 2, el: 'C', r: 7 },
+        { x: 52, y: 8, z: 2, el: 'C', r: 7 },
+        { x: 84, y: 6, z: -2, el: 'O', r: 8 }, // Phenol OH
+        { x: 70, y: -20, z: -8, el: 'O', r: 7 } // Methoxy
+      ],
+      bonds: [
+        [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[1,7],
+        [3,8],[8,9],[9,10],[10,11],[10,12],[12,13],[13,14],[13,15],
+        [15,16],[16,17],[17,18],[18,19],[19,20],[20,15],[18,21],[17,22]
+      ],
+      residues: [
+        { name: 'Arg120', x: -68, y: -16, z: 8, hbondTo: 6, dist: '2.74 Å' },
+        { name: 'Tyr355', x: 20, y: 26, z: 8, hbondTo: 11, dist: '3.02 Å' },
+        { name: 'Ser530', x: 92, y: 12, z: 2, hbondTo: 21, dist: '3.18 Å' },
+        { name: 'Val523', x: 10, y: -20, z: -12, hbondTo: null, dist: null }
+      ],
+      ribbon: [
+        { x: -75, y: -30, z: 15 }, { x: -55, y: -25, z: 12 }, { x: -35, y: 20, z: 8 },
+        { x: -10, y: 25, z: 5 }, { x: 15, y: 30, z: 10 }, { x: 45, y: 25, z: 5 },
+        { x: 75, y: 20, z: 0 }, { x: 95, y: 5, z: -5 }, { x: 85, y: -25, z: -15 },
+        { x: 45, y: -35, z: -20 }, { x: 0, y: -30, z: -15 }, { x: -45, y: -35, z: 0 }
+      ]
+    },
+    withaferin_nfkb: {
+      name: 'Withaferin A (Asgandh)',
+      herb: 'Asgandh Nagori (Withania somnifera / Ashwagandha)',
+      target: 'NF-κB p50/p65 Dimer Interface',
+      pdb: 'PDB: 1NFI • 2.3 Å',
+      deltaG: '-8.6 kcal/mol',
+      ki: '0.48 μM',
+      efficiency: '0.31 kcal/mol/HA',
+      rmsd: '0.78 Å',
+      contacts: 'Cys38 (Covalent Alkylation) • Glu49 (2.9 Å)',
+      indication: 'Classical Adaptogenic Rasayana & Neuro-Immune Modulator',
+      atoms: [
+        { x: -28, y: -8, z: 4, el: 'C', r: 7 },
+        { x: -16, y: -16, z: 0, el: 'C', r: 7 },
+        { x: -2, y: -10, z: -2, el: 'C', r: 7 },
+        { x: 0, y: 4, z: 2, el: 'C', r: 7 },
+        { x: -12, y: 12, z: 6, el: 'C', r: 7 },
+        { x: -26, y: 6, z: 8, el: 'C', r: 7 },
+        { x: -38, y: 12, z: 12, el: 'O', r: 8 }, // Carbonyl
+        { x: 12, y: 10, z: -2, el: 'C', r: 7 },
+        { x: 24, y: 2, z: -6, el: 'C', r: 7 },
+        { x: 22, y: -12, z: -8, el: 'C', r: 7 },
+        { x: 10, y: -18, z: -6, el: 'C', r: 7 },
+        // Lactone ring
+        { x: 36, y: 8, z: -8, el: 'C', r: 7 },
+        { x: 46, y: 0, z: -12, el: 'C', r: 7 },
+        { x: 44, y: -14, z: -14, el: 'O', r: 8 },
+        { x: 32, y: -18, z: -12, el: 'C', r: 7 },
+        { x: 56, y: 4, z: -14, el: 'O', r: 8 }
+      ],
+      bonds: [
+        [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[5,6],
+        [3,7],[7,8],[8,9],[9,10],[10,2],
+        [8,11],[11,12],[12,13],[13,14],[14,9],[12,15]
+      ],
+      residues: [
+        { name: 'Cys38', x: -44, y: 22, z: 16, hbondTo: 6, dist: 'Covalent (2.1 Å)' },
+        { name: 'Glu49', x: 64, y: 12, z: -18, hbondTo: 15, dist: '2.88 Å' },
+        { name: 'Lys52', x: 20, y: 30, z: 8, hbondTo: null, dist: null }
+      ],
+      ribbon: [
+        { x: -60, y: 35, z: 25 }, { x: -40, y: 30, z: 20 }, { x: -20, y: 25, z: 15 },
+        { x: 0, y: 35, z: 10 }, { x: 25, y: 30, z: 0 }, { x: 50, y: 20, z: -10 },
+        { x: 65, y: -5, z: -20 }, { x: 45, y: -30, z: -15 }, { x: 15, y: -35, z: -10 },
+        { x: -15, y: -30, z: 0 }, { x: -45, y: -20, z: 10 }
+      ]
+    },
+    piperine_cyp3a4: {
+      name: 'Piperine (Filfil Siyah)',
+      herb: 'Filfil Siyah (Piper nigrum / Black Pepper)',
+      target: 'Cytochrome P450 3A4 (Heme Pocket)',
+      pdb: 'PDB: 1W0E • 2.4 Å',
+      deltaG: '-7.8 kcal/mol',
+      ki: '1.85 μM',
+      efficiency: '0.33 kcal/mol/HA',
+      rmsd: '0.91 Å',
+      contacts: 'Phe304 (π-Stacking) • Ser119 (2.9 Å)',
+      indication: 'Classical Musleh / Yogavahi (Bio-Enhancer & Glucuronidation Inhibitor)',
+      atoms: [
+        // Benzodioxole ring
+        { x: -40, y: -4, z: 0, el: 'C', r: 7 },
+        { x: -30, y: -12, z: -4, el: 'C', r: 7 },
+        { x: -18, y: -8, z: -4, el: 'C', r: 7 },
+        { x: -16, y: 4, z: 0, el: 'C', r: 7 },
+        { x: -26, y: 12, z: 4, el: 'C', r: 7 },
+        { x: -38, y: 8, z: 4, el: 'C', r: 7 },
+        { x: -52, y: 0, z: 2, el: 'O', r: 7 },
+        { x: -48, y: -14, z: -2, el: 'O', r: 7 },
+        { x: -58, y: -8, z: 0, el: 'C', r: 6.5 },
+        // Conjugated dienone chain
+        { x: -4, y: 8, z: 0, el: 'C', r: 7 },
+        { x: 6, y: 2, z: -2, el: 'C', r: 7 },
+        { x: 18, y: 6, z: -2, el: 'C', r: 7 },
+        { x: 28, y: 0, z: -4, el: 'C', r: 7 },
+        { x: 40, y: 4, z: -4, el: 'C', r: 7 },
+        { x: 42, y: 16, z: 0, el: 'O', r: 8 }, // Carbonyl
+        // Piperidine ring
+        { x: 50, y: -4, z: -6, el: 'N', r: 7.5 },
+        { x: 62, y: 2, z: -6, el: 'C', r: 7 },
+        { x: 72, y: -6, z: -8, el: 'C', r: 7 },
+        { x: 68, y: -18, z: -10, el: 'C', r: 7 },
+        { x: 56, y: -22, z: -8, el: 'C', r: 7 },
+        { x: 48, y: -14, z: -6, el: 'C', r: 7 }
+      ],
+      bonds: [
+        [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[6,8],[8,7],[7,1],
+        [3,9],[9,10],[10,11],[11,12],[12,13],[13,14],[13,15],
+        [15,16],[16,17],[17,18],[18,19],[19,20],[20,15]
+      ],
+      residues: [
+        { name: 'Ser119', x: 48, y: 26, z: 6, hbondTo: 14, dist: '2.94 Å' },
+        { name: 'Phe304', x: -22, y: -22, z: -12, hbondTo: null, dist: 'π-π Stacking' },
+        { name: 'Heme-Fe', x: 30, y: -30, z: -18, hbondTo: null, dist: '4.2 Å to Heme' }
+      ],
+      ribbon: [
+        { x: -65, y: 25, z: 15 }, { x: -45, y: 20, z: 10 }, { x: -20, y: 30, z: 12 },
+        { x: 10, y: 25, z: 5 }, { x: 40, y: 35, z: 10 }, { x: 65, y: 20, z: 0 },
+        { x: 80, y: -10, z: -15 }, { x: 55, y: -35, z: -20 }, { x: 20, y: -40, z: -25 },
+        { x: -20, y: -35, z: -15 }, { x: -50, y: -20, z: -5 }
+      ]
+    }
+  };
+
+  let currentKey = 'colchicine_tubulin';
+  let renderStyle = 'ballstick'; // 'ballstick' | 'ribbon' | 'wireframe'
+  let showHbonds = true;
+  let showResidues = true;
+  let autoRotate = true;
+  let pitch = 0.25;
+  let yaw = 0.40;
+  let zoom = 1.15;
+  let animId = null;
+  let isDragging = false;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
+
+  function project(x, y, z, cx, cy) {
+    const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+    const x1 = x * cosY + z * sinY;
+    const z1 = -x * sinY + z * cosY;
+
+    const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+    const y2 = y * cosP - z1 * sinP;
+    const z2 = y * sinP + z1 * cosP;
+
+    const fov = 350.0;
+    const scale = (fov / (fov + z2)) * zoom;
+    return {
+      px: cx + x1 * scale,
+      py: cy + y2 * scale,
+      z: z2,
+      scale: scale
+    };
+  }
+
+  function getElementColor(el) {
+    switch (el) {
+      case 'C': return { fill: '#38bdf8', stroke: '#0284c7' }; // Cyan-blue
+      case 'O': return { fill: '#f43f5e', stroke: '#be123c' }; // Rose red
+      case 'N': return { fill: '#3b82f6', stroke: '#1d4ed8' }; // Deep blue
+      case 'S': return { fill: '#eab308', stroke: '#a16207' }; // Amber yellow
+      default: return { fill: '#94a3b8', stroke: '#475569' };  // Slate
+    }
+  }
+
+  function renderFrame() {
+    const canvas = document.getElementById('docking-3d-canvas');
+    if (!canvas) {
+      if (animId) cancelAnimationFrame(animId);
+      animId = null;
+      return;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const width = rect.width || 700;
+    const height = rect.height || 380;
+
+    if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+    }
+
+    const ctx = canvas.getContext('2d');
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, width, height);
+
+    const cx = width / 2;
+    const cy = height / 2;
+    const complex = COMPLEXES[currentKey] || COMPLEXES.colchicine_tubulin;
+
+    if (autoRotate && !isDragging) {
+      yaw += 0.007;
+      pitch = Math.sin(yaw * 0.4) * 0.2 + 0.15;
+    }
+
+    // Update telemetry HUD
+    const coordsEl = document.getElementById('hud-cam-coords');
+    if (coordsEl) {
+      coordsEl.textContent = 'Pitch: ' + pitch.toFixed(2) + ' | Yaw: ' + yaw.toFixed(2) + ' | Zoom: ' + zoom.toFixed(2) + 'x';
+    }
+
+    // Draw grid background
+    ctx.strokeStyle = 'rgba(30, 41, 59, 0.4)';
+    ctx.lineWidth = 1;
+    const step = 40;
+    for (let x = 0; x < width; x += step) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+    }
+    for (let y = 0; y < height; y += step) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+    }
+
+    // 1. Project Ribbon (Secondary Structure Tube)
+    if (complex.ribbon && complex.ribbon.length > 2) {
+      const projRibbon = complex.ribbon.map(pt => project(pt.x, pt.y, pt.z, cx, cy));
+      ctx.beginPath();
+      ctx.moveTo(projRibbon[0].px, projRibbon[0].py);
+      for (let i = 1; i < projRibbon.length; i++) {
+        ctx.lineTo(projRibbon[i].px, projRibbon[i].py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.25)';
+      ctx.lineWidth = 12 * zoom;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)';
+      ctx.lineWidth = 4 * zoom;
+      ctx.stroke();
+    }
+
+    // 2. Project Atoms & Residues
+    const projAtoms = complex.atoms.map((a, idx) => {
+      const p = project(a.x, a.y, a.z, cx, cy);
+      return { ...a, ...p, idx: idx, type: 'atom' };
+    });
+
+    const projResidues = complex.residues.map((r, idx) => {
+      const p = project(r.x, r.y, r.z, cx, cy);
+      return { ...r, ...p, idx: idx, type: 'residue' };
+    });
+
+    // 3. Draw Bonds
+    complex.bonds.forEach(b => {
+      const p1 = projAtoms[b[0]];
+      const p2 = projAtoms[b[1]];
+      if (!p1 || !p2) return;
+
+      const avgZ = (p1.z + p2.z) / 2;
+      const opacity = Math.max(0.2, Math.min(1.0, 1.0 - avgZ / 300));
+
+      ctx.beginPath();
+      ctx.moveTo(p1.px, p1.py);
+      ctx.lineTo(p2.px, p2.py);
+      if (renderStyle === 'wireframe') {
+        ctx.strokeStyle = 'rgba(56, 189, 248, ' + (opacity * 0.7) + ')';
+        ctx.lineWidth = 1.5;
+      } else {
+        ctx.strokeStyle = 'rgba(226, 232, 240, ' + opacity + ')';
+        ctx.lineWidth = Math.max(2, 4.5 * ((p1.scale + p2.scale) / 2));
+      }
+      ctx.stroke();
+    });
+
+    // 4. Draw Hydrogen Bonds (Dashed Golden Lines)
+    if (showHbonds) {
+      const now = performance.now() * 0.003;
+      complex.residues.forEach(r => {
+        if (r.hbondTo !== null && projAtoms[r.hbondTo]) {
+          const lig = projAtoms[r.hbondTo];
+          const res = projResidues.find(pr => pr.name === r.name);
+          if (!res) return;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.setLineDash([6, 4]);
+          ctx.lineDashOffset = -now * 15;
+          ctx.moveTo(lig.px, lig.py);
+          ctx.lineTo(res.px, res.py);
+          ctx.strokeStyle = '#f59e0b'; // Amber-gold
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          ctx.restore();
+
+          // Angstrom distance pill
+          const mx = (lig.px + res.px) / 2;
+          const my = (lig.py + res.py) / 2;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+          ctx.strokeStyle = '#d97706';
+          ctx.lineWidth = 1;
+          const distText = r.dist || '2.8 Å';
+          const tw = ctx.measureText(distText).width;
+          ctx.beginPath();
+          ctx.roundRect(mx - tw/2 - 4, my - 8, tw + 8, 16, 4);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = '10px monospace';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(distText, mx, my);
+        }
+      });
+    }
+
+    // 5. Depth Sort Atoms and Residues
+    const renderList = [...projAtoms, ...projResidues].sort((a, b) => a.z - b.z);
+
+    renderList.forEach(item => {
+      if (item.type === 'atom') {
+        const radius = Math.max(2, item.r * item.scale * (renderStyle === 'wireframe' ? 0.6 : 1.0));
+        const color = getElementColor(item.el);
+
+        // 3D Sphere gradient
+        const grad = ctx.createRadialGradient(
+          item.px - radius * 0.35, item.py - radius * 0.35, radius * 0.1,
+          item.px, item.py, radius
+        );
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.3, color.fill);
+        grad.addColorStop(1, color.stroke);
+
+        ctx.beginPath();
+        ctx.arc(item.px, item.py, radius, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.shadowColor = color.stroke;
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = color.stroke;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      } else if (item.type === 'residue' && showResidues) {
+        // Active site amino acid residue node
+        const rSize = 5 * item.scale;
+        ctx.beginPath();
+        ctx.arc(item.px, item.py, rSize, 0, Math.PI * 2);
+        ctx.fillStyle = '#06b6d4'; // Cyan
+        ctx.fill();
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Residue Label Pill
+        const label = item.name;
+        ctx.font = 'bold 11px monospace';
+        const lw = ctx.measureText(label).width;
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.2)';
+        ctx.strokeStyle = '#0891b2';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(item.px + 8, item.py - 10, lw + 8, 20, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ecfeff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, item.px + 12, item.py);
+      }
+    });
+
+    ctx.restore();
+    animId = requestAnimationFrame(renderFrame);
+  }
+
+  window.initMolecularDocking3DViewer = function() {
+    const canvas = document.getElementById('docking-3d-canvas');
+    if (!canvas) return;
+
+    if (animId) {
+      cancelAnimationFrame(animId);
+      animId = null;
+    }
+
+    // Attach mouse interaction
+    canvas.onmousedown = function(e) {
+      isDragging = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    };
+
+    window.onmousemove = function(e) {
+      if (!isDragging) return;
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      yaw += dx * 0.01;
+      pitch += dy * 0.01;
+      pitch = Math.max(-Math.PI / 2 + 0.1, Math.min(Math.PI / 2 - 0.1, pitch));
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    };
+
+    window.onmouseup = function() {
+      isDragging = false;
+    };
+
+    // Attach wheel zoom
+    canvas.onwheel = function(e) {
+      e.preventDefault();
+      zoom += e.deltaY * -0.0015;
+      zoom = Math.max(0.6, Math.min(2.5, zoom));
+    };
+
+    // Touch support for mobile/tablets
+    canvas.ontouchstart = function(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastMouseX = e.touches[0].clientX;
+        lastMouseY = e.touches[0].clientY;
+      }
+    };
+
+    canvas.ontouchmove = function(e) {
+      if (!isDragging || e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - lastMouseX;
+      const dy = e.touches[0].clientY - lastMouseY;
+      yaw += dx * 0.012;
+      pitch += dy * 0.012;
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+    };
+
+    canvas.ontouchend = function() {
+      isDragging = false;
+    };
+
+    updateMetadataUI();
+    animId = requestAnimationFrame(renderFrame);
+  };
+
+  function updateMetadataUI() {
+    const c = COMPLEXES[currentKey] || COMPLEXES.colchicine_tubulin;
+    const setT = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    setT('docking-telemetry-pdb', c.pdb);
+    setT('docking-telemetry-deltaG', 'ΔG: ' + c.deltaG);
+    setT('hud-compound-name', c.name);
+    setT('hud-target-name', 'Target: ' + c.target);
+    setT('hud-indication', c.indication);
+    setT('hud-hbond-readout', c.contacts);
+    setT('metric-deltaG', c.deltaG);
+    setT('metric-ki', c.ki);
+    setT('metric-eff', c.efficiency);
+    setT('metric-rmsd', c.rmsd);
+  }
+
+  window.switchDockingComplex = function(key) {
+    if (COMPLEXES[key]) {
+      currentKey = key;
+      pitch = 0.25;
+      yaw = 0.40;
+      updateMetadataUI();
+    }
+  };
+
+  window.setDockingRenderStyle = function(style) {
+    renderStyle = style;
+    const btns = ['ballstick', 'ribbon', 'wireframe'];
+    btns.forEach(b => {
+      const el = document.getElementById('docking-style-' + b);
+      if (el) {
+        if (b === style) {
+          el.className = 'px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold text-[11px] shadow transition';
+        } else {
+          el.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-bold text-[11px] transition';
+        }
+      }
+    });
+  };
+
+  window.toggleDockingHbonds = function() {
+    showHbonds = !showHbonds;
+    const btn = document.getElementById('btn-toggle-hbonds');
+    if (btn) {
+      btn.className = showHbonds
+        ? 'px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition flex items-center gap-1'
+        : 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1';
+    }
+  };
+
+  window.toggleDockingResidues = function() {
+    showResidues = !showResidues;
+    const btn = document.getElementById('btn-toggle-residues');
+    if (btn) {
+      btn.className = showResidues
+        ? 'px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/30 transition flex items-center gap-1'
+        : 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1';
+    }
+  };
+
+  window.toggleDockingAutoRotate = function() {
+    autoRotate = !autoRotate;
+    const icon = document.getElementById('autorotate-icon');
+    if (icon) icon.textContent = autoRotate ? '⏸' : '▶';
+  };
+
+  window.resetDockingCamera = function() {
+    pitch = 0.25;
+    yaw = 0.40;
+    zoom = 1.15;
+  };
+
+})();

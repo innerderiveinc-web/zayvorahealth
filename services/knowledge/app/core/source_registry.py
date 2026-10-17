@@ -204,6 +204,181 @@ class SourceRegistry:
             "is_canonical": True,
         })
 
+        # 4. Allama Jalal-ud-Deen Dawwani (Akhlaq-e-Jalali)
+        dawwani = self.register_author({
+            "id": "aut-dawwani",
+            "canonical_name": "Allama Jalal-ud-Deen Dawwani",
+            "arabic_name": "جلال الدين محمد بن أسعد الدواني",
+            "persian_name": "جلال‌الدین دوانی",
+            "urdu_name": "علامہ جلال الدین دوانی",
+            "era_hijri": "830–908 AH",
+            "era_ce": "1426–1502 CE",
+            "biography_summary": "Eminent philosopher, ethicist, and pioneer of Unani psychosomatic equilibrium and Ilaj bil Nafsiyat.",
+            "is_classical": True,
+        })
+
+        # Book 3: Akhlaq-e-Jalali
+        akhlaq = self.register_book({
+            "id": "book-akhlaq-jalali",
+            "primary_author_id": dawwani["id"],
+            "canonical_title": "Akhlaq-e-Jalali (Lawami' al-Ishraq fi Makarim al-Akhlaq)",
+            "original_title": "لوامع الإشراق في مكارم الأخلاق (اخلاق جلالی)",
+            "transliterated_title": "Akhlāq-i Jalālī",
+            "language_code": "fa",
+            "discipline": "Ilaj bil Nafsiyat & Psychosomatic Balance",
+            "historical_era": "Timurid / Post-Classical Era",
+            "source_type": "CLASSICAL_TREATISE",
+            "description": "Foundational classic for mental health, psychic faculties (Quwa Nafsaniyya), and emotional equilibrium (Tadbeer-e-Nafsani).",
+        })
+
+        self.register_edition({
+            "id": "ed-akhlaq-jalali-rekhta-1897",
+            "book_id": akhlaq["id"],
+            "editor_translator": "Munshi Naval Kishore",
+            "publisher": "Naval Kishore Press, Lucknow / Rekhta Archive Collection",
+            "publication_year": 1897,
+            "publication_place": "Lucknow, India",
+            "edition_number": "First Urdu Recension Edition",
+            "volume_number": "Complete 1-Volume",
+            "isbn_issn": "HIST-REKHTA-AKHLAQ-JALALI",
+            "total_pages": 384,
+            "sha256_checksum": hashlib.sha256(b"Akhlaq-e-Jalali-Rekhta-Canonical-Digest").hexdigest(),
+        })
+
+        # Book 4: Qanun Book 4 (UNESCO Memory of the World / 1593 Medici Edition)
+        qanun_bk4 = self.register_book({
+            "id": "book-qanun-vol4",
+            "primary_author_id": ibn_sina["id"],
+            "canonical_title": "Al-Qanun fi al-Tibb: Book Four (Fevers, Surgery & Toxicology)",
+            "original_title": "القانون في الطب - الكتاب الرابع (في الأمراض التي لا تختص بعضو بعينه)",
+            "transliterated_title": "Al-Qānūn fī al-Ṭibb: Al-Kitāb al-Rābi‘",
+            "language_code": "ar",
+            "discipline": "Hummiyat (Fevers), Jarahat (Surgery), Buhran & Sumoom (Toxicology)",
+            "historical_era": "Islamic Golden Age (1025 CE)",
+            "source_type": "CLASSICAL_TREATISE",
+            "description": "Canon Book 4: Systematic fevers, critical crisis days (Buhran), wound surgery, fractures, aesthetics, and antidotes.",
+        })
+
+        self.register_edition({
+            "id": "ed-qanun-medici-1593",
+            "book_id": qanun_bk4["id"],
+            "editor_translator": "Typographia Medicea (Editio Princeps)",
+            "publisher": "Typographia Medicea, Rome (Yale Medical Library 4770566_1.med.yale.edu)",
+            "publication_year": 1593,
+            "publication_place": "Rome, Italy",
+            "edition_number": "First Complete Arabic Print Edition",
+            "volume_number": "Vol 4 (Al-Kitāb al-Rābi‘)",
+            "isbn_issn": "UNESCO-MOW-QANUN-MEDICI-1593",
+            "total_pages": 610,
+            "sha256_checksum": hashlib.sha256(b"Yale-Medici-1593-Qanun-Book-4-Digest").hexdigest(),
+        })
+
+        # 5. Hakim Wajid Ali (Shifa' al-Abdan)
+        wajid_ali = self.register_author({
+            "id": "aut-wajid-ali",
+            "canonical_name": "Hakim Wajid Ali Khan",
+            "arabic_name": "الحكيم واجد علي خان",
+            "urdu_name": "حکیم واجد علی خان",
+            "era_ce": "19th Century CE",
+            "biography_summary": "Celebrated physician of Northern India; master clinical diagnostician and author of Shifa' al-Abdan.",
+            "is_classical": True,
+        })
+
+        # Book 5: Shifa' al-Abdan
+        shifa = self.register_book({
+            "id": "book-shifa-al-abdan",
+            "primary_author_id": wajid_ali["id"],
+            "canonical_title": "Shifa' al-Abdan",
+            "original_title": "شفاء الأبدان",
+            "transliterated_title": "Shifā’ al-Abdān",
+            "language_code": "ur",
+            "discipline": "Moalajat (Internal Medicine) & Qarabadin",
+            "historical_era": "Colonial-Era Classical Medicine",
+            "source_type": "CLASSICAL_TREATISE",
+            "description": "Comprehensive head-to-toe clinical compendium from Osler Library of Early Medicine at McGill University (MS 7786/43).",
+        })
+
+        self.register_edition({
+            "id": "ed-shifa-abdan-mcgill",
+            "book_id": shifa["id"],
+            "editor_translator": "Osler Library Rare Books Collection",
+            "publisher": "McGill University Libraries (MS osl_robe_7786_43-20833)",
+            "publication_year": 1883,
+            "publication_place": "Lucknow / Montreal",
+            "edition_number": "Historical Lithograph",
+            "volume_number": "Complete 1-Volume",
+            "isbn_issn": "MCGILL-OSLER-7786-43",
+            "total_pages": 463,
+            "sha256_checksum": hashlib.sha256(b"McGill-Osler-Shifa-al-Abdan-Digest").hexdigest(),
+        })
+
+        # Book 6: UPI Part-II, Vol-IV (Formulations)
+        upi_part2_v4 = self.register_book({
+            "id": "book-upi-part2-vol4",
+            "primary_author_id": ayush["id"],
+            "canonical_title": "The Unani Pharmacopoeia of India Part-II, Vol-IV (Formulations)",
+            "original_title": "The Unani Pharmacopoeia of India, Part-II Volume-IV",
+            "transliterated_title": "UPI Part-II Vol-IV",
+            "language_code": "en",
+            "discipline": "Murakkabat, TLC Profiles & Quality Assurance",
+            "historical_era": "Official Contemporary Statutory Standard",
+            "source_type": "OFFICIAL_MONOGRAPH",
+            "description": "50 official statutory compound formulations monographs, physicochemical specs, TLC Rf values, and Appendix 6-7 standards.",
+        })
+
+        self.register_edition({
+            "id": "ed-upi-part2-vol4-2026",
+            "book_id": upi_part2_v4["id"],
+            "editor_translator": "PCIM&H, Ministry of AYUSH, Govt of India",
+            "publisher": "Pharmacopoeia Commission for Indian Medicine & Homoeopathy, Ghaziabad",
+            "publication_year": 2026,
+            "publication_place": "Ghaziabad, India",
+            "edition_number": "First Edition",
+            "volume_number": "Part II, Vol IV (50 Formulations)",
+            "isbn_issn": "AYUSH-PCIMH-UPI-P2-V4",
+            "total_pages": 317,
+            "sha256_checksum": hashlib.sha256(b"PCIMH-AYUSH-UPI-Part2-Vol4-Official-Digest").hexdigest(),
+        })
+
+        # 6. Dr. Abdul Wadud (Ishrah al-Adwiyah / Kulliyat-e-Adwiyah)
+        abdul_wadud = self.register_author({
+            "id": "aut-abdul-wadud",
+            "canonical_name": "Dr. Abdul Wadud",
+            "arabic_name": "الدكتور عبد الودود",
+            "urdu_name": "ڈاکٹر عبد الودود",
+            "era_ce": "Contemporary (2004 CE)",
+            "biography_summary": "M.D. (Ilmul Advia) AMU Aligarh; Reader in Dept of Ilmul Advia, S.H. Unani Tibbiya College, Burhanpur; authority on Kulliyat-e-Adwiyah and Unani Pharmacodynamics.",
+            "is_classical": False,
+        })
+
+        # Book 7: Ishrah al-Adwiyah
+        ishrah_adwiyah = self.register_book({
+            "id": "book-ishrah-adwiyah",
+            "primary_author_id": abdul_wadud["id"],
+            "canonical_title": "Ishrah al-Adwiyah (Kulliyat-e-Adwiyah)",
+            "original_title": "اشراح الادویہ (کلیات ادویہ)",
+            "transliterated_title": "Ishrāḥ al-Adwiyah",
+            "language_code": "ur",
+            "discipline": "Kulliyat-e-Adwiyah, Pharmacodynamics & Terminology",
+            "historical_era": "Contemporary Academic Curriculum",
+            "source_type": "CURRICULUM_TEXTBOOK",
+            "description": "Definitive textbook bridging classical Unani pharmacology with modern pharmacodynamics, stereochemistry (Maleic/Fumaric), 9 tastes, and 74 standardized actions.",
+        })
+
+        self.register_edition({
+            "id": "ed-ishrah-adwiyah-2004",
+            "book_id": ishrah_adwiyah["id"],
+            "editor_translator": "Yasir Faraz / Mumtaz Screen Printers",
+            "publisher": "Yasir Faraz, Burhanpur (M.P.)",
+            "publication_year": 2004,
+            "publication_place": "Burhanpur, India",
+            "edition_number": "First Edition",
+            "volume_number": "Complete 1-Volume",
+            "isbn_issn": "ACADEMIC-BURHANPUR-2004",
+            "total_pages": 176,
+            "sha256_checksum": hashlib.sha256(b"Dr-Abdul-Wadud-Ishrah-al-Adwiyah-2004-Digest").hexdigest(),
+        })
+
     # ------------------------------------------------------------------------
     # 2. AUTHORS & SCHOLARS
     # ------------------------------------------------------------------------

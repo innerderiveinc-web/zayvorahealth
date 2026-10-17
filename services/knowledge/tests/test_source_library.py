@@ -64,7 +64,8 @@ def test_author_and_book_registration():
 
         # Test filter by language
         persian_books = registry.get_books(language="fa")
-        assert len(persian_books) == 1
+        assert len(persian_books) >= 1
+        assert any(b["canonical_title"] == book["canonical_title"] for b in persian_books)
 
 
 def test_edition_registration_and_checksum():

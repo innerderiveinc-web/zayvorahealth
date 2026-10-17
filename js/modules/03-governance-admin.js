@@ -1440,7 +1440,7 @@ function generateInstantOpdToken() {
         const items = [
           { key: 'services', label: 'All Services Overview' },
           { key: 'services_clinical_care', label: '<svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Matab & OPD Care' },
-          { key: 'services_ai_healthcare', label: '<svg class="w-4 h-4 inline-block text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Hakeem Sahab™ AI' },
+          { key: 'services_ai_healthcare', label: '<svg class="w-4 h-4 inline-block text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Hakeem Sahab™ Clinical CDSS' },
           { key: 'services_digital_health', label: '<svg class="w-4 h-4 inline-block text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg> Digital Health & Scribe' },
           { key: 'services_pharmacy', label: '<svg class="w-4 h-4 inline-block text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> Dispensary (FEFO)' },
           { key: 'services_manufacturing', label: 'Manufacturing OS' },
@@ -1619,7 +1619,7 @@ function generateInstantOpdToken() {
         { key: "about", path: "/about", title: "About ZAYVORA Health OS™", desc: "Foundational vision, leadership, clinical governance and integrative mission" },
         { key: "services", path: "/services", title: "Clinical Services Overview", desc: "Tele-consult, OPD, Regimenal Ilaj bil-Tadbeer, and In-Clinic Matab" },
         { key: "services_clinical_care", path: "/services/clinical-care", title: "Clinical Care & Matab OPD", desc: "Outpatient care, pulse diagnosis, tongue chromametry, and inpatient supervision" },
-        { key: "services_ai_healthcare", path: "/services/ai-healthcare", title: "Hakeem Sahab™ Clinical AI", desc: "Multi-hop reasoning, 21 CFR Part 11 signoff barrier, and ZKB pharmacopoeia graph" },
+        { key: "services_ai_healthcare", path: "/services/ai-healthcare", title: "Hakeem Sahab™ Clinical CDSS", desc: "Multi-hop reasoning, 21 CFR Part 11 signoff barrier, and ZKB pharmacopoeia graph" },
         { key: "services_digital_health", path: "/services/digital-health", title: "Digital Health & Scribe", desc: "Vernacular audio scribe, BLE IoT sensor streaming, and ABDM M1-M3 records" },
         { key: "services_research", path: "/services/research", title: "Clinical Research Cloud", desc: "Real-World Evidence (RWE) registries, observational cohorts, and clinical outcome monitoring" },
         { key: "services_pharmacy", path: "/services/pharmacy", title: "Botanical Dispensary", desc: "FEFO automated dispensing, cold-chain monitoring, and barcoded delivery" },
@@ -1683,7 +1683,7 @@ function generateInstantOpdToken() {
                 <div class="text-3xl"><svg class="w-3.5 h-3.5 inline-block text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
                 <h3 class="text-base font-bold text-white">21 CFR Part 11 Governance</h3>
                 <p class="text-xs text-[var(--muted)] leading-relaxed">
-                  Non-delegable clinician discretion barrier. AI never issues autonomous treatment orders; all prescriptions require cryptographic biometric or PIN signature by a licensed Tabeeb.
+                  Non-delegable clinician discretion barrier. System never issues autonomous treatment orders; all prescriptions require cryptographic biometric or PIN signature by a licensed Tabeeb.
                 </p>
               </div>
             </div>
@@ -1746,7 +1746,7 @@ function generateInstantOpdToken() {
               </div>
               <h1 class="text-3xl font-extrabold text-white">Comprehensive Integrative Healthcare Services</h1>
               <p class="text-sm text-[var(--muted)] leading-relaxed">
-                From specialized OPD and regimenal therapy to clinician-governed AI decision support and GMP manufacturing, ZAYVORA delivers full-spectrum integrative healthcare.
+                From specialized OPD and regimenal therapy to clinician-governed clinical decision support (CDSS) and GMP botanical dispensary, ZAYVORA delivers full-spectrum integrative healthcare.
               </p>
             </div>
 
@@ -2148,7 +2148,7 @@ function generateInstantOpdToken() {
       if (state.tab === 'faqs') {
         const subnav = getWebsiteHubSubnav(state.tab);
         const faqs = [
-          { q: "What is ZAYVORA Health OS™?", a: "ZAYVORA Health OS is an enterprise healthcare operating system uniting classical Unani medicine (10-Ajnas pulse evaluation, Su-e-Mizaj, Organ-Axis) with contemporary biomedical intelligence, electronic health records, and clinician-governed AI." },
+          { q: "What is ZAYVORA Health OS™?", a: "ZAYVORA Health OS is an enterprise healthcare operating system uniting classical Unani medicine (10-Ajnas pulse evaluation, Su-e-Mizaj, Organ-Axis) with contemporary biomedical intelligence, electronic health records, and clinician-governed decision intelligence." },
           { q: "How is patient safety ensured with Unani medicines?", a: "All formulations conform to AYUSH Schedule T (GMP) quality standards and HPLC active fingerprinting. Schedule E(1) botanical ingredients undergo mandatory multi-day Mudabbar detoxification, supervised by pharmacognosists and verified by spectroscopy." },
           { q: "Can the system prescribe medicines without a doctor?", a: "Never. Under our strict 21 CFR Part 11 implementation, all clinical intelligence operates exclusively as decision support for clinicians. Every prescription strictly requires a licensed doctor's review and digital PIN sign-off." },
           { q: "Are services connected to Ayushman Bharat (ABDM)?", a: "Yes. ZAYVORA is integrated with ABDM M1, M2, and M3 standards, allowing seamless creation of ABHA numbers and secure sharing of encrypted health records with patient consent." },
@@ -2550,7 +2550,7 @@ function generateInstantOpdToken() {
                   Intellectual Property &amp; Proprietary Rights
                 </h3>
                 <p>
-                  All proprietary algorithms, clinical decision support logic (Hakeem Sahab AI™), 10-Ajnas scoring models, botanical formulations, branding, trade dress, and software source code are the exclusive intellectual property of <strong>Hakeem Dr. Irfan Ashraf</strong> and QSURA India Pvt. Ltd. (operating ZAYVORA Health) Unauthorized reverse-engineering, scraping, or commercial duplication is strictly prohibited under the Copyright Act, 1957 and Patents Act, 1970.
+                  All proprietary algorithms, clinical decision support logic (Hakeem Sahab™ CDSS), 10-Ajnas scoring models, botanical formulations, branding, trade dress, and software source code are the exclusive intellectual property of <strong>Hakeem Dr. Irfan Ashraf</strong> and QSURA India Pvt. Ltd. (operating ZAYVORA Health) Unauthorized reverse-engineering, scraping, or commercial duplication is strictly prohibited under the Copyright Act, 1957 and Patents Act, 1970.
                 </p>
               </section>
 
@@ -2606,7 +2606,7 @@ function generateInstantOpdToken() {
                 <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Zero Guaranteed Cure Claims</span>
                 <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/30">Emergency Alert: 112</span>
                 <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Schedule E(1) Mudabbar Verified</span>
-                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Assistive AI CDSS (Zero Autonomous Rx)</span>
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Assistive Clinical CDSS (Zero Autonomous Rx)</span>
               </div>
             </div>
 
@@ -2639,15 +2639,15 @@ function generateInstantOpdToken() {
               <section class="space-y-3">
                 <h3 class="font-bold text-white text-sm flex items-center gap-2">
                   <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-xs">02</span>
-                  Role &amp; Boundaries of Clinical AI (Hakeem Sahab AI™)
+                  Role &amp; Boundaries of Clinical Decision Support (Hakeem Sahab™ CDSS)
                 </h3>
                 <p>
-                  <strong>Hakeem Sahab AI™</strong> operates strictly as an assistive Clinical Decision Support System (CDSS) for certified medical practitioners:
+                  <strong>Hakeem Sahab™ CDSS</strong> operates strictly as an assistive Clinical Decision Support System (CDSS) for certified medical practitioners:
                 </p>
                 <ul class="list-disc pl-5 space-y-2 text-slate-400">
-                  <li><strong>Zero Autonomous Prescribing:</strong> The AI system possesses zero legal, diagnostic, or prescribing authority. No treatment plan or prescription is ever issued autonomously.</li>
+                  <li><strong>Zero Autonomous Prescribing:</strong> The clinical decision support system possesses zero legal, diagnostic, or prescribing authority. No treatment plan or prescription is ever issued autonomously.</li>
                   <li><strong>Mandatory Human Clinician Barrier:</strong> Every recommendation must be independently reviewed, adjusted, approved, and cryptographically signed by a licensed practitioner under 21 CFR Part 11 standards before reaching the patient.</li>
-                  <li><strong>Reference Only:</strong> AI outputs represent synthesized literature cross-talk from the Unani Pharmacopoeia of India (UPI) and PubMed botanical citations and do not constitute an independent medical opinion.</li>
+                  <li><strong>Reference Only:</strong> Clinical CDSS outputs represent synthesized literature cross-talk from the Unani Pharmacopoeia of India (UPI) and PubMed botanical citations and do not constitute an independent medical opinion.</li>
                 </ul>
               </section>
 
@@ -2995,7 +2995,7 @@ function generateInstantOpdToken() {
             type: "Full-Time • On-Site",
             loc: "Central Hospital & Matab Suite, New Delhi",
             exp: "BUMS (Unani) • 5+ Years Clinical Practice",
-            desc: "Lead pulse-based diagnosis (10-Ajnas), supervise clinical consultations, review Hakeem Sahab™ AI differential suggestions, and execute 21 CFR Part 11 compliant digital prescriptions.",
+            desc: "Lead pulse-based diagnosis (10-Ajnas), supervise clinical consultations, review Hakeem Sahab™ differential suggestions, and execute 21 CFR Part 11 compliant digital prescriptions.",
             skills: ["Moalajat", "10-Ajnas Pulse Diagnosis", "Tadbeer Oversight", "Clinical Governance"]
           },
           {
@@ -3037,7 +3037,7 @@ function generateInstantOpdToken() {
               </div>
               <h1 class="text-3xl font-extrabold text-white">Join the Integrative Clinical Movement</h1>
               <p class="text-sm text-[var(--muted)] leading-relaxed">
-                We are building the future of codified Greco-Arab medicine—fusing centuries of empirical healing with modern biochemistry, AI safety firewalls, and AYUSH-GMP manufacturing. Discover opportunities to lead with clinical purpose.
+                We are building the future of codified Greco-Arab medicine—fusing centuries of empirical healing with modern biochemistry, clinical safety firewalls, and AYUSH-GMP manufacturing. Discover opportunities to lead with clinical purpose.
               </p>
             </div>
 
@@ -3046,7 +3046,7 @@ function generateInstantOpdToken() {
               <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
                 <div class="text-emerald-400 text-lg">🏥</div>
                 <h4 class="font-bold text-white text-sm">Clinical Excellence First</h4>
-                <p class="text-xs text-slate-400">Practitioners retain complete diagnostic authority. AI serves as clinician-in-the-loop decision support, never replacing human clinical judgment.</p>
+                <p class="text-xs text-slate-400">Practitioners retain complete diagnostic authority. Decision support serves as clinician-in-the-loop guidance, never replacing human clinical judgment.</p>
               </div>
               <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
                 <div class="text-teal-400 text-lg">🔬</div>
@@ -3115,7 +3115,7 @@ function generateInstantOpdToken() {
         return;
       }
 
-      // TAB: CLINICAL & AI GOVERNANCE ETHICS CHARTER
+      // TAB: CLINICAL & DECISION GOVERNANCE ETHICS CHARTER
       if (state.tab === 'ethics') {
         const subnav = getWebsiteHubSubnav(state.tab);
         const pillars = [
@@ -3124,7 +3124,7 @@ function generateInstantOpdToken() {
             title: "Clinician-in-the-Loop Primacy & Zero Autonomous Prescribing",
             badge: "Mandatory Safety Barrier",
             icon: "🛡️",
-            desc: "Under statutory NCISM and medical board ethics, the AI engine (Hakeem Sahab™) is strictly prohibited from generating, modifying, or dispensing therapeutic prescriptions autonomously. All clinical recommendations are non-binding differential advisories.",
+            desc: "Under statutory NCISM and medical board ethics, the decision support engine (Hakeem Sahab™) is strictly prohibited from generating, modifying, or dispensing therapeutic prescriptions autonomously. All clinical recommendations are non-binding differential advisories.",
             rule: "A licensed, board-certified clinician must physically or through validated telemedicine evaluate the patient and cryptographically sign every single order using 21 CFR Part 11 compliant dual-factor credentials."
           },
           {
@@ -3161,7 +3161,7 @@ function generateInstantOpdToken() {
                 <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Clinical Governance &amp; Ethics</span>
                 <button onclick="viewWebsitePage('home')" class="text-xs text-[var(--muted)] hover:text-white">← Back to Home</button>
               </div>
-              <h1 class="text-3xl font-extrabold text-white">Clinical &amp; AI Ethics Charter</h1>
+              <h1 class="text-3xl font-extrabold text-white">Clinical Ethics &amp; Governance Charter</h1>
               <p class="text-sm text-[var(--muted)] leading-relaxed">
                 The foundational ethical covenant of ZAYVORA Health OS™. We codify ancient Hippocratic and Greco-Arab healing principles within modern cryptographic and regulatory guardrails.
               </p>
@@ -3216,11 +3216,11 @@ function generateInstantOpdToken() {
           {
             title: `Domain I: <svg class="w-4 h-4 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> Clinical Services & Care Continuum`,
             badge: "Clinical Care",
-            desc: "Full-spectrum integrative healthcare services unifying 10-Ajnas pulse evaluation, clinical decision support AI, ambient scribe, and certified manufacturing.",
+            desc: "Full-spectrum integrative healthcare services unifying 10-Ajnas pulse evaluation, clinical decision support system, ambient scribe, and certified manufacturing.",
             modules: [
               { key: "services", title: "Clinical Services Overview", path: "/services", desc: "Tele-consult, OPD, Regimenal Ilaj bil-Tadbeer, and In-Clinic Matab." },
               { key: "services_clinical_care", title: "In-Clinic Matab & OPD Care", path: "/services/clinical-care", desc: "10-Ajnas pulse evaluation, tongue chromametry, and inpatient supervision." },
-              { key: "services_ai_healthcare", title: "Hakeem Sahab™ Clinical AI", path: "/services/ai-healthcare", desc: "Multi-hop reasoning with mandatory 21 CFR Part 11 clinician signature barrier." },
+              { key: "services_ai_healthcare", title: "Hakeem Sahab™ Clinical CDSS", path: "/services/ai-healthcare", desc: "Evidence-grounded clinical reasoning with mandatory 21 CFR Part 11 clinician signature barrier." },
               { key: "services_digital_health", title: "Digital Health & Ambient Scribe", path: "/services/digital-health", desc: "Vernacular audio scribe, BLE IoT sensor streaming, and ABDM M1-M3 records." },
               { key: "services_pharmacy", title: "Botanical Dispensary (FEFO)", path: "/services/pharmacy", desc: "Automated FEFO inventory, IoT cold-chain surveillance, and barcoded delivery." },
               { key: "services_manufacturing", title: "Manufacturing OS & eBMR", path: "/services/manufacturing", desc: "Schedule E(1) Mudabbar detoxification, batch records, and HPLC spectral QA." },
@@ -3545,17 +3545,50 @@ function generateInstantOpdToken() {
               <span>Proprietary Greco-Arab Medicine OS™ • Conceived &amp; Architected by Hakeem Dr. Irfan Ashraf</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white max-w-5xl mx-auto leading-tight tracking-tight">
-              Ancient Wisdom. Modern Science. <br class="hidden sm:inline" />
-              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] via-emerald-300 to-teal-200">
-                Intelligent Healthcare.
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white max-w-5xl mx-auto leading-tight tracking-tight">
+              Evidence-Grounded Clinical Intelligence for Integrative Healthcare <br class="hidden sm:inline" />
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] via-emerald-300 to-teal-200 text-xl sm:text-2xl md:text-3xl block mt-2 font-black">
+                Assess &bull; Understand &bull; Verify &bull; Treat &bull; Monitor &bull; Learn
               </span>
             </h1>
 
             <p class="text-xs sm:text-sm md:text-base text-[#94A3B8] max-w-3xl mx-auto leading-relaxed">
-              ZAYVORA Health OS™ unites 1,000 years of codified Greco-Arab Unani clinical doctrine with precision systems biology, 
-              longitudinal Mizaj constitutional profiling, organ-axis screening, and evidence-grounded physician governance.
+              ZAYVORA Health OS™ unites codified Greco-Arab (Unani) clinical wisdom with modern biomedical evidence.
+              <span class="block mt-1 font-bold text-emerald-300">Evidence informs. Guidelines assist. Clinicians decide.</span>
             </p>
+
+            <!-- 3 Core Architecture Pillars: Clinical Care, Medical Intelligence, Continuous Learning -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto text-left pt-2 pb-1">
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-emerald-500/30 hover:border-emerald-400 transition cursor-pointer group" onclick="switchRole('doctor')">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="text-xl">🩺</span>
+                  <h4 class="font-bold text-white text-sm group-hover:text-emerald-300 transition">Clinical Care</h4>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-relaxed">
+                  Patient 360, OPD consultation, Clinical Decision Advisory, posology adjustments, and signed electronic prescription workflows.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-teal-500/30 hover:border-teal-400 transition cursor-pointer group" onclick="navigateToV2Hub('zmie')">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="text-xl">🧠</span>
+                  <h4 class="font-bold text-white text-sm group-hover:text-teal-300 transition">Medical Intelligence</h4>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-relaxed">
+                  ZMIE 7-tier evidence provenance (E0–E6), tripartite knowledge separation, and fail-closed Clinical Truth Firewall.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 hover:border-amber-400 transition cursor-pointer group" onclick="navigateToV2Hub('outcomes')">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="text-xl">📈</span>
+                  <h4 class="font-bold text-white text-sm group-hover:text-amber-300 transition">Continuous Learning</h4>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-relaxed">
+                  Longitudinal clinical timelines, RWE observational registries, standardized Mizaj research cohorts, and closed-loop outcomes.
+                </p>
+              </div>
+            </div>
 
             <!-- Action Matrix: Unified Clinical Self-Assessment & Patient Admission Gateway -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -4083,12 +4116,12 @@ function generateInstantOpdToken() {
                 <div class="space-y-2">
                   <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-lg text-emerald-400">🩺</div>
                   <h4 class="font-bold text-[#1B242A] dark:text-white text-sm group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">Clinical Services</h4>
-                  <p class="text-xs text-[#4A5568] dark:text-slate-300 leading-relaxed">In-clinic matab care, tele-consultation, and AI clinical decision support.</p>
+                  <p class="text-xs text-[#4A5568] dark:text-slate-300 leading-relaxed">In-clinic matab care, tele-consultation, and clinical decision support.</p>
                 </div>
                 <ul class="space-y-1.5 text-xs text-[#2D3748] dark:text-slate-200 border-t border-[#E2D9CC] dark:border-slate-700 pt-2.5 font-medium">
                   <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_clinical_care')" class="hover:text-emerald-400 block transition">&bull; In-Clinic Matab Care</a></li>
                   <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_digital_health')" class="hover:text-emerald-400 block transition">&bull; Digital Health &amp; Scribe</a></li>
-                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 block transition">&bull; Hakeem Sahab™ AI</a></li>
+                  <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 block transition">&bull; Hakeem Sahab™ Clinical CDSS</a></li>
                 </ul>
               </div>
 

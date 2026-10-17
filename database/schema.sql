@@ -875,3 +875,130 @@ CREATE TABLE IF NOT EXISTS patient_consents (
     notes TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_patient_consents_pid ON patient_consents(patient_id);
+
+-- =============================================================================
+-- ZAYVORA OS V2 — Evidence-Governed Clinical Intelligence Tables
+-- =============================================================================
+
+-- 1. Full Consent Engine (Priority 14)
+CREATE TABLE IF NOT EXISTS consent_engine_records (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    consent_type TEXT NOT NULL,
+    version TEXT NOT NULL,
+    language TEXT DEFAULT 'en',
+    purpose TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    method TEXT NOT NULL,
+    patient_identity TEXT NOT NULL,
+    witness_name TEXT,
+    is_revoked INTEGER DEFAULT 0,
+    revocation_timestamp DATETIME,
+    expiry_date DATE,
+    data_sharing_permitted INTEGER DEFAULT 1,
+    research_permitted INTEGER DEFAULT 0,
+    ai_processing_permitted INTEGER DEFAULT 1,
+    signature_hash TEXT NOT NULL,
+    facility_id TEXT DEFAULT 'FAC-HQ-01'
+);
+CREATE INDEX IF NOT EXISTS idx_consent_engine_patient ON consent_engine_records(patient_id);
+
+-- 2. Longitudinal Clinical Timeline (Priority 6)
+CREATE TABLE IF NOT EXISTS longitudinal_clinical_timeline (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    event_timestamp DATETIME NOT NULL,
+    event_type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    clinical_summary TEXT NOT NULL,
+    metrics_json TEXT,
+    actor_name TEXT NOT NULL,
+    actor_role TEXT NOT NULL,
+    evidence_claim_id TEXT,
+    facility_id TEXT DEFAULT 'FAC-HQ-01'
+);
+CREATE INDEX IF NOT EXISTS idx_timeline_patient_time ON longitudinal_clinical_timeline(patient_id, event_timestamp);
+
+-- 3. Longitudinal Pharmacovigilance & Adverse Interaction Registry (Priority 10)
+CREATE TABLE IF NOT EXISTS pharmacovigilance_longitudinal_registry (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    prescription_id TEXT,
+    substance_or_pair TEXT NOT NULL,
+    interaction_category TEXT NOT NULL,
+    exposure_start DATE,
+    symptoms_observed TEXT,
+    severity_grade TEXT,
+    causality_assessment TEXT,
+    clinical_action_taken TEXT,
+    outcome TEXT,
+    reported_by TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    facility_id TEXT DEFAULT 'FAC-HQ-01'
+);
+CREATE INDEX IF NOT EXISTS idx_pv_longitudinal_patient ON pharmacovigilance_longitudinal_registry(patient_id);
+
+-- 4. Clinical Outcomes & Real-World Evidence Registry (Priority 15)
+CREATE TABLE IF NOT EXISTS clinical_outcomes_registry (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    encounter_id TEXT,
+    condition_code TEXT NOT NULL,
+    evaluation_interval TEXT NOT NULL,
+    symptom_vas_score REAL,
+    lab_biomarkers_json TEXT,
+    adherence_percentage REAL,
+    adverse_events_count INTEGER DEFAULT 0,
+    quality_of_life_score REAL,
+    relapse_observed INTEGER DEFAULT 0,
+    treatment_duration_days INTEGER,
+    referral_status TEXT,
+    evidence_grade_generated TEXT DEFAULT 'RWE_E4',
+    recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    facility_id TEXT DEFAULT 'FAC-HQ-01'
+);
+CREATE INDEX IF NOT EXISTS idx_outcomes_patient ON clinical_outcomes_registry(patient_id);
+
+-- 5. Mizaj Research Engine & Prospective Cohort Registry (Priority 4)
+CREATE TABLE IF NOT EXISTS mizaj_research_cohorts (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    assessment_date DATE NOT NULL,
+    traditional_construct_json TEXT NOT NULL,
+    standardized_questionnaire_score REAL,
+    inter_rater_reliability_kappa REAL,
+    patient_clinical_phenotype TEXT NOT NULL,
+    lab_variables_json TEXT,
+    statistical_association_hypothesis TEXT,
+    prospective_validation_cohort TEXT,
+    validation_status TEXT,
+    lead_researcher TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_mizaj_research_patient ON mizaj_research_cohorts(patient_id);
+
+-- 6. Granular Clinical Audit Ledger (Priority 13)
+CREATE TABLE IF NOT EXISTS clinical_audit_events (
+    id TEXT PRIMARY KEY,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    actor_id TEXT NOT NULL,
+    actor_role TEXT NOT NULL,
+    action_type TEXT NOT NULL,
+    action_reason TEXT NOT NULL,
+    before_state_hash TEXT,
+    after_state_hash TEXT,
+    evidence_claim_ref TEXT,
+    approval_level TEXT NOT NULL,
+    cryptographic_signature_seal TEXT NOT NULL,
+    facility_id TEXT DEFAULT 'FAC-HQ-01'
+);
+CREATE INDEX IF NOT EXISTS idx_audit_events_time ON clinical_audit_events(timestamp);
+
+-- 7. Clinical Validation Benchmarks (Priority 16)
+CREATE TABLE IF NOT EXISTS clinical_validation_benchmarks (
+    case_id TEXT PRIMARY KEY,
+    clinical_scenario TEXT NOT NULL,
+    domain TEXT NOT NULL,
+    gold_standard_answer_json TEXT NOT NULL,
+    benchmark_version TEXT DEFAULT 'v1.0'
+);
+

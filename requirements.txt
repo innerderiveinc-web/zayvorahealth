@@ -1,4 +1,5 @@
-# ZAYVORA Live API Server - Python stdlib only, no external dependencies
-# All imports (http.server, sqlite3, json, os, hashlib, hmac, uuid, time,
-# base64, socketserver, urllib.parse, random, datetime, dataclasses,
-# importlib.util, re, sys) are part of the Python standard library.
+# ZAYVORA Live API Server - Core dependencies
+# Note: Base server runs 100% on Python stdlib.
+# psycopg2-binary enables automatic PostgreSQL multi-tenant connection pooling when DATABASE_URL is set.
+psycopg2-binary>=2.9.9
+

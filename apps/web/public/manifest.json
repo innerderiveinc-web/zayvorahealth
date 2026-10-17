@@ -1,0 +1,36 @@
+{
+  "name": "ZAYVORA Health OS™ — Integrative Precision Medicine",
+  "short_name": "ZAYVORA OS",
+  "description": "Next-Generation Operating System for Greco-Arab & Integrative Precision Medicine",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FAFAF7",
+  "theme_color": "#2D6A4F",
+  "categories": ["medical", "health", "education"],
+  "icons": [
+    {
+      "src": "apps/web/public/zayvora-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Doctor Desk",
+      "url": "./index.html#doctor-desk",
+      "description": "Attending Physician Bedside Workspace"
+    },
+    {
+      "name": "Integrative Library",
+      "url": "./index.html#grand-library-modal",
+      "description": "12-Volume Canonical Medical Library"
+    },
+    {
+      "name": "Case Simulator",
+      "url": "./index.html#case-simulator-modal",
+      "description": "Interactive Clinical Training Simulator"
+    }
+  ]
+}

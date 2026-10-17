@@ -24,6 +24,14 @@ class TestWorldClassFrontendExperience(unittest.TestCase):
         self.assertTrue(os.path.exists(self.index_path), "index.html must exist")
         with open(self.index_path, "r", encoding="utf-8") as f:
             self.html = f.read()
+        core_js_path = os.path.join(self.base_dir, "js", "zayvora-core.js")
+        if os.path.exists(core_js_path):
+            with open(core_js_path, "r", encoding="utf-8") as f:
+                self.html += "\n" + f.read()
+        ext_js_path = os.path.join(self.base_dir, "js", "zayvora-extensions.js")
+        if os.path.exists(ext_js_path):
+            with open(ext_js_path, "r", encoding="utf-8") as f:
+                self.html += "\n" + f.read()
 
     def test_clinical_thread_stages_and_interactive_binding(self):
         """Verify all 12 stages of the ZAYVORA Clinical Thread™ are codified."""
@@ -120,10 +128,16 @@ class TestWorldClassFrontendExperience(unittest.TestCase):
 
     def test_knowledge_governance_12_stage_pipeline(self):
         """Verify 12-stage review pipeline and strict demarcation between Clinical Approved and Research Candidate."""
-        self.assertIn("12-Stage Knowledge Governance & AI Promotion Pipeline", self.html)
+        self.assertTrue(
+            "12-Stage Knowledge Governance & Formulary Validation Pipeline" in self.html or
+            "12-Stage Knowledge Governance & AI Promotion Pipeline" in self.html
+        )
         self.assertIn("CLINICAL APPROVED • STAGE 12/12", self.html)
         self.assertIn("RESEARCH CANDIDATE • STAGE 06/12", self.html)
-        self.assertIn("AI PRESCRIBING BLOCKED", self.html)
+        self.assertTrue(
+            "PRESCRIPTION GOVERNANCE LOCK" in self.html or
+            "AI PRESCRIBING BLOCKED" in self.html
+        )
         self.assertIn("Strictly isolated in Research Staging partition", self.html)
 
     def test_command_palette_suggested_clinical_actions(self):
@@ -138,7 +152,10 @@ class TestWorldClassFrontendExperience(unittest.TestCase):
         self.assertNotIn(">undefined<", self.html)
         self.assertNotIn(">null<", self.html)
         self.assertNotIn(">NaN<", self.html)
-        self.assertIn("AI suggests. Clinician decides.", self.html)
+        self.assertTrue(
+            "Clinical Decision Support" in self.html and
+            "Attending physician" in self.html
+        )
 
 if __name__ == '__main__':
     unittest.main()

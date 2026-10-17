@@ -3,14 +3,16 @@
  * High-Reliability PWA Caching Strategy for Bedside & Mobile Clinics.
  */
 
-const CACHE_NAME = 'zayvora-health-os-v8.0-clean';
+const CACHE_NAME = 'zayvora-health-os-v16.7-live';
 const OFFLINE_URL = './index.html';
 
 const STATIC_PRECACHE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './apps/web/public/zayvora-logo.png'
+  './tailwind.min.js',
+  './js/zayvora-core.js',
+  './js/zayvora-extensions.js'
 ];
 
 // 1. Install: Precache Core App Shell
@@ -32,7 +34,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keyList.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[ZAYVORA SW] Removing legacy cache:', key);
+            console.log('[ZAYVORA SW] Purging legacy stale cache:', key);
             return caches.delete(key);
           }
         })
@@ -48,6 +50,42 @@ self.addEventListener('fetch', (event) => {
 
   // Skip non-GET requests
   if (req.method !== 'GET') {
+    return;
+  }
+
+  // HTML Navigation & Core App Shell: Network-First ALWAYS (with Cache Update)
+  if (req.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('/index.html')) {
+    event.respondWith(
+      fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(OFFLINE_URL).then((cached) => cached || fetch(req));
+        })
+    );
+    return;
+  }
+
+  // JavaScript files: Network-First to guarantee fresh application logic
+  if (url.pathname.endsWith('.js')) {
+    event.respondWith(
+      fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(req);
+        })
+    );
     return;
   }
 
@@ -76,18 +114,6 @@ self.addEventListener('fetch', (event) => {
             );
           });
         })
-    );
-    return;
-  }
-
-  // HTML Navigation: Network-First with Offline Cache Fallback
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req).catch(() => {
-        return caches.match(OFFLINE_URL).then((cached) => {
-          return cached || fetch(req);
-        });
-      })
     );
     return;
   }

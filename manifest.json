@@ -10,7 +10,7 @@
   "categories": ["medical", "health", "education"],
   "icons": [
     {
-      "src": "apps/web/public/zayvora-logo.png",
+      "src": "./zayvora-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

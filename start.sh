@@ -6,6 +6,12 @@ echo "=================================="
 echo " ZAYVORA Health OS — Starting Up"
 echo "=================================="
 
+# Auto-sync Canonical Mirrors (index.html, app.html, docs/)
+python3 scripts/sync_all.py
+
+# 360° Total Health Gateway Verification
+python3 scripts/health_check_360.py || exit 1
+
 # Kill any existing process on port 8000
 lsof -ti:8000 | xargs kill -9 2>/dev/null
 sleep 1

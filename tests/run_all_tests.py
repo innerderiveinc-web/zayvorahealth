@@ -7,6 +7,16 @@ import sys
 import os
 import importlib.util
 import traceback
+# Load environment variables from .env
+import pathlib
+_env_path = pathlib.Path(__file__).parent.parent / '.env'
+if _env_path.exists():
+    for _l in _env_path.read_text().splitlines():
+        _l = _l.strip()
+        if _l and not _l.startswith('#') and '=' in _l:
+            _k, _, _v = _l.partition('=')
+            os.environ.setdefault(_k.strip(), _v.strip())
+
 
 def load_mod(name: str, path: str):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -203,7 +213,17 @@ TEST_SUITES = [
     ("ZFIE Complete Domain & Engine Specification", ".", "tests/test_zfie_engine_complete.py"),
     ("ZFIE 5 Horizontal Layers (Factory, Benchmarking, Bridge, QC, Compiler)", ".", "tests/test_zfie_horizontal_layers.py"),
     ("Care Intelligence 2.0 (Front-Door Orchestrator & Care Gaps)", ".", "tests/test_care_intelligence_2.py"),
+    ("V2 Evidence-Governed Clinical Intelligence", ".", "tests/test_v2_evidence_governed_intelligence.py"),
+    ("Codebase Integrity, Static Drift & Parity Gate", ".", "tests/test_codebase_integrity_and_parity.py"),
+    ("Practical Clinical Enhancements & Patient UX", ".", "tests/test_practical_clinical_enhancements.py"),
+    ("Full Subsystems Verification (Web, Mobile, Engines, API, Audio)", ".", "tests/test_full_subsystems_verification.py"),
+    ("50 Multi-Morbidity Clinical Vignettes Concordance (DSMB)", ".", "tests/test_vignettes_concordance_run.py"),
+    ("Browser & Clinician E2E User Journey & Prescription Seal", ".", "tests/test_browser_e2e_journey.py"),
+    ("6 Core Clinical Engines Scientific Validation (Mizaj, Axis, Evidence, Diff, AI, Safety)", ".", "tests/test_six_core_engines_clinical_validation.py"),
+    ("Kulliyat-e-Adwiyah & Ishrah al-Adwiyah Pharmacological Suite", ".", "tests/test_kulliyat_e_adwiyah.py"),
+    ("Standard Unani Medical Terminology & Grand Medical Corpus", ".", "tests/test_standard_unani_terminology.py"),
 ]
+
 
 
 
@@ -214,15 +234,29 @@ def main():
     print(" ZAYVORA HEALTH™ — MASTER SYSTEM VERIFICATION TEST RUNNER")
     print("=" * 70)
     
-    # Initialize test database for deterministic runs
+    workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if workspace_root not in sys.path:
+        sys.path.insert(0, workspace_root)
+
+    # Detect if database is in pristine clean slate mode
+    clean_mode = False
     try:
-        workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        if workspace_root not in sys.path:
-            sys.path.insert(0, workspace_root)
-        from database.init_live_db import init_db
-        init_db()
+        import sqlite3
+        conn = sqlite3.connect("database/zayvora_live.db")
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*) FROM patients")
+        patient_count = c.fetchone()[0]
+        conn.close()
+        clean_mode = (patient_count == 0)
+    except Exception:
+        pass
+
+    # Ensure required test fixtures are provisioned for test execution
+    try:
+        from tests.fixtures_manager import provision_test_fixtures, cleanup_test_fixtures
+        provision_test_fixtures()
     except Exception as e:
-        print(f"Note: Database initialization skipped ({e})")
+        print(f"Note: Test fixture auto-provisioning notice ({e})")
 
     test_suites = TEST_SUITES
     
@@ -243,6 +277,15 @@ def main():
             all_errors.extend(errs)
             
     print("=" * 70)
+    # If clean mode was active or --clean passed, restore clean slate
+    if clean_mode or "--clean" in sys.argv:
+        try:
+            cleanup_test_fixtures()
+            print("✓ [Clean Slate Active] Ephemeral test fixtures restored to 0 patients.")
+            print("=" * 70)
+        except Exception as e:
+            print(f"Note: Cleanup notice ({e})")
+
     if total_failed == 0:
         print(f"✓ MASTER SUITE PASSED: {total_passed} tests passed with ZERO failures.")
         print("=" * 70)

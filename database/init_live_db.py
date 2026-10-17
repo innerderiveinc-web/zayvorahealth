@@ -23,6 +23,9 @@ def init_db():
         os.remove(DB_PATH)
         
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA synchronous=NORMAL")
+    conn.execute("PRAGMA busy_timeout=10000")
     cursor = conn.cursor()
     
     with open(SCHEMA_PATH, "r") as f:
@@ -30,8 +33,8 @@ def init_db():
         
     # Seed Facilities
     facilities = [
-        ("FAC-HQ-01", "zayvora clinic and hospital", "ZAYVORA-CLINIC-HOSP", "HOSPITAL", "Main Health Boulevard", "New Delhi", "Delhi", "+91 97738 82657", 1),
-        ("FAC-BRANCH-02", "zayvora hospital", "ZAYVORA-HOSP", "HOSPITAL", "Charminar Road", "Hyderabad", "Telangana", "+91 40 2452 1102", 1),
+        ("FAC-HQ-01", "ZAYVORA Health — Virtual Matab & Tele-Care HQ", "ZAYVORA-TELE-HQ", "VIRTUAL_CLINIC", "Digital Consultations & Tele-Care Headquarters", "New Delhi", "Delhi", "+91 97738 82657", 1),
+        ("FAC-BRANCH-02", "ZAYVORA Partner Node (Testing)", "ZAYVORA-TEST-02", "CLINIC", "Clinical Testing Node", "Hyderabad", "Telangana", "+91 40 2452 1102", 1),
     ]
     cursor.executemany("""
     INSERT INTO facilities (id, name, code, facility_type, address, city, state, contact_phone, is_active)
@@ -48,76 +51,61 @@ def init_db():
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-ADMIN-REQ", "admin@zayvorahealth", pwd_hash, salt, "Super Admin", "+91 98110 00001", "SUPER_ADMIN", "FAC-HQ-01"))
+    """, ("USR-ADMIN-REQ", "admin@zayvorahealth.com", pwd_hash, salt, "Enterprise Super Administrator", "+91 98110 00001", "SUPER_ADMIN", "FAC-HQ-01"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-DOC-REQ1", "dr.irfan@zayvorahealth", doc_hash, doc_salt, "Dr. Irfan Ashraf", "+91 98110 44219", "DOCTOR", "FAC-HQ-01"))
+    """, ("USR-DOC-REQ1", "dr.irfan@zayvorahealth.com", doc_hash, doc_salt, "Hakeem Dr. Irfan Ashraf", "+91 98110 44219", "DOCTOR", "FAC-HQ-01"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-DOC-REQ2", "dr.malik@zayvorahealth", doc_hash, doc_salt, "Dr. Malik", "+91 98480 33110", "DOCTOR", "FAC-BRANCH-02"))
+    """, ("USR-DOC-REQ2", "doctor2@zayvorahealth.com", doc_hash, doc_salt, "Consulting Physician (Room 2)", "+91 98480 33110", "DOCTOR", "FAC-HQ-01"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-REC-REQ", "reception@zayvorahealth", rec_hash, rec_salt, "Reception Desk", "+91 98110 55301", "RECEPTIONIST", "FAC-HQ-01"))
+    """, ("USR-REC-REQ", "reception@zayvorahealth.com", rec_hash, rec_salt, "OPD Reception Desk", "+91 98110 55301", "RECEPTIONIST", "FAC-HQ-01"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-PHARM-REQ", "pharmacy@zayvorahealth", pharm_hash, pharm_salt, "Chief Pharmacist", "+91 98110 88123", "PHARMACIST", "FAC-HQ-01"))
+    """, ("USR-PHARM-REQ", "pharmacy@zayvorahealth.com", pharm_hash, pharm_salt, "Matab Pharmacy Counter", "+91 98110 88123", "PHARMACIST", "FAC-HQ-01"))
 
     nurse_hash, nurse_salt = hash_password("nurse123")
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-NURSE-REQ", "nurse@zayvorahealth", nurse_hash, nurse_salt, "Sister Farzana Khan (Inpatient Ward 2A)", "+91 98110 77201", "NURSE", "FAC-HQ-01"))
-
-    cursor.execute("""
-    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-NURSE-01", "nurse@zayvorahealth.com", nurse_hash, nurse_salt, "Inpatient Nursing Station", "+91 98110 77202", "NURSE", "FAC-HQ-01"))
+    """, ("USR-NURSE-REQ", "nurse@zayvorahealth.com", nurse_hash, nurse_salt, "Inpatient Nursing Station", "+91 98110 77201", "NURSE", "FAC-HQ-01"))
 
     mfg_hash, mfg_salt = hash_password("admin123")
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-MFG-REQ", "manufacturing@zayvorahealth.com", mfg_hash, mfg_salt, "Head of Botanical QA/QC", "+91 98110 88201", "MANUFACTURING", "FAC-HQ-01"))
+    """, ("USR-MFG-REQ", "manufacturing@zayvorahealth.com", mfg_hash, mfg_salt, "Botanical QA/QC Lab", "+91 98110 88201", "MANUFACTURING", "FAC-HQ-01"))
 
     res_hash, res_salt = hash_password("doctor123")
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-RES-REQ", "research@zayvorahealth.com", res_hash, res_salt, "Principal Clinical Investigator", "+91 98110 99201", "RESEARCH", "FAC-HQ-01"))
+    """, ("USR-RES-REQ", "research@zayvorahealth.com", res_hash, res_salt, "Clinical Research Department", "+91 98110 99201", "RESEARCH", "FAC-HQ-01"))
 
-    # Test compatibility aliases
+    # Secondary clinical desks
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-ADMIN-01", "admin@zayvora.health", pwd_hash, salt, "Irfan Ashraf", "+91 98110 00001", "SUPER_ADMIN", "FAC-HQ-01"))
-    
-    cursor.execute("""
-    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-DOC-01", "mansoor.alam@zayvora.health", doc_hash, doc_salt, "Prof. (Dr.) Mansoor Alam", "+91 98110 44219", "DOCTOR", "FAC-HQ-01"))
-    
-    cursor.execute("""
-    INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-DOC-02", "sirajuddin@zayvora.health", doc_hash, doc_salt, "Dr. Hakim Sirajuddin", "+91 98480 33110", "DOCTOR", "FAC-BRANCH-02"))
+    """, ("USR-DOC-02", "doctor3@zayvorahealth.com", doc_hash, doc_salt, "Consulting Physician (Branch)", "+91 98480 33110", "DOCTOR", "FAC-BRANCH-02"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-REC-01", "reception.opd@zayvora.health", rec_hash, rec_salt, "Tariq Ansari", "+91 98110 55301", "RECEPTIONIST", "FAC-HQ-01"))
+    """, ("USR-REC-01", "reception2@zayvorahealth.com", rec_hash, rec_salt, "OPD Registration Counter 2", "+91 98110 55301", "RECEPTIONIST", "FAC-HQ-01"))
 
     cursor.execute("""
     INSERT INTO users (id, email, password_hash, salt, full_name, phone, role, facility_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, ("USR-PHARM-01", "zainab.pharm@zayvora.health", pharm_hash, pharm_salt, "Zainab Ali", "+91 98110 88123", "PHARMACIST", "FAC-HQ-01"))
+    """, ("USR-PHARM-01", "dispensary2@zayvorahealth.com", pharm_hash, pharm_salt, "Dispensary Counter 2", "+91 98110 88123", "PHARMACIST", "FAC-HQ-01"))
     
     pat_hash, pat_salt = hash_password("password123")
     cursor.execute("""
@@ -163,13 +151,9 @@ def init_db():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, ("PAT-0901", "MRN-2026-0901", "USR-PAT-02", "Bilqees", "Begum", "1975-02-18", "Female", "+91 98480 99221", "bilqees.begum@gmail.com", "AB+", "Sawdawi (Cold & Dry)", json.dumps([]), "FAC-BRANCH-02"))
 
-    # Seed Appointments & OPD Queue
+    # Seed Appointments & OPD Queue (1 Completed Test Appointment for Foreign Key Compliance, Active Queue: 0)
     appointments = [
-        ("APT-104", "T-104", "MRN-2026-0814", "Hamza Farooqi", "Prof. (Dr.) Mansoor Alam", "CCIM-U-1988-0412", "Integrative Unani OPD", "Room 3", "2026-09-13", "10:15 AM", "STANDARD", "Bilateral knee stiffness & joint ache in damp weather", "IN_CONSULTATION", 800.0, "PAID", "FAC-HQ-01"),
-        ("APT-105", "T-105", "MRN-2026-0815", "Ayesha Siddiqui", "Dr. Aisha Siddiqui", "CCIM-U-2004-1892", "Preventive Dietetics", "Room 2", "2026-09-13", "10:28 AM", "URGENT", "Acute Su-e-Hazm with post-prandial heartburn", "WAITING", 800.0, "PAID", "FAC-HQ-01"),
-        ("APT-106", "T-106", "MRN-2026-0816", "Mohammed Zeeshan", "Dr. Tariq Zafar", "CCIM-U-2009-3341", "Musculoskeletal & Regimenal", "Room 1", "2026-09-13", "10:40 AM", "FOLLOWUP", "Post-Tadbeer evaluation for lumbar spasm", "WAITING", 500.0, "PAID", "FAC-HQ-01"),
-        ("APT-107", "T-107", "MRN-2026-0817", "Fatima Bi", "Prof. (Dr.) Mansoor Alam", "CCIM-U-1988-0412", "Integrative Unani OPD", "Room 3", "2026-09-13", "10:55 AM", "STANDARD", "Metabolic follow-up (Ziabetus Shakari) & HbA1c review", "WAITING", 800.0, "PENDING", "FAC-HQ-01"),
-        ("APT-201", "T-201", "MRN-2026-0901", "Bilqees Begum", "Dr. Hakim Sirajuddin", "CCIM-U-1996-0912", "ZAYVORA Regimenal OPD", "Room 101", "2026-09-13", "11:00 AM", "STANDARD", "Chronic Tahazzul and osteoarthritis evaluation", "WAITING", 600.0, "PAID", "FAC-BRANCH-02"),
+        ("APT-104", "T-TEST", "MRN-2026-0814", "Hamza Farooqi [TEST]", "Hakeem Dr. Irfan Ashraf", "CCIM-U-1988-0412", "Integrative Unani OPD", "Room 3", "2026-09-13", "10:15 AM", "STANDARD", "Sandbox Verification Record", "COMPLETED", 0.0, "PAID", "FAC-HQ-01"),
     ]
     cursor.executemany("""
     INSERT INTO appointments (id, token_number, mrn, patient_name, doctor_name, doctor_reg, department, opd_room, appointment_date, appointment_time, acuity, chief_complaint, status, fee_amount, payment_status, facility_id)
@@ -237,17 +221,13 @@ def init_db():
     VALUES (?, ?, ?, ?, ?, ?)
     """, initial_audit_blocks)
 
-    # Seed Invoices
-    invoices = [
-        ("INV-001", "RCPT-2026-1041", "MRN-2026-0814", "Hamza Farooqi", 800.0, "Integrative Unani OPD", "UPI", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 800.0}]), "FAC-HQ-01"),
-        ("INV-002", "RCPT-2026-1042", "MRN-2026-0815", "Ayesha Siddiqui", 800.0, "Preventive Dietetics", "CARD", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 800.0}]), "FAC-HQ-01"),
-        ("INV-003", "RCPT-2026-1043", "MRN-2026-0816", "Mohammed Zeeshan", 500.0, "Musculoskeletal & Regimenal", "CASH", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 500.0}]), "FAC-HQ-01"),
-        ("INV-004", "RCPT-2026-2011", "MRN-2026-0901", "Bilqees Begum", 600.0, "ZAYVORA Regimenal OPD", "UPI", "PAID", None, json.dumps([{"item": "Consultation Fee", "qty": 1, "price": 600.0}]), "FAC-BRANCH-02"),
-    ]
-    cursor.executemany("""
-    INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status, prescription_id, items_json, facility_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, invoices)
+    # Seed Invoices (Clean Production Launch: Zero revenue by default)
+    invoices = []
+    if invoices:
+        cursor.executemany("""
+        INSERT INTO invoices (id, invoice_number, mrn, patient_name, amount, department, payment_method, status, prescription_id, items_json, facility_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, invoices)
 
     # Seed Encounters (Phase 3 Core Clinical Continuum)
     vitals_data = {"bp": "124/82", "pulse": "72", "temp": "98.4", "weight": "78", "spo2": "98", "hrv": "46.2"}
@@ -511,7 +491,7 @@ def init_db():
         ),
         (
             "CLN-MANSOOR-02",
-            "DOC-01",
+            "USR-DOC-02",
             "UP-UNANI-2012-08819",
             "Uttar Pradesh Board of Indian Medicine / NCISM",
             "Uttar Pradesh",
@@ -552,12 +532,24 @@ def init_db():
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, clinicians)
 
-    # Seed Canonical Evidence Sources (Layer 14)
+    # Seed Canonical Evidence Sources (Layer 14 — Classical Canon, Pharmacopoeias & Modern Textbooks)
     sources = [
         ("SRC-UPI-VOL1", "The Unani Pharmacopoeia of India, Part I, Volume I", "Department of AYUSH, Ministry of Health and Family Welfare", "1st Edition", 2007, "ISBN 978-81-904000-0-8", "PHARMACOPOEIA", "INDIA", "a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0"),
         ("SRC-UPI-VOL2", "The Unani Pharmacopoeia of India, Part I, Volume II", "Department of AYUSH, Ministry of Health and Family Welfare", "1st Edition", 2008, "ISBN 978-81-904000-1-5", "PHARMACOPOEIA", "INDIA", "b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01a"),
         ("SRC-NFUM-PT1", "National Formulary of Unani Medicine, Part I", "Department of AYUSH, Ministry of Health and Family Welfare", "Reprint Edition", 2006, "ISBN 978-81-904000-2-2", "PHARMACOPOEIA", "INDIA", "c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01ab2"),
-        ("SRC-IBN-SINA-CANON", "Al-Qanun fi al-Tibb (The Canon of Medicine)", "Ibn Sina (Avicenna)", "Canonical Bulaq Edition", 1593, "CANON-AVICENNA-1025-CE", "CLASSICAL_CANON", "GLOBAL", "d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01ab2c3")
+        ("SRC-IBN-SINA-CANON", "Al-Qanun fi al-Tibb (The Canon of Medicine)", "Ibn Sina (Avicenna, 980–1037 CE)", "Canonical Bulaq Edition / Rome 1593", 1593, "CANON-AVICENNA-1025-CE", "CLASSICAL_CANON", "GLOBAL", "d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef01ab2c3"),
+        ("SRC-IBN-BAITAR-JAMI", "Kitab al-Jami' li-Mufradat al-Adwiya wa-al-Aghdhiya (Grand Botanical Compendium)", "Ibn al-Baitar (Diya al-Din al-Malaqi, 1197–1248 CE)", "Dar al-Kutub al-Ilmiyyah / Bulaq Edition", 1874, "IBN-BAITAR-JAMI-1248-CE", "CLASSICAL_CANON", "GLOBAL", "b78a6846ec361d9a27eb2a1d3545df44e21df903901b0f19a0a4c0eb3f8a481e"),
+        ("SRC-AL-RAZI-HAWI", "Kitab al-Hawi fi al-Tibb (Continens Liber, 23 Volumes)", "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes, 865–925 CE)", "Dairat-ul-Ma'arif al-Osmania, Hyderabad Edition", 1955, "AL-RAZI-HAWI-925-CE", "CLASSICAL_CANON", "GLOBAL", "db6bd1b8c2f216503c73bb1b59074092b7617ea2d46e2794323c21a4d0ec353e"),
+        ("SRC-AL-MAJUSI-KAMIL", "Kamil al-Sina'a al-Tibbiyya (Al-Kitab al-Maliki / Liber Regius)", "Ali ibn al-Abbas al-Majusi (Haly Abbas, c. 930–994 CE)", "Bulaq Classical Cairo Edition", 1877, "AL-MAJUSI-KAMIL-994-CE", "CLASSICAL_CANON", "GLOBAL", "1ae7e9b9519f85c3db6eec6a9e144a1ebfe407ae0e7e1fec3b51909a8037fe6a"),
+        ("SRC-AL-ZAHRAWI-TASREEF", "Kitab al-Tasreef liman 'Ajiza 'an al-Ta'leef (On Regimenal Surgery & Instruments)", "Abul Qasim Khalaf ibn al-Abbas al-Zahrawi (Albucasis, 936–1013 CE)", "Dar al-Kitab al-Lubnani / Oxford Edition", 1908, "AL-ZAHRAWI-TASREEF-1013-CE", "CLASSICAL_CANON", "GLOBAL", "ed66e89c45b2b2b1cf59f9c73bfa99b4aa238ff7594ec1d4cb8008003f56d97c"),
+        ("SRC-AZAM-KHAN-AKSEER", "Akseer-e-Azam (Encyclopedia of Clinical Internal Medicine & Therapeutics, 4 Volumes)", "Hakim Muhammad Azam Khan (Nazim-e-Jahan, 1814–1902 CE)", "Munshi Nawal Kishore Press / CCRUM Edition", 1888, "ISBN 978-81-87748-02-1", "CLASSICAL_CANON", "INDIA", "d8f62840077c5ba84a51e60cb6c5ffaebe1e39a3f2c58908f972b9389cfbb78d"),
+        ("SRC-AZAM-KHAN-MUHEET", "Muheet-e-Azam (Grand Compendium of Materia Medica, 4 Volumes)", "Hakim Muhammad Azam Khan (Nazim-e-Jahan, 1814–1902 CE)", "Central Council for Research in Unani Medicine (CCRUM)", 1896, "ISBN 978-93-83864-12-6", "CLASSICAL_CANON", "INDIA", "a5a7c3205ef29ea3be01901c80f6f4c1732a3fcbb0a40d5178fc66a26d7ca194"),
+        ("SRC-AL-ALAWI-MAKHZAN", "Makhzan-ul-Advia (Compendium of Materia Medica & Pharmacology)", "Mir Muhammad Husain Al-Alawi Shirazi (1771 CE)", "Munshi Nawal Kishore Press, Lucknow Edition", 1874, "AL-ALAWI-MAKHZAN-1771-CE", "CLASSICAL_CANON", "INDIA", "d26ae7a30f5ee7aa6fcbe01524e931fa3c11f7c7ec518cf41f879bf73a4b9868"),
+        ("SRC-ARZANI-TIBB-AKBAR", "Tibb-e-Akbar (Comprehensive Clinical Internal Medicine)", "Hakim Muhammad Akbar Arzani (d. 1722 CE)", "Munshi Nawal Kishore Press, Lucknow Edition", 1878, "ARZANI-TIBB-AKBAR-1700-CE", "CLASSICAL_CANON", "INDIA", "469a14d0a24b1a43a05b38d35e16ecf6e80b435ae53d10526e0be5a60395cb21"),
+        ("SRC-KABIRUDDIN-BAYAZ", "Bayaz-e-Kabir (Vol I & II — Standard Unani Compounding & Formulary)", "Hakim Mohammad Kabiruddin", "Idara Kitab-us-Shifa, New Delhi Edition", 1938, "ISBN 978-81-89841-45-4", "PHARMACOPOEIA", "INDIA", "8e2b8362d10fbb101e1491cf0fc53cb1cbf8922e4ff9ca68e61234f9a0d81e01"),
+        ("SRC-NAJMUL-GHANI-KHAZAIN", "Khazain-ul-Advia (3 Volumes — Comprehensive Materia Medica & Action of Drugs)", "Hakim Najmul Ghani Rampuri (1859–1932 CE)", "Munshi Nawal Kishore Press / Idara Kitab-us-Shifa", 1926, "ISBN 978-81-89841-33-1", "PHARMACOPOEIA", "INDIA", "23fec9f2f1d93ebff12ebbf8ccb416e7aa7b031c3c9caae812c33ba20d2cb29a"),
+        ("SRC-WHO-MED-PLANTS", "WHO Monographs on Selected Medicinal Plants (Volumes 1, 2, 3 & 4)", "World Health Organization (WHO), Geneva", "WHO Official Geneva Publications", 2009, "ISBN 978-92-4-154702-4", "MODERN_EVIDENCE", "GLOBAL", "0b236472fedbc5ce9ef23961da8187803e04746f3a3a78f6974e6f4a86b168ff"),
+        ("SRC-ZAYVORA-CP-AFUM", "ZAYVORA Compendium of Axis-Based Functional Unani Medicine (CP-AFUM)", "Hakeem Dr. Irfan Ashraf, BUMS (AKTC AMU Aligarh, Batch 2002, Passed 2007)", "ZAYVORA Medical Publishing, 1st Edition", 2026, "ZYV-CP-AFUM-2026-REG", "CLINICAL_DOCTRINE", "INDIA", "7a2ed5499a2cbeec0fc1f71df42f77894a80698064d4b17f54c9cb2405073e6b")
     ]
     cursor.executemany("""
     INSERT OR REPLACE INTO evidence_sources (
@@ -565,16 +557,153 @@ def init_db():
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, sources)
 
+    # Seed Standard Unani Medical Terminology (CCRUM / AYUSH UMA)
+    uma_json = os.path.join(BASE_DIR, "services", "knowledge", "app", "data", "standard_unani_terminology_uma.json")
+    if os.path.exists(uma_json):
+        try:
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS unani_standard_terms (
+                uma_code TEXT PRIMARY KEY,
+                unani_term TEXT NOT NULL,
+                english_equivalent TEXT,
+                definition TEXT,
+                source TEXT
+            )
+            """)
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_unani_terms_term ON unani_standard_terms(unani_term)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_unani_terms_eng ON unani_standard_terms(english_equivalent)")
+            with open(uma_json, "r", encoding="utf-8") as uf:
+                uma_records = json.load(uf)
+            cursor.executemany("""
+            INSERT OR REPLACE INTO unani_standard_terms (uma_code, unani_term, english_equivalent, definition, source)
+            VALUES (?, ?, ?, ?, ?)
+            """, [(r["uma_code"], r["unani_term"], r.get("english_equivalent", ""), r.get("definition", ""), r.get("source", "")) for r in uma_records])
+        except Exception as e:
+            print(f"Note on UMA seeding: {e}")
+
+    # Seed ZKB 250 Canonical Mufradat
+    try:
+        from services.knowledge.app.data.mufradat_250_registry import RAW_MUFRADAT_LIST, HIGH_RISK_28_REGISTRY
+        mufradat_rows = []
+        for item in RAW_MUFRADAT_LIST:
+            zmf_id = item[0]
+            urdu_name = item[1]
+            botanical = item[2]
+            family = item[3]
+            part = item[4]
+            mizaj = item[5]
+            actions_raw = item[6] or ""
+            actions_list = [a.strip() for a in actions_raw.split(";") if a.strip()]
+            actions_json = json.dumps(actions_list)
+            risk_level = item[9]
+            is_high_risk = (zmf_id in HIGH_RISK_28_REGISTRY) or (risk_level == "CRITICAL")
+            degree = 1
+            if "3" in mizaj: degree = 3
+            elif "4" in mizaj: degree = 4
+            elif "2" in mizaj: degree = 2
+            mufradat_rows.append((
+                zmf_id,
+                botanical.split("(")[0].strip() if "(" in botanical else botanical,
+                urdu_name,
+                urdu_name,
+                urdu_name.title(),
+                botanical,
+                f"UPI-{zmf_id}",
+                "VEGETABLE",
+                part,
+                mizaj,
+                degree,
+                1 if is_high_risk else 0,
+                1 if is_high_risk else 0,
+                "Classical Mudabbar Purification Protocol" if is_high_risk else None,
+                "3g - 5g" if not is_high_risk else "250mg - 500mg (Mudabbar)",
+                5.0 if not is_high_risk else 0.5,
+                10.0 if not is_high_risk else 1.0,
+                actions_json,
+                json.dumps([]),
+                json.dumps([]),
+                "CONTRAINDICATED" if is_high_risk else "SAFE",
+                "CONTRAINDICATED" if is_high_risk else "SAFE",
+                "CONTRAINDICATED" if is_high_risk else "SAFE",
+                "SAFE",
+                "E1" if is_high_risk else "E2",
+                "VERIFIED" if not is_high_risk else "RESTRICTED",
+                0 if is_high_risk else 1
+            ))
+        cursor.executemany("""
+        INSERT OR REPLACE INTO zkb_mufradat (
+            id, canonical_name_latin, canonical_name_urdu, canonical_name_arabic,
+            canonical_name_english, botanical_name, upi_code, origin_category,
+            plant_part_used, mizaj_primary_quality, mizaj_degree, is_schedule_e1_poison,
+            mandatory_mudabbar, mudabbar_protocol, historical_dose, approved_single_dose_max_grams,
+            approved_daily_dose_max_grams, therapeutic_actions, badal_substitutes, musleh_correctives,
+            pregnancy_status, lactation_status, pediatric_status, geriatric_status,
+            evidence_level, current_lifecycle_state, safe_for_ai
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, mufradat_rows)
+    except Exception as e:
+        print(f"Note on zkb_mufradat seeding: {e}")
+
+    # Seed Source Authors and Books
+    try:
+        from services.knowledge.app.core.source_registry import SourceRegistry
+        s_reg = SourceRegistry()
+        s_auth_rows = [(a["id"], a.get("canonical_name", ""), a.get("arabic_name", ""), a.get("persian_name", ""), a.get("urdu_name", ""), a.get("era_hijri", ""), a.get("era_ce", ""), a.get("biography_summary", ""), 1 if a.get("is_classical", True) else 0) for a in s_reg.authors.values()]
+        cursor.executemany("""
+        INSERT OR REPLACE INTO source_authors (
+            id, canonical_name, arabic_name, persian_name, urdu_name,
+            era_hijri, era_ce, biography_summary, is_classical
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, s_auth_rows)
+        s_book_rows = [(b["id"], b.get("primary_author_id", ""), b.get("canonical_title", ""), b.get("original_title", ""), b.get("transliterated_title", ""), b.get("language_code", "ar"), b.get("discipline", ""), b.get("historical_era", ""), b.get("source_type", "CLASSICAL_TREATISE"), b.get("description", "")) for b in s_reg.books.values()]
+        cursor.executemany("""
+        INSERT OR REPLACE INTO source_books (
+            id, primary_author_id, canonical_title, original_title, transliterated_title,
+            language_code, discipline, historical_era, source_type, description
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, s_book_rows)
+    except Exception as e:
+        print(f"Note on source tables seeding: {e}")
+
+    # Seed ZKB Drug Interactions (Herb-Drug Allopathic Safety Matrix)
+    try:
+        interactions = [
+            ("INT-001", "ZMF-001", "Benzodiazepines / Sedatives (Diazepam, Alprazolam, Clonazepam)", "Additive central GABA-A receptor modulation and sedative synergism.", "Excessive daytime somnolence, psychomotor impairment, severe CNS depression.", "HIGH", "Monitor mental status closely; reduce benzodiazepine dosage by 25-50% if co-administered."),
+            ("INT-002", "ZMF-001", "Thyroid Hormone Replacements (Levothyroxine)", "Withanolides stimulate endogenous T3 and T4 synthesis.", "Risk of additive thyrotoxicosis or elevated free T4 levels.", "MODERATE", "Monitor thyroid function tests (FT3, FT4, TSH) after 4 weeks of initiation."),
+            ("INT-003", "ZMF-002", "CYP3A4 & P-gp Inhibitors (Clarithromycin, Ketoconazole, Erythromycin)", "Inhibition of intestinal P-glycoprotein and hepatic CYP3A4-mediated clearance of colchicine.", "Life-threatening acute colchicine toxicity: pancytopenia, severe neuromyopathy, rhabdomyolysis, shock.", "CRITICAL", "STRICTLY CONTRAINDICATED. Do not co-prescribe. Use non-colchicine alternatives."),
+            ("INT-004", "ZMF-002", "HMG-CoA Reductase Inhibitors / Statins (Atorvastatin, Rosuvastatin)", "Synergistic skeletal muscle toxicity and inhibition of glucuronidation.", "Acute rhabdomyolysis, myoglobinuria, acute kidney injury.", "HIGH", "Temporarily withhold statin therapy during acute Suranjan treatment course; monitor serum CPK."),
+            ("INT-005", "ZMF-003", "Class I & Class III Antiarrhythmics (Amiodarone, Flecainide, Sotalol)", "Aconitine binds voltage-gated sodium channels in open state, inducing prolonged action potential.", "Lethal polymorphic ventricular tachycardia, torsades de pointes, cardiac arrest.", "CRITICAL", "ABSOLUTELY CONTRAINDICATED. Co-prescription triggers fail-closed safety block."),
+            ("INT-006", "ZMF-004", "Central Nervous System Stimulants (Caffeine, Theophylline, Modafinil)", "Strychnine antagonism of inhibitory postsynaptic glycine receptors synergizes with CNS stimulation.", "Hyperreflexia, muscle spasticity, generalized tetanic convulsions, respiratory arrest.", "CRITICAL", "ABSOLUTELY CONTRAINDICATED. Emergency clinical hold."),
+            ("INT-007", "ZMF-005", "Opioid Analgesics (Tramadol, Morphine, Codeine, Fentanyl)", "Direct additive mu- and kappa-opioid receptor stimulation.", "Profound CNS depression, respiratory rate <8/min, fatal respiratory failure.", "CRITICAL", "ABSOLUTE CONTRAINDICATION. Fail-closed block enforced."),
+            ("INT-008", "ZMF-005", "Monoamine Oxidase Inhibitors (MAOIs - Selegiline, Moclobemide)", "Inhibition of monoamine catabolism combined with natural opium alkaloids.", "Severe hyperpyrexic serotonin syndrome, hypertensive crisis, coma.", "CRITICAL", "STRICTLY CONTRAINDICATED. Washout period of 14 days required."),
+            ("INT-009", "ZMF-006", "Anticoagulants & Antiplatelets (Warfarin, Dabigatran, Clopidogrel, Aspirin)", "Guggulsterones exhibit intrinsic anti-platelet and fibrinolytic properties.", "Prolonged prothrombin time (PT/INR), spontaneous mucosal hemorrhage, gastrointestinal bleeding.", "HIGH", "Monitor PT/INR every 7 days; discontinue 7 days prior to elective surgical procedures."),
+            ("INT-010", "ZMF-010", "Loop and Thiazide Diuretics (Furosemide, Hydrochlorothiazide)", "Glycyrrhizin inhibits 11-beta-hydroxysteroid dehydrogenase type 2 (11b-HSD2), causing mineralocorticoid excess.", "Severe hypokalemia (<3.0 mEq/L), metabolic alkalosis, cardiac dysrhythmias.", "HIGH", "Advise dietary potassium supplementation; monitor serum electrolytes monthly; limit Mulethi <3g/day."),
+            ("INT-011", "ZMF-010", "Cardiac Glycosides (Digoxin)", "Mulethi-induced hypokalemia sensitizes myocardial Na+/K+ ATPase to cardiac glycosides.", "Fatal digoxin toxicity: nausea, yellow-green vision (xanthopsia), ventricular arrhythmias.", "HIGH", "Monitor serum digoxin levels; keep potassium >4.0 mEq/L; reduce licorice dose."),
+            ("INT-012", "ZMF-010", "Antihypertensives (Amlodipine, Telmisartan, Enalapril)", "Pseudo-hyperaldosteronism induces sodium and water retention.", "Rebound elevation in systolic and diastolic blood pressure, blunted antihypertensive response.", "MODERATE", "Monitor home BP weekly; avoid high-dose Glycyrrhiza in stage 2 hypertension."),
+            ("INT-013", "ZMF-015", "Oral Hypoglycemics & Insulins (Metformin, Glimepiride, Insulin Glargine)", "Charantin, polypeptide-p, and vicine promote glucose uptake and insulin secretion.", "Symptomatic acute hypoglycemia (shivering, diaphoresis, cognitive impairment, syncope).", "HIGH", "Instruct patient on hypoglycemia signs; consider prophylactic 25% reduction of oral agent."),
+            ("INT-014", "ZMF-020", "Stimulant Cathartics & Narrow Therapeutic Index Drugs (Lithium, Phenytoin)", "Accelerated intestinal transit time markedly reduces gastrointestinal drug absorption window.", "Sub-therapeutic blood levels of critical maintenance medications, loss of therapeutic seizure/mood control.", "MODERATE", "Separate administration of Senna/Sana by at least 4 hours from oral maintenance drugs.")
+        ]
+        cursor.executemany("""
+        INSERT OR REPLACE INTO zkb_drug_interactions (
+            id, mufradat_id, modern_drug_class, interaction_mechanism,
+            clinical_effect, risk_severity, recommended_action
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, interactions)
+    except Exception as e:
+        print(f"Note on zkb_drug_interactions seeding: {e}")
+
     conn.commit()
     conn.close()
 
     try:
         from database.migrations.zfie.runner import apply_migrations
         from database.seed_zfie_live import seed_zfie_database
+        from scripts.seed_v2_clinical_governance import seed_v2_records
         apply_migrations(DB_PATH)
         seed_zfie_database(DB_PATH)
+        seed_v2_records()
     except Exception as e:
-        print(f"Note on ZFIE migrations/seed: {e}")
+        print(f"Note on ZFIE migrations/seed or V2 seed: {e}")
 
     print(f"Successfully initialized live database at {DB_PATH}")
 

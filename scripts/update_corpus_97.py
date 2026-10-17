@@ -1,0 +1,1275 @@
+# scripts/update_corpus_97.py
+"""
+Script to write the complete 97-book canonical corpus into
+services/knowledge/app/data/grand_medical_books_corpus.py
+"""
+
+CORPUS_CODE = '''"""
+ZAYVORA Health OS™ — Grand Medical Books Corpus & Treatise Library
+====================================================================
+Comprehensive Catalog and Direct Access Layer for the 97 Authoritative
+Medical Treatises Stored in the Local Medical Library Repository:
+/Users/irfanashraf/Downloads/medical books/
+
+Classified into 7 Core Clinical Disciplines:
+1. Classical Canons & Foundational Treatises (Al-Qanun, Al-Hawi, Kamil al-Sina'a, Sharh Asbab, Firdaus al-Hikmat, Al-Mu'alajat al-Buqratiyya, Kitab al-Taysir, Kitab al-Fakhir)
+2. Clinical Diagnostics & Internal Medicine (Kitab-ul-Tashkhees, Akseer-e-Azam, Al-Haziq, Usool-e-Tashkhees, Mujarrabat)
+3. Materia Medica & Single Drugs (Makhzan-ul-Mufradat, Mufradat-e-Azizi, Khawas al-Adwiyah, Ishrah al-Adwiyah, Tauzihat Kulliyat-e-Adwiya)
+4. Standard Formularies & Compounding (Qarabadin Hamdard, Bayaz-e-Kabir, Qarabadin-e-Azam, Qarabadin-e-Qaderi, Qarabadin Majidi, Saidla Makrani, Murakkabat Azmi)
+5. Modern Biomedical Clinical References (Harrison's 19th/20th/21st, Davidson's 23rd, Robbins Basic Pathology 10th, Bailey & Love's Surgery 27th, Hutchison's Clinical Methods, Dermatology)
+6. Regimenal Therapy & Surgical Interventions (Jarahat Zahrawi, Kitab al-Umdah fi al-Jarahah Vols 1-2, Ilaj-bil-Tadbeer, Tahaffuzi wa Samaji Tibb)
+7. Pharmacopoeias & Statutory Standards (WHO International Standard Terminologies, Standard Unani Medical Terminology 1430, NFUM Parts I & IV, Essential Unani Medicines List, UPI)
+"""
+
+from __future__ import annotations
+import os
+import hashlib
+from typing import Dict, Any, List, Optional
+
+LOCAL_LIBRARY_PATH = "/Users/irfanashraf/Downloads/medical books"
+
+GRAND_MEDICAL_BOOKS_CORPUS: List[Dict[str, Any]] = [
+    # ── 1. CLASSICAL CANONS & FOUNDATIONAL TREATISES ──────────────────────────
+    {
+        "id": "BK-QANUN-FULL",
+        "title": "Al-Qanun fi al-Tibb (The Canon of Medicine — Complete)",
+        "title_urdu": "القانون فی الطب (مکمل)",
+        "author": "Ibn Sina (Avicenna, 980–1037 CE)",
+        "discipline": "Comprehensive Classical Medicine",
+        "category": "Classical Canon",
+        "filename": "THE CANON OF MEDICINE.pdf",
+        "file_size_mb": 43.64,
+        "is_available_locally": True,
+        "description": "Supreme classical encyclopedia of medicine in 5 books covering Kulliyat, Mufradat, Special Pathology, General Pathology, and Aqrabadhin."
+    },
+    {
+        "id": "BK-QANUN-V1",
+        "title": "The Canon of Medicine (Volume 1: Kulliyat / General Principles)",
+        "title_urdu": "القانون فی الطب (جلد اول: کلیات)",
+        "author": "Ibn Sina (Avicenna)",
+        "discipline": "Kulliyat (General Principles & Physiology)",
+        "category": "Classical Canon",
+        "filename": "The Canon of Medicine Vol. 1.pdf",
+        "file_size_mb": 21.06,
+        "is_available_locally": True,
+        "description": "Book 1 of the Canon: Arkan (Elements), Mizaj (Temperament), Akhlat (Humours), Aaza (Organs), Arwah (Spirits), Quwa (Faculties), and Af'al (Functions)."
+    },
+    {
+        "id": "BK-QANUN-V2",
+        "title": "The Canon of Medicine (Volume 2: Materia Medica / Simple Drugs)",
+        "title_urdu": "القانون فی الطب (جلد دوم: مفردات)",
+        "author": "Ibn Sina (Avicenna)",
+        "discipline": "Ilmul Advia & Mufradat (Materia Medica)",
+        "category": "Classical Canon",
+        "filename": "The Canon of Medicine Vol. 2.pdf",
+        "file_size_mb": 15.06,
+        "is_available_locally": True,
+        "description": "Book 2 of the Canon: Comprehensive catalog of single botanical, mineral, and zoological medicaments with temperaments and actions."
+    },
+    {
+        "id": "BK-QANUN-1-10",
+        "title": "Al-Qanun fi al-Tibb (Discourses 1 to 10)",
+        "title_urdu": "القانون فی الطب (مضامین 1 تا 10)",
+        "author": "Ibn Sina (Avicenna)",
+        "discipline": "Classical Clinical Discourses",
+        "category": "Classical Canon",
+        "filename": "Al Qanoon1-10.pdf",
+        "file_size_mb": 8.00,
+        "is_available_locally": True,
+        "description": "Selected clinical discourses of Ibn Sina's Canon covering diagnostic reasoning and bedside clinical therapeutics."
+    },
+    {
+        "id": "BK-QANUN-ARABIC-COMPLETE",
+        "title": "Al-Qanun fi al-Tibb (Complete Arabic Master Text)",
+        "title_urdu": "القانون فی الطب مکمل (عربی متن)",
+        "author": "Ibn Sina (Avicenna)",
+        "discipline": "Original Arabic Text of the Canon of Medicine",
+        "category": "Classical Canon",
+        "filename": "القانون فی الطب مکمل.pdf",
+        "file_size_mb": 19.47,
+        "is_available_locally": True,
+        "description": "Complete original classical Arabic text of Ibn Sina's Canon of Medicine covering all 5 canonical divisions."
+    },
+    {
+        "id": "BK-QANUN-URDU-KANTOORI",
+        "title": "Tarjuma Al-Qanun fi al-Tibb (Allama Kantoori Urdu Translation)",
+        "title_urdu": "ترجمہ القانون فی الطب شیخ بوعلی سینا — علامہ غلام حسنین کنتوری",
+        "author": "Ibn Sina / Translated by Allama Ghulam Hasnain Kantoori",
+        "discipline": "Complete Classical Canon Translated in Urdu",
+        "category": "Classical Canon",
+        "filename": "Tarjuma Al-Qanoon Shaikh Bu Ali Seena.pdf",
+        "file_size_mb": 89.13,
+        "is_available_locally": True,
+        "description": "The most celebrated and authoritative Urdu translation of Ibn Sina's Canon in the Indian subcontinent."
+    },
+    {
+        "id": "BK-QANUN-MEDICI-1593",
+        "title": "Kitab al-Qanun fi al-Tibb (Medici Oriental Press 1593 Rome / Yale Rare Arabic Incunabula)",
+        "title_urdu": "کتاب القانون فی الطب — نسخہ مطبع مدیچی روم 1593ء (نایاب ایڈیشن ییل)",
+        "author": "Ibn Sina (Avicenna)",
+        "discipline": "Monumental Historical First Printed Arabic Edition",
+        "category": "Classical Canon",
+        "filename": "Kitab_al-Qanun_fi_al-Tibb_Medici_1593_Yale.pdf",
+        "file_size_mb": 133.88,
+        "is_available_locally": True,
+        "description": "Historic milestone: The first printed Arabic edition of Avicenna's Canon produced by the Typographia Medicea in Rome in 1593."
+    },
+    {
+        "id": "BK-MOJIZ-QANUN",
+        "title": "Mojiz al-Qanun (Summary of the Canon — 1930 Edition)",
+        "title_urdu": "موجز القانون (1930 ایڈیشن)",
+        "author": "Ala al-Din Ali ibn Abi al-Hazm al-Qarshi (Ibn al-Nafis, discoverer of pulmonary circulation)",
+        "discipline": "Clinical Summary of Medicine & Pathology",
+        "category": "Classical Canon",
+        "filename": "Mojzal qanoon___1930___.pdf",
+        "file_size_mb": 30.28,
+        "is_available_locally": True,
+        "description": "The quintessential summary of Ibn Sina's Canon used for centuries across Indian and Middle Eastern medical madrasas."
+    },
+    {
+        "id": "BK-HAWI-HYD-RAR",
+        "title": "Kitab al-Hawi fil Tibb (Complete Hyderabad Dairat-ul-Ma'arif Edition)",
+        "title_urdu": "کتاب الحاوی فی الطب (مکمل دائرۃ المعارف حیدرآباد)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes, 865–925 CE)",
+        "discipline": "Complete 23-Volume Magnum Opus",
+        "category": "Classical Canon",
+        "filename": "Al Razi - Al Hawi fil Tibb Hayderabad edition.rar",
+        "file_size_mb": 1103.88,
+        "is_available_locally": True,
+        "description": "The monumental Arabic edition published by Osmania Oriental Publications Bureau, Hyderabad."
+    },
+    {
+        "id": "BK-HAWI-V1",
+        "title": "Kitab al-Hawi fi al-Tibb (Vol 1: Neurological & Nervous Diseases)",
+        "title_urdu": "کتاب الحاوی فی الطب (جلد اول: امراض اعصاب)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Neurology, Cephalic Pathology & Psychiatry",
+        "category": "Classical Canon",
+        "filename": "کتاب الحاوی جلد اول - امراض اعصاب.pdf",
+        "file_size_mb": 21.69,
+        "is_available_locally": True,
+        "description": "Rhazes' bedside clinical cases and consultations on stroke (Falij), facial palsy (Laqwa), epilepsy (Sar'a), tremors (Rasha), and melancholy."
+    },
+    {
+        "id": "BK-HAWI-V1-ALT",
+        "title": "Kitab al-Hawi fi al-Tibb (Vol 1: Neurological Diseases — Alternate Edition)",
+        "title_urdu": "کتاب الحاوی جلد اول (امراض اعصاب — ایڈیشن ثانی)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Neurology, Stroke, Sciatica & Nerve Pathology",
+        "category": "Classical Canon",
+        "filename": "کتاب الحاوی جلد اول - امراض اعصاب (1).pdf",
+        "file_size_mb": 21.69,
+        "is_available_locally": True,
+        "description": "Alternate edition of Rhazes' first volume on brain, spinal, and cranial nerve disorders."
+    },
+    {
+        "id": "BK-HAWI-V2",
+        "title": "Kitab al-Hawi fi al-Tibb (Vol 2: Ophthalmology & Eye Diseases)",
+        "title_urdu": "کتاب الحاوی فی الطب (جلد دوم: امراض چشم)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Ophthalmology & Visual Disorders",
+        "category": "Classical Canon",
+        "filename": "کتاب الحاوی جلد دوم - امراض چشم.pdf",
+        "file_size_mb": 16.12,
+        "is_available_locally": True,
+        "description": "Classical ophthalmology: Conjunctivitis (Ramad), Cataract (Ma-ul-Nazil), Trachoma (Jarad), corneal ulcers, and surgical interventions."
+    },
+    {
+        "id": "BK-HAWI-V10",
+        "title": "Kitab al-Hawi fi al-Tibb (Volume 10: Clinical Bedside Rounds)",
+        "title_urdu": "کتاب الحاوی فی الطب (جلد دہم)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Bedside Case Studies & Clinical Differential Diagnosis",
+        "category": "Classical Canon",
+        "filename": "Al Hawi 10 (2).pdf",
+        "file_size_mb": 8.92,
+        "is_available_locally": True,
+        "description": "Detailed clinical hospital rounds notes, empirical diagnostic checks, and therapeutic outcomes from Baghdad Hospital."
+    },
+    {
+        "id": "BK-HAWI-V11",
+        "title": "Kitab al-Hawi fi al-Tibb (Volume 11: Gastrointestinal & Intestinal Disorders)",
+        "title_urdu": "کتاب الحاوی فی الطب (جلد گیارہواں: امراض معدہ و امعاء)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Gastroenterology, Gastric Ulcers, Colic & Dysentery",
+        "category": "Classical Canon",
+        "filename": "کتاب الحاوی جلد ۱۱.pdf",
+        "file_size_mb": 60.89,
+        "is_available_locally": True,
+        "description": "Rhazes' comprehensive bedside notes on gastritis, gastric ulceration, colic (Qulanj), bowel obstruction, and dysentery."
+    },
+    {
+        "id": "BK-HAWI-V21-P1",
+        "title": "Kitab al-Hawi fi al-Tibb (Volume 21 Part 1: Comprehensive Materia Medica & Toxicology)",
+        "title_urdu": "کتاب الحاوی فی الطب (جلد اکیسواں حصہ اول: مفردات و سمیات)",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Materia Medica, Pharmacognosy & Clinical Toxicology (Sumoom)",
+        "category": "Classical Canon",
+        "filename": "کتاب الحاوی جلد ۲۱ حصہ ۱.pdf",
+        "file_size_mb": 55.33,
+        "is_available_locally": True,
+        "description": "Monumental 21st volume of al-Hawi detailing single drugs, toxicology, antidotes (Tiryaq), and mineral pharmacology."
+    },
+    {
+        "id": "BK-HAWI-URDU-ZAID-SAEED",
+        "title": "Kitab al-Hawi fi al-Tibb (Urdu Translation by Dr. Zaid Saeed)",
+        "title_urdu": "کتاب الحاوی فی الطب اردو — ترجمہ ڈاکٹر زید سعید",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi / Translated by Dr. Zaid Saeed",
+        "discipline": "Classical Bedside Clinical Cases & Differential Diagnosis",
+        "category": "Classical Canon",
+        "filename": "Kitabul Hawi urdu by zaid saeed..pdf",
+        "file_size_mb": 21.69,
+        "is_available_locally": True,
+        "description": "Urdu translation of Rhazes' bedside clinical cases, presenting patient presentations, consultations, and therapeutic outcomes."
+    },
+    {
+        "id": "BK-KAMIL-SINA-AH",
+        "title": "Kamil al-Sina'a al-Tibbiyya (Al-Kitab al-Maliki / Liber Regius)",
+        "title_urdu": "ترجمہ کامل الصناعۃ (الکتاب الملکی)",
+        "author": "Ali ibn al-Abbas al-Majusi (Haly Abbas, c. 930–994 CE)",
+        "discipline": "Theoretical & Applied Humoral Medicine",
+        "category": "Classical Canon",
+        "filename": "ترجمہ کامل الضاء.pdf",
+        "file_size_mb": 207.96,
+        "is_available_locally": True,
+        "description": "Standard medical text before the Canon: 10 theoretical discourses on physiology and anatomy, and 10 practical discourses on therapeutics."
+    },
+    {
+        "id": "BK-FIRDAUS-HIKMAT-ENG",
+        "title": "Firdaus al-Hikmat fi al-Tibb (Paradise of Wisdom — Complete)",
+        "title_urdu": "فردوس الحکمت فی الطب",
+        "author": "Ali ibn Sahl Rabban al-Tabari (850 CE)",
+        "discipline": "Earliest Comprehensive Islamic Medical Encyclopedia",
+        "category": "Classical Canon",
+        "filename": "Firdaus al Hikmat.pdf",
+        "file_size_mb": 103.74,
+        "is_available_locally": True,
+        "description": "The first comprehensive Arabic medical encyclopedia uniting Hippocratic-Galenic medicine with ancient Indian Ayurvedic references (Charaka/Sushruta)."
+    },
+    {
+        "id": "BK-FIRDAUS-HIKMAT-TABIB",
+        "title": "Firdaus al-Hikmat Kamil (Kutub Khana Tabib Edition)",
+        "title_urdu": "فردوس الحکمت کامل (کتب خانہ طبیب)",
+        "author": "Ali ibn Sahl Rabban al-Tabari",
+        "discipline": "Complete 7-Part Classical Medical Encyclopedia",
+        "category": "Classical Canon",
+        "filename": "فردوس الحکمت کامل (کتب خانہ طبیب).pdf",
+        "file_size_mb": 103.67,
+        "is_available_locally": True,
+        "description": "The definitive Urdu edition of Rabban al-Tabari's 850 CE compendium covering cosmology, embryology, anatomy, pathology, and comparative therapeutics."
+    },
+    {
+        "id": "BK-SHARH-ASBAB-1",
+        "title": "Sharh al-Asbab wal-Alamat (Volume 1)",
+        "title_urdu": "شرح اسباب و علامات (جلد اول)",
+        "author": "Nafis ibn Iwaz al-Kirmani / Commentary by Hakim Mohammad Kabiruddin",
+        "discipline": "Etiology, Symptomatology & Head-to-Chest Pathology",
+        "category": "Classical Canon",
+        "filename": "Sharah Asbab 1 - Hakeem Mohammad KabirUddin.pdf",
+        "file_size_mb": 65.85,
+        "is_available_locally": True,
+        "description": "Supreme textbook of clinical etiology, distinguishing primary root causes from secondary symptoms from head to chest."
+    },
+    {
+        "id": "BK-SHARH-ASBAB-2",
+        "title": "Sharh al-Asbab wal-Alamat (Volume 2)",
+        "title_urdu": "شرح اسباب و علامات (جلد دوم)",
+        "author": "Nafis ibn Iwaz al-Kirmani / Commentary by Hakim Mohammad Kabiruddin",
+        "discipline": "Cardiovascular, Respiratory & Gastric Pathology",
+        "category": "Classical Canon",
+        "filename": "Sharah Asbab 2 - Hakeem Mohammad KabirUddin .pdf",
+        "file_size_mb": 84.08,
+        "is_available_locally": True,
+        "description": "Detailed etiology, clinical signs, and differential diagnosis for heart, lung, and stomach disorders."
+    },
+    {
+        "id": "BK-SHARH-ASBAB-3",
+        "title": "Sharh al-Asbab wal-Alamat (Volume 3)",
+        "title_urdu": "شرح اسباب و علامات (جلد سوم)",
+        "author": "Nafis ibn Iwaz al-Kirmani / Commentary by Hakim Mohammad Kabiruddin",
+        "discipline": "Hepatobiliary, Splenic, Intestinal & Renal Pathology",
+        "category": "Classical Canon",
+        "filename": "Sharah Asbab 3 - Hakeem Mohammad KabirUddin.pdf",
+        "file_size_mb": 66.69,
+        "is_available_locally": True,
+        "description": "Liver, spleen, bowel, kidney, and bladder diseases with humoral differentiation."
+    },
+    {
+        "id": "BK-SHARH-ASBAB-4",
+        "title": "Sharh al-Asbab wal-Alamat (Volume 4)",
+        "title_urdu": "شرح اسباب و علامات (جلد چہارم)",
+        "author": "Nafis ibn Iwaz al-Kirmani / Commentary by Hakim Mohammad Kabiruddin",
+        "discipline": "Reproductive, Joint/Spine & General Fevers (Hummiyat)",
+        "category": "Classical Canon",
+        "filename": "Sharah Asbab 4 - Hakeem Mohammad KabirUddin.pdf",
+        "file_size_mb": 77.16,
+        "is_available_locally": True,
+        "description": "Pelvic, musculoskeletal, and systemic fevers (Hummiyat-e-Murakkabah, Diqq, Buhran)."
+    },
+    {
+        "id": "BK-KULLIYAT-NAFISI-1",
+        "title": "Kulliyat-e-Nafisi (Sharh al-Asbab wal-Alamat & Kulliyat)",
+        "title_urdu": "کلیات نفیسی — علامہ نفیس بن عوض کرمانی",
+        "author": "Burhan al-Din Nafis ibn Iwaz al-Kirmani (d. 1449 CE)",
+        "discipline": "Advanced Kulliyat (Theoretical Principles & Pathological Mechanisms)",
+        "category": "Classical Canon",
+        "filename": "Kuliyaat e Nafisi.PDF",
+        "file_size_mb": 84.55,
+        "is_available_locally": True,
+        "description": "Authoritative commentary on the theoretical and philosophical foundations of humoral physiology and systemic etiology."
+    },
+    {
+        "id": "BK-KULLIYAT-NAFISI-2",
+        "title": "Kulliyat-e-Nafisi (Complete Classical Edition)",
+        "title_urdu": "کلیات نفیسی (مکمل ایڈیشن)",
+        "author": "Burhan al-Din Nafis ibn Iwaz al-Kirmani",
+        "discipline": "Advanced Humoral Etiology & Pathophysiology",
+        "category": "Classical Canon",
+        "filename": "Kulliyat Nafisi.PDF",
+        "file_size_mb": 84.55,
+        "is_available_locally": True,
+        "description": "Complete unabridged classical edition of Nafisi's masterwork on general medicine and pathology."
+    },
+    {
+        "id": "BK-MUALAJAT-BUQRATIYYA-V1",
+        "title": "Al-Mu'alajat al-Buqratiyya (Vol 1: Hippocratic Therapeutics & Clinical Cases)",
+        "title_urdu": "المعالجات البقراطیہ (جلد اول)",
+        "author": "Abu al-Hasan Ahmad ibn Muhammad al-Tabari (10th Century CE)",
+        "discipline": "Hippocratic Clinical Therapeutics & Bedside Consultations",
+        "category": "Classical Canon",
+        "filename": "المعالجات البقراطیہ جلد ۱_compressed.pdf",
+        "file_size_mb": 95.62,
+        "is_available_locally": True,
+        "description": "Classical clinical therapeutics text by al-Tabari presenting 10 discourses on internal medicine, diagnostics, and patient case notes."
+    },
+    {
+        "id": "BK-MUALAJAT-BUQRATIYYA-V2",
+        "title": "Al-Mu'alajat al-Buqratiyya (Vol 2: Internal Organ Pathology & Treatments)",
+        "title_urdu": "المعالجات البقراطیہ (جلد دوم)",
+        "author": "Abu al-Hasan Ahmad ibn Muhammad al-Tabari",
+        "discipline": "Visceral Pathology & Systematic Therapeutics",
+        "category": "Classical Canon",
+        "filename": "المعالجات البقراطیہ جلد ۲.pdf",
+        "file_size_mb": 16.43,
+        "is_available_locally": True,
+        "description": "Second volume of al-Tabari's clinical therapeutics focusing on abdominal organs, genitourinary disorders, and fevers."
+    },
+    {
+        "id": "BK-KITAB-TAYSIR",
+        "title": "Kitab al-Taysir fi al-Mudawat wa al-Tadbir (Therapeutics and Diet)",
+        "title_urdu": "کتاب التیسیر فی المداواۃ والتدبیر — ابن زہر الاندلسی",
+        "author": "Abu Marwan Abd al-Malik ibn Zuhr (Avenzoar, 1094–1162 CE)",
+        "discipline": "Bedside Empirical Therapeutics, Tracheostomy & Parasitology",
+        "category": "Classical Canon",
+        "filename": "کتاب التیسیر.pdf",
+        "file_size_mb": 90.82,
+        "is_available_locally": True,
+        "description": "Landmark Andalusian treatise by Ibn Zuhr emphasizing empirical clinical observations, experimental tracheotomy, pericarditis, and dietary therapy."
+    },
+    {
+        "id": "BK-FAKHIR-V1",
+        "title": "Kitab al-Fakhir fi al-Tibb (Volume 1: Clinical Symptomatology & Diagnostics)",
+        "title_urdu": "کتاب الفاخر فی الطب (جلد اول) — ابو بکر محمد بن زکریا الرازی",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Head-to-Toe Clinical Signs & Differential Diagnosis",
+        "category": "Classical Canon",
+        "filename": "کتاب الفاخر جلد ۱.pdf",
+        "file_size_mb": 45.79,
+        "is_available_locally": True,
+        "description": "Rhazes' acclaimed handbook of differential diagnosis: Headaches, vertigo, chest pain, palpitations, and abdominal signs."
+    },
+    {
+        "id": "BK-FAKHIR-V2",
+        "title": "Kitab al-Fakhir fi al-Tibb (Volume 2: Visceral Pathology & Therapeutics)",
+        "title_urdu": "کتاب الفاخر فی الطب (جلد دوم) — ابو بکر محمد بن زکریا الرازی",
+        "author": "Abu Bakr Muhammad ibn Zakariyya al-Razi (Rhazes)",
+        "discipline": "Internal Medicine, Visceral Diseases & Posology",
+        "category": "Classical Canon",
+        "filename": "کتاب الفاخر دوم.pdf",
+        "file_size_mb": 87.58,
+        "is_available_locally": True,
+        "description": "Second volume of al-Fakhir detailing targeted therapies for visceral organs, fevers, and acute bedside emergencies."
+    },
+    {
+        "id": "BK-UMUR-TABIYYA-INTRO",
+        "title": "An Introduction to Umur al-Tabi'iyyah (Principles of Human Physiology)",
+        "title_urdu": "تعارف امور طبعیہ",
+        "author": "Classical Faculty & Epistemologists",
+        "discipline": "Kulliyat (Seven Natural Principles of Human Physiology)",
+        "category": "Classical Canon",
+        "filename": "An in troduction to Umur al-Tabiyiyya.pdf",
+        "file_size_mb": 99.16,
+        "is_available_locally": True,
+        "description": "In-depth structural treatise on the seven foundational physical requisites of human physiology: Arkan, Mizaj, Akhlat, Aaza, Arwah, Quwa, and Af'al."
+    },
+    {
+        "id": "BK-UMOOR-TABIYA-KABIRUDDIN",
+        "title": "Umoor-e-Tabi'iyyah (Seven Natural Fundamentals of Human Physiology)",
+        "title_urdu": "امورِ طبعیہ — حکیم محمد کبیر الدین",
+        "author": "Hakim Mohammad Kabiruddin",
+        "discipline": "Unani Physiology, Homeostasis & Biotic Equilibrium",
+        "category": "Classical Canon",
+        "filename": "umoor tabiya.pdf",
+        "file_size_mb": 30.06,
+        "is_available_locally": True,
+        "description": "Standard textbook explaining the 7 natural requisites: Elements (Arkan), Temperament (Mizaj), Humours (Akhlat), Organs (Aaza), Spirits (Arwah), Faculties (Quwa), and Functions (Af'al)."
+    },
+    {
+        "id": "BK-ASBAB-SITTAH",
+        "title": "Tauzeehat-e-Asbab-e-Sittah Zarooriyyah",
+        "title_urdu": "توضیحات اسباب ستہ ضروریہ",
+        "author": "Classical Unani Epistemologists / Faculty of Medicine",
+        "discipline": "Preventive Medicine, Hygiene & Lifestyle Optimization",
+        "category": "Classical Canon",
+        "filename": "tauzeehate asbabe sitta zaroriya.pdf",
+        "file_size_mb": 63.38,
+        "is_available_locally": True,
+        "description": "The Six Essential Requisites of Life: Air & Climate, Food & Drink, Sleep & Wakefulness, Motion & Rest, Retention & Evacuation, and Psychic States."
+    },
+    {
+        "id": "BK-ASRAR-KIMIYA",
+        "title": "Asrar-ul-Kimiya (Secrets of Alchemy & Pharmaceutical Chemistry)",
+        "title_urdu": "اسرار الکیمیا",
+        "author": "Classical Greco-Arab Alchemical Masters",
+        "discipline": "Calcination, Sublimation & Mineral Purification (Kushtajat)",
+        "category": "Classical Canon",
+        "filename": "_اسرار الکیمیا.pdf",
+        "file_size_mb": 38.05,
+        "is_available_locally": True,
+        "description": "Classical pharmaceutical chemistry, distillation, extraction, and mineral transformations."
+    },
+    {
+        "id": "BK-SHIFA-ABDAN-1896",
+        "title": "Shifa al-Abdan fi Hikmat al-Tibb (McGill Rare Arabic Medical Codex 1896)",
+        "title_urdu": "شفاء الابدان فی حکمت الطب — نسخہ مک گل یونیورسٹی 1896ء",
+        "author": "Ibn Sallum al-Halabi (d. 1670 CE)",
+        "discipline": "Greco-Arab Medicine & Early Paracelsian Chemical Therapeutics",
+        "category": "Classical Canon",
+        "filename": "Shifa_al-Abdan_1896_McGill.pdf",
+        "file_size_mb": 84.40,
+        "is_available_locally": True,
+        "description": "Historic medical treatise integrating Galenic humoral medicine with early modern chemical medicine and distillations."
+    },
+    {
+        "id": "BK-UNANI-ARCHIVE-ZIP",
+        "title": "Historical Unani Medical Manuscripts & Rare Treatises Archive",
+        "title_urdu": "تاریخی و نایاب طبی مخطوطات کا جامع آرکائیو",
+        "author": "Classical Medical Guilds & Manuscript Depositories",
+        "discipline": "Historical Codices & Unani Archival Heritage",
+        "category": "Classical Canon",
+        "filename": "Archive.zip",
+        "file_size_mb": 3182.56,
+        "is_available_locally": True,
+        "description": "Monumental 3.18 GB repository containing centuries of scanned classical Greco-Arab manuscripts, marginalia, and historical commentaries."
+    },
+
+    # ── 2. CLINICAL DIAGNOSTICS & INTERNAL MEDICINE ───────────────────────────
+    {
+        "id": "BK-KITAB-TASHKHEES",
+        "title": "Kitab-ul-Tashkhees (Complete Clinical Diagnostics)",
+        "title_urdu": "کتاب التشخیص (مکمل)",
+        "author": "Renowned Unani Diagnostic Epistemologists",
+        "discipline": "Clinical Diagnostics, Pulse (Nabd), Urine (Baul) & Stool (Baraz)",
+        "category": "Clinical Diagnostics",
+        "filename": "KITAB-UL-TASHKHEES (COMPLETE).pdf",
+        "file_size_mb": 98.01,
+        "is_available_locally": True,
+        "description": "Comprehensive manual of clinical diagnostics: 10 Ajnas of pulse, urinary examination (Alamat-e-Bawliyyah), tongue, complexion, and physical semiotics."
+    },
+    {
+        "id": "BK-USOOL-TASHKHEES-ANSARI",
+        "title": "Usool-e-Tashkhees (Principles of Clinical Diagnosis & Semiotics)",
+        "title_urdu": "اصول تشخیص — ڈاکٹر زبیر انصاری",
+        "author": "Dr. Zubair Ansari, MD (Moalajat)",
+        "discipline": "Clinical Diagnosis, Semiology & Physical Examination",
+        "category": "Clinical Diagnostics",
+        "filename": "Usool e tashkhees Dr. Zubair ansari.pdf",
+        "file_size_mb": 34.53,
+        "is_available_locally": True,
+        "description": "Comprehensive textbook on clinical semiotics, pulse analysis (Nabd), inspection of urine and stool, and tongue signs."
+    },
+    {
+        "id": "BK-AKSEER-AZAM",
+        "title": "Akseer-e-Azam (Encyclopedia of Clinical Internal Medicine — 4 Vols in 1)",
+        "title_urdu": "اکسیر اعظم (کتب خانہ طبیب)",
+        "author": "Hakim Muhammad Azam Khan (Nazim-e-Jahan, 1814–1902 CE)",
+        "discipline": "Internal Medicine, Moalajat & Therapeutics",
+        "category": "Clinical Diagnostics",
+        "filename": "اکسیر اعظم (کتب خانہ طبیب).pdf",
+        "file_size_mb": 93.10,
+        "is_available_locally": True,
+        "description": "Monumental 4-volume clinical encyclopedia detailing etiology, symptoms, differential diagnosis, and compound prescriptions for all human diseases."
+    },
+    {
+        "id": "BK-HAZIQ-AJMAL",
+        "title": "Al-Haziq (The Practical Physician's Compendium)",
+        "title_urdu": "حاذق — مسیح الملک حکیم اجمل خان",
+        "author": "Maseeh-ul-Mulk Hakim Muhammad Ajmal Khan (1868–1927 CE)",
+        "discipline": "Practical Clinical Practice & Verified Prescriptions",
+        "category": "Clinical Diagnostics",
+        "filename": "حاذق حکیم اجمل خان.pdf",
+        "file_size_mb": 10.87,
+        "is_available_locally": True,
+        "description": "Hakim Ajmal Khan's clinical handbook summarizing decades of practical hospital experience, differential diagnosis, and high-yield prescriptions."
+    },
+    {
+        "id": "BK-HAZIQ-AJMAL-ALTERNATE",
+        "title": "Al-Haziq (Bedside Clinical Compendium — Alternate Edition)",
+        "title_urdu": "حاذق مسیح الملک حکیم اجمل خان",
+        "author": "Maseeh-ul-Mulk Hakim Muhammad Ajmal Khan",
+        "discipline": "Bedside Clinical Diagnosis & Therapeutic Formulations",
+        "category": "Clinical Diagnostics",
+        "filename": "hajik maseehul mulk hakeem Ajmal khan.pdf",
+        "file_size_mb": 11.27,
+        "is_available_locally": True,
+        "description": "Bedside manual of clinical diagnostics, symptoms, differential signs, and prescriptions by Hakim Ajmal Khan."
+    },
+    {
+        "id": "BK-AMRAZ-ASABIA-NAFSIYAT",
+        "title": "Amraz-e-Asabia wa Nafsiyat (Neuropsychiatry & Neurological Disorders)",
+        "title_urdu": "امراضِ اعصابیہ و نفسیات — حکیم انیس الرحمن صاحب",
+        "author": "Hakim Anisur Rahman",
+        "discipline": "Neuropsychiatry, Cephalic & Psychosomatic Disorders",
+        "category": "Clinical Diagnostics",
+        "filename": "AMRAZ -E-ASABIA-Wa-NAFSIYAT.ANISUR RAHMAN SAHEB.S.R@.pdf",
+        "file_size_mb": 48.64,
+        "is_available_locally": True,
+        "description": "Classical and clinical analysis of nervous system illnesses, melancholia, stroke, paralysis, memory impairment, and neuro-humoral imbalances."
+    },
+    {
+        "id": "BK-MUJARRABAT-ZAKAI",
+        "title": "Mujarrabat-e-Zakai (Empirically Verified Clinical Prescriptions)",
+        "title_urdu": "مجربات ذکائی — حکیم امام الدین",
+        "author": "Hakim Imamuddin",
+        "discipline": "Empirical Clinical Formulations & Cures",
+        "category": "Clinical Diagnostics",
+        "filename": "Mujrebat+zikai+by+Hakeem+Imamuddin.pdf",
+        "file_size_mb": 13.76,
+        "is_available_locally": True,
+        "description": "Time-tested, empirically verified formulations from generations of master physicians."
+    },
+    {
+        "id": "BK-MUJARRABAT-MUBARIKA",
+        "title": "Mujarrabat-e-Mubarika (Clinically Proven Prescriptions)",
+        "title_urdu": "مجرباتِ مبارکہ — آزمودہ اور مستند کلینیکل نسخہ جات",
+        "author": "Hakim Mubarika / Traditional Masters",
+        "discipline": "Empirical Prescriptions & Bedside Clinical Therapeutics",
+        "category": "Clinical Diagnostics",
+        "filename": "Mujarbat-e-Mubarika.pdf",
+        "file_size_mb": 130.84,
+        "is_available_locally": True,
+        "description": "Extensive 130-MB clinical repository of time-tested clinical prescriptions verified across generations of clinical practice."
+    },
+    {
+        "id": "BK-BIOCHEMIC-MUFRAD-AAZA",
+        "title": "Biochemic Medicine & Nazariyya-e-Mufrad Aaza (Single Organ Theory)",
+        "title_urdu": "بایوکیمک اور نظریہ مفرد اعضا",
+        "author": "Hakim Inqilab / Modern Traditional Epistemologists",
+        "discipline": "Tissue Salts, Cellular Biochemistry & Single Organ Pathology",
+        "category": "Clinical Diagnostics",
+        "filename": "بایوکیمک اور نظریہ مفرد اعضا.pdf",
+        "file_size_mb": 69.66,
+        "is_available_locally": True,
+        "description": "Synthesizes Schuessler's 12 biochemic cell salts with Sabir Multani's Nazariyya Mufrad Aaza (Epithelial, Muscular, Nervous tissue dynamics)."
+    },
+    {
+        "id": "BK-MATAB-NUSKHA-NAWISI",
+        "title": "Matab wa Nuskha Nawisi (Clinical Practice & Prescription Writing Guidelines)",
+        "title_urdu": "مطب و نسخہ نویسی — اصول و رہنمائی",
+        "author": "Hakim Syed Zillur Rehman / Master Clinicians",
+        "discipline": "Clinical Practice, Dispensary Protocols & Prescription Formulation",
+        "category": "Clinical Diagnostics",
+        "filename": "مطب و نسخہ نویسی-1.pdf",
+        "file_size_mb": 20.65,
+        "is_available_locally": True,
+        "description": "Clinical bedside handbook outlining patient consultation rules, formula balancing, posology, and prescription structuring."
+    },
+
+    # ── 3. MATERIA MEDICA & SINGLE DRUGS (MUFRADAT) ───────────────────────────
+    {
+        "id": "BK-ISHRAH-ADWIYAH",
+        "title": "Ishrah al-Adwiyah (Kulliyat-e-Adwiyah)",
+        "title_urdu": "اشراح الادویہ (کلیات ادویہ)",
+        "author": "Dr. Abdul Wadud, MD (Ilmul Advia) AMU Aligarh",
+        "discipline": "Kulliyat-e-Adwiyah, Pharmacodynamics & 74 Standardized Actions",
+        "category": "Materia Medica",
+        "filename": "Ashrah al Adwaiya.pdf",
+        "file_size_mb": 9.24,
+        "is_available_locally": True,
+        "description": "Foundational curriculum textbook bridging classical pharmacology with stereochemistry, 9 tastes, 4 degrees, 8 compounding rules, and 74 standardized actions."
+    },
+    {
+        "id": "BK-TAUZIHAT-KULLIYAT-ADWIYA",
+        "title": "Tauzihat Kulliyat-e-Adwiya (Pharmacological Principles & Action Grading)",
+        "title_urdu": "توضیحات کلیات ادویہ — علامہ و اساتذہ علم الادویہ",
+        "author": "Faculty of Ilmul Advia, Aligarh Muslim University",
+        "discipline": "General Principles of Pharmacology, 4 Degrees & 74 Standardized Actions",
+        "category": "Materia Medica",
+        "filename": "tauzihat kulliyat adwiya... (1).pdf",
+        "file_size_mb": 134.95,
+        "is_available_locally": True,
+        "description": "Extensive 135-MB masterwork on pharmacology: Modes of action, primary and secondary drug temperament, and toxicity mitigation."
+    },
+    {
+        "id": "BK-MAKHZAN-MUFRADAT",
+        "title": "Makhzan-ul-Mufradat (Compendium of Materia Medica)",
+        "title_urdu": "مخزن المفردات",
+        "author": "Hakim Muhammad Kabiruddin / Classical Authorities",
+        "discipline": "Materia Medica & Botanical Identification",
+        "category": "Materia Medica",
+        "filename": "makhzanul mufradat.pdf",
+        "file_size_mb": 67.97,
+        "is_available_locally": True,
+        "description": "Exhaustive encyclopedia of single herbs, minerals, and animal substances with botanical names, temperaments, actions, and doses."
+    },
+    {
+        "id": "BK-MAKHZAN-MUFRADAT-V2",
+        "title": "Makhzan al-Mufradat (Volume 2: Comprehensive Materia Medica)",
+        "title_urdu": "مخزن المفردات (جلد دوم)",
+        "author": "Hakim Mohammad Kabiruddin",
+        "discipline": "Materia Medica, Botanical Identification & Actions",
+        "category": "Materia Medica",
+        "filename": "makhzanul mufradat 2.pdf",
+        "file_size_mb": 67.97,
+        "is_available_locally": True,
+        "description": "Second volume of Kabiruddin's master encyclopedia of single drugs with detailed temperament gradings and actions."
+    },
+    {
+        "id": "BK-MAKHZAN-MUFRADAT-PLUS",
+        "title": "Makhzan al-Mufradat (Enhanced Edition)",
+        "title_urdu": "مخزن المفردات (نسخہ جدید)",
+        "author": "Hakim Mohammad Kabiruddin",
+        "discipline": "Materia Medica & Botanical Taxonomy",
+        "category": "Materia Medica",
+        "filename": "مخزن+المفردات+.pdf",
+        "file_size_mb": 67.22,
+        "is_available_locally": True,
+        "description": "Enhanced single drug encyclopedia with botanical synonyms, regional names across India, therapeutic actions, and substitutes."
+    },
+    {
+        "id": "BK-MAKHZAN-KHAWAS-TABIB",
+        "title": "Makhzan al-Mufradat Khawas al-Adwiyah (Kutub Khana Tabib Edition)",
+        "title_urdu": "مخزن المفردات خواص الادویہ (کتب خانہ طبیب)",
+        "author": "Hakim Mohammad Kabiruddin",
+        "discipline": "Pharmacodynamics, Correctives (Muslehat) & Substitutes (Badal)",
+        "category": "Materia Medica",
+        "filename": "مخزن+المفردات+خواص+الادویہ+کتب+خانہ+طبیب.pdf",
+        "file_size_mb": 67.97,
+        "is_available_locally": True,
+        "description": "Authoritative Kutub Khana Tabib printing detailing specific pharmacological properties, organotropism, and toxicity mitigation."
+    },
+    {
+        "id": "BK-MAKHZAN-MUFRADAT-MURAKKABAT",
+        "title": "Makhzan-e-Mufradat wa Murakkabat",
+        "title_urdu": "مخزن مفردات و مرکبات",
+        "author": "Master Unani Pharmacologists",
+        "discipline": "Single & Compound Medicaments",
+        "category": "Materia Medica",
+        "filename": "مخزن مفردات و مرکبات.pdf",
+        "file_size_mb": 30.32,
+        "is_available_locally": True,
+        "description": "Unified compendium describing single drugs alongside their corresponding standard compound recipes."
+    },
+    {
+        "id": "BK-MUFRADAT-AZIZI",
+        "title": "Mufradat-e-Azizi",
+        "title_urdu": "مفردات عزیزی",
+        "author": "Hakim Azizur Rehman",
+        "discipline": "Materia Medica, Temperament & Therapeutic Usages",
+        "category": "Materia Medica",
+        "filename": "Mufradat-e-Azizi.pdf",
+        "file_size_mb": 21.96,
+        "is_available_locally": True,
+        "description": "Renowned practical materia medica summarizing single drugs used widely across the Indian subcontinent."
+    },
+    {
+        "id": "BK-KHAWAS-ADWIYAH",
+        "title": "Khawas al-Adwiyah (Kitab al-Mufradat)",
+        "title_urdu": "خواص الادویہ المعروف کتاب المفردات — حکیم مظفر حسین",
+        "author": "Hakim Muzaffar Hussain",
+        "discipline": "Pharmacodynamics, Actions & Adverse Effect Correction (Muslehat)",
+        "category": "Materia Medica",
+        "filename": "کتاب_المفردات_المعروف_خواص_الادویہ_حکیم_مظفر_حسین.pdf",
+        "file_size_mb": 33.55,
+        "is_available_locally": True,
+        "description": "Detailed pharmacological actions, specific indications, correctives (Musleh), and substitutes (Badal) for single drugs."
+    },
+    {
+        "id": "BK-MUFRADAT-ALL-DRUGS",
+        "title": "Mufradat: Comprehensive Single Drugs Master Compendium",
+        "title_urdu": "مفردات ادویہ کا جامع انسائیکلوپیڈیا",
+        "author": "Board of Unani Pharmacologists & Botanists",
+        "discipline": "Single Medicaments, Botanical Identification & Phytochemistry",
+        "category": "Materia Medica",
+        "filename": "Mufradat All Drugs.pdf",
+        "file_size_mb": 73.85,
+        "is_available_locally": True,
+        "description": "Master reference cataloging medicinal plants, mineral drugs, animal substances, their degrees of temperament, and clinical uses."
+    },
+
+    # ── 4. STANDARD FORMULARIES & COMPOUNDING (QARABADIN) ─────────────────────
+    {
+        "id": "BK-QARABADIN-HAMDARD-FULL",
+        "title": "Qarabadin-e-Hamdard (Complete Master Edition)",
+        "title_urdu": "قرابادین ہمدرد (مکمل ایڈیشن)",
+        "author": "Hamdard Laboratories / Board of Physicians",
+        "discipline": "Comprehensive Standard Manufacturing Formulary",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Qarabadeen Hamdard Complete .pdf",
+        "file_size_mb": 93.61,
+        "is_available_locally": True,
+        "description": "The most widely used commercial and clinical Unani formulary, containing hundreds of standardized recipes across all pharmaceutical forms."
+    },
+    {
+        "id": "BK-QARABADIN-HAMDARD-KAMIL",
+        "title": "Qarabadin-e-Hamdard Kamil",
+        "title_urdu": "قرابادین ہمدرد کامل",
+        "author": "Hamdard Laboratories",
+        "discipline": "Standard Dispensary Compounding Formulas",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Qarabdeen hamdard kamil.pdf",
+        "file_size_mb": 12.07,
+        "is_available_locally": True,
+        "description": "Dispensary-ready edition of the Hamdard pharmacopoeia with clinical indications and posology."
+    },
+    {
+        "id": "BK-QARABADIN-AZAM",
+        "title": "Qarabadin-e-Azam (Urdu Translation & Commentary)",
+        "title_urdu": "قرابادین اعظم اردو",
+        "author": "Hakim Muhammad Azam Khan (Nazim-e-Jahan)",
+        "discipline": "Grand Indo-Persian Classical Formulary",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "قرابادین اعظم اردو.pdf",
+        "file_size_mb": 19.43,
+        "is_available_locally": True,
+        "description": "The supreme classical compound formulary of the 19th century, with historical references, variants, and clinical applications."
+    },
+    {
+        "id": "BK-BAYAZ-KABIR-2",
+        "title": "Bayaz-e-Kabir (Part 2: Standard Unani Formulations)",
+        "title_urdu": "بیاض کبیر (حصہ دوم) — حکیم محمد کبیر الدین",
+        "author": "Hakim Mohammad Kabiruddin",
+        "discipline": "Standard Institutional Formulary & Pharmacy SOPs",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "BAYAZ-E-KABIR PART-2.pdf",
+        "file_size_mb": 8.67,
+        "is_available_locally": True,
+        "description": "The primary curriculum and manufacturing textbook for compound medicine compounding in Unani colleges."
+    },
+    {
+        "id": "BK-BAYAZ-AJMAL",
+        "title": "Bayaz-e-Ajmal (Formulary of Hakim Ajmal Khan)",
+        "title_urdu": "بیاض اجمل — مسیح الملک حکیم اجمل خان",
+        "author": "Maseeh-ul-Mulk Hakim Ajmal Khan",
+        "discipline": "Specialized Clinical Formulations & Proprietary Recipes",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Bayaz+e+Ajmal+by+Hakeem+Ajmal(1).pdf",
+        "file_size_mb": 29.32,
+        "is_available_locally": True,
+        "description": "The personal clinical formulary of Hakim Ajmal Khan, containing his famed proprietary and hospital-tested recipes."
+    },
+    {
+        "id": "BK-QARABADIN-MAJIDI",
+        "title": "Qarabadin-e-Majidi",
+        "title_urdu": "قرابادین مجیدی",
+        "author": "Dawakhana Majidia / Jamia Hamdard",
+        "discipline": "Historical Standard Compound Formulary",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Qarabadeen Majidi.pdf",
+        "file_size_mb": 7.62,
+        "is_available_locally": True,
+        "description": "Classical formulations standardized by Dawakhana Majidia in Delhi."
+    },
+    {
+        "id": "BK-QARABADIN-QADERI",
+        "title": "Qarabadin-e-Qaderi",
+        "title_urdu": "قرابادین قادری",
+        "author": "Hakim Muhammad Akbar Arzani",
+        "discipline": "Classical Persian Pharmacopoeia",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Qarabadeen E Qaderi.pdf",
+        "file_size_mb": 24.74,
+        "is_available_locally": True,
+        "description": "Celebrated 18th-century pharmacopoeia codifying classical electuaries, syrups, and tablets with clinical commentary."
+    },
+    {
+        "id": "BK-QARABADIN-SARKARI",
+        "title": "Qarabadin-e-Sarkari (Official Government Formulary)",
+        "title_urdu": "قرابادین سرکاری",
+        "author": "Government Unani Dispensary Board",
+        "discipline": "Statutory Dispensary Formulations",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Qarabadeen e Sarkari.pdf",
+        "file_size_mb": 22.16,
+        "is_available_locally": True,
+        "description": "Standard formulations approved for government Unani hospitals and dispensaries across India."
+    },
+    {
+        "id": "BK-MURAKKABAT-ZILLUR-REHMAN",
+        "title": "Kitab al-Murakkabat",
+        "title_urdu": "کتاب المرکبات — حکیم سید ظل الرحمن",
+        "author": "Hakim Syed Zillur Rehman (President, Ibn Sina Academy, Aligarh)",
+        "discipline": "Academic Formulation Analysis & History",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Murakabbat - Hakeem Syed Zillur Rehman.pdf",
+        "file_size_mb": 25.40,
+        "is_available_locally": True,
+        "description": "Scholarly and academic analysis of Unani compound formulations and their historical evolution."
+    },
+    {
+        "id": "BK-MURAKKABAT-ZILLUR-DU",
+        "title": "Kitab al-Murakkabat (Delhi University Archival Scan)",
+        "title_urdu": "کتاب المرکبات — حکیم سید ظل الرحمن (دہلی یونیورسٹی اسکین)",
+        "author": "Hakim Syed Zillur Rehman",
+        "discipline": "Academic Compound Pharmacology & Archival Formularies",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Kitaab ul Murakkabat - Hk. Syed Zillur Rehman scan by DU.pdf",
+        "file_size_mb": 25.40,
+        "is_available_locally": True,
+        "description": "Scholarly critical edition and historical evaluation of compound pharmacy, recipes, and manufacturing methods."
+    },
+    {
+        "id": "BK-MURAKKABAT-HIFZUL-KABIR",
+        "title": "Morakkabat (Unani Formulations)",
+        "title_urdu": "مرکبات — ڈاکٹر حفظ الکبیر",
+        "author": "Dr. Hifzul Kabir, MD (Ilmul Advia) AMU Aligarh",
+        "discipline": "Modern BUMS & MD Curriculum Formulations",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Murakkabat (Unani Formulation).pdf",
+        "file_size_mb": 0.39,
+        "is_available_locally": True,
+        "description": "Standardized academic textbook on compound formulations used at Aligarh Muslim University."
+    },
+    {
+        "id": "BK-MURAKKABAT-UNANI-FORMULATION",
+        "title": "Murakkabat: Essential Unani Formulations Guide",
+        "title_urdu": "مرکبات (یونانی فارمولیشنز گائیڈ)",
+        "author": "Academic Council of Unani Medicine",
+        "discipline": "Compounding Recipes & Dispensing Protocols",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "murakkabat_(unani_formulation).pdf",
+        "file_size_mb": 0.39,
+        "is_available_locally": True,
+        "description": "Concise formulation compendium of core compound medicines with dosage and clinical indications."
+    },
+    {
+        "id": "BK-MURAKKABAT-AZMI",
+        "title": "Murakkabat Advia (Complete BUMS Syllabus & Manufacturing)",
+        "title_urdu": "مرکبات ادویہ — حکیم وسیم احمد اعظمی (مکمل نصاب بی یو ایم ایس)",
+        "author": "Hakim Waseem Ahmad Azmi",
+        "discipline": "BUMS & MD Compounding Curriculum & Pharmacy Science",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Murakkabat_Advia_By_Hakeem_Waseem_Ahmad_Azmi_Complete_BUMS_Syllabus.pdf",
+        "file_size_mb": 55.06,
+        "is_available_locally": True,
+        "description": "Standard textbook covering all 18 classical pharmaceutical forms (Khamira, Majoon, Itrifal, Jawarish, Sharbat, Kushta) and preparation steps."
+    },
+    {
+        "id": "BK-MURAKKABAT-GHULAM-JEELANI",
+        "title": "Kitab al-Murakkabat (Makhzan-ul-Murakkabat)",
+        "title_urdu": "کتاب المرکبات — حکیم غلام جیلانی",
+        "author": "Hakim Ghulam Jeelani",
+        "discipline": "Comprehensive Compound Therapeutics & Manufacturing",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "کتاب المرکبات حکیم غلام جیلانی.pdf",
+        "file_size_mb": 68.61,
+        "is_available_locally": True,
+        "description": "Exhaustive practical compendium of compound medicines with precise weights, processing, and clinical indications."
+    },
+    {
+        "id": "BK-MURAKKABAT-MUZAFFAR-HUSSAIN",
+        "title": "Kitab al-Murakkabat",
+        "title_urdu": "کتاب المرکبات — حکیم مظفر حسین",
+        "author": "Hakim Muzaffar Hussain",
+        "discipline": "Complete 368-MB Magnum Opus on Formulations",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "کتاب المرکبات حکیم مظفر حسین.pdf",
+        "file_size_mb": 368.03,
+        "is_available_locally": True,
+        "description": "One of the most exhaustive formulation compendiums in Urdu literature, covering thousands of compound preparations."
+    },
+    {
+        "id": "BK-SAIDLA-MAKRANI",
+        "title": "Ilmul Saidla (Pharmacy, Compounding & Manufacturing Science)",
+        "title_urdu": "علم الصیدلہ — حکیم ساجد مکرانی",
+        "author": "Hakim Sajid Makrani",
+        "discipline": "Unani Pharmacy, Drug Extraction & Quality Control",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "Saidla Makraani Saajid.pdf",
+        "file_size_mb": 65.65,
+        "is_available_locally": True,
+        "description": "Comprehensive textbook of Unani pharmacy, drug processing (Tadbeer), compounding, apparatus, and industrial manufacturing."
+    },
+    {
+        "id": "BK-COSMETOLOGY-UNANI",
+        "title": "Textbook of Cosmetology in Unani Medicine",
+        "title_urdu": "علم تزئین و جمالیات در طب یونانی (کاسمیٹولوجی)",
+        "author": "Academic Unani Dermatological & Aesthetic Faculty",
+        "discipline": "Aesthetic Medicine, Dermatology & Botanical Formulations (Zeenah)",
+        "category": "Pharmacopoeia & Formulary",
+        "filename": "TextbookofCosmetologyinUnaniMedicineRG-2-25.pdf",
+        "file_size_mb": 1.73,
+        "is_available_locally": True,
+        "description": "Standard textbook on Ilm-e-Zeenah: Botanical formulations for alopecia, melasma, acne, hair growth, and skin glow."
+    },
+
+    # ── 5. MODERN BIOMEDICAL CLINICAL REFERENCES ──────────────────────────────
+    {
+        "id": "BK-HARRISON-21ST",
+        "title": "Harrison's Principles of Internal Medicine (21st Edition — Latest Master)",
+        "title_urdu": "ہیرسن پرنسپلز آف انٹرنل میڈیسن (اکیسواں جدید ایڈیشن)",
+        "author": "Loscalzo, Fauci, Kasper, Hauser, Longo, Jameson (McGraw-Hill)",
+        "discipline": "Cutting-Edge Internal Medicine, Genomics & Pathophysiology",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Harrison’s Principles of Internal 21stEd (1).pdf",
+        "file_size_mb": 286.08,
+        "is_available_locally": True,
+        "description": "The latest authoritative global benchmark for clinical diagnostics, molecular pathogenesis, precision medicine, and therapeutics."
+    },
+    {
+        "id": "BK-HARRISON-PRINCIPLES",
+        "title": "Harrison's Principles of Internal Medicine (19th Edition)",
+        "title_urdu": "ہیرسن پرنسپلز آف انٹرنل میڈیسن (انیسواں ایڈیشن)",
+        "author": "Kasper, Fauci, Hauser, Longo, Jameson, Loscalzo (McGraw-Hill)",
+        "discipline": "Gold Standard Modern Internal Medicine & Pathophysiology",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Harrison_Principles_of_Internal_Medicine_19th_Edition_pdf.pdf",
+        "file_size_mb": 127.77,
+        "is_available_locally": True,
+        "description": "The global gold-standard textbook of internal medicine for clinical pathophysiology and evidence-based diagnosis."
+    },
+    {
+        "id": "BK-HARRISON-MANUAL",
+        "title": "Harrison's Manual of Medicine (20th Edition)",
+        "title_urdu": "ہیرسن مینوئل آف میڈیسن (بیسواں ایڈیشن)",
+        "author": "Jameson, Fauci, Kasper, Hauser, Longo, Loscalzo",
+        "discipline": "Bedside Clinical Protocols & Emergency Diagnostics",
+        "category": "Modern Biomedical Medicine",
+        "filename": "HARRISON'S_Manual_of_Medicine_20th_Ed.pdf",
+        "file_size_mb": 35.43,
+        "is_available_locally": True,
+        "description": "Quick-reference clinical handbook for bedside management, drug dosing, and laboratory interpretations."
+    },
+    {
+        "id": "BK-DAVIDSON-23RD",
+        "title": "Davidson's Principles and Practice of Medicine (23rd Edition)",
+        "title_urdu": "ڈیوڈسن پرنسپلز اینڈ پریکٹس آف میڈیسن (تئیسواں ایڈیشن)",
+        "author": "Stuart H. Ralston, Ian D. Penman, Mark W.J. Strachan, Richard Hobson",
+        "discipline": "Comprehensive Internal Medicine & Clinical Therapeutics",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Davidson's_Principles_and_Practice_of_Medicine_23rd_.pdf",
+        "file_size_mb": 129.63,
+        "is_available_locally": True,
+        "description": "Definitive clinical reference text for internal medicine, diagnostic flowcharts, clinical pharmacology, and evidence-based therapeutics."
+    },
+    {
+        "id": "BK-DAVIDSON-ESSENTIALS",
+        "title": "Davidson's Essentials of Medicine (2nd Edition)",
+        "title_urdu": "ڈیوڈسن ایسینشلز آف میڈیسن (دوسرا ایڈیشن)",
+        "author": "Innes, Dover, Fairhurst (Elsevier)",
+        "discipline": "Core Clinical Medicine, Systems & Therapeutics",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Davidsons Essentials of Medicine, 2e.pdf",
+        "file_size_mb": 11.26,
+        "is_available_locally": True,
+        "description": "High-yield international textbook covering core clinical medicine, systemic pathophysiology, and disease management."
+    },
+    {
+        "id": "BK-ROBBINS-PATH-10",
+        "title": "Robbins Basic Pathology (10th Edition)",
+        "title_urdu": "رابنز بیسک پیتھالوجی (دسواں ایڈیشن)",
+        "author": "Vinay Kumar, Abul K. Abbas, Jon C. Aster (Elsevier)",
+        "discipline": "General & Systemic Pathology, Cellular Injury & Hemodynamics",
+        "category": "Modern Biomedical Medicine",
+        "filename": "2.1. Robbins Basic Pathology ( 10th Edition ).pdf",
+        "file_size_mb": 486.18,
+        "is_available_locally": True,
+        "description": "Global benchmark pathology reference covering cellular mechanisms, inflammatory cascades, genetic disorders, neoplasia, and organ pathology."
+    },
+    {
+        "id": "BK-BAILEY-LOVE-SURGERY-27",
+        "title": "Bailey & Love's Short Practice of Surgery (27th Edition)",
+        "title_urdu": "بیلی اینڈ لوز پریکٹس آف سرجری (ستائیسواں ایڈیشن)",
+        "author": "Norman S. Williams, P. Ronan O'Connell, Andrew W. McCaskie (CRC Press)",
+        "discipline": "General & Operative Surgery, Trauma & Surgical Oncology",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Bailey & Love's Prectice of Surgery 27th .pdf",
+        "file_size_mb": 93.69,
+        "is_available_locally": True,
+        "description": "World-renowned surgical masterwork detailing operative procedures, wound management, acute abdomen, trauma, and surgical intensive care."
+    },
+    {
+        "id": "BK-HUTCHISON-CLINICAL",
+        "title": "Hutchison's Clinical Methods (23rd Edition)",
+        "title_urdu": "ہچیسنز کلینیکل میتھڈز (تئیسواں ایڈیشن)",
+        "author": "Michael Glynn, William M. Drake (Saunders / Elsevier)",
+        "discipline": "Clinical Examination, Bedside Physical Diagnosis & History Taking",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Hutchison's Clinical Methods 23rdEd.pdf",
+        "file_size_mb": 76.85,
+        "is_available_locally": True,
+        "description": "The definitive clinical skills guide: Systematic physical examination, percussion, auscultation, cranial nerve checks, and bedside semiotics."
+    },
+    {
+        "id": "BK-DERMATOLOGY-MAHAJAN",
+        "title": "Dermatology Clinical Review (Mahajan Prep)",
+        "title_urdu": "ڈرماٹولوجی کلینیکل ریویو — ڈاکٹر مہاجن",
+        "author": "Dr. Mahajan",
+        "discipline": "Clinical Dermatology & Cutaneous Pathology",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Dermatology RR6 Mahajan Prep.pdf",
+        "file_size_mb": 99.03,
+        "is_available_locally": True,
+        "description": "Modern clinical review of skin conditions, immunobullous diseases, psoriasis, eczema, and cutaneous diagnostics."
+    },
+    {
+        "id": "BK-BTR-ZV-PART1",
+        "title": "Integrated Medicine Clinical Compendium (Part 1 — Dr. Zainab Vohra BTR)",
+        "title_urdu": "جامع کلینیکل میڈیسن (حصہ اول — ڈاکٹر زینب ووہرا)",
+        "author": "Dr. Zainab Vohra (Cerebellum Academy / BTR)",
+        "discipline": "High-Yield Integrative Clinical Medicine & Rapid Diagnostic Reviews",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Integrated medicine part 1 Bonus BTR ZV=zainab vohra.zip",
+        "file_size_mb": 846.89,
+        "is_available_locally": True,
+        "description": "Systemic clinical medicine integration atlas covering cardiology, neurology, nephrology, endocrinology, and diagnostic algorithms."
+    },
+    {
+        "id": "BK-BTR-ZV-PART2",
+        "title": "Integrated Medicine Clinical Compendium (Part 2 — Dr. Zainab Vohra BTR)",
+        "title_urdu": "جامع کلینیکل میڈیسن (حصہ دوم — ڈاکٹر زینب ووہرا)",
+        "author": "Dr. Zainab Vohra (Cerebellum Academy / BTR)",
+        "discipline": "High-Yield Integrative Clinical Medicine & Rapid Diagnostic Reviews",
+        "category": "Modern Biomedical Medicine",
+        "filename": "Integrated Medicine part 2 Bonus BTR ZV .zip",
+        "file_size_mb": 836.35,
+        "is_available_locally": True,
+        "description": "High-yield clinical integration atlas covering systemic diagnostics, pharmacology, emergency management, and rapid visual mnemonics."
+    },
+
+    # ── 6. REGIMENAL THERAPY & SURGERY ────────────────────────────────────────
+    {
+        "id": "BK-JARAHAT-ZAHRAWI",
+        "title": "Kitab al-Tasrif: Al-Jarahat al-Zahrawiyyah (Classical Operative Surgery)",
+        "title_urdu": "جراحیات زھراوی — ابو القاسم خلف بن عباس الزہراوی",
+        "author": "Abu al-Qasim al-Zahrawi (Albucasis, 936–1013 CE)",
+        "discipline": "Operative Surgery, Cautery, Lithotomy & 200 Illustrated Instruments",
+        "category": "Regimenal Therapy & Surgery",
+        "filename": "جراحیات زھراوی.pdf",
+        "file_size_mb": 27.26,
+        "is_available_locally": True,
+        "description": "The immortal 30th treatise of Kitab al-Tasrif, the foundation of modern surgery with illustrations of over 200 surgical instruments, sutures, and techniques."
+    },
+    {
+        "id": "BK-UMDAH-JARAHAT-V1",
+        "title": "Kitab al-Umdah fi al-Jarahah (Volume 1: Surgical Principles & Anatomy)",
+        "title_urdu": "کتاب العمدہ فی الجراحۃ (جلد اول) — ابن القف کرکی",
+        "author": "Amin al-Dawlah Abu al-Faraj Ibn al-Quff al-Karaki (1233–1286 CE)",
+        "discipline": "Classical Operative Surgery, Surgical Anatomy & Hemostasis",
+        "category": "Regimenal Therapy & Surgery",
+        "filename": "کتاب العمدہ فی الجراحۃ جلد ۱.pdf",
+        "file_size_mb": 94.79,
+        "is_available_locally": True,
+        "description": "Masterwork of medieval surgery by Ibn al-Quff covering surgical anatomy, hemostatic techniques, ligation, and wound debridement."
+    },
+    {
+        "id": "BK-UMDAH-JARAHAT-V2",
+        "title": "Kitab al-Umdah fi al-Jarahah (Volume 2: Operative Surgery, Fractures & Tumors)",
+        "title_urdu": "کتاب العمدہ فی الجراحۃ (جلد دوم) — ابن القف کرکی",
+        "author": "Amin al-Dawlah Abu al-Faraj Ibn al-Quff al-Karaki",
+        "discipline": "Operative Surgery, Orthopedics, Fractures & Oncology",
+        "category": "Regimenal Therapy & Surgery",
+        "filename": "کتاب العمدہ فی الجراحۃ جلد ۲.pdf",
+        "file_size_mb": 97.66,
+        "is_available_locally": True,
+        "description": "Second volume of Ibn al-Quff's surgical encyclopedia detailing bone setting, splinting, dislocations, excision of tumors, and cautery."
+    },
+    {
+        "id": "BK-ILAJ-BIL-TADBEER",
+        "title": "Ilaj-bil-Tadbeer (Regimenal Therapy & Clinical Procedures)",
+        "title_urdu": "علاج بالتدبیر — طبی و عملی طریقہ ہائے علاج",
+        "author": "Prof. Hakim Syed Zillur Rehman / CCRUM",
+        "discipline": "Regimenal Therapy (Hijamah, Fasd, Dalk, Hammam, Riyazat)",
+        "category": "Regimenal Therapy & Surgery",
+        "filename": "Ilaj bil tadbeer.pdf",
+        "file_size_mb": 140.27,
+        "is_available_locally": True,
+        "description": "Comprehensive treatise on non-pharmacological interventions: Cupping (Hijamah), Venesection (Fasd), Massage (Dalk), Hydrotherapy (Hammam), and Exercise."
+    },
+    {
+        "id": "BK-TAHAFFUZI-SAMAJI-TIBB",
+        "title": "Tahaffuzi wa Samaji Tibb (Preventive, Community & Social Medicine)",
+        "title_urdu": "تحفظی و سماجی طب",
+        "author": "CCIM / Ministry of AYUSH Faculty Board",
+        "discipline": "Preventive Medicine, Public Health & Asbab-e-Sittah Zarooriyyah",
+        "category": "Regimenal Therapy & Surgery",
+        "filename": "تحفّظی و سماجی طیب1.pdf",
+        "file_size_mb": 44.48,
+        "is_available_locally": True,
+        "description": "Standard textbook on hygiene (Hifzan-e-Sehat), epidemiology, infectious disease containment, water sanitation, and lifestyle regimens."
+    },
+
+    # ── 7. PHARMACOPOEIAS & STATUTORY STANDARDS ──────────────────────────────
+    {
+        "id": "BK-WHO-TERMINOLOGIES",
+        "title": "WHO International Standard Terminologies on Unani Medicine (Geneva Master)",
+        "title_urdu": "عالمی ادارہ صحت (ڈبلیو ایچ او) کے بین الاقوامی معیاری یونانی اصطلاحات",
+        "author": "World Health Organization (WHO Geneva / Traditional Medicine Unit)",
+        "discipline": "Global Standardized Medical Nomenclature (1,593 Standardized Terms)",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "WHO international standard terminologies on unani medicine.pdf",
+        "file_size_mb": 4.03,
+        "is_available_locally": True,
+        "description": "Official WHO publication standardizing 1,593 Unani medical terms, concepts, diagnoses, and procedures for global clinical practice and ICD-11."
+    },
+    {
+        "id": "BK-STANDARD-TERMINOLOGY",
+        "title": "Standard Unani Medical Terminology (1,430 Standardized UMA Terms)",
+        "title_urdu": "معیاری یونانی طبی اصطلاحات (1430 اصطلاحات)",
+        "author": "Central Council for Research in Unani Medicine (CCRUM), Ministry of AYUSH",
+        "discipline": "Standardized Nomenclature, ICD-11 Alignment & Translation",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "Standard Unani Medical Terminology_1430.pdf",
+        "file_size_mb": 4.84,
+        "is_available_locally": True,
+        "description": "Official statutory dictionary standardizing 1,430 Unani medical and anatomical terms with English definitions and transliterations."
+    },
+    {
+        "id": "BK-UPI-P2-V4",
+        "title": "The Unani Pharmacopoeia of India (Part-II, Vol-IV — 50 Formulations)",
+        "title_urdu": "دستور الادویہ ہند یونانی (حصہ دوم، جلد چہارم)",
+        "author": "PCIM&H, Ministry of AYUSH, Govt of India",
+        "discipline": "Statutory Pharmacopoeial Monographs, TLC & Quality SOPs",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "Monograph of 50 Compound Formulations_1745.pdf",
+        "file_size_mb": 4.15,
+        "is_available_locally": True,
+        "description": "Statutory standards for 50 compound formulations, Appendix 6 (Tadbir SOPs), and Appendix 7 (Classical Weights)."
+    },
+    {
+        "id": "BK-NFUM-P1",
+        "title": "National Formulary of Unani Medicine (Part-I)",
+        "title_urdu": "قومی دستور الادویہ یونانی (حصہ اول)",
+        "author": "Ministry of Health and Family Welfare / AYUSH, Govt of India",
+        "discipline": "Official National Unani Formulary & Statutory Compounding Standards",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "National Formulary of Unani Medicine Part-I.pdf",
+        "file_size_mb": 106.94,
+        "is_available_locally": True,
+        "description": "Foundational national formulary detailing official recipes for 441 classical compound preparations with clinical actions."
+    },
+    {
+        "id": "BK-NFUM-P4",
+        "title": "National Formulary of Unani Medicine (Part-IV)",
+        "title_urdu": "قومی دستور الادویہ یونانی (حصہ چہارم)",
+        "author": "Dept of AYUSH, Ministry of Health and Family Welfare, Govt of India",
+        "discipline": "Official Government Formulary & Quality Monographs",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "National Formulary of Unani Medicine 4.pdf",
+        "file_size_mb": 30.79,
+        "is_available_locally": True,
+        "description": "Statutory government standards for compound formulations, ingredients, manufacturing steps, and dosage regulations."
+    },
+    {
+        "id": "BK-ESSENTIAL-UNANI-MEDICINES",
+        "title": "Essential Unani Medicines List (Statutory Government Formulary)",
+        "title_urdu": "فہرست ضروری ادویہ یونانی (قومی و حکومتی نسخہ جات)",
+        "author": "Ministry of AYUSH, Government of India",
+        "discipline": "Statutory Essential Drug List & Clinical Formularies",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "Essential_Unani_Medicines List_240325_145816.pdf",
+        "file_size_mb": 9.09,
+        "is_available_locally": True,
+        "description": "Official national list of essential Unani medicines mandated for hospitals, community dispensaries, and public healthcare centers."
+    },
+    {
+        "id": "BK-UNANI-CATALOGUE-FINAL",
+        "title": "Master Catalogue of Classical Unani Medical Manuscripts & Books",
+        "title_urdu": "فہرست کتب و مخطوطاتِ طب یونانی",
+        "author": "National Institute of Unani Medicine / CCRUM",
+        "discipline": "Bibliographical Index & Archival Manuscripts Catalogue",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "Unani Books Catalogue Final.pdf",
+        "file_size_mb": 44.83,
+        "is_available_locally": True,
+        "description": "Comprehensive statutory catalogue of classical Unani manuscripts, treatises, and published works preserved in libraries worldwide."
+    },
+    {
+        "id": "BK-IRANIAN-METAPHYSICALS",
+        "title": "The Iranian Metaphysicals: Explorations in Science and Islam",
+        "title_urdu": "ایرانی مابعد الطبیعیات اور سائنسی فلسفہ",
+        "author": "Alireza Doostdar (Princeton University Press)",
+        "discipline": "Medical Anthropology, Epistemology & Traditional Healing",
+        "category": "Pharmacopoeias & Statutory Standards",
+        "filename": "The_Iranian_Metaphysicals_Explorations_in_Science,_Islam,_Alireza.pdf",
+        "file_size_mb": 6.49,
+        "is_available_locally": True,
+        "description": "Academic analysis of spiritual, metaphysical, and scientific traditions in Islamic and Persian healing systems."
+    }
+]
+
+
+# =============================================================================
+# PUBLIC CORPUS QUERY APIS
+# =============================================================================
+
+def get_all_medical_books_in_corpus() -> List[Dict[str, Any]]:
+    """Returns the full list of 97 medical books with file availability status."""
+    books = []
+    for b in GRAND_MEDICAL_BOOKS_CORPUS:
+        record = dict(b)
+        full_path = os.path.join(LOCAL_LIBRARY_PATH, b["filename"])
+        record["full_local_path"] = full_path
+        record["file_exists_on_disk"] = os.path.exists(full_path)
+        books.append(record)
+    return books
+
+def get_book_by_id(book_id: str) -> Optional[Dict[str, Any]]:
+    """Finds a specific book by its corpus ID."""
+    bid = book_id.strip().upper()
+    for b in GRAND_MEDICAL_BOOKS_CORPUS:
+        if b["id"].upper() == bid:
+            rec = dict(b)
+            rec["full_local_path"] = os.path.join(LOCAL_LIBRARY_PATH, b["filename"])
+            rec["file_exists_on_disk"] = os.path.exists(rec["full_local_path"])
+            return rec
+    return None
+
+def search_corpus(query: str, category: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Searches across titles, authors, and disciplines."""
+    q = query.strip().lower()
+    cat = (category or "").strip().lower()
+    results = []
+    for b in GRAND_MEDICAL_BOOKS_CORPUS:
+        if cat and cat not in b["category"].lower():
+            continue
+        text = f"{b['id']} {b['title']} {b['title_urdu']} {b['author']} {b['discipline']} {b['description']}".lower()
+        if not q or q in text:
+            rec = dict(b)
+            rec["full_local_path"] = os.path.join(LOCAL_LIBRARY_PATH, b["filename"])
+            rec["file_exists_on_disk"] = os.path.exists(rec["full_local_path"])
+            results.append(rec)
+    return results
+
+def get_corpus_categories_summary() -> Dict[str, Any]:
+    """Returns counts and summary breakdown by clinical discipline."""
+    all_books = get_all_medical_books_in_corpus()
+    categories: Dict[str, int] = {}
+    total_size_mb = 0.0
+    for b in all_books:
+        c = b["category"]
+        categories[c] = categories.get(c, 0) + 1
+        total_size_mb += b.get("file_size_mb", 0.0)
+    return {
+        "total_books": len(all_books),
+        "total_size_mb": round(total_size_mb, 2),
+        "total_size_gb": round(total_size_mb / 1024, 2),
+        "categories_breakdown": categories,
+        "library_local_path": LOCAL_LIBRARY_PATH
+    }
+'''
+
+with open("services/knowledge/app/data/grand_medical_books_corpus.py", "w", encoding="utf-8") as f:
+    f.write(CORPUS_CODE)
+
+print("grand_medical_books_corpus.py written successfully.")

@@ -95,6 +95,19 @@ def run_tests():
     print("=" * 76)
 
     client = DirectTestClient()
+    # Ensure inventory has initial test lot stock
+    try:
+        import sqlite3, os
+        _db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "zayvora_live.db")
+        _conn = sqlite3.connect(_db_path)
+        _c = _conn.cursor()
+        _c.execute("UPDATE inventory SET stock_qty = 45 WHERE batch_number = 'MS-2026-LOT5'")
+        _c.execute("UPDATE inventory SET stock_qty = 401 WHERE batch_number = 'MS-2026-LOT4'")
+        _conn.commit()
+        _conn.close()
+    except Exception:
+        pass
+
     passed = 0
     failed = 0
 
@@ -260,7 +273,15 @@ def run_tests():
     # ------------------------------------------------------------------------
     # Test 10: Atomic Prescription Dispensation & Invoice Settlement
     # ------------------------------------------------------------------------
-    # Author a fresh prescription to ensure complete repeatability
+    # Author a fresh prescription to ensure complete repeatability (reset prior ephemeral test rows)
+    try:
+        import sqlite3
+        with sqlite3.connect("database/zayvora_live.db") as _c:
+            _c.execute("DELETE FROM prescriptions WHERE mrn = 'MRN-2026-0814' AND order_number != 'RX-2026-0441'")
+            _c.commit()
+    except Exception:
+        pass
+
     _, rx_draft = client.request("POST", "/api/v1/prescriptions", {
         "patientName": "Hamza Farooqi",
         "mrn": "MRN-2026-0814",

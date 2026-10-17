@@ -163,7 +163,7 @@ def test_full_clinical_continuum_end_to_end():
         {
             "id": "batch-uuid-002",
             "batch_number": "BAT-EXP-SOONER",
-            "expiry_date": "2026-10-15",
+            "expiry_date": "2026-11-15",
             "available_quantity": 5.0,
             "qc_release_status": "released",
             "mudabbar_certified": True,

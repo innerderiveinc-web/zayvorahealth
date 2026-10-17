@@ -11,14 +11,12 @@ import logging
 
 logger = logging.getLogger("zayvora.db")
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
-DB_BACKEND = "postgres" if (DATABASE_URL.startswith("postgres://") or DATABASE_URL.startswith("postgresql://")) else "sqlite"
+def get_db_backend():
+    db_url = os.environ.get("DATABASE_URL", "").strip()
+    return "postgres" if (db_url.startswith("postgres://") or db_url.startswith("postgresql://")) else "sqlite"
 
 _pg_pool = None
 _pool_lock = threading.Lock()
-
-def get_db_backend():
-    return DB_BACKEND
 
 class PostgresRowAdapter:
     """Wraps psycopg2 dictionary/named tuple rows to behave identically to sqlite3.Row."""
@@ -143,7 +141,7 @@ def _init_pg_pool():
             if _pg_pool is None:
                 try:
                     import psycopg2.pool
-                    url = DATABASE_URL
+                    url = os.environ.get("DATABASE_URL", "").strip()
                     # Fix Heroku/Railway 'postgres://' format to 'postgresql://' if needed
                     if url.startswith("postgres://"):
                         url = "postgresql://" + url[len("postgres://"):]
@@ -163,21 +161,35 @@ def get_universal_db(db_path):
     If DATABASE_URL is configured and psycopg2 is available -> PostgreSQL.
     Otherwise -> SQLite.
     """
-    if DB_BACKEND == "postgres":
+    if get_db_backend() == "postgres":
         pool = _init_pg_pool()
         if pool:
             try:
                 raw_conn = pool.getconn()
                 return PostgresConnectionWrapper(raw_conn, pool)
             except Exception as e:
-                logger.error(f"Error leasing PG connection: {e}. Falling back to SQLite.")
+                # Production Fail-Closed Safety: Do NOT silently write PHI to local unencrypted SQLite if explicitly set to PostgreSQL!
+                is_strict_prod = os.environ.get("STRICT_PRODUCTION_DATABASE", "false").lower() in ("true", "1")
+                if is_strict_prod:
+                    logger.critical(f"CRITICAL: PostgreSQL connection lease failed ({e}) in STRICT_PRODUCTION mode. FAIL CLOSED.")
+                    raise RuntimeError(f"Central PostgreSQL production database unavailable: {e}. FAIL CLOSED.")
+                logger.error(f"Error leasing PG connection: {e}. Falling back to SQLite edge cache.")
+        else:
+            is_strict_prod = os.environ.get("STRICT_PRODUCTION_DATABASE", "false").lower() in ("true", "1")
+            if is_strict_prod:
+                logger.critical("CRITICAL: PostgreSQL pool initialization failed in STRICT_PRODUCTION mode. FAIL CLOSED.")
+                raise RuntimeError("Central PostgreSQL production database pool failed to initialize. FAIL CLOSED.")
 
     # SQLite Fallback Engine
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     conn = sqlite3.connect(db_path, timeout=30.0, check_same_thread=False)
     conn.row_factory = sqlite3.Row
-    # Enable Write-Ahead Logging (WAL) for 10x higher concurrency in SQLite
+    # Enable Write-Ahead Logging (WAL) and enterprise tuning for maximum concurrency in SQLite
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA synchronous=NORMAL")
     conn.execute("PRAGMA foreign_keys=ON")
+    conn.execute("PRAGMA busy_timeout=10000")
+    conn.execute("PRAGMA cache_size=-64000")
+    conn.execute("PRAGMA temp_store=MEMORY")
+    conn.execute("PRAGMA mmap_size=268435456")
     return conn

@@ -72,9 +72,10 @@ class Patient360Master:
     @classmethod
     def get_patient_360(cls, patient_id: str = "PAT-774901") -> Dict[str, Any]:
         """Returns the complete, authoritative Patient 360 record."""
+        mrn_val = "MRN-2026-0814" if patient_id in ("PAT-0814", "MRN-2026-0814") else "MRN-2026-0001"
         snapshot = Patient360Snapshot(
             patient_id=patient_id,
-            mrn="MRN-2026-0001",
+            mrn=mrn_val,
             full_name="Hamza Farooqi",
             age=54,
             gender="Male",

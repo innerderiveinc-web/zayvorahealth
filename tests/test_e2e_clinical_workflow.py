@@ -25,6 +25,15 @@ except ImportError:
     from test_phase2_auth_rbac_tenancy import DirectTestClient
 
 class TestEndToEndClinicalWorkflow(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import sqlite3, os
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "zayvora_live.db")
+        if os.path.exists(db_path):
+            with sqlite3.connect(db_path) as conn:
+                conn.execute("DELETE FROM prescriptions WHERE mrn = 'MRN-2026-0814'")
+                conn.commit()
+
     def setUp(self):
         self.client = DirectTestClient()
 

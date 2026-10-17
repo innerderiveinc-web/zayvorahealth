@@ -169,3 +169,9 @@ class ClinicalPilotConcordanceEngine:
             ),
             "verdict": stats.trial_verdict,
         }
+
+
+def load_vignette_benchmark(protocol_id: str = "ZAY-VAL-VIG-2026-M50") -> List[ClinicalTrialCase]:
+    """Loads standardized 50 multi-morbidity clinical vignette benchmark cohort."""
+    from services.clinical.app.research.vignette_benchmark_50 import load_50_clinical_vignettes
+    return load_50_clinical_vignettes()

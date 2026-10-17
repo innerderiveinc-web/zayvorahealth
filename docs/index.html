@@ -2,10 +2,11 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="theme-color" content="#FAF8F5">
   <link rel="manifest" href="manifest.json">
   <title>ZAYVORA Health OS™ — Integrative Healthcare Operating System</title>
-  <script src="/tailwind.min.js"></script>
+  <script src="tailwind.min.js"></script>
     <!-- ZAYVORA Zero-Crash Frontend Error Boundary & Telemetry Guard -->
   <script>
     window.addEventListener('error', function(e) {
@@ -26,7 +27,7 @@
     /* 
       ZAYVORA Health OS™ Design Tokens
       Aesthetic: Classical Botanical Heritage meets Precision Integrative Medicine.
-      Crafted with warm, natural tones, soft ambient elevation, and zero AI neon glare.
+      Crafted with warm, natural tones, soft ambient elevation, and zero clinical visual strain.
     */
     :root,
     [data-theme="dark"] {
@@ -344,6 +345,355 @@
     [data-theme="light"] #emergency-red-flag-banner .text-rose-100 { color: #881337 !important; }
     [data-theme="light"] #emergency-red-flag-banner .text-rose-300 { color: #be123c !important; }
 
+    /* Clean, highly legible inputs, selects, and textareas in Light Mode */
+    [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+    [data-theme="light"] select,
+    [data-theme="light"] textarea {
+      background-color: #ffffff !important;
+      color: #1a2328 !important;
+      border-color: #dcd5c4 !important;
+    }
+    [data-theme="light"] input::placeholder,
+    [data-theme="light"] textarea::placeholder {
+      color: #8292a0 !important;
+    }
+
+    /* Only solid, high-saturation action buttons retain white text in Light Mode */
+    [data-theme="light"] button.bg-emerald-600,
+    [data-theme="light"] button.bg-emerald-700,
+    [data-theme="light"] button.bg-teal-600,
+    [data-theme="light"] button.bg-teal-700,
+    [data-theme="light"] button.bg-purple-600,
+    [data-theme="light"] button.bg-blue-600,
+    [data-theme="light"] button.bg-rose-600,
+    [data-theme="light"] button.bg-red-600,
+    [data-theme="light"] button.bg-red-700,
+    [data-theme="light"] a.bg-emerald-600,
+    [data-theme="light"] a.bg-teal-600,
+    [data-theme="light"] button.bg-emerald-600 *,
+    [data-theme="light"] button.bg-emerald-700 *,
+    [data-theme="light"] button.bg-teal-600 *,
+    [data-theme="light"] button.bg-teal-700 *,
+    [data-theme="light"] button.bg-purple-600 *,
+    [data-theme="light"] button.bg-blue-600 *,
+    [data-theme="light"] button.bg-rose-600 *,
+    [data-theme="light"] button.bg-red-600 *,
+    [data-theme="light"] button.bg-red-700 * {
+      color: #ffffff !important;
+    }
+
+    /* Topbar and Header Action Buttons in Light Mode */
+    [data-theme="light"] #auth-login-btn,
+    [data-theme="light"] #preferences-dropdown-trigger {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      box-shadow: 0 1px 3px rgba(45, 40, 30, 0.05) !important;
+    }
+    [data-theme="light"] #auth-login-btn *,
+    [data-theme="light"] #preferences-dropdown-trigger * {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] #auth-login-btn svg {
+      color: #18634B !important;
+      stroke: #18634B !important;
+    }
+    [data-theme="light"] #preferences-current-summary {
+      color: #18634B !important;
+    }
+
+    /* Front-Door Quick Action Buttons in Light Mode */
+    [data-theme="light"] button[onclick*="checkLiveTokenStatusQuick"],
+    [data-theme="light"] button[onclick*="LiveToken"] {
+      background-color: #FFFFFF !important;
+      border-color: rgba(37, 99, 235, 0.5) !important;
+      color: #1D4ED8 !important;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08) !important;
+    }
+    [data-theme="light"] button[onclick*="checkLiveTokenStatusQuick"] *,
+    [data-theme="light"] button[onclick*="LiveToken"] * {
+      color: #1D4ED8 !important;
+    }
+    [data-theme="light"] button[onclick*="openDispensaryLookupModal"],
+    [data-theme="light"] button[onclick*="DispensaryLookup"] {
+      background-color: #FFFFFF !important;
+      border-color: rgba(217, 119, 6, 0.5) !important;
+      color: #B45309 !important;
+      box-shadow: 0 1px 3px rgba(217, 119, 6, 0.08) !important;
+    }
+    [data-theme="light"] button[onclick*="openDispensaryLookupModal"] *,
+    [data-theme="light"] button[onclick*="DispensaryLookup"] * {
+      color: #B45309 !important;
+    }
+
+    /* 12-Organ-Axis Screener Button in Light Mode */
+    [data-theme="light"] button[onclick*="OrganAxis"] {
+      background-color: #E6FFFA !important;
+      border-color: #0D9488 !important;
+      color: #0F766E !important;
+    }
+    [data-theme="light"] button[onclick*="OrganAxis"] * {
+      color: #0F766E !important;
+    }
+
+    /* WhatsApp Clinician Button in Light Mode */
+    [data-theme="light"] a[href*="wa.me"] {
+      background-color: #E6F4EA !important;
+      border-color: #165B44 !important;
+      color: #165B44 !important;
+    }
+    [data-theme="light"] a[href*="wa.me"] * {
+      color: #165B44 !important;
+    }
+
+    /* Interactive Diagnostic & Functional Medicine Engine Cards in Light Mode */
+    [data-theme="light"] .grid button.bg-slate-950,
+    [data-theme="light"] .grid button[onclick*="Modal"],
+    [data-theme="light"] button[onclick*="Modal"][class*="bg-slate-950"],
+    [data-theme="light"] div[onclick*="Modal"],
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"],
+    [data-theme="light"] div[onclick*="openKulliyat"],
+    [data-theme="light"] div[onclick*="openGrandCorpus"],
+    [data-theme="light"] .grid div.bg-slate-950 {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      box-shadow: 0 1px 3px rgba(45, 40, 30, 0.05) !important;
+    }
+    [data-theme="light"] .grid button.bg-slate-950:hover,
+    [data-theme="light"] div[onclick*="Modal"]:hover,
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"]:hover,
+    [data-theme="light"] div[onclick*="openKulliyat"]:hover,
+    [data-theme="light"] div[onclick*="openGrandCorpus"]:hover,
+    [data-theme="light"] .grid div.bg-slate-950:hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      box-shadow: 0 4px 12px rgba(22, 91, 68, 0.1) !important;
+    }
+    [data-theme="light"] .grid button.bg-slate-950 .text-white,
+    [data-theme="light"] button[onclick*="Modal"][class*="bg-slate-950"] .text-white,
+    [data-theme="light"] div[onclick*="Modal"] h4,
+    [data-theme="light"] div[onclick*="Modal"] .text-white,
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"] h4,
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"] .text-white,
+    [data-theme="light"] .grid div.bg-slate-950 h4,
+    [data-theme="light"] .grid div.bg-slate-950 .text-white {
+      color: #1A2328 !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .grid button.bg-slate-950 .text-slate-400,
+    [data-theme="light"] button[onclick*="Modal"][class*="bg-slate-950"] .text-slate-400,
+    [data-theme="light"] div[onclick*="Modal"] p,
+    [data-theme="light"] div[onclick*="Modal"] .text-slate-400,
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"] p,
+    [data-theme="light"] div[onclick*="toggleGlobalToolsModal"] .text-slate-400,
+    [data-theme="light"] .grid div.bg-slate-950 p,
+    [data-theme="light"] .grid div.bg-slate-950 .text-slate-400 {
+      color: #5F707E !important;
+    }
+
+    /* Login Modal Sandbox Auto-Fill Buttons in Light Mode */
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] {
+      background-color: #F8F6F0 !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 1px 2px rgba(45, 40, 30, 0.04) !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"]:hover {
+      background-color: #FFFFFF !important;
+      border-color: #165B44 !important;
+      box-shadow: 0 2px 6px rgba(45, 40, 30, 0.08) !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-rose-400 {
+      color: #E11D48 !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-emerald-400 {
+      color: #165B44 !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-teal-400,
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-teal-300 {
+      color: #0F766E !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-blue-400 {
+      color: #1D4ED8 !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-amber-400 {
+      color: #B45309 !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-purple-400 {
+      color: #7C3AED !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-indigo-400 {
+      color: #4F46E5 !important;
+    }
+    [data-theme="light"] #login-modal button[onclick*="prefillLogin"] .text-slate-400 {
+      color: #5F707E !important;
+    }
+
+    /* Super Admin Master Department Switcher in Light Mode */
+    [data-theme="light"] button[onclick*="switchRole"] {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 1px 3px rgba(45, 40, 30, 0.05) !important;
+    }
+    [data-theme="light"] button[onclick*="switchRole"]:hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      box-shadow: 0 3px 10px rgba(22, 91, 68, 0.12) !important;
+    }
+    [data-theme="light"] button[onclick*="switchRole"] .text-white {
+      color: #1A2328 !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] button[onclick*="switchRole"] .text-slate-400 {
+      color: #5F707E !important;
+      font-weight: 500 !important;
+    }
+    [data-theme="light"] button[onclick*="switchRole"]:hover .text-white {
+      color: #165B44 !important;
+    }
+    [data-theme="light"] .text-amber-300\/80 {
+      color: #92400E !important;
+    }
+    [data-theme="light"] .text-emerald-300\/80 {
+      color: #165B44 !important;
+      font-weight: 500 !important;
+    }
+
+    /* Doctor More Nav Dropdown Button in Light Mode */
+    [data-theme="light"] #doctor-more-nav-btn {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      box-shadow: 0 1px 3px rgba(45, 40, 30, 0.05) !important;
+    }
+    [data-theme="light"] #doctor-more-nav-btn:hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+    }
+    [data-theme="light"] #doctor-more-nav-btn * {
+      color: #1A2328 !important;
+    }
+
+    /* Patient Care Orchestrator Quick Preset Buttons in Light Mode */
+    [data-theme="light"] button[onclick*="prefillPatientIntake"] {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      font-weight: 600 !important;
+      box-shadow: 0 1px 2px rgba(45, 40, 30, 0.04) !important;
+    }
+    [data-theme="light"] button[onclick*="prefillPatientIntake"]:hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      color: #165B44 !important;
+    }
+    [data-theme="light"] button[onclick*="prefillPatientIntake"] * {
+      color: #1A2328 !important;
+    }
+
+    /* Patient Health Discovery Self-Care Tool Buttons in Light Mode */
+    [data-theme="light"] button[onclick*="openHumoralBioClockModal"],
+    [data-theme="light"] button[onclick*="openKitchenFoodMatrixModal"],
+    [data-theme="light"] button[onclick*="openGutBrainVagusModal"],
+    [data-theme="light"] button[onclick*="openHazmDigestionModal"] {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 1px 3px rgba(45, 40, 30, 0.05) !important;
+    }
+    [data-theme="light"] button[onclick*="openHumoralBioClockModal"]:hover,
+    [data-theme="light"] button[onclick*="openKitchenFoodMatrixModal"]:hover,
+    [data-theme="light"] button[onclick*="openGutBrainVagusModal"]:hover,
+    [data-theme="light"] button[onclick*="openHazmDigestionModal"]:hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      box-shadow: 0 3px 8px rgba(22, 91, 68, 0.1) !important;
+    }
+    [data-theme="light"] button[onclick*="openHumoralBioClockModal"] .text-white,
+    [data-theme="light"] button[onclick*="openKitchenFoodMatrixModal"] .text-white,
+    [data-theme="light"] button[onclick*="openGutBrainVagusModal"] .text-white,
+    [data-theme="light"] button[onclick*="openHazmDigestionModal"] .text-white {
+      color: #1A2328 !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] button[onclick*="openHumoralBioClockModal"] .text-slate-400,
+    [data-theme="light"] button[onclick*="openKitchenFoodMatrixModal"] .text-slate-400,
+    [data-theme="light"] button[onclick*="openGutBrainVagusModal"] .text-slate-400,
+    [data-theme="light"] button[onclick*="openHazmDigestionModal"] .text-slate-400 {
+      color: #5F707E !important;
+    }
+    [data-theme="light"] button[onclick*="openHumoralBioClockModal"]:hover .text-white,
+    [data-theme="light"] button[onclick*="openKitchenFoodMatrixModal"]:hover .text-white,
+    [data-theme="light"] button[onclick*="openGutBrainVagusModal"]:hover .text-white,
+    [data-theme="light"] button[onclick*="openHazmDigestionModal"]:hover .text-white {
+      color: #165B44 !important;
+    }
+
+    /* Morning Adherence 'Skipped' button in Light Mode */
+    [data-theme="light"] button[onclick*="logMorningAdherence('skipped')"] {
+      background-color: #FFF1F2 !important;
+      border: 1px solid #FDA4AF !important;
+      color: #BE123C !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] button[onclick*="logMorningAdherence('skipped')"] * {
+      color: #BE123C !important;
+    }
+
+    /* Chronic Care Box Subscriptions Cyan Badge in Light Mode */
+    [data-theme="light"] .text-cyan-300.bg-cyan-950\/40 {
+      background-color: rgba(6, 182, 212, 0.12) !important;
+      border-color: rgba(6, 182, 212, 0.35) !important;
+      color: #0E7490 !important;
+      font-weight: 700 !important;
+    }
+
+    /* ZFIE Sub-Studio Navigation Tabs in Light Mode */
+    [data-theme="light"] button[id^="zfie-tab-"]:not(.bg-indigo-600) {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      font-weight: 600 !important;
+      box-shadow: 0 1px 2px rgba(45, 40, 30, 0.04) !important;
+    }
+    [data-theme="light"] button[id^="zfie-tab-"]:not(.bg-indigo-600):hover {
+      background-color: #F8F6F0 !important;
+      border-color: #4F46E5 !important;
+      color: #4F46E5 !important;
+    }
+    [data-theme="light"] button[id^="zfie-tab-"]:not(.bg-indigo-600) * {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] button[id^="zfie-tab-"].bg-indigo-600 {
+      background-color: #4F46E5 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25) !important;
+    }
+    [data-theme="light"] button[id^="zfie-tab-"].bg-indigo-600 * {
+      color: #FFFFFF !important;
+    }
+
+    /* Universal High-Contrast Button Guard for Light Mode */
+    [data-theme="light"] button.bg-slate-900:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout),
+    [data-theme="light"] button[class*="bg-slate-900"]:not([class*="bg-emerald-600"]):not([class*="bg-teal-600"]):not([class*="bg-indigo-600"]):not([class*="bg-rose-600"]):not(.btn-signout),
+    [data-theme="light"] button.bg-slate-950,
+    [data-theme="light"] button[class*="bg-slate-950"] {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] button.bg-slate-900:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout) .text-white,
+    [data-theme="light"] button[class*="bg-slate-900"]:not([class*="bg-emerald-600"]):not([class*="bg-teal-600"]):not([class*="bg-indigo-600"]):not([class*="bg-rose-600"]):not(.btn-signout) .text-white,
+    [data-theme="light"] button.bg-slate-950 .text-white,
+    [data-theme="light"] button[class*="bg-slate-950"] .text-white {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] button.bg-slate-900:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout) .text-slate-400,
+    [data-theme="light"] button[class*="bg-slate-900"]:not([class*="bg-emerald-600"]):not([class*="bg-teal-600"]):not([class*="bg-indigo-600"]):not([class*="bg-rose-600"]):not(.btn-signout) .text-slate-400,
+    [data-theme="light"] button.bg-slate-900:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout) .text-slate-300,
+    [data-theme="light"] button[class*="bg-slate-900"]:not([class*="bg-emerald-600"]):not([class*="bg-teal-600"]):not([class*="bg-indigo-600"]):not([class*="bg-rose-600"]):not(.btn-signout) .text-slate-300 {
+      color: #5F707E !important;
+    }
+
     /* Text contrast overrides in Light Mode */
     [data-theme="light"] .text-white { color: #1a2328 !important; }
     [data-theme="light"] .text-slate-100 { color: #1a2328 !important; }
@@ -377,14 +727,71 @@
     [data-theme="light"] .text-indigo-400 { color: #3730A3 !important; }
     [data-theme="light"] .text-indigo-300 { color: #312E81 !important; }
     [data-theme="light"] .text-indigo-200 { color: #1E1B4B !important; }
+    [data-theme="light"] .text-indigo-100 { color: #4338CA !important; }
+    [data-theme="light"] .text-purple-100 { color: #6D28D9 !important; }
     [data-theme="light"] .text-yellow-400 { color: #854D0E !important; }
     [data-theme="light"] .text-yellow-300 { color: #713F12 !important; }
+    [data-theme="light"] .text-yellow-200,
+    [data-theme="light"] .text-yellow-100 { color: #854D0E !important; }
     [data-theme="light"] .text-sky-400 { color: #0369A1 !important; }
     [data-theme="light"] .text-sky-300 { color: #075985 !important; }
     [data-theme="light"] .text-zinc-400 { color: #52525B !important; }
     [data-theme="light"] .text-zinc-300 { color: #3F3F46 !important; }
     [data-theme="light"] .text-gray-400 { color: #4B5563 !important; }
     [data-theme="light"] .text-gray-300 { color: #374151 !important; }
+
+    /* Full Spectrum Pale Text & Opacity Guard in Light Mode */
+    [data-theme="light"] .text-emerald-100,
+    [data-theme="light"] .text-emerald-200,
+    [data-theme="light"] .text-emerald-100\/90,
+    [data-theme="light"] .text-emerald-200\/80,
+    [data-theme="light"] .text-emerald-200\/90,
+    [data-theme="light"] .text-emerald-300\/90,
+    [data-theme="light"] .text-emerald-400\/80,
+    [data-theme="light"] .text-emerald-400\/90,
+    [data-theme="light"] .text-emerald-500\/80 {
+      color: #165B44 !important;
+    }
+
+    [data-theme="light"] .text-teal-100,
+    [data-theme="light"] .text-teal-200,
+    [data-theme="light"] .text-teal-200\/90,
+    [data-theme="light"] .text-teal-400\/80 {
+      color: #0F766E !important;
+    }
+
+    [data-theme="light"] .text-cyan-100,
+    [data-theme="light"] .text-cyan-200,
+    [data-theme="light"] .text-cyan-100\/90,
+    [data-theme="light"] .text-cyan-200\/90,
+    [data-theme="light"] .text-cyan-300\/90 {
+      color: #0E7490 !important;
+    }
+
+    [data-theme="light"] .text-blue-100,
+    [data-theme="light"] .text-blue-200,
+    [data-theme="light"] .text-blue-500\/80 {
+      color: #1D4ED8 !important;
+    }
+
+    [data-theme="light"] .text-amber-100,
+    [data-theme="light"] .text-amber-200,
+    [data-theme="light"] .text-amber-100\/90,
+    [data-theme="light"] .text-amber-200\/80,
+    [data-theme="light"] .text-amber-200\/90,
+    [data-theme="light"] .text-amber-300\/90,
+    [data-theme="light"] .text-amber-400\/80,
+    [data-theme="light"] .text-amber-500\/80,
+    [data-theme="light"] .text-orange-100,
+    [data-theme="light"] .text-orange-200,
+    [data-theme="light"] .text-orange-200\/90 {
+      color: #92400E !important;
+    }
+
+    [data-theme="light"] .text-rose-100,
+    [data-theme="light"] .text-rose-200\/90 {
+      color: #BE123C !important;
+    }
 
     /* HIGH CONTRAST CLINICAL BADGES IN LIGHT MODE */
     [data-theme="light"] .bg-emerald-500\/10,
@@ -501,21 +908,81 @@
       color: #ffffff !important;
     }
 
-    /* Dark Action Pill Buttons in Light Mode */
-    [data-theme="light"] button.bg-slate-800,
-    [data-theme="light"] button.bg-slate-700,
-    [data-theme="light"] a.bg-slate-800,
-    [data-theme="light"] a.bg-slate-700 {
-      background-color: #2D3748 !important;
-      color: #FFFFFF !important;
-      border: 1px solid #1A202C !important;
+    /* Clean Secondary & Inactive Buttons in Light Mode */
+    [data-theme="light"] button.bg-slate-800:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout),
+    [data-theme="light"] button[class*="bg-slate-800"]:not([class*="bg-emerald-600"]):not([class*="bg-teal-600"]):not([class*="bg-indigo-600"]):not([class*="bg-rose-600"]):not(.btn-signout),
+    [data-theme="light"] button.bg-slate-700:not(.bg-emerald-600):not(.bg-teal-600):not(.bg-indigo-600):not(.bg-rose-600):not(.btn-signout),
+    [data-theme="light"] a.bg-slate-800:not(.bg-emerald-600):not(.bg-teal-600),
+    [data-theme="light"] a.bg-slate-700:not(.bg-emerald-600):not(.bg-teal-600) {
+      background-color: #FFFFFF !important;
+      color: #1A2328 !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 1px 2px rgba(45, 40, 30, 0.04) !important;
     }
     [data-theme="light"] button.bg-slate-800:hover,
+    [data-theme="light"] button[class*="bg-slate-800"]:hover,
     [data-theme="light"] button.bg-slate-700:hover,
     [data-theme="light"] a.bg-slate-800:hover,
     [data-theme="light"] a.bg-slate-700:hover {
-      background-color: #1A202C !important;
-      color: #FFFFFF !important;
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      color: #165B44 !important;
+    }
+    [data-theme="light"] button.bg-slate-800 *,
+    [data-theme="light"] button[class*="bg-slate-800"] *,
+    [data-theme="light"] button.bg-slate-700 *,
+    [data-theme="light"] a.bg-slate-800 *,
+    [data-theme="light"] a.bg-slate-700 * {
+      color: #1A2328 !important;
+    }
+
+    /* Inactive Grand Library Mode and Subfilter Tabs in Light Mode */
+    [data-theme="light"] button[id^="lib-mode-tab-"]:not(.bg-emerald-600),
+    [data-theme="light"] button[id^="lib-filter-btn-"]:not(.bg-emerald-600) {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      color: #1A2328 !important;
+      font-weight: 600 !important;
+      box-shadow: 0 1px 2px rgba(45, 40, 30, 0.04) !important;
+    }
+    [data-theme="light"] button[id^="lib-mode-tab-"]:not(.bg-emerald-600):hover,
+    [data-theme="light"] button[id^="lib-filter-btn-"]:not(.bg-emerald-600):hover {
+      background-color: #F8F6F0 !important;
+      border-color: #165B44 !important;
+      color: #165B44 !important;
+    }
+    [data-theme="light"] button[id^="lib-mode-tab-"]:not(.bg-emerald-600) *,
+    [data-theme="light"] button[id^="lib-filter-btn-"]:not(.bg-emerald-600) * {
+      color: #1A2328 !important;
+    }
+
+    /* Hover Text Guard for Light Mode */
+    [data-theme="light"] .hover\:text-white:hover {
+      color: #165B44 !important;
+    }
+
+    /* Table Typography & Surface Consistency in Light Mode */
+    [data-theme="light"] table {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] thead tr,
+    [data-theme="light"] th {
+      background-color: #F8F6F0 !important;
+      color: #1A2328 !important;
+      border-color: #DCD5C4 !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] tbody tr {
+      background-color: #FFFFFF !important;
+      color: #1A2328 !important;
+      border-color: #E2E8F0 !important;
+    }
+    [data-theme="light"] tbody tr:hover {
+      background-color: #FAF8F5 !important;
+    }
+    [data-theme="light"] td {
+      color: #1A2328 !important;
+      border-color: #E2E8F0 !important;
     }
 
     /* Interactive Hover States in Light Mode (No dark jumps on hover!) */
@@ -633,10 +1100,20 @@
       color: #334155 !important;
     }
 
-    /* Scrollbar */
+    /* Scrollbar & Touch Ergonomics */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
+    .touch-pan-x, #role-navigation, #zayvora-v2-master-nav {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+    @media (max-width: 640px) {
+      .consultation-step {
+        font-size: 11px !important;
+        padding: 0.35rem 0.6rem !important;
+      }
+    }
     ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
     ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
 
@@ -954,8 +1431,9 @@
         </div>
         <div class="flex flex-col justify-center">
           <span class="font-black tracking-tight text-xl text-white group-hover:text-emerald-300 transition whitespace-nowrap flex items-center gap-1.5">
-            ZAYVORA <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-md">Health OS™</span>
+            ZAYVORA <span id="header-edition-badge" class="text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-md">Health OS™</span>
           </span>
+          <span id="header-edition-sub" class="text-[10px] text-slate-400 hidden sm:block">Integrative Healthcare &amp; Classical Matab</span>
         </div>
       </div>
 
@@ -971,15 +1449,36 @@
       <!-- Persona Switcher, Actions & Utility Bar (Sleek Single-Row Layout) -->
       <div class="flex items-center gap-1.5 shrink-0 overflow-x-auto max-w-full scrollbar-none">
         
+        <!-- Platform Edition Switcher (Clinic Mode vs Flagship HQ) -->
+        <div class="hidden sm:flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-0.5 shadow-sm shrink-0">
+          <button id="btn-edition-clinic" onclick="setPlatformEdition('clinic')" class="px-2.5 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1.5 transition cursor-pointer bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400/40" title="ZAYVORA Clinic OS: Simplified for Hospitals, Clinics &amp; Matabs">
+            <span>🏥</span>
+            <span class="hidden sm:inline">Clinic OS</span>
+            <span class="sm:hidden">Clinic</span>
+          </button>
+          <button id="btn-edition-enterprise" onclick="setPlatformEdition('enterprise')" class="px-2.5 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1.5 transition cursor-pointer text-slate-400 hover:text-white" title="ZAYVORA Flagship HQ: Full Sovereign R&amp;D, Manufacturing &amp; Clinical Trials">
+            <span>🏛️</span>
+            <span class="hidden sm:inline">Flagship HQ</span>
+            <span class="sm:hidden">HQ</span>
+          </button>
+        </div>
+
         <!-- Global Diagnostic Hub Launcher -->
-        <button id="header-diagnostic-btn" onclick="toggleGlobalToolsModal(true)" class="bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm flex items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
+        <button id="header-diagnostic-btn" onclick="toggleGlobalToolsModal(true)" class="hidden md:flex bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
           <span>🧠</span>
           <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px]">10</span>
         </button>
 
+        <!-- Grand 97 Medical Bookshelf Launcher -->
+        <button id="header-bookshelf-btn" onclick="openGrandCorpusModal()" class="flex bg-slate-900 border border-blue-500/40 hover:border-blue-400 text-blue-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Open 97 Grand Medical Treatises & Clinical Compendia Vault">
+          <span>📚</span>
+          <span class="hidden lg:inline text-xs">Medical Books</span>
+          <span class="px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 font-mono text-[9px]">97</span>
+        </button>
+
         <div id="role-selector-container" class="hidden relative items-center gap-1.5 px-2.5 py-1.5 rounded-xl shadow-sm shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
-          <select id="role-selector" onchange="switchRole(this.value, true)" class="text-xs font-bold focus:outline-none cursor-pointer max-w-[155px] truncate pr-5" title="👑 Master Clinical & Governance Switcher">
+          <select id="role-selector" onchange="switchRole(this.value, false)" class="text-xs font-bold focus:outline-none cursor-pointer max-w-[155px] truncate pr-5" title="👑 Master Clinical & Governance Switcher">
             <optgroup label="👑 Super Admin & Governance" class="bg-[#0F172A] text-amber-300 font-bold">
               <option value="admin">🛡️ Admin Control</option>
               <option value="enterprise">🏛️ Executive</option>
@@ -1009,25 +1508,25 @@
         </button>
 
         <!-- Fast OPD Booking CTA Button -->
-        <button id="header-opd-booking-btn" onclick="if (document.getElementById('opd-booking-card')) { document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' }); } else { viewWebsitePage('home'); setTimeout(() => document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' }), 120); }" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/30 transition shrink-0">
+        <button id="header-opd-booking-btn" onclick="scrollToOpdBooking()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/30 transition shrink-0">
           <svg class="w-3.5 h-3.5 inline-block text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           <span class="hidden md:inline">Book OPD Token</span>
         </button>
 
         <!-- Sign In / Portals -->
         <div id="auth-container" class="flex items-center shrink-0">
-          <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm">
-            <svg class="w-3.5 h-3.5 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            <span id="auth-btn-label">Sign In / Portals</span>
+          <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm" title="Authorized Clinical Portals & Staff Access">
+            <svg class="w-3.5 h-3.5 inline-block text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+            <span id="auth-btn-label"><span class="hidden sm:inline">Authorized Clinical Portals</span><span class="sm:hidden">Portals</span></span>
           </button>
         </div>
 
         <!-- Sleek Unified Settings & Utilities Dropdown -->
         <div class="relative shrink-0" id="preferences-menu-container">
-          <button id="preferences-dropdown-trigger" onclick="togglePreferencesDropdown()" class="px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm cursor-pointer" title="Language, Currency & Display Preferences">
+          <button id="preferences-dropdown-trigger" onclick="togglePreferencesDropdown()" class="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1 sm:gap-1.5 shadow-sm cursor-pointer" title="Language, Currency & Display Preferences">
             <span>🌐</span>
-            <span class="font-mono text-emerald-400 font-bold text-[11px]" id="preferences-current-summary">EN • ₹ INR</span>
-            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            <span class="font-mono text-emerald-400 font-bold text-[11px] hidden sm:inline" id="preferences-current-summary">EN • ₹ INR</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
 
           <!-- Dropdown Panel -->
@@ -1117,8 +1616,21 @@
   <div class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
 
     <!-- Secondary Role Navigation Bar -->
-    <nav id="role-navigation" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar border-b border-[var(--border)] pb-3 whitespace-nowrap scroll-smooth">
+    <nav id="role-navigation" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar border-b border-[var(--border)] pb-3 whitespace-nowrap scroll-smooth touch-pan-x">
       <!-- Dynamically populated based on active role -->
+    </nav>
+
+    <!-- ZAYVORA V2 Master 9-Hub Navigation Bar -->
+    <nav id="zayvora-v2-master-nav" class="hidden items-center justify-between gap-1 px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs overflow-x-auto no-scrollbar">
+      <button id="hub-btn-command_center" onclick="navigateToV2Hub('command_center')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Command Center</button>
+      <button id="hub-btn-patients" onclick="navigateToV2Hub('patients')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Patients</button>
+      <button id="hub-btn-clinical" onclick="navigateToV2Hub('clinical')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Clinical</button>
+      <button id="hub-btn-zmie" onclick="navigateToV2Hub('zmie')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">ZMIE</button>
+      <button id="hub-btn-pharmacy" onclick="navigateToV2Hub('pharmacy')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Pharmacy</button>
+      <button id="hub-btn-formulation" onclick="navigateToV2Hub('formulation')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Formulation</button>
+      <button id="hub-btn-outcomes" onclick="navigateToV2Hub('outcomes')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Outcomes</button>
+      <button id="hub-btn-research" onclick="navigateToV2Hub('research')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Research</button>
+      <button id="hub-btn-admin" onclick="navigateToV2Hub('admin')" class="v2-hub-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition font-semibold whitespace-nowrap">Admin</button>
     </nav>
 
     <!-- Global Notification Banner -->
@@ -1130,6 +1642,9 @@
       <button onclick="dismissNotification()" class="text-[var(--muted)] hover:text-white font-bold ml-4">✕</button>
     </div>
 
+    <!-- Website Guided Care Discovery Wizard Container -->
+    <div id="care-discovery-wizard" class="hidden"></div>
+
     <!-- Active Role Workspace Container -->
     <main id="workspace-container">
       <!-- Injected by JavaScript -->
@@ -1140,21 +1655,36 @@
   <!-- ===================================================================== -->
   <!-- UNIVERSAL AUTHENTICATION & LOGIN GATEWAY MODAL -->
   <!-- ===================================================================== -->
-  <div id="login-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-[#0D1527] border border-slate-700 rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl animate-fade-in text-xs">
+  <div id="login-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#0D1527] border border-slate-700 rounded-2xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-2xl animate-fade-in text-xs max-h-[94vh] overflow-y-auto">
       
       <!-- Modal Header -->
       <div class="flex justify-between items-start border-b border-slate-800 pb-4">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0D9488] to-[#2D6A4F] flex items-center justify-center text-white text-lg shadow-md">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <div id="login-modal-edition-icon" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0D9488] to-[#2D6A4F] flex items-center justify-center text-white text-lg shadow-md font-bold">
+            🏛️
           </div>
           <div>
-            <h3 class="text-base font-bold text-white tracking-tight">Sign In to ZAYVORA Health OS™</h3>
-            <p class="text-[11px] text-slate-400">Authenticated RBAC Gateway • Clinicians, Patients &amp; Health Staff</p>
+            <h3 id="login-modal-edition-title" class="text-base font-bold text-white tracking-tight">Sign In to ZAYVORA Health OS™</h3>
+            <p id="login-modal-edition-desc" class="text-[11px] text-slate-400">Authenticated RBAC Gateway • Clinicians, Patients &amp; Health Staff</p>
           </div>
         </div>
-        <button onclick="toggleLoginModal(false)" class="text-slate-400 hover:text-white text-base font-bold px-2 py-1">✕</button>
+        <div class="flex items-center gap-2">
+          <button id="login-modal-edition-toggle-btn" type="button" onclick="togglePlatformEditionFromModal()" class="hidden sm:inline-block px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[10px] text-slate-300 font-bold transition">
+            Switch Edition
+          </button>
+          <button onclick="toggleLoginModal(false)" class="text-slate-400 hover:text-white text-base font-bold px-2 py-1">✕</button>
+        </div>
+      </div>
+
+      <!-- Modal Navigation Tabs: Sign In vs Clinician Registration -->
+      <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+        <button id="tab-login-signin" type="button" onclick="switchLoginModalTab('signin')" class="flex-1 py-2 px-3 rounded-xl font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow cursor-pointer">
+          <span>🔑 Clinician Sign In</span>
+        </button>
+        <button id="tab-login-signup" type="button" onclick="switchLoginModalTab('signup')" class="flex-1 py-2 px-3 rounded-xl font-bold transition flex items-center justify-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+          <span>🩺 Register Practice / Staff</span>
+        </button>
       </div>
 
       <!-- Credential Form Container (Primary Interface) -->
@@ -1172,7 +1702,7 @@
               <label class="block text-slate-300 font-semibold text-xs">Password</label>
               <span class="text-[10px] text-teal-400 cursor-pointer hover:underline" onclick="handleForgotPasswordClick()">Forgot Password?</span>
             </div>
-            <input id="login-input-password" type="password" required placeholder="Enter password (e.g. doctor123)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
+            <input id="login-input-password" type="password" required placeholder="Enter password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
             <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono pt-1">
               <span>Security: <strong class="text-emerald-400">PBKDF2-HMAC-SHA256</strong></span>
               <span>256-bit AES Session</span>
@@ -1192,7 +1722,7 @@
             </div>
             <div>
               Staff Onboarding: 
-              <a href="javascript:void(0)" onclick="prefillLogin('admin'); showNotification('Admin credentials loaded. Sign in to access Staff Onboarding console.', 'info');" class="text-teal-400 font-bold hover:underline">Admin Gate</a>
+              <a href="javascript:void(0)" onclick="switchLoginModalTab('signup');" class="text-teal-400 font-bold hover:underline">Register Staff</a>
             </div>
           </div>
         </form>
@@ -1201,45 +1731,161 @@
         <div class="mt-4 pt-3.5 border-t border-slate-800/90 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Evaluation Sandbox • Auto-Fill Test Credentials
+              <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Quick Login • Auto-Fill Demo Credentials
             </span>
-            <span class="text-[9px] text-teal-400/80 font-mono">Fills form &bull; Requires Sign In</span>
+            <span class="text-[9px] text-teal-400/80 font-mono">1-Click Auto-Fill</span>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button type="button" onclick="prefillLogin('admin')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 text-left transition group">
-              <span class="text-rose-400 font-bold block text-[11px]">🛡️ Super Admin</span>
-              <span class="text-[9px] text-slate-400 block truncate">Control Plane &amp; Governance</span>
-            </button>
-            <button type="button" onclick="prefillLogin('doctor')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group">
+            <button type="button" onclick="prefillLogin('doctor')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer">
               <span class="text-emerald-400 font-bold block text-[11px]">🩺 Doctor Cockpit</span>
-              <span class="text-[9px] text-slate-400 block truncate">Hakeem Dr. Irfan Ashraf</span>
+              <span class="text-[9px] text-slate-400 block truncate">dr.irfan@zayvorahealth.com</span>
             </button>
-            <button type="button" onclick="prefillLogin('nurse')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 text-left transition group">
-              <span class="text-teal-400 font-bold block text-[11px]">🩺 Nurse Station</span>
-              <span class="text-[9px] text-slate-400 block truncate">Inpatient Ward &amp; Triage</span>
+            <button type="button" onclick="prefillLogin('admin')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 text-left transition group cursor-pointer">
+              <span class="text-rose-400 font-bold block text-[11px]">🛡️ Super Admin</span>
+              <span class="text-[9px] text-slate-400 block truncate">admin@zayvorahealth.com</span>
             </button>
-            <button type="button" onclick="prefillLogin('clinic')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 text-left transition group">
+            <button type="button" onclick="prefillLogin('pharmacy')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 text-left transition group cursor-pointer">
+              <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy OS</span>
+              <span class="text-[9px] text-slate-400 block truncate">pharmacy@zayvorahealth.com</span>
+            </button>
+            <button type="button" onclick="prefillLogin('clinic')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 text-left transition group cursor-pointer">
               <span class="text-blue-400 font-bold block text-[11px]">🏥 Reception Desk</span>
-              <span class="text-[9px] text-slate-400 block truncate">OPD Tokens &amp; Intake</span>
+              <span class="text-[9px] text-slate-400 block truncate">reception@zayvorahealth.com</span>
             </button>
-            <button type="button" onclick="prefillLogin('pharmacy')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 text-left transition group">
-              <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy</span>
-              <span class="text-[9px] text-slate-400 block truncate">FEFO Dispensary &amp; Stock</span>
+            <button type="button" onclick="prefillLogin('nurse')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 text-left transition group cursor-pointer">
+              <span class="text-teal-400 font-bold block text-[11px]">🩺 Nurse Station</span>
+              <span class="text-[9px] text-slate-400 block truncate">nurse@zayvorahealth.com</span>
             </button>
-            <button type="button" onclick="prefillLogin('manufacturing')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 text-left transition group">
+            <button type="button" onclick="prefillLogin('patient')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-400/50 text-left transition group cursor-pointer">
+              <span class="text-teal-300 font-bold block text-[11px]">👤 Patient Portal</span>
+              <span class="text-[9px] text-slate-400 block truncate">hamza.farooqi@gmail.com</span>
+            </button>
+            <button type="button" onclick="prefillLogin('research')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-left transition group cursor-pointer">
+              <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research Cloud</span>
+              <span class="text-[9px] text-slate-400 block truncate">research@zayvorahealth.com</span>
+            </button>
+            <button type="button" onclick="prefillLogin('manufacturing')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 text-left transition group cursor-pointer">
               <span class="text-purple-400 font-bold block text-[11px]">🏭 Manufacturing</span>
-              <span class="text-[9px] text-slate-400 block truncate">eBMR Batch QC Lab</span>
-            </button>
-            <button type="button" onclick="prefillLogin('research')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-left transition group">
-              <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research</span>
-              <span class="text-[9px] text-slate-400 block truncate">RWE &amp; Clinical Trials</span>
-            </button>
-            <button type="button" onclick="prefillLogin('patient')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-400/50 text-left transition group">
-              <span class="text-teal-300 font-bold block text-[11px]">👤 Patient</span>
-              <span class="text-[9px] text-slate-400 block truncate">Hamza Farooqi (MRN-0814)</span>
+              <span class="text-[9px] text-slate-400 block truncate">manufacturing@zayvorahealth.com</span>
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Clinician & Staff Registration View -->
+      <div id="doctor-signup-view" class="hidden space-y-3.5">
+        <div id="doctor-signup-error" class="hidden p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs"></div>
+
+        <input type="hidden" id="staff-signup-role" value="doctor" />
+
+        <!-- Role Selector Buttons -->
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1 text-[11px]">Select Role / Facility Department</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button type="button" id="role-btn-doctor" onclick="selectSignupRole('doctor')" class="p-2 rounded-xl text-center font-bold text-xs transition border cursor-pointer bg-emerald-600 text-white border-emerald-500 shadow-sm">
+              🩺 Doctor / Tabeeb
+            </button>
+            <button type="button" id="role-btn-pharmacy" onclick="selectSignupRole('pharmacy')" class="p-2 rounded-xl text-center font-bold text-xs transition border cursor-pointer bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white">
+              💊 Pharmacist
+            </button>
+            <button type="button" id="role-btn-clinic" onclick="selectSignupRole('clinic')" class="p-2 rounded-xl text-center font-bold text-xs transition border cursor-pointer bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white">
+              📋 Reception Desk
+            </button>
+            <button type="button" id="role-btn-nurse" onclick="selectSignupRole('nurse')" class="p-2 rounded-xl text-center font-bold text-xs transition border cursor-pointer bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white">
+              🏥 Nurse / Triage
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between py-1">
+          <span id="signup-role-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-mono">DOCTOR / HAKEEM (طبیب)</span>
+          <span class="text-[10px] text-slate-400 font-mono">Instant Facility Provisioning</span>
+        </div>
+
+        <!-- Common Staff Fields -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Full Name</label>
+            <input id="doc-signup-name" type="text" placeholder="Hakeem Dr. Irfan Ashraf" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Email Address (Login ID)</label>
+            <input id="doc-signup-email" type="email" placeholder="doctor@zayvorahealth.com" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Mobile Phone (WhatsApp)</label>
+            <input id="doc-signup-phone" type="tel" placeholder="+91 97738 82657" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Access Password</label>
+            <input id="doc-signup-password" type="password" placeholder="Create secure password" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
+          </div>
+        </div>
+
+        <!-- Role Specific: Doctor -->
+        <div id="signup-fields-doctor" class="space-y-3 pt-1 border-t border-slate-800">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">Degrees &amp; Alma Mater</label>
+              <input id="doc-signup-degree" type="text" placeholder="BUMS (AKTC AMU), MD Unani" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400" />
+            </div>
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">Medical Council Reg No.</label>
+              <input id="doc-signup-reg" type="text" placeholder="BUMS/AMU/2007" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-mono" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">Clinic / Matab Name (English)</label>
+              <input id="doc-signup-clinic-name" type="text" placeholder="ZAYVORA Integrative Clinical Matab" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400" />
+            </div>
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">Clinic Name (Urdu / Arabic)</label>
+              <input id="doc-signup-clinic-urdu" type="text" dir="rtl" placeholder="مطب زیورا فار ہربل میڈیسن" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400 font-serif" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">OPD Timings</label>
+              <input id="doc-signup-timing" type="text" placeholder="10:00 AM - 02:00 PM" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400" />
+            </div>
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 text-xs">Clinic Location / City</label>
+              <input id="doc-signup-address" type="text" placeholder="ZAYVORA Healthcare Centre, New Delhi" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-400" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Specific: Pharmacy -->
+        <div id="signup-fields-pharmacy" class="hidden space-y-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">State Pharmacy Drug License No.</label>
+            <input id="staff-signup-drug-license" type="text" placeholder="DL-20-B-AYUSH-1092" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-amber-400 font-mono" />
+          </div>
+        </div>
+
+        <!-- Role Specific: Clinic -->
+        <div id="signup-fields-clinic" class="hidden space-y-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Assigned Reception Counter / Desk ID</label>
+            <input id="staff-signup-clinic-desk" type="text" placeholder="OPD Counter #1 (Main Triage Entrance)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-blue-400" />
+          </div>
+        </div>
+
+        <!-- Role Specific: Nurse -->
+        <div id="signup-fields-nurse" class="hidden space-y-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-xs">Inpatient Ward Station &amp; Shift</label>
+            <input id="staff-signup-nurse-ward" type="text" placeholder="Inpatient Ward B (Day Shift 08:00 - 16:00)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-teal-400" />
+          </div>
+        </div>
+
+        <button type="button" id="doc-signup-submit-btn" onclick="handleDoctorSignup(event)" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+          Create My Matab Account (طبیب اکاؤنٹ بنائیں) →
+        </button>
       </div>
 
       <!-- In-Modal Forgot Password View -->
@@ -1263,7 +1909,7 @@
 
       <!-- Trust Footer -->
       <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-mono">
-        <span>DPDP Act 2023 &amp; ABDM Compliant</span>
+        <span>DPDP-ready architecture &amp; ABDM integration-ready</span>
         <span>256-bit AES Cryptographic Session</span>
       </div>
 
@@ -1286,7 +1932,7 @@
         <p>ZAYVORA Health OS integrates classical Unani clinical assessment (*Kulliyat*, *10-Ajnas Mizaj*, *Organ-Axis*) with modern biomedical diagnostics and electronic health records.</p>
         <div class="p-3 bg-[var(--background)] rounded-xl border border-[var(--border)] space-y-1.5">
           <span class="font-semibold text-emerald-400 block">Non-Delegable Clinical Safety Guarantee</span>
-          <p>AI assists clinicians with evidence citations from the Unani Pharmacopoeia of India (UPI). AI never prescribes or locks prescriptions autonomously. Every treatment order requires licensed clinician cryptographic digital sign-off (21 CFR Part 11).</p>
+          <p>Hakeem Sahab™ Clinical Decision Support assists practitioners with codified evidence citations from the Unani Pharmacopoeia of India (UPI) and classical canonical treatises. Clinical advisory is strictly consultative—prescriptions and therapeutic orders are never locked automatically and always require review and cryptographic digital sign-off by a licensed clinician (21 CFR Part 11).</p>
         </div>
         <p>Support Hotline: <span class="text-white font-mono">+91 97738 82657</span> • Emergency Code: <span class="text-rose-400 font-mono">CODE RED (Refer to Hospital ER)</span></p>
       </div>
@@ -1823,7 +2469,7 @@
         <button onclick="toggleComputationalIntelligenceModal()" class="px-4 py-2 rounded-xl border border-[var(--border)] text-xs text-slate-400 hover:text-white">Close</button>
         <div class="flex gap-2">
           <button onclick="runLiveShadowEvaluation()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow flex items-center gap-1.5">
-            <span>⚡</span> Run Shadow Hakeem Sahab CDS
+            <span>🌿</span> Consult Hakeem Sahab™ Advisory
           </button>
           <button onclick="applyTwinToRx()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow flex items-center gap-1.5">
             <span>🧬</span> Confirm Twin for Active Rx
@@ -1938,13 +2584,13 @@
       </div>
 
       <!-- Live Video Viewfinder Container -->
-      <!-- Mode Selector: Document OCR vs Tongue/Face AI -->
+      <!-- Mode Selector: Document OCR vs Tongue/Face Clinical Assessment -->
       <div class="flex items-center gap-2 pb-1 text-xs">
         <button id="btn-mode-ocr" onclick="setScannerMode('ocr')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold transition flex items-center gap-1.5 shadow-sm">
           <span>📄</span> Document &amp; Lab OCR
         </button>
         <button id="btn-mode-lisan" onclick="setScannerMode('lisan')" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white font-bold transition flex items-center gap-1.5">
-          <span>👅</span> Tongue (Lisan) &amp; Face AI Scanner
+          <span>👅</span> Tongue (Lisan) &amp; Facial Clinical Inspection (Muayana)
         </button>
       </div>
 
@@ -2295,9 +2941,131 @@
     </div>
   </div>
 
+  
+  <!-- ========================================================================= -->
+  <!-- 52. LIVE OPTICAL NABZ SCANNER MODAL (CAMERA PHOTOPLETHYSMOGRAPHY - rPPG) -->
+  <!-- ========================================================================= -->
+  <div id="optical-nabz-scanner-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-gradient-to-b from-[#060D1A] via-[#0B1528] to-[#060D1A] border border-cyan-500/50 rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      
+      <!-- HEADER -->
+      <div class="flex justify-between items-start border-b border-cyan-500/20 pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl animate-pulse">❤️</span>
+            <h3 class="font-bold text-white text-lg">Live Optical Nabz Scanner (Camera PPG)</h3>
+            <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-[10px] font-bold border border-cyan-500/30">Optical Photoplethysmography</span>
+          </div>
+          <p class="text-xs text-slate-300 mt-1">
+            Measures real subcutaneous capillary blood flow via camera to compute live Heart Rate (BPM) and classical 10-Ajnas Nabz physiological parameters.
+          </p>
+        </div>
+        <button onclick="window.closeLiveOpticalNabzScannerModal()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- INSTRUCTIONS BANNER -->
+      <div id="ppg-instructions-banner" class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-3 text-xs text-slate-300">
+        <span class="text-xl">👉</span>
+        <div class="space-y-0.5">
+          <strong class="text-cyan-400 block">How to measure:</strong>
+          <span>Place your index fingertip gently over the camera lens until the video turns solid red/pink. Hold still for 10 seconds.</span>
+        </div>
+      </div>
+
+      <!-- SCANNER VIEWPORT & WAVEFORM -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- VIDEO CAMERA FEED THUMBNAIL -->
+        <div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-cyan-500/30 flex flex-col items-center justify-center min-h-[160px] p-2 text-center">
+          <video id="ppg-video-feed" playsinline autoplay muted class="w-full h-32 object-cover rounded-xl bg-black"></video>
+          <div id="ppg-finger-status" class="mt-2 text-[11px] font-mono font-bold text-amber-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            Awaiting Finger Placement
+          </div>
+          <canvas id="ppg-hidden-canvas" width="60" height="60" class="hidden"></canvas>
+        </div>
+
+        <!-- LIVE PPG WAVEFORM CANVAS -->
+        <div class="md:col-span-2 relative rounded-2xl overflow-hidden bg-[#030712] border border-cyan-500/30 p-3 flex flex-col justify-between">
+          <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mb-1">
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Subcutaneous Blood Volume Wave</span>
+            <span id="ppg-sampling-rate">30 Hz Optical Stream</span>
+          </div>
+          <canvas id="ppg-wave-canvas" width="400" height="110" class="w-full h-[110px] bg-[#020617] rounded-xl border border-slate-800"></canvas>
+          <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mt-1">
+            <span>Filter: 0.75 - 3.0 Hz Bandpass</span>
+            <span id="ppg-signal-quality" class="text-cyan-300 font-bold">Signal Quality: Standby</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE METRICS CARDS -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
+          <span class="text-[10px] font-mono text-slate-400 uppercase block">Live Heart Rate</span>
+          <div class="flex items-center justify-center gap-1.5">
+            <span id="ppg-heart-icon" class="text-xl text-rose-500 transition-transform">❤️</span>
+            <strong id="ppg-metric-bpm" class="text-2xl font-black text-white font-mono">--</strong>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono">BPM (Beats / Min)</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
+          <span class="text-[10px] font-mono text-slate-400 uppercase block">Sur'at (Speed)</span>
+          <strong id="ppg-metric-surat" class="text-sm font-bold text-cyan-300 block mt-1">Awaiting</strong>
+          <span id="ppg-sub-surat" class="text-[10px] text-slate-400 font-mono">Sareea / Motadil / Batee</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
+          <span class="text-[10px] font-mono text-slate-400 uppercase block">Tawatur (Rhythm)</span>
+          <strong id="ppg-metric-tawatur" class="text-sm font-bold text-emerald-300 block mt-1">Awaiting</strong>
+          <span id="ppg-sub-tawatur" class="text-[10px] text-slate-400 font-mono">Mutawatir (Regular)</span>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
+          <span class="text-[10px] font-mono text-slate-400 uppercase block">Humoral Bias</span>
+          <strong id="ppg-metric-mizaj" class="text-sm font-bold text-amber-300 block mt-1">Baseline</strong>
+          <span id="ppg-sub-mizaj" class="text-[10px] text-slate-400 font-mono">Mizaji State</span>
+        </div>
+      </div>
+
+      <!-- DOCTOR INSIGHT & GROUNDING BOX -->
+      <div id="ppg-clinical-insight" class="p-3.5 rounded-2xl bg-cyan-950/30 border border-cyan-800/40 text-xs text-cyan-200 space-y-1">
+        <strong class="font-bold flex items-center gap-1.5 text-cyan-300">
+          <span>🩺</span> Classical Unani Semiologic Correlation:
+        </strong>
+        <p id="ppg-clinical-insight-text" class="text-slate-300 leading-relaxed text-[11px]">
+          Start the camera and position your finger over the lens. The pulse velocity (Sur'at) and strength (Quwwat) will be classified according to Ibn Sina's <em>Kitab al-Nabz</em> (The Canon of Medicine, Book 1).
+        </p>
+      </div>
+
+      <!-- FOOTER ACTIONS -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 border-t border-slate-800">
+        <div class="flex items-center gap-2">
+          <button id="ppg-btn-start" onclick="window.startLiveOpticalNabzScan()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-2">
+            <span>📹</span> Start Camera Scan
+          </button>
+          <button id="ppg-btn-stop" onclick="window.stopLiveOpticalNabzScan()" class="hidden px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow transition flex items-center gap-2">
+            <span>⏹</span> Stop Camera
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="window.attachOpticalPulseToVitals()" id="ppg-btn-attach" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition flex items-center justify-center gap-2 disabled:opacity-50" disabled>
+            <span>💾</span> Attach to Patient Vitals
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
-  <script src="/js/zayvora-core.js?v=15.9"></script>
+  <script src="js/grand-corpus-vault-data.js?v=16.1"></script>
+  <script src="js/zayvora-core.js?v=16.7"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -2367,7 +3135,7 @@
             <button onclick="viewWebsitePage('contact')" class="px-3 py-1.5 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white font-semibold text-[11px] rounded-lg border border-emerald-500/30 transition">
               Online Triage Desk &rarr;
             </button>
-            <button onclick="if (document.getElementById('opd-booking-card')) { document.getElementById('opd-booking-card').scrollIntoView({ behavior: 'smooth' }); } else { viewWebsitePage('home'); setTimeout(() => document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' }), 120); }" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-[11px] rounded-lg transition">
+            <button onclick="scrollToOpdBooking()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-[11px] rounded-lg transition">
               Book OPD Token
             </button>
           </div>
@@ -2384,7 +3152,7 @@
           </h4>
           <ul class="space-y-2 text-[11px]">
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_clinical_care')" class="hover:text-emerald-400 transition-colors block">In-Clinic Matab &amp; OPD Care</a></li>
-            <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 transition-colors block">Hakeem Sahab™ Clinical AI</a></li>
+            <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_ai_healthcare')" class="hover:text-emerald-400 transition-colors block">Hakeem Sahab™ Clinical CDSS</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_digital_health')" class="hover:text-emerald-400 transition-colors block">Digital Health &amp; Tele-Consult</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_pharmacy')" class="hover:text-emerald-400 transition-colors block">Botanical Dispensary (FEFO)</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('services_manufacturing')" class="hover:text-emerald-400 transition-colors block">Manufacturing OS &amp; eBMR</a></li>
@@ -2434,7 +3202,7 @@
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('philosophy')" class="hover:text-emerald-400 transition-colors block">Four Humors &amp; Temperaments</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('care_journey')" class="hover:text-emerald-400 transition-colors block">12-Step Clinical Continuum</a></li>
             <li><a href="javascript:void(0)" onclick="toggleMizajAssessmentModal(true);" class="hover:text-emerald-400 transition-colors block">60-Second Mizaj Assessment</a></li>
-            <li><a href="javascript:void(0)" onclick="viewWebsitePage('ethics')" class="hover:text-emerald-400 transition-colors block">Clinical &amp; AI Ethics Charter</a></li>
+            <li><a href="javascript:void(0)" onclick="viewWebsitePage('ethics')" class="hover:text-emerald-400 transition-colors block">Clinical Governance &amp; Ethics Charter</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('about');" class="hover:text-emerald-400 transition-colors block">Institutional Quorum Board</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('care_journey');" class="hover:text-emerald-400 transition-colors block">16 Regimental Modalities (Tadbeer)</a></li>
             <li><a href="javascript:void(0)" onclick="viewWebsitePage('philosophy')" class="text-emerald-400 font-semibold hover:underline block pt-1">Explore Medical Doctrine &rarr;</a></li>
@@ -2854,7 +3622,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- MODAL: ZAYVORA AGENTIC CLINICAL AI & RUNTIME GOVERNANCE                   -->
+  <!-- MODAL: ZAYVORA CLINICAL DECISION SUPPORT & RUNTIME GOVERNANCE                   -->
   <!-- ========================================================================= -->
   <div id="agentic-ai-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-indigo-500/40 rounded-2xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
@@ -2874,7 +3642,7 @@
         <div class="p-4 rounded-xl bg-gradient-to-r from-indigo-950/60 to-purple-950/60 border border-indigo-500/40">
           <p class="text-xs text-indigo-200 font-semibold tracking-wide uppercase text-center mb-1">Institutional Core Principle (§46)</p>
           <p class="text-sm md:text-base font-bold text-white text-center italic">
-            "AI proposes. Evidence informs. Safety constrains. Tools execute authorized actions. Clinician decides. System verifies. Governance learns."
+            "Clinical Advisory proposes. Canonical Evidence informs. Safety Firewalls constrain. Clinician decides with non-delegable judgment. System verifies. Clinical Governance learns."
           </p>
         </div>
 
@@ -2925,7 +3693,7 @@
               <p><strong class="text-slate-400 font-mono">R0 (Informational):</strong> Public knowledge search, appointment availability.</p>
               <p><strong class="text-slate-400 font-mono">R1 (Low-Risk Ops):</strong> Appointment booking, SMS reminders with verified delivery.</p>
               <p><strong class="text-blue-400 font-mono">R2 (Sensitive PHI):</strong> Patient record and lab result reads.</p>
-              <p><strong class="text-amber-400 font-mono">R3 (Clinically Meaningful):</strong> Draft Nuskha proposal (AI drafts, never finalizes).</p>
+              <p><strong class="text-amber-400 font-mono">R3 (Clinically Meaningful):</strong> Draft Nuskha proposal (Consultative recommendation for clinician sign-off).</p>
               <p><strong class="text-rose-400 font-mono">R4 (High-Impact Clinical):</strong> Digital prescription signing — <span class="text-rose-300 font-bold">Doctor ONLY</span>.</p>
               <p><strong class="text-purple-400 font-mono">R5 (Privileged System):</strong> Governance &amp; policy updates — <span class="text-purple-300 font-bold">Admin ONLY</span>.</p>
             </div>
@@ -2980,7 +3748,7 @@
             <span class="text-slate-400 text-[11px]">— For Patients, Public &amp; Media</span>
           </div>
           <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
-            "ZAYVORA is the world’s first clinical operating system that bridges <strong>1,000 years of root-cause natural healing (Tibb-e-Unani)</strong> with <strong>21st-century diagnostic science and clinical AI</strong>. Where conventional medicine suppresses symptoms with lifelong synthetic drugs, and traditional practitioners historically lacked blood biomarkers and digital safety gates, ZAYVORA unifies both: measuring an individual's unique biological constitution (Mizaj), verifying objective laboratory hematology and imaging, and delivering personalized, root-cause botanical and regimenal therapies with cryptographic clinical safety."
+            "ZAYVORA is the world’s first clinical operating system that bridges <strong>1,000 years of root-cause natural healing (Tibb-e-Unani)</strong> with <strong>21st-century diagnostic science and clinical decision intelligence</strong>. Where conventional medicine suppresses symptoms with lifelong synthetic drugs, and traditional practitioners historically lacked blood biomarkers and digital safety gates, ZAYVORA unifies both: measuring an individual's unique biological constitution (Mizaj), verifying objective laboratory hematology and imaging, and delivering personalized, root-cause botanical and regimenal therapies with cryptographic clinical safety."
           </p>
         </div>
 
@@ -3014,8 +3782,8 @@
               <p class="text-slate-300 text-[11px]">UPI standardization, mandatory Schedule E(1) Mudabbar detox gates, CYP450 checks, and 21 CFR Part 11 cryptographic sealing.</p>
             </div>
             <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-              <span class="font-bold text-purple-400 block text-xs">4. Governed AI, Empowered Doctor</span>
-              <p class="text-slate-300 text-[11px]">Hakeem Sahab AI™ assists with literature and safety checks, but never autonomously diagnoses or dispenses prescriptions.</p>
+              <span class="font-bold text-purple-400 block text-xs">4. Governed CDSS, Empowered Doctor</span>
+              <p class="text-slate-300 text-[11px]">Hakeem Sahab™ Clinical Advisory provides deep literature synthesis and multi-factor safety checks, keeping the physician firmly in control with non-delegable judgment (Clinical Decision Support. Attending physician analyzes & holds sole prescribing authority.).</p>
             </div>
           </div>
         </div>
@@ -3097,7 +3865,7 @@
     </div>
   </div>
 
-  <script src="/js/zayvora-extensions.js?v=15.9"></script>
+  <script src="js/zayvora-extensions.js?v=16.0"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
@@ -3137,7 +3905,7 @@
               <span class="text-lg font-bold text-emerald-900">INTEGRATIVE CLINICAL MATAB</span>
             </div>
             <p class="text-sm font-semibold text-emerald-800" dir="rtl">مطب زیورا فار ہربل میڈیسن والطب یونانی</p>
-            <p class="text-[11px] text-slate-600 mt-0.5">ZAYVORA Integrative Healthcare & Research Centre • Facility ID: <span class="font-mono font-bold text-slate-800">ZAY-HQ-01</span> • Verification: <span class="font-mono font-bold text-emerald-800">21 CFR Part 11 Certified</span></p>
+            <p id="slip-header-clinic-details" class="text-[11px] text-slate-600 mt-0.5">ZAYVORA Integrative Healthcare &amp; Research Centre • Facility ID: <span class="font-mono font-bold text-slate-800">ZAY-HQ-01</span> • Verification: <span class="font-mono font-bold text-emerald-800">21 CFR Part 11–aligned controls</span></p>
           </div>
           <div class="text-right sm:text-right text-xs text-slate-700 space-y-0.5">
             <strong class="text-sm font-bold text-slate-900 block">Hakeem Dr. Irfan Ashraf</strong>
@@ -3210,7 +3978,16 @@
         </div>
 
         <!-- Parhez & Tadbeer Guidance (Dietary Guidance - Asbab-e-Sittah Zarooriyyah) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pt-2 border-t border-slate-200">
+          <span class="text-xs font-bold text-slate-800">Parhez &amp; Tadbeer Regimen (پرہیز و تدابیر • Asbab-e-Sittah Zarooriyyah)</span>
+          <div class="no-print flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 text-[10px]">
+            <span class="text-slate-500 font-semibold px-1">Language:</span>
+            <button id="slip-lang-ur" type="button" onclick="switchRxSlipLanguage('ur')" class="px-2.5 py-1 rounded-md bg-emerald-700 text-white shadow-sm cursor-pointer font-bold">اردو (Urdu)</button>
+            <button id="slip-lang-hi" type="button" onclick="switchRxSlipLanguage('hi')" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer font-bold">हिन्दी (Hindi)</button>
+            <button id="slip-lang-en" type="button" onclick="switchRxSlipLanguage('en')" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 cursor-pointer font-bold">English</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
           <div class="p-3 rounded-xl bg-rose-50/80 border border-rose-200 space-y-1 text-xs">
             <span class="font-bold text-rose-900 flex items-center gap-1">
               <span>🚫</span> پرہیز و ممنوعات (Foods to Strictly Avoid):
@@ -3262,8 +4039,8 @@
         <div class="flex items-center gap-3">
           <span class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-lg">🎤</span>
           <div>
-            <h3 class="text-base font-bold text-white">Smart Voice &amp; Natural Dictation (Fast Matab AI)</h3>
-            <p class="text-xs text-slate-400">Dictate or paste prescription in natural Urdu, Hindi, or English</p>
+            <h3 class="text-base font-bold text-white">Clinical Voice &amp; Posology Dictation (Matab Clinical Scribe)</h3>
+            <p class="text-xs text-slate-400">Dictate or paste prescription in clinical Urdu, Hindi, or English</p>
           </div>
         </div>
         <button onclick="toggleVoicePrescriptionModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
@@ -3865,6 +4642,26 @@
             <p class="text-[11px] text-slate-400">Real-world registry of 1,240+ multi-center subjects with objective biochemical verification.</p>
           </div>
 
+          <!-- 11. Kulliyat-e-Adwiyah Pharmacological Matrix (Dr. Abdul Wadud) -->
+          <div onclick="toggleGlobalToolsModal(false); openKulliyatDictionaryModal();" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500 hover:bg-emerald-950/20 transition cursor-pointer space-y-1.5 group">
+            <div class="flex justify-between items-center">
+              <span class="text-2xl group-hover:scale-110 transition">📖</span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">ISHRAH AL-ADWIYAH</span>
+            </div>
+            <h4 class="text-xs font-bold text-white group-hover:text-emerald-300 transition">Kulliyat-e-Adwiyah Matrix</h4>
+            <p class="text-[11px] text-slate-400">74 Standardized Clinical Actions, 9 Tastes &amp; Pharmacodynamics, 8 Compounding Rules &amp; Degrees of Temperament (Dr. Abdul Wadud).</p>
+          </div>
+
+          <!-- Card 12: Grand Medical Bookshelf & UMA Terminology -->
+          <div onclick="toggleGlobalToolsModal(false); openGrandCorpusModal();" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-blue-500 hover:bg-blue-950/20 transition cursor-pointer space-y-1.5 group">
+            <div class="flex justify-between items-center">
+              <span class="text-2xl group-hover:scale-110 transition">📚</span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">48 VOLS • 1,593 UMA</span>
+            </div>
+            <h4 class="text-xs font-bold text-white group-hover:text-blue-300 transition">Grand Medical Bookshelf &amp; UMA</h4>
+            <p class="text-[11px] text-slate-400">48 Classical &amp; Modern Treatises (Al-Hawi, Al-Qanun, Kamil al-Sina'a, Harrison's) + 1,593 Standardized UMA Terms.</p>
+          </div>
+
         </div>
       </div>
     </div>
@@ -3915,6 +4712,286 @@
       </div>
       <div id="organ-axis-modal-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
         <!-- Rendered dynamically by renderOrganAxisModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 13. VISUAL MIZAJ CARD MODAL (PATIENT SHARING & CLINICAL SUMMARY)      -->
+  <!-- ===================================================================== -->
+  <div id="visual-mizaj-card-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-md">📜</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Patient Constitutional Mizaj Card™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Shareable Summary</span>
+            </h3>
+            <p class="text-xs text-slate-400">Holistic humoral profile, predominant temperament, and tailored Asbab-e-Sitta lifestyle advice</p>
+          </div>
+        </div>
+        <button onclick="closeVisualMizajCard()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="visual-mizaj-card-content" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        <!-- Rendered dynamically by renderVisualMizajCard() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 14. CANONICAL BADAL (SUBSTITUTE DRUG) PROTOCOL MODAL                  -->
+  <!-- ===================================================================== -->
+  <div id="badal-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-amber-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-500 text-slate-950 flex items-center justify-center font-bold text-lg shadow-md">🌿</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Canonical Badal (Substitute Drug) Protocol™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">UPI Canonical</span>
+            </h3>
+            <p class="text-xs text-slate-400">Substituting: <span id="badal-original-name" class="font-bold text-emerald-400">Medication</span> &bull; Evidence-based therapeutic equivalents</p>
+          </div>
+        </div>
+        <button onclick="closeBadalModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div id="badal-options-list" class="p-6 overflow-y-auto flex-1 space-y-3 text-xs">
+        <!-- Rendered dynamically by showBadalModal() -->
+      </div>
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-end">
+        <button onclick="closeBadalModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 15. CLINIC LETTERHEAD & PRESCRIBER CONFIGURATION MODAL                -->
+  <!-- ===================================================================== -->
+  <div id="clinic-letterhead-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-md">🏥</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Clinic Letterhead &amp; Prescriber Profile</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Matab Stationery</span>
+            </h3>
+            <p class="text-xs text-slate-400">Configure clinic stationery branding for A4 slips, 80mm thermal receipts &amp; WhatsApp orders</p>
+          </div>
+        </div>
+        <button onclick="closeClinicLetterheadModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] text-slate-400 font-semibold mb-1">Clinic Name (English)</label>
+            <input id="cfg-clinic-name" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="ZAYVORA INTEGRATIVE CLINICAL MATAB" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 font-semibold mb-1">Clinic Name (Urdu / Arabic)</label>
+            <input id="cfg-clinic-urdu" type="text" dir="rtl" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500 font-serif" placeholder="مطب زیورا فار ہربل میڈیسن والطب یونانی" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[11px] text-slate-400 font-semibold mb-1">Doctor / Hakeem Name</label>
+            <input id="cfg-doctor-name" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="Hakeem Dr. Irfan Ashraf" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 font-semibold mb-1">Statutory Reg No.</label>
+            <input id="cfg-doctor-reg" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500 font-mono" placeholder="BUMS/AMU/2007" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 font-semibold mb-1">OPD Consultation Timing</label>
+            <input id="cfg-clinic-timing" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="OPD Timing: 10:00 AM - 02:00 PM" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 font-semibold mb-1">Degrees &amp; Alma Mater</label>
+          <input id="cfg-doctor-degree" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="BUMS (AKTC Aligarh Muslim University, Batch 2002, Passed 2007) • Senior Integrative Physician" />
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 font-semibold mb-1">Clinic Address &amp; Facility Details</label>
+          <input id="cfg-clinic-address" type="text" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500" placeholder="ZAYVORA Integrative Healthcare &amp; Research Centre • Facility ID: ZAY-HQ-01" />
+        </div>
+      </div>
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
+        <span class="text-[10px] text-slate-500">Persisted locally in encrypted browser vault</span>
+        <div class="flex gap-2">
+          <button onclick="closeClinicLetterheadModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
+          <button onclick="saveClinicLetterheadSettings()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 16. RAPID DISPENSARY & QARABADEEN STOCK LOOKUP MODAL                  -->
+  <!-- ===================================================================== -->
+  <div id="quick-dispensary-lookup-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-cyan-500/50 rounded-3xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 text-white flex items-center justify-center font-bold text-lg shadow-md">💊</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Rapid Dispensary &amp; Stock Lookup™</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Live FEFO Stock</span>
+            </h3>
+            <p class="text-xs text-slate-400">Search 350+ classical Unani formulations, stock counts, batch shelf-life &amp; clinical indications</p>
+          </div>
+        </div>
+        <button onclick="closeDispensaryLookupModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div class="p-6 border-b border-slate-800 bg-slate-950/60">
+        <input id="dispensary-lookup-input" oninput="filterDispensaryLookup(this.value)" type="text" placeholder="Type formulation name in English, Urdu or clinical indication (e.g., Banafsha, Waja-ul-Mafasil, Cough)..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-cyan-500" />
+      </div>
+      <div id="dispensary-lookup-results" class="p-6 overflow-y-auto flex-1 space-y-2.5 text-xs">
+        <!-- Rendered dynamically by filterDispensaryLookup() -->
+      </div>
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
+        <span class="text-[10px] text-slate-400">FEFO Dispensary Ledger Active</span>
+        <button onclick="closeDispensaryLookupModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 17. END-OF-DAY (EOD) CLINICAL & REVENUE RECONCILIATION MODAL          -->
+  <!-- ===================================================================== -->
+  <div id="eod-report-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-md">📊</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>End-of-Day (EOD) Clinical &amp; Revenue Reconciliation</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">21 CFR Part 11</span>
+            </h3>
+            <p id="eod-date-display" class="text-xs text-slate-400">Daily Audit Register</p>
+          </div>
+        </div>
+        <button onclick="closeEODReportModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+          <div class="flex justify-between items-center border-b border-slate-800/80 pb-2">
+            <span class="text-slate-400">Facility / Clinic:</span>
+            <span id="eod-clinic-name" class="font-bold text-white">ZAYVORA Integrative Clinical Matab</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 text-[10px] block">Total OPD Consultations</span>
+              <span class="text-xl font-bold text-white mt-0.5 block">18 Patients</span>
+              <span class="text-[10px] text-emerald-400">100% Attended</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 text-[10px] block">Prescriptions Signed</span>
+              <span class="text-xl font-bold text-emerald-400 mt-0.5 block">16 e-Rx</span>
+              <span class="text-[10px] text-teal-400">Statutory Compliant</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 text-[10px] block">Medicines Dispensed</span>
+              <span class="text-xl font-bold text-cyan-400 mt-0.5 block">24 Units</span>
+              <span class="text-[10px] text-cyan-300">FEFO Tracked</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 text-[10px] block">Total Revenue Collected</span>
+              <span class="text-xl font-bold text-amber-300 mt-0.5 block">₹13,250</span>
+              <span class="text-[10px] text-slate-400">Cash: ₹5,200 | UPI: ₹8,050</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1">
+          <span class="font-bold text-white text-[11px] block">Audit Integrity:</span>
+          <p class="text-[11px] text-slate-400">Ledger state is cryptographically hashed with SHA-256 for CDSCO and 21 CFR Part 11 audit readiness.</p>
+        </div>
+      </div>
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
+        <button onclick="sendEODViaWhatsApp()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow">
+          <span>💬</span> Send via WhatsApp
+        </button>
+        <div class="flex gap-2">
+          <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Print Summary</button>
+          <button onclick="closeEODReportModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 18. DISPENSARY PAR-LEVEL DEPLETION & LOW STOCK ALERT MODAL           -->
+  <!-- ===================================================================== -->
+  <div id="low-stock-alert-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+    <div class="bg-slate-900 border border-rose-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
+      <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 text-white flex items-center justify-center font-bold text-lg shadow-md">⚠️</span>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>Dispensary Low-Stock Re-Order Alert</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">Par-Level Critical</span>
+            </h3>
+            <p class="text-xs text-slate-400">4 formulations have breached minimum par-level thresholds and require procurement dispatch</p>
+          </div>
+        </div>
+        <button onclick="closeLowStockAlertModal()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 space-y-3 text-xs">
+        <div class="p-3 rounded-xl bg-slate-950 border border-rose-950 flex justify-between items-center">
+          <div>
+            <strong class="text-white font-bold text-xs">Sharbat Banafsha</strong>
+            <span class="text-slate-400 text-[10px] block">Standard 200ml Glass Bottle • Respiratory Cough Syrups</span>
+          </div>
+          <div class="text-right">
+            <span class="font-mono text-rose-400 font-bold block text-xs">4 Units Remaining</span>
+            <span class="text-[10px] text-slate-500">Par-Level: 15 Units</span>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-rose-950 flex justify-between items-center">
+          <div>
+            <strong class="text-white font-bold text-xs">Majoon Ushba</strong>
+            <span class="text-slate-400 text-[10px] block">125g Amber Jar • Musaffi-e-Dam (Blood Purifier)</span>
+          </div>
+          <div class="text-right">
+            <span class="font-mono text-rose-400 font-bold block text-xs">2 Units Remaining</span>
+            <span class="text-[10px] text-slate-500">Par-Level: 10 Units</span>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-amber-950 flex justify-between items-center">
+          <div>
+            <strong class="text-white font-bold text-xs">Habbe Jadwar</strong>
+            <span class="text-slate-400 text-[10px] block">60 Tablets Container • Vitality &amp; Neuro-Endocrine Tonic</span>
+          </div>
+          <div class="text-right">
+            <span class="font-mono text-amber-400 font-bold block text-xs">6 Units Remaining</span>
+            <span class="text-[10px] text-slate-500">Par-Level: 20 Units</span>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-amber-950 flex justify-between items-center">
+          <div>
+            <strong class="text-white font-bold text-xs">Itrifal Kishneezi</strong>
+            <span class="text-slate-400 text-[10px] block">150g Jar • Gastric &amp; Cephalic Digestion</span>
+          </div>
+          <div class="text-right">
+            <span class="font-mono text-amber-400 font-bold block text-xs">7 Units Remaining</span>
+            <span class="text-[10px] text-slate-500">Par-Level: 20 Units</span>
+          </div>
+        </div>
+      </div>
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center">
+        <span class="text-[10px] text-slate-400">Automated PO generation ready</span>
+        <div class="flex gap-2">
+          <button onclick="closeLowStockAlertModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Dismiss</button>
+          <button onclick="generatePurchaseReorderOrder()" class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow">
+            Generate PO Dispatch
+          </button>
+        </div>
       </div>
     </div>
   </div>

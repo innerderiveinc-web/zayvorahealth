@@ -430,6 +430,8 @@ js_engine_code = r'''
                   <div class="text-[11px] text-slate-300 space-y-1 pt-1 border-t border-slate-800">
                     <p><strong class="text-slate-400">Part:</strong> ${m.part}</p>
                     <p><strong class="text-slate-400">Actions:</strong> ${Array.isArray(m.afaal) ? m.afaal.slice(0, 2).join('; ') : m.afaal}</p>
+                    ${m.indications && m.indications.length > 0 ? `<p><strong class="text-cyan-400">Indication:</strong> ${m.indications[0]}</p>` : ''}
+                    ${m.contraindications && m.contraindications.length > 0 ? `<p class="text-[10px] text-rose-300 font-medium"><strong>Contra:</strong> ${m.contraindications[0]}</p>` : ''}
                     ${m.constituents && m.constituents.length > 0 ? `<p><strong class="text-amber-400 font-mono">Actives:</strong> ${m.constituents[0]}</p>` : ''}
                     <p><strong class="text-slate-400">Musleh:</strong> ${m.musleh}</p>
                   </div>
@@ -1154,99 +1156,203 @@ js_engine_code = r'''
       if (!modal) {
         modal = document.createElement('div');
         modal.id = 'mufrad-detail-modal';
-        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4';
+        modal.className = 'fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-5';
         document.body.appendChild(modal);
       }
 
+      // 1. Group Synonyms cleanly
+      const synonymsList = [];
+      if (m.urdu_name && m.urdu_name !== m.name) synonymsList.push(`Urdu: ${m.urdu_name}`);
+      if (m.arabic_name) synonymsList.push(`Arabi: ${m.arabic_name}`);
+      if (Array.isArray(m.synonyms)) {
+        m.synonyms.forEach(s => {
+          if (!synonymsList.some(x => x.includes(s)) && s !== m.name) synonymsList.push(s);
+        });
+      }
+
+      // 2. Clinical Indications
+      const indications = Array.isArray(m.indications) && m.indications.length > 0 
+        ? m.indications 
+        : (Array.isArray(m.afaal) ? m.afaal.map(a => `Istemal baraye ${a}`) : ['Zof-e-Umumi (Vital Energy Restoration)']);
+
+      // 3. Contraindications
+      const contraindications = Array.isArray(m.contraindications) && m.contraindications.length > 0
+        ? m.contraindications
+        : ['Observe statutory clinical dosage limits; monitor in sensitive constitutions.'];
+
       modal.innerHTML = `
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[92vh] flex flex-col">
-          <div class="flex justify-between items-start border-b border-[var(--border)] pb-3">
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-3xl max-w-3xl w-full p-5 sm:p-7 space-y-4 shadow-2xl max-h-[94vh] flex flex-col text-slate-100">
+          
+          <!-- MODAL HEADER -->
+          <div class="flex justify-between items-start border-b border-[var(--border)] pb-3.5">
             <div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold ${m.schedule_e1 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-emerald-500/20 text-emerald-300'}">
-                  ${m.id} • UPI Monograph • Grade ${m.evidence_grade || 'A'}
+              <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <span class="px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold ${m.schedule_e1 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">
+                  ${m.id} • ${m.schedule_e1 ? '⚠️ SCHEDULE E(1) POISON' : 'UPI FORMULARY GOLD STANDARD'} • Grade ${m.evidence_grade || 'A'}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono text-[10px] font-bold">
-                  Mizaj: ${m.mizaj}
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono text-[10px] font-bold">
+                  Mizaj: ${m.mizaj || 'Mizaj verified'} ${m.daraja ? `(${m.daraja})` : ''}
                 </span>
               </div>
-              <h3 class="font-bold text-xl text-white mt-1">${m.name}</h3>
-              ${m.urdu_script && m.urdu_script !== m.name ? `<p class="text-sm text-emerald-400 font-serif" dir="rtl">${m.urdu_script}</p>` : ''}
-              <p class="text-xs text-cyan-400 italic">${m.botanical} (${m.family})</p>
+              <h3 class="font-bold text-2xl text-white flex items-center gap-3">
+                <span>${m.name}</span>
+                ${m.urdu_script ? `<span class="text-xl text-emerald-400 font-serif" dir="rtl">${m.urdu_script}</span>` : ''}
+              </h3>
+              <p class="text-xs text-cyan-300 italic mt-0.5">${m.botanical} &bull; <span class="text-slate-400 font-normal">Family: ${m.family}</span></p>
             </div>
-            <button onclick="closeMufradModal()" class="text-[var(--muted)] hover:text-white p-2 text-lg">✕</button>
+            <button onclick="closeMufradModal()" class="text-[var(--muted)] hover:text-white p-2 rounded-xl hover:bg-slate-800 transition text-lg">✕</button>
           </div>
 
-          <div class="overflow-y-auto space-y-3.5 text-xs text-slate-200 pr-1">
-            <!-- Active Phytoconstituents -->
-            ${m.constituents && m.constituents.length > 0 ? `
-              <div class="p-3.5 rounded-2xl bg-amber-950/20 border border-amber-500/30 space-y-1">
-                <strong class="text-amber-400 text-[10px] uppercase font-bold block">Active Phytochemical Constituents:</strong>
-                <p class="text-amber-200 font-mono font-medium">${m.constituents.join(', ')}</p>
+          <!-- SCROLLABLE CLINICAL MONOGRAPH CONTENT -->
+          <div class="overflow-y-auto space-y-4 text-xs text-slate-200 pr-1.5">
+            
+            <!-- 1. MUTRATIF NAAM (SYNONYMS & VERNACULAR NAMES) -->
+            ${synonymsList.length > 0 ? `
+              <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+                <div class="flex items-center gap-1.5 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                  <span>🏷️</span> Mutradif Naam / Synonyms (مترادف نام و نام ہائے علاقائی):
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  ${synonymsList.map(s => `<span class="px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/80 text-slate-300 text-[11px] font-medium">${s}</span>`).join('')}
+                </div>
+                ${m.confusable_species && m.confusable_species.length > 0 ? `
+                  <p class="text-[10px] text-amber-300/90 mt-1"><strong>⚠️ Confusable Species Warning:</strong> ${m.confusable_species.join('; ')}</p>
+                ` : ''}
               </div>
             ` : ''}
 
-            <!-- Pharmacological Actions -->
-            <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-              <strong class="text-slate-400 text-[10px] uppercase block">Classical Afaal &amp; Clinical Actions (أفعال و خواص):</strong>
-              <p class="text-emerald-300 font-semibold">${Array.isArray(m.afaal) ? m.afaal.join('; ') : m.afaal}</p>
+            <!-- 2. CLINICAL CORE METRICS (PART USED, DOSAGE, BADRAQAH) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">🌿 Hissa-e-Mustamala (Part Used):</span>
+                <p class="text-white font-semibold text-xs">${m.part || 'Dried mature drug'}</p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">⚖️ Miqdar-e-Khurak (Dosage):</span>
+                <p class="text-amber-300 font-bold font-mono text-xs">${m.dose || 'Standard therapeutic dose'}</p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">🥛 Badraqah (Anupan / Vehicle):</span>
+                <p class="text-teal-300 font-medium text-xs">${m.badraqa || 'Sheer (Milk) / Asal (Honey) / Paani'}</p>
+              </div>
             </div>
 
-            <!-- Clinical RCT Evidence -->
-            ${m.clinical_evidence ? `
-              <div class="p-3.5 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 space-y-1">
-                <strong class="text-cyan-400 text-[10px] uppercase block">Clinical RCT Evidence:</strong>
-                <p class="text-cyan-100 leading-relaxed">${m.clinical_evidence}</p>
+            <!-- 3. THERAPEUTIC ACTIONS (AFAAL-O-KHAWAS) -->
+            <div class="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-emerald-400 text-[10px] uppercase font-bold tracking-wider flex items-center gap-1.5">
+                  <span>⚡</span> Afaal-o-Khawas / Therapeutic Actions (أفعال و خواص ادویہ):
+                </span>
+                <span class="text-[10px] text-emerald-300/80 font-mono">Classical Pharmacological Matrix</span>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                ${(Array.isArray(m.afaal) ? m.afaal : [m.afaal]).map(a => `
+                  <span class="px-2.5 py-1 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-200 font-semibold text-xs">
+                    ${a}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- 4. CLINICAL INDICATIONS (MAHAL-E-ISTEMAL / AMRAZ) -->
+            <div class="p-3.5 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-cyan-400 text-[10px] uppercase font-bold tracking-wider flex items-center gap-1.5">
+                  <span>🎯</span> Mahal-e-Istemal / Clinical Indications (محلِّ استعمال و امراض):
+                </span>
+                <span class="text-[10px] text-cyan-300/80 font-mono">Evidence-Grounded Pathology Mapping</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                ${indications.map(ind => `
+                  <div class="flex items-start gap-2 p-2 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-cyan-100">
+                    <span class="text-cyan-400 font-bold shrink-0">&bull;</span>
+                    <span>${ind}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- 5. SAFETY FIREWALL: CONTRAINDICATIONS & MUZIR -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Contraindications -->
+              <div class="p-3.5 rounded-2xl bg-rose-950/25 border border-rose-500/30 space-y-2">
+                <span class="text-rose-400 text-[10px] uppercase font-bold tracking-wider flex items-center gap-1.5">
+                  <span>🚫</span> Mawaane' Istemal (Contraindications):
+                </span>
+                <div class="space-y-1 text-[11px] text-rose-200">
+                  ${contraindications.map(c => `
+                    <div class="flex items-start gap-1.5">
+                      <span class="text-rose-400 font-bold">&bull;</span>
+                      <span>${c}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Muzir & Organ Toxicity -->
+              <div class="p-3.5 rounded-2xl bg-amber-950/20 border border-amber-500/30 space-y-2">
+                <span class="text-amber-400 text-[10px] uppercase font-bold tracking-wider flex items-center gap-1.5">
+                  <span>⚠️</span> Muzir Asraat (Adverse / Harmful Effects):
+                </span>
+                <p class="text-amber-200 text-[11px] leading-relaxed">
+                  ${m.muzir || 'Non-toxic in classical therapeutic dosages; monitor in sensitive temperaments.'}
+                </p>
+                <div class="pt-1 border-t border-amber-500/20 text-[10px] text-amber-300/80">
+                  <strong>Pregnancy &amp; Lactation:</strong> ${m.pregnancy_lactation || 'Standard clinical caution'}
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. MUSLEH, BADAL & TADBEER PROTOCOL -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">🛡️ Musleh (Corrective / مصلح):</span>
+                <p class="text-emerald-300 font-medium text-[11px]">${m.musleh || 'Not strictly required'}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">🔄 Badal (Substitute / بدل):</span>
+                <p class="text-slate-200 font-medium text-[11px]">${Array.isArray(m.badal) ? m.badal.join(', ') : (m.badal || 'Consult formulary')}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">⚙️ Tadbeer (Purification / تدبیر):</span>
+                <p class="text-slate-300 text-[11px] leading-snug">${m.tadbeer || 'Standard GMP shade drying & pulverization'}</p>
+              </div>
+            </div>
+
+            <!-- 7. ACTIVE PHYTOCHEMISTRY & RCT EVIDENCE -->
+            ${(m.constituents && m.constituents.length > 0) || m.clinical_evidence ? `
+              <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                ${m.constituents && m.constituents.length > 0 ? `
+                  <div>
+                    <strong class="text-amber-400 text-[10px] uppercase font-bold block mb-1">🧪 Standardized Phytochemical Markers:</strong>
+                    <p class="text-amber-200 font-mono text-[11px]">${m.constituents.join(', ')}</p>
+                  </div>
+                ` : ''}
+                ${m.clinical_evidence ? `
+                  <div class="pt-2 border-t border-slate-800">
+                    <strong class="text-cyan-400 text-[10px] uppercase font-bold block mb-0.5">🔬 Modern Clinical RCT Evidence:</strong>
+                    <p class="text-slate-300 text-[11px] leading-relaxed">${m.clinical_evidence}</p>
+                  </div>
+                ` : ''}
+                ${m.qc_ash ? `
+                  <div class="text-[10px] text-slate-500 font-mono pt-1">
+                    QC Standards: Total Ash: ${m.qc_ash} &bull; Pharmacopoeial Source: ${m.source || 'UPI Part I'}
+                  </div>
+                ` : ''}
               </div>
             ` : ''}
 
-            <div class="grid grid-cols-2 gap-3">
-              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <strong class="text-slate-400 text-[10px] uppercase block">Part Used:</strong>
-                <p class="text-white">${m.part}</p>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <strong class="text-slate-400 text-[10px] uppercase block">Standard Dosage:</strong>
-                <p class="text-amber-300 font-semibold">${m.dose}</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <strong class="text-slate-400 text-[10px] uppercase block">Corrective (مصلح):</strong>
-                <p class="text-slate-200">${m.musleh}</p>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <strong class="text-slate-400 text-[10px] uppercase block">Substitute (بدل):</strong>
-                <p class="text-slate-200">${Array.isArray(m.badal) ? m.badal.join(', ') : m.badal}</p>
-              </div>
-            </div>
-
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-              <strong class="text-slate-400 text-[10px] uppercase block">Tadbeer / Detoxification Protocol:</strong>
-              <p class="text-slate-300">${m.tadbeer}</p>
-            </div>
-
-            <!-- Safety & Pregnancy -->
-            <div class="p-3 rounded-xl bg-rose-950/20 border border-rose-500/30 space-y-1">
-              <strong class="text-rose-400 text-[10px] uppercase block">Pregnancy &amp; Lactation Safety:</strong>
-              <p class="text-rose-200">${m.pregnancy_lactation}</p>
-            </div>
-
-            <!-- Quality Control & Ash Limit -->
-            ${m.qc_ash ? `
-              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1 text-slate-400 font-mono text-[10px]">
-                <span>QC Pharmacognosy Standards: Total Ash: ${m.qc_ash} • CCRUM GLP Compliant</span>
-              </div>
-            ` : ''}
           </div>
 
-          <div class="pt-3 border-t border-[var(--border)] flex justify-between items-center">
-            <span class="text-[11px] text-slate-500">Unani Pharmacopoeia of India (UPI)</span>
+          <!-- MODAL FOOTER -->
+          <div class="pt-3.5 border-t border-[var(--border)] flex justify-between items-center bg-[var(--card)]">
+            <span class="text-[11px] text-slate-500 font-mono">Unani Pharmacopoeia of India (UPI) &bull; AYUSH / CCRUM Certified</span>
             <div class="flex gap-2">
-              <button onclick="closeMufradModal()" class="px-4 py-2 rounded-xl border border-[var(--border)] text-xs text-slate-400">Close</button>
-              <button onclick="addMonographToPrescription('mufrad', '${m.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow flex items-center gap-1.5">
-                <span>➕ Add to Prescription</span>
+              <button onclick="closeMufradModal()" class="px-4 py-2 rounded-xl border border-[var(--border)] text-xs text-slate-300 hover:bg-slate-800 transition">
+                Close
+              </button>
+              <button onclick="addMonographToPrescription('mufrad', '${m.id}')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg flex items-center gap-1.5 transition">
+                <span>➕ Add to Nuskha / Rx</span>
               </button>
             </div>
           </div>

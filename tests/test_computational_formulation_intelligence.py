@@ -122,7 +122,10 @@ def dispatch_request(method="GET", path="/", body=None, extra_headers=None):
 
 def make_test_token(role="DOCTOR", uid="TEST-LAB-DIRECTOR-001", fac="FAC-HQ-01"):
     """Generates a valid zyv. session token for test dispatch requests."""
-    JWT_SECRET = "zayvora-dev-rotated-hmac-secret-pilot-candidate-2026-64bit-minimum"
+    try:
+        from services.live_api_server import JWT_SECRET
+    except Exception:
+        JWT_SECRET = os.getenv("JWT_SECRET", "zayvora-dev-rotated-hmac-secret-pilot-candidate-2026-64bit-minimum")
     payload = {
         "uid": uid,
         "email": "lab-director@zayvora.com",

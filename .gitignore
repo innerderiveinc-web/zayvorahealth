@@ -10,6 +10,8 @@ coverage/
 
 # Database files
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
 database/zayvora_live.db
@@ -17,6 +19,11 @@ database/zayvora_live.db
 # Logs and archives
 *.log
 *.zip
+*.pid
+*.lock
+.server.pid
+.watchdog.*
+.DS_Store
 scratch/
 
 # Environment files

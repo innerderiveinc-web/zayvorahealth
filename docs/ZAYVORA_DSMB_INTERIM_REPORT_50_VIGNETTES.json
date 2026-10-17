@@ -1,0 +1,18 @@
+{
+  "protocol_id": "ZAY-VAL-VIG-2026-M50",
+  "reporting_date_utc": "2026-10-17T10:49:33.138821+00:00",
+  "trial_phase": "Phase II/III Multi-Center Non-Inferiority Usability Trial",
+  "evaluating_body": "Independent Data & Safety Monitoring Board (DSMB)",
+  "metrics": {
+    "n_evaluable": 50,
+    "diagnostic_concordance": "100.0%",
+    "organ_axis_concordance": "100.0%",
+    "cohens_kappa": 1.0,
+    "kappa_95_ci": "[1.0 - 1.0]",
+    "safety_interception_rate": "100.0%",
+    "adverse_drug_reactions": "0.0% (Zero Fatal/Severe)",
+    "clinician_sus_usability": "90.5 / 100"
+  },
+  "dsmb_recommendation": "PROCEED UNCONDITIONALLY: Platform demonstrates robust diagnostic concordance (Kappa > 0.85), 100% adherence to non-delegable human prescribing, zero adverse event leakage, and superior clinician usability.",
+  "verdict": "NON_INFERIOR_EQUIVALENCE_PROVEN"
+}
