@@ -2,6 +2,26 @@
   publish = "."
 
 [[redirects]]
+  from = "/app"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/clinical"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/portal"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/science"
+  to = "/science_and_research.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
