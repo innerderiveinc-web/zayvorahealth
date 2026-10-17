@@ -44,7 +44,8 @@ def sync():
         "manifest.json",
         "tailwind.min.js",
         "favicon.ico",
-        "zayvora-logo.png"
+        "zayvora-logo.png",
+        "CNAME"
     ]
 
     for fname in files_to_sync_to_docs:
