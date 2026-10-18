@@ -735,22 +735,53 @@
     }
 
     function toggleDoctorNavDropdown(e, forceState) {
-      if (e) e.stopPropagation();
+      if (e) {
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+      }
       const menu = document.getElementById('doctor-more-nav-menu');
-      if (!menu) return;
-      if (typeof forceState === 'boolean') {
-        if (forceState) menu.classList.remove('hidden');
-        else menu.classList.add('hidden');
+      const btn = document.getElementById('doctor-more-nav-btn');
+      if (!menu || !btn) return;
+
+      const isCurrentlyHidden = menu.classList.contains('hidden');
+      const shouldOpen = (typeof forceState === 'boolean') ? forceState : isCurrentlyHidden;
+
+      if (shouldOpen) {
+        // Floating fixed positioning immune to nav overflow-x-auto clipping!
+        const rect = btn.getBoundingClientRect();
+        menu.style.position = 'fixed';
+        menu.style.top = (rect.bottom + 6) + 'px';
+        const menuWidth = 280;
+        const maxLeft = Math.max(10, window.innerWidth - menuWidth - 16);
+        const targetLeft = Math.max(10, Math.min(rect.left, maxLeft));
+        menu.style.left = targetLeft + 'px';
+        menu.style.width = menuWidth + 'px';
+        menu.style.zIndex = '99999';
+        menu.classList.remove('hidden');
       } else {
-        menu.classList.toggle('hidden');
+        menu.classList.add('hidden');
       }
     }
     window.toggleDoctorNavDropdown = toggleDoctorNavDropdown;
+
     if (typeof document !== 'undefined') {
-      document.addEventListener('click', () => {
+      document.addEventListener('click', (e) => {
+        const menu = document.getElementById('doctor-more-nav-menu');
+        const btn = document.getElementById('doctor-more-nav-btn');
+        if (menu && !menu.classList.contains('hidden')) {
+          if (btn && (btn === e.target || btn.contains(e.target))) return;
+          if (menu.contains(e.target)) return;
+          menu.classList.add('hidden');
+        }
+      });
+      window.addEventListener('scroll', () => {
         const menu = document.getElementById('doctor-more-nav-menu');
         if (menu && !menu.classList.contains('hidden')) menu.classList.add('hidden');
-      });
+      }, { passive: true });
+      window.addEventListener('resize', () => {
+        const menu = document.getElementById('doctor-more-nav-menu');
+        if (menu && !menu.classList.contains('hidden')) menu.classList.add('hidden');
+      }, { passive: true });
     }
 
     function renderNavigation() {
@@ -790,13 +821,18 @@
         if (secondaryItems.length > 0) {
           html += `
             <div class="relative inline-block text-left shrink-0" id="doctor-more-nav-dropdown-wrap">
-              <button id="doctor-more-nav-btn" onclick="toggleDoctorNavDropdown(event)" class="nav-link shrink-0 ${isSecondaryActive ? 'active' : 'text-[var(--muted)] hover:text-white'} px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-transparent transition-colors flex items-center gap-1.5 bg-slate-900/60 hover:bg-slate-800">
+              <button id="doctor-more-nav-btn" type="button" onclick="toggleDoctorNavDropdown(event)" class="nav-link shrink-0 ${isSecondaryActive ? 'active' : 'text-[var(--muted)] hover:text-white'} px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-transparent transition-colors flex items-center gap-1.5 bg-slate-900/60 hover:bg-slate-800 cursor-pointer">
                 <span>${dropdownLabel}</span>
               </button>
-              <div id="doctor-more-nav-menu" class="hidden absolute left-0 mt-1.5 w-64 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl p-1.5 z-50 space-y-1">
+              <div id="doctor-more-nav-menu" class="hidden rounded-2xl bg-[#0F172A] border border-slate-700 shadow-2xl p-2 z-[99999] space-y-1 backdrop-blur-xl">
+                <div class="px-2.5 py-1.5 border-b border-slate-800 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                  <span>Specialty Desks</span>
+                  <span class="text-emerald-400 font-mono">${secondaryItems.length} Desks</span>
+                </div>
                 ${secondaryItems.map(item => `
-                  <button onclick="switchTab('${item.id}'); toggleDoctorNavDropdown(event, false);" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium ${isTabActive(item.id, state.tab) ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white'} flex items-center gap-2 transition">
-                    ${item.label}
+                  <button type="button" onclick="switchTab('${item.id}'); toggleDoctorNavDropdown(event, false);" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium ${isTabActive(item.id, state.tab) ? 'bg-emerald-600 text-white font-bold shadow' : 'text-slate-300 hover:bg-slate-800 hover:text-white'} flex items-center justify-between transition cursor-pointer group">
+                    <span class="flex items-center gap-2">${item.label}</span>
+                    <span class="text-[10px] text-slate-400 group-hover:text-emerald-400 font-mono">→</span>
                   </button>
                 `).join('')}
               </div>
