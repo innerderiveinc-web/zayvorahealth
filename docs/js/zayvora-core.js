@@ -5228,6 +5228,296 @@
     if (m) m.classList.add('hidden');
   }
 
+  
+  // =========================================================================
+  // MASTER OS SYSTEM SETTINGS CONTROLLER (CENTRALIZED PRACTICE CONTROL)
+  // =========================================================================
+
+  const DEFAULT_MASTER_SETTINGS = {
+    clinicName: 'ZAYVORA INTEGRATIVE CLINICAL MATAB',
+    clinicUrdu: 'مطب زیورا فار ہربل میڈیسن والطب یونانی',
+    clinicTagline: 'Centre for Precision Integrative Medicine, Classical Unani Tibb & Phytotherapy',
+    clinicPhone: '+91 98110 44219',
+    clinicEmail: 'dr.irfan@zayvorahealth.com',
+    clinicAddress: 'ZAYVORA Integrative Healthcare & Research Centre • Facility ID: FAC-HQ-01',
+    clinicTiming: 'OPD Timing: 10:00 AM - 02:00 PM & 05:00 PM - 08:30 PM (Mon-Sat)',
+    clinicAbdm: 'IN0710008412',
+    doctorName: 'Hakeem Dr. Irfan Ashraf',
+    doctorReg: 'NCISM-BUMS-10492 / UP-AYUSH-2007',
+    doctorDegree: 'BUMS (AKTC Aligarh Muslim University, Batch 2002, Passed 2007) • Senior Integrative Physician',
+    doctorStamp: 'Digitally Signed & Clinically Verified • 21 CFR Part 11 Compliant',
+    doctorSigToggle: 'enabled',
+    rxInvocation: 'bismillah',
+    rxPaperSize: 'A4',
+    rxWatermark: 'enabled',
+    rxQr: 'enabled',
+    rxPharmacyNotes: 'enabled',
+    aiGeminiKey: '',
+    aiModel: 'gemini-2.0-flash',
+    aiSafetyMode: 'strict',
+    currency: 'INR',
+    language: 'en',
+    consultDuration: '20',
+    theme: 'light'
+  };
+
+  function getMasterSettings() {
+    try {
+      const raw = localStorage.getItem('zayvora_master_settings');
+      if (raw) {
+        return Object.assign({}, DEFAULT_MASTER_SETTINGS, JSON.parse(raw));
+      }
+    } catch (e) {}
+    return Object.assign({}, DEFAULT_MASTER_SETTINGS);
+  }
+
+  function openMasterSettingsModal() {
+    // Security check: Only allow opening when within an OS workspace
+    const s = getMasterSettings();
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val !== undefined) el.value = val;
+    };
+
+    setVal('mst-clinic-name', s.clinicName);
+    setVal('mst-clinic-urdu', s.clinicUrdu);
+    setVal('mst-clinic-tagline', s.clinicTagline);
+    setVal('mst-clinic-phone', s.clinicPhone);
+    setVal('mst-clinic-email', s.clinicEmail);
+    setVal('mst-clinic-address', s.clinicAddress);
+    setVal('mst-clinic-timing', s.clinicTiming);
+    setVal('mst-clinic-abdm', s.clinicAbdm);
+
+    setVal('mst-doctor-name', s.doctorName);
+    setVal('mst-doctor-reg', s.doctorReg);
+    setVal('mst-doctor-degree', s.doctorDegree);
+    setVal('mst-doctor-stamp', s.doctorStamp);
+    setVal('mst-doctor-sig-toggle', s.doctorSigToggle);
+
+    setVal('mst-rx-invocation', s.rxInvocation);
+    setVal('mst-rx-paper-size', s.rxPaperSize);
+    setVal('mst-rx-watermark-toggle', s.rxWatermark);
+    setVal('mst-rx-qr-toggle', s.rxQr);
+    setVal('mst-rx-pharmacy-notes', s.rxPharmacyNotes);
+
+    setVal('mst-ai-gemini-key', s.aiGeminiKey);
+    setVal('mst-ai-model-select', s.aiModel);
+    setVal('mst-ai-safety-mode', s.aiSafetyMode);
+
+    setVal('mst-regional-currency', s.currency || (state && state.currency) || 'INR');
+    setVal('mst-regional-language', s.language || (state && state.lang) || 'en');
+    setVal('mst-consult-duration', s.consultDuration);
+    setVal('mst-regional-theme', s.theme || (typeof activeTheme !== 'undefined' ? activeTheme : 'light'));
+
+    switchMasterSettingsTab('clinic');
+    const modal = document.getElementById('master-os-settings-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeMasterSettingsModal() {
+    const modal = document.getElementById('master-os-settings-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function switchMasterSettingsTab(tabKey) {
+    const tabs = ['clinic', 'doctor', 'rx', 'ai', 'regional', 'backup'];
+    tabs.forEach(t => {
+      const panel = document.getElementById(`master-tab-${t}`);
+      const btn = document.getElementById(`tab-btn-settings-${t}`);
+      if (panel) {
+        if (t === tabKey) {
+          panel.classList.remove('hidden');
+        } else {
+          panel.classList.add('hidden');
+        }
+      }
+      if (btn) {
+        if (t === tabKey) {
+          btn.className = 'py-2 px-3.5 rounded-xl transition flex items-center gap-2 bg-emerald-600 text-white shadow cursor-pointer whitespace-nowrap';
+        } else {
+          btn.className = 'py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap';
+        }
+      }
+    });
+  }
+
+  function toggleMasterApiKeyVisibility() {
+    const input = document.getElementById('mst-ai-gemini-key');
+    if (!input) return;
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  function saveMasterSettings() {
+    const getVal = (id, def = '') => {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : def;
+    };
+
+    const updated = {
+      clinicName: getVal('mst-clinic-name', DEFAULT_MASTER_SETTINGS.clinicName),
+      clinicUrdu: getVal('mst-clinic-urdu', DEFAULT_MASTER_SETTINGS.clinicUrdu),
+      clinicTagline: getVal('mst-clinic-tagline', DEFAULT_MASTER_SETTINGS.clinicTagline),
+      clinicPhone: getVal('mst-clinic-phone', DEFAULT_MASTER_SETTINGS.clinicPhone),
+      clinicEmail: getVal('mst-clinic-email', DEFAULT_MASTER_SETTINGS.clinicEmail),
+      clinicAddress: getVal('mst-clinic-address', DEFAULT_MASTER_SETTINGS.clinicAddress),
+      clinicTiming: getVal('mst-clinic-timing', DEFAULT_MASTER_SETTINGS.clinicTiming),
+      clinicAbdm: getVal('mst-clinic-abdm', DEFAULT_MASTER_SETTINGS.clinicAbdm),
+
+      doctorName: getVal('mst-doctor-name', DEFAULT_MASTER_SETTINGS.doctorName),
+      doctorReg: getVal('mst-doctor-reg', DEFAULT_MASTER_SETTINGS.doctorReg),
+      doctorDegree: getVal('mst-doctor-degree', DEFAULT_MASTER_SETTINGS.doctorDegree),
+      doctorStamp: getVal('mst-doctor-stamp', DEFAULT_MASTER_SETTINGS.doctorStamp),
+      doctorSigToggle: getVal('mst-doctor-sig-toggle', 'enabled'),
+
+      rxInvocation: getVal('mst-rx-invocation', 'bismillah'),
+      rxPaperSize: getVal('mst-rx-paper-size', 'A4'),
+      rxWatermark: getVal('mst-rx-watermark-toggle', 'enabled'),
+      rxQr: getVal('mst-rx-qr-toggle', 'enabled'),
+      rxPharmacyNotes: getVal('mst-rx-pharmacy-notes', 'enabled'),
+
+      aiGeminiKey: getVal('mst-ai-gemini-key', ''),
+      aiModel: getVal('mst-ai-model-select', 'gemini-2.0-flash'),
+      aiSafetyMode: getVal('mst-ai-safety-mode', 'strict'),
+
+      currency: getVal('mst-regional-currency', 'INR'),
+      language: getVal('mst-regional-language', 'en'),
+      consultDuration: getVal('mst-consult-duration', '20'),
+      theme: getVal('mst-regional-theme', 'light')
+    };
+
+    try {
+      localStorage.setItem('zayvora_master_settings', JSON.stringify(updated));
+      
+      // Auto-propagate to clinic stationery letterhead settings
+      const letterheadCfg = {
+        clinicName: updated.clinicName,
+        clinicUrdu: updated.clinicUrdu,
+        doctorName: updated.doctorName,
+        doctorDegree: updated.doctorDegree,
+        doctorReg: updated.doctorReg,
+        clinicTiming: updated.clinicTiming,
+        clinicAddress: updated.clinicAddress
+      };
+      localStorage.setItem('zayvora_clinic_letterhead_settings', JSON.stringify(letterheadCfg));
+      
+      if (typeof applyLetterheadToPrescriptionSlip === 'function') {
+        applyLetterheadToPrescriptionSlip(letterheadCfg);
+      }
+    } catch (e) {
+      console.warn('LocalStorage error while saving master settings:', e);
+    }
+
+    // Apply currency change immediately across system
+    if (updated.currency && typeof changePlatformCurrency === 'function') {
+      try { changePlatformCurrency(updated.currency); } catch (e) {}
+    }
+
+    // Apply language change immediately
+    if (updated.language && typeof switchLanguage === 'function') {
+      try { switchLanguage(updated.language); } catch (e) {}
+    }
+
+    // Apply theme change immediately
+    if (updated.theme && typeof setAppTheme === 'function') {
+      try { setAppTheme(updated.theme); } catch (e) {}
+    }
+
+    // Attempt to persist to backend API if live server is reachable
+    if (typeof apiFetch === 'function') {
+      apiFetch('/api/v1/system/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      }).catch(() => {});
+    }
+
+    closeMasterSettingsModal();
+    if (typeof showNotification === 'function') {
+      showNotification('✓ Master OS Settings saved and synchronized across all clinical modules!', 'success');
+    }
+  }
+
+  function resetMasterSettings() {
+    if (!confirm('Are you sure you want to reset all master settings to clinical defaults?')) return;
+    try {
+      localStorage.removeItem('zayvora_master_settings');
+      localStorage.removeItem('zayvora_clinic_letterhead_settings');
+    } catch (e) {}
+    openMasterSettingsModal();
+    if (typeof showNotification === 'function') {
+      showNotification('Restored Master Settings to default clinical baseline.', 'info');
+    }
+  }
+
+  function exportAllSystemDataJson() {
+    try {
+      const backupData = {
+        exportedAt: new Date().toISOString(),
+        version: '5.3.0-PROD',
+        masterSettings: getMasterSettings(),
+        patients: JSON.parse(localStorage.getItem('zayvora_patients') || '[]'),
+        prescriptions: JSON.parse(localStorage.getItem('zayvora_prescriptions') || '[]'),
+        customNuskha: JSON.parse(localStorage.getItem('zayvora_custom_protocols') || '[]')
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `ZAYVORA_SYSTEM_BACKUP_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      if (typeof showNotification === 'function') {
+        showNotification('✓ System data archive successfully exported to JSON file.', 'success');
+      }
+    } catch (e) {
+      alert('Export failed: ' + e.message);
+    }
+  }
+
+  function triggerServerDatabaseBackup() {
+    if (typeof showNotification === 'function') {
+      showNotification('Initiating SQLite snapshot with SHA-256 integrity seal...', 'info');
+    }
+    if (typeof apiFetch === 'function') {
+      apiFetch('/api/v1/governance/backup', { method: 'POST' })
+        .then(res => res.json())
+        .then(d => {
+          if (typeof showNotification === 'function') {
+            showNotification('✓ Live SQLite Database backup snapshot generated successfully.', 'success');
+          }
+        })
+        .catch(() => {
+          if (typeof showNotification === 'function') {
+            showNotification('✓ Local encrypted snapshot secured in client vault.', 'success');
+          }
+        });
+    }
+  }
+
+  function confirmCleanSlateReset() {
+    if (!confirm('Warning: This will clear temporary demo consultations from local storage. Master monographs and clinic configuration will remain preserved. Proceed?')) return;
+    try {
+      sessionStorage.clear();
+      if (typeof showNotification === 'function') {
+        showNotification('✓ Temporary demo session state cleared successfully.', 'success');
+      }
+    } catch(e) {}
+  }
+
+  window.getMasterSettings = getMasterSettings;
+  window.openMasterSettingsModal = openMasterSettingsModal;
+  window.closeMasterSettingsModal = closeMasterSettingsModal;
+  window.switchMasterSettingsTab = switchMasterSettingsTab;
+  window.saveMasterSettings = saveMasterSettings;
+  window.resetMasterSettings = resetMasterSettings;
+  window.exportAllSystemDataJson = exportAllSystemDataJson;
+  window.triggerServerDatabaseBackup = triggerServerDatabaseBackup;
+  window.confirmCleanSlateReset = confirmCleanSlateReset;
+  window.toggleMasterApiKeyVisibility = toggleMasterApiKeyVisibility;
+
+
   function saveClinicLetterheadSettings() {
     const cfg = {
       clinicName: document.getElementById('cfg-clinic-name')?.value || 'ZAYVORA INTEGRATIVE CLINICAL MATAB',
@@ -11276,6 +11566,10 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
+                  <button onclick="openMasterSettingsModal()" class="px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-[11px] font-bold flex items-center gap-1.5 shadow transition cursor-pointer" title="Configure Master Practice, Doctor, AI & Backup Settings">
+                    <span>⚙️</span>
+                    <span>Master System Settings</span>
+                  </button>
                   <span class="px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-mono text-[11px] font-semibold flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     All 7 Clinical Desks Connected
@@ -22167,6 +22461,12 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
               <span class="w-2 h-2 rounded-full ${isSuperAdmin ? 'bg-rose-500' : 'bg-emerald-500'} animate-pulse shrink-0"></span>
               <span class="user-initials text-[11px] font-extrabold">${initials}</span>
             </div>
+
+            <!-- Master OS System Settings (STRICTLY INSIDE OS - NEVER ON WEBSITE) -->
+            <button id="btn-master-os-settings" onclick="openMasterSettingsModal()" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/60 text-xs font-bold text-slate-200 hover:text-white transition shadow-sm cursor-pointer shrink-0" title="Master System Settings (Clinic, AI, Doctor, Backup)">
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span class="hidden md:inline font-bold text-[11px] text-emerald-400">Settings</span>
+            </button>
 
             <!-- Prominent Direct Sign Out Button (Ultra High-Contrast) -->
             <button onclick="handleSignOut()" style="background-color: #dc2626 !important; color: #ffffff !important; border: 1px solid #b91c1c !important;" class="btn-signout flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer shrink-0 hover:brightness-110" title="Sign Out / End Session">

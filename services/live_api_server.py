@@ -2669,6 +2669,21 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             })
             return
 
+        # ── Master OS System Settings Endpoint ──────────────────────────────
+        if path == "/api/v1/system/settings":
+            try:
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("CREATE TABLE IF NOT EXISTS system_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+                    cur.execute("SELECT key, value FROM system_settings")
+                    rows = cur.fetchall()
+                    settings = {r[0]: r[1] for r in rows}
+                    self._send_json({"ok": True, "settings": settings})
+                    return
+            except Exception as e:
+                self._send_json({"ok": False, "error": str(e)}, status=500)
+                return
+
         # ── Universal Task Engine (Service 8) ────────────────────────────────
         if path == "/api/v1/tasks":
             role = query_params.get("role", ["DOCTOR"])[0]
@@ -5949,6 +5964,22 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 "permissions": ROLE_PERMISSIONS.get(role, [])
             }, status=201)
             return
+
+        # ── Master OS System Settings Persistence ───────────────────────────
+        if path == "/api/v1/system/settings":
+            try:
+                with get_db() as conn:
+                    cur = conn.cursor()
+                    cur.execute("CREATE TABLE IF NOT EXISTS system_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+                    for k, v in body.items():
+                        val_str = json.dumps(v) if isinstance(v, (dict, list)) else str(v)
+                        cur.execute("INSERT OR REPLACE INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)", (k, val_str))
+                    conn.commit()
+                self._send_json({"ok": True, "message": "System settings persisted successfully."})
+                return
+            except Exception as e:
+                self._send_json({"ok": False, "error": str(e)}, status=500)
+                return
 
         # OTP Request Challenge
         if path == "/api/v1/auth/otp/request":

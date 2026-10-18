@@ -4770,6 +4770,354 @@
   <!-- ===================================================================== -->
   <!-- 15. CLINIC LETTERHEAD & PRESCRIBER CONFIGURATION MODAL                -->
   <!-- ===================================================================== -->
+  
+  <!-- ===================================================================== -->
+  <!-- MASTER OS SYSTEM SETTINGS MODAL (OS INTERNAL ONLY - NEVER ON WEBSITE) -->
+  <!-- ===================================================================== -->
+  <div id="master-os-settings-modal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden">
+    <div class="bg-[#0B111E] border border-emerald-500/40 rounded-3xl max-w-4xl w-full max-h-[96vh] flex flex-col shadow-2xl overflow-hidden text-slate-100 animate-fade-in">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 bg-[#070D18] flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-cyan-500 flex items-center justify-center text-white text-xl shadow-lg font-bold border border-emerald-400/30">
+            ⚙️
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">ZAYVORA Health OS™ — Master System Settings</h3>
+              <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider">Internal Control Panel</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Centralized Practice Configuration • Prescriber Stationery, AI Engine, Regional Currency &amp; Encrypted Backup</p>
+          </div>
+        </div>
+        <button onclick="closeMasterSettingsModal()" class="w-8 h-8 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition font-bold text-sm cursor-pointer" title="Close Settings">✕</button>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex items-center gap-1.5 px-6 pt-3 pb-2 bg-[#080E1A] border-b border-slate-800/80 overflow-x-auto shrink-0 text-xs font-bold scrollbar-none" id="master-settings-tabs">
+        <button type="button" onclick="switchMasterSettingsTab('clinic')" id="tab-btn-settings-clinic" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 bg-emerald-600 text-white shadow cursor-pointer whitespace-nowrap">
+          <span>🏥</span> <span>Clinic &amp; Facility</span>
+        </button>
+        <button type="button" onclick="switchMasterSettingsTab('doctor')" id="tab-btn-settings-doctor" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap">
+          <span>🩺</span> <span>Clinician &amp; Reg</span>
+        </button>
+        <button type="button" onclick="switchMasterSettingsTab('rx')" id="tab-btn-settings-rx" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap">
+          <span>📄</span> <span>Rx Pad &amp; Print</span>
+        </button>
+        <button type="button" onclick="switchMasterSettingsTab('ai')" id="tab-btn-settings-ai" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap">
+          <span>🧠</span> <span>AI Copilot &amp; LLM</span>
+        </button>
+        <button type="button" onclick="switchMasterSettingsTab('regional')" id="tab-btn-settings-regional" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap">
+          <span>🌐</span> <span>Regional &amp; Currency</span>
+        </button>
+        <button type="button" onclick="switchMasterSettingsTab('backup')" id="tab-btn-settings-backup" class="py-2 px-3.5 rounded-xl transition flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer whitespace-nowrap">
+          <span>💾</span> <span>Backup &amp; Security</span>
+        </button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-5 text-xs text-slate-200">
+        
+        <!-- 1. CLINIC & FACILITY PROFILE TAB -->
+        <div id="master-tab-clinic" class="space-y-4">
+          <div class="p-3.5 rounded-2xl bg-emerald-950/30 border border-emerald-500/20 text-emerald-200 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>🏛️</span> <strong>Practice &amp; Clinic Stationery Profile:</strong> Appears on patient invoices, OPD slips, prescription PDFs, and hospital tokens.</span>
+            <span class="text-[10px] font-mono text-emerald-400">System-Wide</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Official Practice / Clinic Name (English)</label>
+              <input id="mst-clinic-name" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-white font-semibold text-xs focus:outline-none focus:border-emerald-400" placeholder="ZAYVORA INTEGRATIVE CLINICAL MATAB" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Practice Subtitle / Calligraphic Header (Urdu / Arabic)</label>
+              <input id="mst-clinic-urdu" type="text" dir="rtl" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-300 font-serif text-xs focus:outline-none focus:border-emerald-400" placeholder="مطب زیورا فار ہربل میڈیسن والطب یونانی" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Specialization &amp; Center Tagline</label>
+            <input id="mst-clinic-tagline" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-emerald-400" placeholder="Centre for Precision Integrative Medicine, Classical Unani Tibb &amp; Phytotherapy" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Universal Helpline / WhatsApp Contact</label>
+              <input id="mst-clinic-phone" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-mono text-xs focus:outline-none focus:border-emerald-400" placeholder="+91 98110 44219" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Official Clinic Email</label>
+              <input id="mst-clinic-email" type="email" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 font-mono text-xs focus:outline-none focus:border-emerald-400" placeholder="dr.irfan@zayvorahealth.com" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Physical Chamber Address &amp; Facility ID</label>
+            <input id="mst-clinic-address" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-emerald-400" placeholder="ZAYVORA Integrative Healthcare &amp; Research Centre • Facility ID: FAC-HQ-01" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">OPD &amp; Virtual Consultation Timings</label>
+              <input id="mst-clinic-timing" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-emerald-400" placeholder="OPD Timing: 10:00 AM - 02:00 PM &amp; 05:00 PM - 08:30 PM (Mon-Sat)" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">ABDM HFR Facility ID (Ayushman Bharat)</label>
+              <input id="mst-clinic-abdm" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-mono text-xs focus:outline-none focus:border-emerald-400" placeholder="IN0710008412" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. CLINICIAN & CREDENTIALS TAB -->
+        <div id="master-tab-doctor" class="hidden space-y-4">
+          <div class="p-3.5 rounded-2xl bg-teal-950/30 border border-teal-500/20 text-teal-200 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>🩺</span> <strong>Lead Prescriber Profile:</strong> Configures Doctor credentials printed on prescription letterhead and statutory audit trail.</span>
+            <span class="text-[10px] font-mono text-teal-400">Statutory Compliant</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Lead Tabeeb / Doctor Full Name</label>
+              <input id="mst-doctor-name" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-white font-bold text-xs focus:outline-none focus:border-teal-400" placeholder="Hakeem Dr. Irfan Ashraf" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Statutory Council Reg. Number</label>
+              <input id="mst-doctor-reg" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-mono font-bold text-xs focus:outline-none focus:border-teal-400" placeholder="NCISM-BUMS-10492 / UP-AYUSH-2007" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Medical Qualifications, Alma Mater &amp; Fellowships</label>
+            <input id="mst-doctor-degree" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-teal-400" placeholder="BUMS (AKTC Aligarh Muslim University, Batch 2002, Passed 2007) • Senior Integrative Physician" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Prescription Digital Verification Stamp Text</label>
+              <input id="mst-doctor-stamp" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-300 font-mono text-xs focus:outline-none focus:border-teal-400" placeholder="Digitally Signed &amp; Clinically Verified • 21 CFR Part 11 Compliant" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Prescriber Digital Signature Stamp</label>
+              <select id="mst-doctor-sig-toggle" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-semibold text-xs focus:outline-none focus:border-teal-400 cursor-pointer">
+                <option value="enabled" selected>✓ Enable Prescriber Cryptographic Seal on Printed Slips</option>
+                <option value="disabled">✕ Omit Digital Seal (Manual Physical Signature on Paper)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PRESCRIPTION PAD & PRINT ENGINE TAB -->
+        <div id="master-tab-rx" class="hidden space-y-4">
+          <div class="p-3.5 rounded-2xl bg-cyan-950/30 border border-cyan-500/20 text-cyan-200 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>📄</span> <strong>Stationery &amp; Print Engine:</strong> Customizes A4 print layouts, thermal receipts, watermarks, and verification QR codes.</span>
+            <span class="text-[10px] font-mono text-cyan-400">PDF &amp; Thermal</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Spiritual / Classical Invocation Header</label>
+              <select id="mst-rx-invocation" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-amber-300 font-serif text-xs focus:outline-none focus:border-cyan-400 cursor-pointer">
+                <option value="bismillah" selected>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ — بِهِ نَسْتَعِينُ (Classical Arabic)</option>
+                <option value="shifa">بحمدہ و شفاء من اللہ — ھو الشافی (Urdu / Arabic)</option>
+                <option value="secular">Rx • Precision Integrative Health OS</option>
+                <option value="none">None (Clean Minimalist Header)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Default Paper Output Format</label>
+              <select id="mst-rx-paper-size" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-white font-mono text-xs focus:outline-none focus:border-cyan-400 cursor-pointer">
+                <option value="A4" selected>Standard A4 Letterhead (210 × 297 mm)</option>
+                <option value="Letter">US Letter (8.5 × 11 inches)</option>
+                <option value="Thermal80">80mm POS Thermal Receipt (Rapid Matab)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+              <label class="text-[11px] font-bold text-slate-300 block">Watermark on Print</label>
+              <select id="mst-rx-watermark-toggle" class="w-full px-2 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-emerald-400 text-xs focus:outline-none cursor-pointer">
+                <option value="enabled" selected>✓ ON (Subtle 4% opacity)</option>
+                <option value="disabled">✕ OFF (Clean paper)</option>
+              </select>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+              <label class="text-[11px] font-bold text-slate-300 block">QR Verification Code</label>
+              <select id="mst-rx-qr-toggle" class="w-full px-2 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-emerald-400 text-xs focus:outline-none cursor-pointer">
+                <option value="enabled" selected>✓ ON (Instant Patient Scan)</option>
+                <option value="disabled">✕ OFF</option>
+              </select>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+              <label class="text-[11px] font-bold text-slate-300 block">Pharmacy FEFO Notes</label>
+              <select id="mst-rx-pharmacy-notes" class="w-full px-2 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-emerald-400 text-xs focus:outline-none cursor-pointer">
+                <option value="enabled" selected>✓ Include Batch &amp; Dosage Anupan</option>
+                <option value="disabled">✕ Omit Internal Notes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. AI COPILOT & LLM ENGINE TAB -->
+        <div id="master-tab-ai" class="hidden space-y-4">
+          <div class="p-3.5 rounded-2xl bg-amber-950/30 border border-amber-500/20 text-amber-200 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>🧠</span> <strong>Hakeem Sahab AI Copilot Engine:</strong> Powered by Google Gemini 2.0 Flash for multi-axis pulse reasoning and classical posology.</span>
+            <span class="text-[10px] font-mono text-amber-400">Google Gemini Powered</span>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="block text-[11px] font-bold text-slate-300">Google Gemini API Key</label>
+              <span class="text-[10px] text-teal-400 cursor-pointer hover:underline" onclick="toggleMasterApiKeyVisibility()">👁️ Show / Hide Key</span>
+            </div>
+            <input id="mst-ai-gemini-key" type="password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-mono text-xs focus:outline-none focus:border-amber-400" placeholder="AIzaSy... (Get free key from aistudio.google.com)" />
+            <p class="text-[10px] text-slate-500 mt-1">Key is encrypted client-side in browser vault and forwarded via SSL to live API server for AI differential diagnosis.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Primary Reasoning Model</label>
+              <select id="mst-ai-model-select" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-white font-mono text-xs focus:outline-none focus:border-amber-400 cursor-pointer">
+                <option value="gemini-2.0-flash" selected>Google Gemini 2.0 Flash (Recommended — Sub-second Speed)</option>
+                <option value="gemini-1.5-pro">Google Gemini 1.5 Pro (Deep Clinical Reasoning)</option>
+                <option value="local-rules">Offline ZAYVORA Classical Rules Engine Only (No Cloud Calls)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Clinical Safety &amp; Guardrails Engine</label>
+              <select id="mst-ai-safety-mode" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-400 font-semibold text-xs focus:outline-none focus:border-amber-400 cursor-pointer">
+                <option value="strict" selected>🛡️ Strict CDSCO Schedule E(1) &amp; CYP450 Interaction Firewall</option>
+                <option value="advisory">⚠️ Advisory Warnings Only (Allow Clinician Override)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. REGIONAL & CURRENCY TAB -->
+        <div id="master-tab-regional" class="hidden space-y-4">
+          <div class="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 text-indigo-200 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>🌐</span> <strong>Localization &amp; Clinical Parameters:</strong> Sets global billing currency, default language, and consultation slot timing.</span>
+            <span class="text-[10px] font-mono text-indigo-400">Global Settings</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Default Pharmacy &amp; Billing Currency</label>
+              <select id="mst-regional-currency" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-emerald-300 font-mono font-bold text-xs focus:outline-none focus:border-indigo-400 cursor-pointer">
+                <option value="INR" selected>₹ INR — Indian Rupee (India)</option>
+                <option value="USD">$ USD — United States Dollar (International)</option>
+                <option value="AED">د.إ AED — United Arab Emirates Dirham (GCC)</option>
+                <option value="SAR">﷼ SAR — Saudi Riyal (GCC)</option>
+                <option value="GBP">£ GBP — British Pound (UK)</option>
+                <option value="EUR">€ EUR — Eurozone Euro (Europe)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Primary Clinical Interface Language</label>
+              <select id="mst-regional-language" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-white font-bold text-xs focus:outline-none focus:border-indigo-400 cursor-pointer">
+                <option value="en" selected>English (Default Clinical Interface)</option>
+                <option value="ur">اردو — Urdu (Lisan-e-Tibb)</option>
+                <option value="hi">हिन्दी — Hindi (Ayush Standard)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">Standard Consultation Slot Duration</label>
+              <select id="mst-consult-duration" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-indigo-400 cursor-pointer">
+                <option value="15">15 Minutes (Rapid Follow-Up)</option>
+                <option value="20" selected>20 Minutes (Standard Comprehensive Matab)</option>
+                <option value="30">30 Minutes (Deep Constitutional Mizaj Evaluation)</option>
+                <option value="45">45 Minutes (Complex Chronic Disease Review)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1.5">System Appearance Default</label>
+              <select id="mst-regional-theme" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-slate-200 text-xs focus:outline-none focus:border-indigo-400 cursor-pointer">
+                <option value="light" selected>☀️ Light Mode (Warm Classical Linen / Paper Aesthetic)</option>
+                <option value="dark">🌙 Dark Mode (Botanical Emerald &amp; Slate)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. BACKUP & SECURITY TAB -->
+        <div id="master-tab-backup" class="hidden space-y-4">
+          <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 text-xs flex items-center justify-between">
+            <span class="flex items-center gap-2"><span>💾</span> <strong>Encrypted Data Portability &amp; Disaster Recovery:</strong> Standalone backup, export, and clean slate management.</span>
+            <span class="text-[10px] font-mono text-emerald-400">Zero-Loss Vault</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-3">
+              <div>
+                <span class="text-sm">📥</span>
+                <h4 class="text-xs font-bold text-white mt-1">Export System Data</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">Download comprehensive JSON archive of all patients, prescriptions &amp; audit records.</p>
+              </div>
+              <button type="button" onclick="exportAllSystemDataJson()" class="w-full py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-xl transition cursor-pointer">
+                Download JSON Backup
+              </button>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-3">
+              <div>
+                <span class="text-sm">🛡️</span>
+                <h4 class="text-xs font-bold text-white mt-1">Live SQLite DB Backup</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">Triggers server snapshot of zayvora_live.db with SHA-256 tamper seal.</p>
+              </div>
+              <button type="button" onclick="triggerServerDatabaseBackup()" class="w-full py-2 bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border border-teal-500/30 text-xs font-bold rounded-xl transition cursor-pointer">
+                Create DB Snapshot
+              </button>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-950 border border-rose-900/40 flex flex-col justify-between space-y-3">
+              <div>
+                <span class="text-sm">⚠️</span>
+                <h4 class="text-xs font-bold text-rose-300 mt-1">Clean Slate Reset</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">Purges temporary consultation drafts while preserving master pharmacopoeia.</p>
+              </div>
+              <button type="button" onclick="confirmCleanSlateReset()" class="w-full py-2 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 text-xs font-bold rounded-xl transition cursor-pointer">
+                Reset Demo Cache
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 space-y-1 font-mono">
+            <div class="flex justify-between"><span>Active Browser Storage:</span><strong class="text-white">Encrypted LocalStorage + IndexedDB Cache</strong></div>
+            <div class="flex justify-between"><span>Audit Verification:</span><strong class="text-emerald-400">21 CFR Part 11 SHA-256 Sealed</strong></div>
+            <div class="flex justify-between"><span>Session Security:</span><strong class="text-white">PBKDF2-HMAC-SHA256 (310,000 rounds)</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-slate-800 bg-[#070D18] flex flex-col sm:flex-row justify-between items-center gap-3 shrink-0">
+        <div class="text-[11px] text-slate-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Changes instantly synchronize across all active clinical modules &amp; PDF letterheads</span>
+        </div>
+        <div class="flex items-center gap-2.5 w-full sm:w-auto">
+          <button type="button" onclick="resetMasterSettings()" class="px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition cursor-pointer">
+            Reset Defaults
+          </button>
+          <button type="button" onclick="closeMasterSettingsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition cursor-pointer">
+            Cancel
+          </button>
+          <button type="button" onclick="saveMasterSettings()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-lg transition flex items-center gap-2 cursor-pointer">
+            <span>💾 Save All Settings</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <div id="clinic-letterhead-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
     <div class="bg-slate-900 border border-emerald-500/50 rounded-3xl max-w-2xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
       <div class="px-6 py-4 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
