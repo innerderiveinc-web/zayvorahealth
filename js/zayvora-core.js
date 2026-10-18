@@ -379,38 +379,21 @@
 
     // ===== ZAYVORA PLATFORM EDITIONS (CLINIC OS vs FLAGSHIP HQ) =====
     function getDoctorNavItems() {
-      const matabProfile = (typeof window.getMatabOperatingProfile === 'function')
-        ? window.getMatabOperatingProfile()
-        : (localStorage.getItem('zayvora_matab_profile') || 'matab');
-
-      // 1. PURE MATAB PROFILE (5 Primary High-Frequency Destinations for Solo Hakeem)
-      if (matabProfile === 'matab') {
-        return [
-          { id: 'today', label: '📋 Today (آج کی قطار)' },
-          { id: 'patients', label: '👤 Patients (مریض)' },
-          { id: 'consultation', label: '🩺 Consultation (مشورہ و مزاج)' },
-          { id: 'prescriptions', label: '💊 Nuskha (نسخہ و ادویہ)' },
-          { id: 'followups', label: '📅 Follow-ups (آئندہ تاریخ)' },
-          { id: 'profile', label: '👤 Profile' }
-        ];
-      }
-
-      // 2. CLINIC PROFILE (Multi-doctor & Integrated Specialties)
-      if (matabProfile === 'clinic' || (state && state.platformEdition === 'clinic')) {
-        return [
-          { id: 'today', label: '📋 Today’s OPD Queue' },
-          { id: 'patients', label: '👤 Patients & 360' },
-          { id: 'consultation', label: '🩺 Consultation Suite (Mizaj)' },
-          { id: 'prescriptions', label: '💊 Prescriptions (Nuskha Studio)' },
-          { id: 'ghiza', label: '🥗 Ilaj bil Ghiza (Diet Chart)' },
-          { id: 'tadbeer', label: '🌿 Ilaj bil Tadbeer (Hijama & Regimens)' },
-          { id: 'followups', label: '📅 Follow-ups' },
-          { id: 'profile', label: '👤 Profile' }
-        ];
-      }
-
-      // 3. HOSPITAL / ENTERPRISE PROFILE (Full Classical Academic Suites)
-      return roleNavs.doctor;
+      // 12 Classical & Modern Clinical Suites for Hakeem Dr. Irfan Ashraf
+      return [
+        { id: 'today', label: '📋 Today (آج کی قطار)' },
+        { id: 'consultation', label: '🩺 Consultation (مشورہ و مزاج)' },
+        { id: 'patients', label: '👤 Patients (مریض)' },
+        { id: 'prescriptions', label: '💊 Nuskha (نسخہ و ادویہ)' },
+        { id: 'ghiza', label: '🥗 Ilaj bil Ghiza (Dietetics)' },
+        { id: 'tadbeer', label: '🌿 Ilaj bil Tadbeer (Hijama & Regimens)' },
+        { id: 'nafsiyat', label: '🧠 Ilaj bil Nafsiyat (Psychosomatic)' },
+        { id: 'yad', label: '🎙️ Yad-dasht (AI Voice Clinical Notes)' },
+        { id: 'followups', label: '📅 Follow-ups (آئندہ تاریخ)' },
+        { id: 'assistant', label: '🤖 Clinical AI Copilot' },
+        { id: 'knowledge', label: '📖 Unani Formulary (Qarabadeen)' },
+        { id: 'profile', label: '👤 Physician Profile & Settings' }
+      ];
     }
 
     function setPlatformEdition(edition, save = true) {
@@ -605,6 +588,8 @@
 
 
     function switchRole(newRole, bypassAuth = false) {
+      if (typeof window !== 'undefined') window.switchRole = switchRole;
+
       const protectedRoles = ['doctor', 'pharmacy', 'clinic', 'nurse', 'admin', 'manufacturing', 'research', 'patient', 'enterprise', 'hardware', 'mobile'];
       const isSuperAdmin = state.currentUser && (state.currentUser.role === 'admin' || state.currentUser.role === 'super_admin' || state.currentUser.isSuperAdmin);
 
@@ -698,6 +683,8 @@
     window.navigateToV2Hub = navigateToV2Hub;
 
     function switchTab(newTab) {
+      if (typeof window !== 'undefined') window.switchTab = switchTab;
+
       state.tab = newTab;
       if (state.role === 'website') {
         try {
@@ -709,10 +696,7 @@
         } catch (e) {}
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        const ws = document.getElementById('workspace-container');
-        if (ws && window.scrollY > 180) {
-          ws.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        // Keep header and top bar comfortably in view on tab switch
       }
       renderNavigation();
       renderWorkspace();
@@ -983,6 +967,10 @@
         if (state.role === 'patient') {
           renderPatientApp(main);
         } else if (state.role === 'doctor') {
+          const validDoctorTabs = ['today', 'consultation', 'patients', 'prescriptions', 'followups', 'assistant', 'knowledge', 'tadbeer', 'nafsiyat', 'ghiza', 'yad', 'profile'];
+          if (!state.tab || !validDoctorTabs.includes(state.tab)) {
+            state.tab = 'today';
+          }
           renderDoctorApp(main);
         } else if (state.role === 'clinic') {
           renderClinicApp(main);
@@ -2689,6 +2677,10 @@
     window.filterClinicPatients = filterClinicPatients;
 
     function renderDoctorApp(container) {
+      const validDoctorTabs = ['today', 'consultation', 'patients', 'prescriptions', 'followups', 'assistant', 'knowledge', 'tadbeer', 'nafsiyat', 'ghiza', 'yad', 'profile'];
+      if (!state.tab || !validDoctorTabs.includes(state.tab)) {
+        state.tab = 'today';
+      }
       if (state.tab === 'today') {
         container.innerHTML = `
           <div class="space-y-6 pb-10">
@@ -24214,9 +24206,11 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
 
       if (state.currentUser && rawHash && validInternalRoles.includes(rawHash)) {
         state.role = rawHash;
+        state.tab = (rawHash === 'doctor') ? 'today' : ((roleNavs[rawHash] && roleNavs[rawHash][0]) ? roleNavs[rawHash][0].id : 'overview');
         try { sessionStorage.setItem('zayvora_session_desk', rawHash); } catch(e) {}
       } else if (state.currentUser && sessionDesk && validInternalRoles.includes(sessionDesk) && (!rawHash || rawHash === sessionDesk)) {
         state.role = sessionDesk;
+        state.tab = (sessionDesk === 'doctor') ? 'today' : ((roleNavs[sessionDesk] && roleNavs[sessionDesk][0]) ? roleNavs[sessionDesk][0].id : 'overview');
       } else {
         // ALWAYS default to public website homepage on root reload for unauthenticated visitors
         state.role = 'website';
