@@ -8,7 +8,7 @@
         }
       });
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js?v=14.7').then(function(reg) {
+        navigator.serviceWorker.register('sw.js?v=16.9').then(function(reg) {
           reg.update();
         }).catch(function(err) {
           console.warn('[ZAYVORA Health OS] ServiceWorker registration notice:', err);

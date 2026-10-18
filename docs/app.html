@@ -1404,7 +1404,38 @@
       overflow: visible !important;
       min-height: 50vh;
     }
-</style>
+
+    /* Doctor More Nav Floating Dropdown Menu (Teleported to Body) */
+    #doctor-more-nav-menu {
+      background-color: #0F172A;
+      border: 1px solid #334155;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 10px 20px -5px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="light"] #doctor-more-nav-menu {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 20px 40px -8px rgba(45, 40, 30, 0.22), 0 8px 16px -4px rgba(45, 40, 30, 0.12) !important;
+    }
+    [data-theme="light"] #doctor-more-nav-menu .dropdown-header {
+      border-color: #EFE9DB !important;
+      color: #6E7570 !important;
+    }
+    [data-theme="light"] #doctor-more-nav-menu .dropdown-header span.badge {
+      color: #158064 !important;
+    }
+    [data-theme="light"] #doctor-more-nav-menu button.desk-item {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] #doctor-more-nav-menu button.desk-item:hover {
+      background-color: #F4EFE6 !important;
+      color: #158064 !important;
+    }
+    [data-theme="light"] #doctor-more-nav-menu button.desk-item.active-item {
+      background-color: #158064 !important;
+      color: #FFFFFF !important;
+    }
+
+  </style>
 
   <style>
     @media print {
@@ -3087,7 +3118,7 @@
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
   <script src="js/grand-corpus-vault-data.js?v=16.1"></script>
-  <script src="js/zayvora-core.js?v=16.7"></script>
+  <script src="js/zayvora-core.js?v=16.9"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -3887,7 +3918,7 @@
     </div>
   </div>
 
-  <script src="js/zayvora-extensions.js?v=16.0"></script>
+  <script src="js/zayvora-extensions.js?v=16.9"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->
@@ -5365,6 +5396,10 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Floating Doctor Specialty Desks & Clinical Tools Dropdown Menu (Teleported to Body) -->
+  <div id="doctor-more-nav-menu" class="hidden fixed rounded-2xl bg-[#0F172A] border border-slate-700 shadow-2xl p-2.5 space-y-1 z-[999999] backdrop-blur-xl"></div>
 
 </body>
 </html>

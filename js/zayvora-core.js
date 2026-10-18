@@ -734,32 +734,96 @@
       return false;
     }
 
+    function selectDoctorDesk(tabId) {
+      if (typeof toggleDoctorNavDropdown === 'function') {
+        toggleDoctorNavDropdown(null, false);
+      }
+      if (typeof switchTab === 'function') {
+        switchTab(tabId);
+      }
+    }
+    window.selectDoctorDesk = selectDoctorDesk;
+
+    function populateDoctorNavDropdownMenu() {
+      let menu = document.getElementById('doctor-more-nav-menu');
+      if (!menu) {
+        menu = document.createElement('div');
+        menu.id = 'doctor-more-nav-menu';
+        menu.className = 'hidden fixed rounded-2xl bg-[#0F172A] border border-slate-700 shadow-2xl p-2.5 space-y-1 z-[999999] backdrop-blur-xl';
+        document.body.appendChild(menu);
+      }
+      const allItems = (typeof getDoctorNavItems === 'function') ? getDoctorNavItems() : [];
+      const primaryIds = ['today', 'consultation', 'patients', 'prescriptions'];
+      const secondaryItems = allItems.filter(item => !primaryIds.includes(item.id));
+      if (secondaryItems.length === 0) {
+        menu.innerHTML = '<div class="p-3 text-xs text-slate-400 text-center">No additional specialty desks configured.</div>';
+        return;
+      }
+      menu.innerHTML = `
+        <div class="dropdown-header px-3 py-2 border-b border-slate-800 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+          <span>Specialty Desks</span>
+          <span class="badge text-emerald-400 font-mono text-[11px] font-semibold">${secondaryItems.length} Desks</span>
+        </div>
+        <div class="py-1 space-y-1">
+          ${secondaryItems.map(item => `
+            <button type="button" onclick="selectDoctorDesk('${item.id}')" class="desk-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium ${isTabActive(item.id, state.tab) ? 'active-item bg-emerald-600 text-white font-bold shadow' : 'text-slate-300 hover:bg-slate-800 hover:text-white'} flex items-center justify-between transition cursor-pointer group">
+              <span class="flex items-center gap-2">${item.label}</span>
+              <span class="text-[10px] text-slate-400 group-hover:text-emerald-400 font-mono">→</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+    window.populateDoctorNavDropdownMenu = populateDoctorNavDropdownMenu;
+
     function toggleDoctorNavDropdown(e, forceState) {
       if (e) {
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
         if (typeof e.preventDefault === 'function') e.preventDefault();
       }
-      const menu = document.getElementById('doctor-more-nav-menu');
       const btn = document.getElementById('doctor-more-nav-btn');
-      if (!menu || !btn) return;
+      let menu = document.getElementById('doctor-more-nav-menu');
+      if (!btn) return;
 
-      const isCurrentlyHidden = menu.classList.contains('hidden');
+      if (!menu) {
+        menu = document.createElement('div');
+        menu.id = 'doctor-more-nav-menu';
+        menu.className = 'hidden fixed rounded-2xl bg-[#0F172A] border border-slate-700 shadow-2xl p-2.5 space-y-1 z-[999999] backdrop-blur-xl';
+        document.body.appendChild(menu);
+      } else if (menu.parentElement !== document.body) {
+        document.body.appendChild(menu);
+      }
+
+      const isCurrentlyHidden = menu.classList.contains('hidden') || menu.style.display === 'none';
       const shouldOpen = (typeof forceState === 'boolean') ? forceState : isCurrentlyHidden;
+      const arrow = document.getElementById('doctor-more-nav-arrow');
 
       if (shouldOpen) {
-        // Floating fixed positioning immune to nav overflow-x-auto clipping!
+        populateDoctorNavDropdownMenu();
         const rect = btn.getBoundingClientRect();
+        const menuWidth = Math.min(300, window.innerWidth - 20);
+
         menu.style.position = 'fixed';
-        menu.style.top = (rect.bottom + 6) + 'px';
-        const menuWidth = 280;
-        const maxLeft = Math.max(10, window.innerWidth - menuWidth - 16);
-        const targetLeft = Math.max(10, Math.min(rect.left, maxLeft));
+        menu.style.top = (rect.bottom + 8) + 'px';
+
+        let targetLeft = rect.left;
+        if (targetLeft + menuWidth > window.innerWidth - 10) {
+          targetLeft = window.innerWidth - menuWidth - 10;
+        }
+        if (targetLeft < 10) targetLeft = 10;
+
         menu.style.left = targetLeft + 'px';
         menu.style.width = menuWidth + 'px';
-        menu.style.zIndex = '99999';
+        menu.style.maxWidth = 'calc(100vw - 20px)';
+        menu.style.zIndex = '999999';
         menu.classList.remove('hidden');
+        menu.style.display = 'block';
+
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
       } else {
         menu.classList.add('hidden');
+        menu.style.display = 'none';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
       }
     }
     window.toggleDoctorNavDropdown = toggleDoctorNavDropdown;
@@ -768,19 +832,34 @@
       document.addEventListener('click', (e) => {
         const menu = document.getElementById('doctor-more-nav-menu');
         const btn = document.getElementById('doctor-more-nav-btn');
-        if (menu && !menu.classList.contains('hidden')) {
+        if (menu && (!menu.classList.contains('hidden') && menu.style.display !== 'none')) {
           if (btn && (btn === e.target || btn.contains(e.target))) return;
           if (menu.contains(e.target)) return;
-          menu.classList.add('hidden');
+          toggleDoctorNavDropdown(null, false);
         }
       });
-      window.addEventListener('scroll', () => {
-        const menu = document.getElementById('doctor-more-nav-menu');
-        if (menu && !menu.classList.contains('hidden')) menu.classList.add('hidden');
-      }, { passive: true });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const menu = document.getElementById('doctor-more-nav-menu');
+          if (menu && (!menu.classList.contains('hidden') && menu.style.display !== 'none')) {
+            toggleDoctorNavDropdown(null, false);
+          }
+        }
+      });
       window.addEventListener('resize', () => {
         const menu = document.getElementById('doctor-more-nav-menu');
-        if (menu && !menu.classList.contains('hidden')) menu.classList.add('hidden');
+        const btn = document.getElementById('doctor-more-nav-btn');
+        if (menu && (!menu.classList.contains('hidden') && menu.style.display !== 'none') && btn) {
+          const rect = btn.getBoundingClientRect();
+          const menuWidth = Math.min(300, window.innerWidth - 20);
+          let targetLeft = rect.left;
+          if (targetLeft + menuWidth > window.innerWidth - 10) {
+            targetLeft = window.innerWidth - menuWidth - 10;
+          }
+          if (targetLeft < 10) targetLeft = 10;
+          menu.style.top = (rect.bottom + 8) + 'px';
+          menu.style.left = targetLeft + 'px';
+        }
       }, { passive: true });
     }
 
@@ -821,23 +900,14 @@
         if (secondaryItems.length > 0) {
           html += `
             <div class="relative inline-block text-left shrink-0" id="doctor-more-nav-dropdown-wrap">
-              <button id="doctor-more-nav-btn" type="button" onclick="toggleDoctorNavDropdown(event)" class="nav-link shrink-0 ${isSecondaryActive ? 'active' : 'text-[var(--muted)] hover:text-white'} px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-transparent transition-colors flex items-center gap-1.5 bg-slate-900/60 hover:bg-slate-800 cursor-pointer">
+              <button id="doctor-more-nav-btn" type="button" onclick="toggleDoctorNavDropdown(event)" class="nav-link shrink-0 ${isSecondaryActive ? 'active' : 'text-[var(--muted)] hover:text-white'} px-3.5 py-1.5 rounded-xl text-xs font-semibold border border-transparent transition-colors flex items-center gap-1.5 bg-slate-900/60 hover:bg-slate-800 cursor-pointer" title="Click to open Specialty Desks">
                 <span>${dropdownLabel}</span>
+                <span id="doctor-more-nav-arrow" class="inline-block transition-transform duration-200">▾</span>
               </button>
-              <div id="doctor-more-nav-menu" class="hidden rounded-2xl bg-[#0F172A] border border-slate-700 shadow-2xl p-2 z-[99999] space-y-1 backdrop-blur-xl">
-                <div class="px-2.5 py-1.5 border-b border-slate-800 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                  <span>Specialty Desks</span>
-                  <span class="text-emerald-400 font-mono">${secondaryItems.length} Desks</span>
-                </div>
-                ${secondaryItems.map(item => `
-                  <button type="button" onclick="switchTab('${item.id}'); toggleDoctorNavDropdown(event, false);" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium ${isTabActive(item.id, state.tab) ? 'bg-emerald-600 text-white font-bold shadow' : 'text-slate-300 hover:bg-slate-800 hover:text-white'} flex items-center justify-between transition cursor-pointer group">
-                    <span class="flex items-center gap-2">${item.label}</span>
-                    <span class="text-[10px] text-slate-400 group-hover:text-emerald-400 font-mono">→</span>
-                  </button>
-                `).join('')}
-              </div>
             </div>
           `;
+          // Pre-populate detached floating menu in body
+          try { populateDoctorNavDropdownMenu(); } catch (err) {}
         }
 
         navContainer.innerHTML = html;
