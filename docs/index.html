@@ -1503,7 +1503,7 @@
       <div class="flex items-center gap-1.5 shrink-0 overflow-x-auto max-w-full scrollbar-none">
         
         <!-- Platform Edition Switcher (Clinic Mode vs Flagship HQ) -->
-        <div class="hidden sm:flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-0.5 shadow-sm shrink-0">
+        <div id="edition-mode-switcher" class="hidden items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-0.5 shadow-sm shrink-0">
           <button id="btn-edition-clinic" onclick="setPlatformEdition('clinic')" class="px-2.5 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1.5 transition cursor-pointer bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400/40" title="ZAYVORA Clinic OS: Simplified for Hospitals, Clinics &amp; Matabs">
             <span>🏥</span>
             <span class="hidden sm:inline">Clinic OS</span>
@@ -1517,13 +1517,13 @@
         </div>
 
         <!-- Global Diagnostic Hub Launcher -->
-        <button id="header-diagnostic-btn" onclick="toggleGlobalToolsModal(true)" class="hidden md:flex bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
+        <button id="header-diagnostic-btn" onclick="toggleGlobalToolsModal(true)" class="hidden bg-slate-900 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Access All 10 Global Diagnostic & Functional Medicine Engines">
           <span>🧠</span>
           <span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[9px]">10</span>
         </button>
 
         <!-- Grand 97 Medical Bookshelf Launcher -->
-        <button id="header-bookshelf-btn" onclick="openGrandCorpusModal()" class="flex bg-slate-900 border border-blue-500/40 hover:border-blue-400 text-blue-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Open 97 Grand Medical Treatises & Clinical Compendia Vault">
+        <button id="header-bookshelf-btn" onclick="openGrandCorpusModal()" class="hidden bg-slate-900 border border-blue-500/40 hover:border-blue-400 text-blue-300 hover:text-white font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none cursor-pointer transition shadow-sm items-center gap-1.5 shrink-0" title="Open 97 Grand Medical Treatises & Clinical Compendia Vault">
           <span>📚</span>
           <span class="hidden lg:inline text-xs">Medical Books</span>
           <span class="px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 font-mono text-[9px]">97</span>
@@ -1570,7 +1570,7 @@
         <div id="auth-container" class="flex items-center shrink-0">
           <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm" title="Authorized Clinical Portals & Staff Access">
             <svg class="w-3.5 h-3.5 inline-block text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            <span id="auth-btn-label"><span class="hidden sm:inline">Authorized Clinical Portals</span><span class="sm:hidden">Portals</span></span>
+            <span id="auth-btn-label"><span class="hidden sm:inline">🔐 Clinician &amp; Staff Sign In</span><span class="sm:hidden">Sign In</span></span>
           </button>
         </div>
 
@@ -1780,52 +1780,60 @@
           </div>
         </form>
 
-        <!-- Sandbox Quick-Fill Helper for Evaluators & Testers -->
-        <div class="mt-4 pt-3.5 border-t border-slate-800/90 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Quick Login • Auto-Fill Demo Credentials
-            </span>
-            <span class="text-[9px] text-teal-400/80 font-mono">1-Click Auto-Fill</span>
+        <!-- Sandbox Quick-Fill Helper for Evaluators & Testers (Hidden by default for production dignity) -->
+        <div class="mt-4 pt-2 border-t border-slate-800/80">
+          <div class="text-center">
+            <button type="button" onclick="toggleDemoCredentials()" class="text-[10px] text-slate-500 hover:text-slate-400 transition cursor-pointer">
+              <span>Institutional Access &amp; Staff Portals Reference ▾</span>
+            </button>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button type="button" onclick="prefillLogin('doctor')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer">
-              <span class="text-emerald-400 font-bold block text-[11px]">🩺 Doctor Cockpit</span>
-              <span class="text-[9px] text-slate-400 block truncate">dr.irfan@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('admin')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 text-left transition group cursor-pointer">
-              <span class="text-rose-400 font-bold block text-[11px]">🛡️ Super Admin</span>
-              <span class="text-[9px] text-slate-400 block truncate">admin@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('pharmacy')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 text-left transition group cursor-pointer">
-              <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy OS</span>
-              <span class="text-[9px] text-slate-400 block truncate">pharmacy@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('clinic')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 text-left transition group cursor-pointer">
-              <span class="text-blue-400 font-bold block text-[11px]">🏥 Reception Desk</span>
-              <span class="text-[9px] text-slate-400 block truncate">reception@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('nurse')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 text-left transition group cursor-pointer">
-              <span class="text-teal-400 font-bold block text-[11px]">🩺 Nurse Station</span>
-              <span class="text-[9px] text-slate-400 block truncate">nurse@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('patient')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-400/50 text-left transition group cursor-pointer">
-              <span class="text-teal-300 font-bold block text-[11px]">👤 Patient Portal</span>
-              <span class="text-[9px] text-slate-400 block truncate">hamza.farooqi@gmail.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('research')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-left transition group cursor-pointer">
-              <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research Cloud</span>
-              <span class="text-[9px] text-slate-400 block truncate">research@zayvorahealth.com</span>
-            </button>
-            <button type="button" onclick="prefillLogin('manufacturing')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 text-left transition group cursor-pointer">
-              <span class="text-purple-400 font-bold block text-[11px]">🏭 Manufacturing</span>
-              <span class="text-[9px] text-slate-400 block truncate">manufacturing@zayvorahealth.com</span>
-            </button>
+          <div id="login-demo-credentials-container" class="hidden mt-3 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Clinical &amp; Operational Desks
+              </span>
+              <span class="text-[9px] text-teal-400/80 font-mono">Staff Directory</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button type="button" onclick="prefillLogin('doctor')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer">
+                <span class="text-emerald-400 font-bold block text-[11px]">🩺 Doctor Desk</span>
+                <span class="text-[9px] text-slate-400 block truncate">dr.irfan@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('admin')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-rose-500/50 text-left transition group cursor-pointer">
+                <span class="text-rose-400 font-bold block text-[11px]">🛡️ Admin Oversight</span>
+                <span class="text-[9px] text-slate-400 block truncate">admin@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('pharmacy')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 text-left transition group cursor-pointer">
+                <span class="text-amber-400 font-bold block text-[11px]">💊 Pharmacy OS</span>
+                <span class="text-[9px] text-slate-400 block truncate">pharmacy@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('clinic')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 text-left transition group cursor-pointer">
+                <span class="text-blue-400 font-bold block text-[11px]">🏥 Reception Desk</span>
+                <span class="text-[9px] text-slate-400 block truncate">reception@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('nurse')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-500/50 text-left transition group cursor-pointer">
+                <span class="text-teal-400 font-bold block text-[11px]">🩺 Nurse Station</span>
+                <span class="text-[9px] text-slate-400 block truncate">nurse@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('patient')" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-teal-400/50 text-left transition group cursor-pointer">
+                <span class="text-teal-300 font-bold block text-[11px]">👤 Patient Portal</span>
+                <span class="text-[9px] text-slate-400 block truncate">patient.hamza@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('research')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/50 text-left transition group cursor-pointer">
+                <span class="text-indigo-400 font-bold block text-[11px]">🔬 Research Cloud</span>
+                <span class="text-[9px] text-slate-400 block truncate">research@zayvorahealth.com</span>
+              </button>
+              <button type="button" onclick="prefillLogin('manufacturing')" class="quick-role-enterprise p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/50 text-left transition group cursor-pointer">
+                <span class="text-purple-400 font-bold block text-[11px]">🏭 Manufacturing</span>
+                <span class="text-[9px] text-slate-400 block truncate">manufacturing@zayvorahealth.com</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Clinician & Staff Registration View -->
+    <!-- Clinician & Staff Registration View -->
       <div id="doctor-signup-view" class="hidden space-y-3.5">
         <div id="doctor-signup-error" class="hidden p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs"></div>
 
@@ -3118,7 +3126,7 @@
   <!-- CLIENT-SIDE APPLICATION DATA & LOGIC -->
   <!-- ===================================================================== -->
   <script src="js/grand-corpus-vault-data.js?v=16.1"></script>
-  <script src="js/zayvora-core.js?v=17.1"></script>
+  <script src="js/zayvora-core.js?v=17.2"></script>
   <!-- ===================================================================== -->
   <!-- PROFESSIONAL HEALTHCARE SAAS FOOTER -->
   <!-- ===================================================================== -->
@@ -3918,7 +3926,7 @@
     </div>
   </div>
 
-  <script src="js/zayvora-extensions.js?v=17.1"></script>
+  <script src="js/zayvora-extensions.js?v=17.2"></script>
 
   <!-- ===================================================================== -->
   <!-- BILINGUAL CLINICAL PRESCRIPTION & WHATSAPP PRINT SLIP MODAL -->

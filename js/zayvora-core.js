@@ -1,4 +1,12 @@
+function toggleDemoCredentials() {
+      const container = document.getElementById('login-demo-credentials-container');
+      if (container) {
+        container.classList.toggle('hidden');
+      }
+    }
+    window.toggleDemoCredentials = toggleDemoCredentials;
 
+    
     function toggleConsultationToolsDropdown(force) {
       const p = document.getElementById('consultation-tools-dropdown');
       if (!p) return;
@@ -22147,7 +22155,8 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       const passInput = document.getElementById('login-input-password');
       if (emailInput) emailInput.value = p.email;
       if (passInput) {
-        passInput.value = p.pass || 'doctor123';
+        passInput.value = '';
+        passInput.placeholder = 'Enter password for ' + (p.label || p.name);
         passInput.focus();
       }
 
@@ -22447,12 +22456,24 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       // Contextual Header Diagnostic Launcher (Hidden from header to prevent clutter; accessible in Today tray)
       const diagBtn = document.getElementById('header-diagnostic-btn');
       if (diagBtn) {
-        if (isSuperAdmin) {
+        if (isSuperAdmin && state.role !== 'website') {
           diagBtn.classList.remove('hidden');
           diagBtn.classList.add('flex');
         } else {
           diagBtn.classList.add('hidden');
           diagBtn.classList.remove('flex');
+        }
+      }
+
+      // Grand Medical Bookshelf (Available for Clinicians & Researchers inside OS, hidden on public website)
+      const bookshelfBtn = document.getElementById('header-bookshelf-btn');
+      if (bookshelfBtn) {
+        if (state.role !== 'website' && state.currentUser) {
+          bookshelfBtn.classList.remove('hidden');
+          bookshelfBtn.classList.add('flex');
+        } else {
+          bookshelfBtn.classList.add('hidden');
+          bookshelfBtn.classList.remove('flex');
         }
       }
 
@@ -22578,7 +22599,7 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         authContainer.innerHTML = `
           <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm">
             <svg class="w-3.5 h-3.5 inline-block text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            <span id="auth-btn-label"><span class="hidden sm:inline">🔐 Tabeeb / Staff Sign In</span><span class="sm:hidden">🔐 Sign In</span></span>
+            <span id="auth-btn-label"><span class="hidden sm:inline">🔐 Clinician & Staff Sign In</span><span class="sm:hidden">Sign In</span></span>
           </button>
         `;
       }
