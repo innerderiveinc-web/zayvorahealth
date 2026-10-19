@@ -1,6 +1,5 @@
 [build]
-  command = "mkdir -p dist && cp -r index.html app.html science_and_research.html _redirects CNAME manifest.json sw.js tailwind.min.js favicon.ico zayvora-logo.png js docs dist/"
-  publish = "dist"
+  publish = "."
 
 [[redirects]]
   from = "/app"
@@ -23,6 +22,16 @@
   status = 200
 
 [[redirects]]
+  from = "/workbench"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/workbench/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
@@ -38,4 +47,5 @@
 [[headers]]
   for = "/sw.js"
   [headers.values]
-    Cache-Control = "no-cache"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Content-Type = "application/javascript; charset=utf-8"
