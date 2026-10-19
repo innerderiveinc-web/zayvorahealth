@@ -2,4 +2,3 @@
 # Note: Base server runs 100% on Python stdlib.
 # psycopg2-binary enables automatic PostgreSQL multi-tenant connection pooling when DATABASE_URL is set.
 psycopg2-binary>=2.9.9
-

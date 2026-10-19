@@ -1,6 +1,5 @@
 [build]
   publish = "."
-  command = "echo 'Deploying ZAYVORA Health OS Static Assets'"
 
 [[redirects]]
   from = "/app"
