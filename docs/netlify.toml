@@ -1,5 +1,6 @@
 [build]
-  publish = "."
+  command = "mkdir -p dist && cp -r index.html app.html science_and_research.html _redirects CNAME manifest.json sw.js tailwind.min.js favicon.ico zayvora-logo.png js docs dist/"
+  publish = "dist"
 
 [[redirects]]
   from = "/app"

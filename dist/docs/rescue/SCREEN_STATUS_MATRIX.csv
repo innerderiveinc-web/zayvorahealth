@@ -1,0 +1,22 @@
+Role,Screen,Purpose,Frontend Status,Backend Status,API Status,Database Status,UX Status,Permission Status,Mobile Status,Final Status,Evidence
+Patient,Patient Home,Personal health overview and next steps,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Patient,Appointments,Book and manage clinic visits,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Patient,My Health,Vitals history and allergies,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Patient,Treatment,Dietary and regimenal guidance,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Patient,Medicines,Active prescriptions and reminders,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Patient,Reports,Diagnostic documents and lab results,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Doctor Home,Daily schedule and waiting queue,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Patients,Patient directory and 360 view,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Consultation,Single 16-section clinical workspace,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Prescriptions,Digital locking and safety audits,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Follow-ups,Outcome tracking and longitudinal PROMs,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Clinical Assistant,Evidence-backed copilot guidance,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Doctor,Knowledge,UPI monographs and formulations,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Clinic,Overview,Daily clinic operations and revenue,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Clinic,Queue,Live OPD token queue and triage,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Clinic,Billing,Invoices and payment processing,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Pharmacy,Dispensing,FEFO allocation and Mudabbar check,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Pharmacy,Inventory,Botanical stock and expiry tracking,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Research,Studies,Active trial cohorts and PROMs,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Research,Adverse Events,ICH E2B safety reporting,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT
+Admin,System Health,Internal IT metrics and Merkle audit,READY,READY,READY,READY,READY,READY,READY,READY,Verified in UAT

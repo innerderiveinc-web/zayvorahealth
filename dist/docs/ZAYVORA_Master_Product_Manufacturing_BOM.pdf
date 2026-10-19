@@ -1,0 +1,10141 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R] /Count 13 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 7 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+7 0 obj
+<< /Length 6225 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 1) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.110 0.260 0.200 rg
+40.00 700.00 515.28 85.00 re
+f
+BT
+/F2 20 Tf
+1.000 1.000 1.000 rg
+55.00 755.00 Td
+(ZAYVORA HEALTH OS(TM)) Tj
+ET
+BT
+/F2 12 Tf
+0.950 0.770 0.400 rg
+55.00 735.00 Td
+(CENTRAL PHARMACEUTICAL MANUFACTURING DOSSIER) Tj
+ET
+BT
+/F1 9 Tf
+0.850 0.900 0.880 rg
+55.00 715.00 Td
+(Master Bill of Materials \(BOM\), Formulations & Quality Control Standard Operating Procedures) Tj
+ET
+0.970 0.980 0.970 rg
+0.800 0.850 0.820 RG
+40.00 590.00 515.28 85.00 re
+B
+BT
+/F2 10 Tf
+0.110 0.260 0.200 rg
+50.00 657.00 Td
+(DOCUMENT METADATA & COMPLIANCE SIGN-OFF) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+50.00 641.00 Td
+(Document Ref:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+135.00 641.00 Td
+(ZAY-MFG-BOM-2026-V5) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+310.00 641.00 Td
+(Classification:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 641.00 Td
+(Proprietary Commercial Formulation) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+50.00 629.00 Td
+(Regulatory Track:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+135.00 629.00 Td
+(AYUSH Schedule T \(GMP\) / FSSAI 2022) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+310.00 629.00 Td
+(Batch Production:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 629.00 Td
+(Commercial Pilot & Scale-Up Ready) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+50.00 617.00 Td
+(Clinical Author:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+135.00 617.00 Td
+(Dr. Irfan Ashraf / Clinical Knowledge Desk) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+310.00 617.00 Td
+(Effective Date:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 617.00 Td
+(September 2026 | Version 5.0 Enterprise) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+50.00 605.00 Td
+(Testing Authority:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+135.00 605.00 Td
+(HPLC Active Marker Assays \(USP/UPI\)) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+310.00 605.00 Td
+(Pharmacopoeia:) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 605.00 Td
+(Unani Pharmacopoeia of India \(UPI Vol 1-6\)) Tj
+ET
+BT
+/F2 11 Tf
+0.180 0.420 0.310 rg
+40.00 570.00 Td
+(1. EXECUTIVE SUMMARY & MANUFACTURING DIRECTIVE) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 566.00 515.28 1.00 re
+f
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 552.00 Td
+(This master engineering document provides the exact pharmaceutical Bill of Materials \(BOM\), HPLC phytochemical) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 540.00 Td
+(standardizations, organ-axis classifications, and Schedule E\(1\) detoxification \(Mudabbar\) protocols for commercial) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 528.00 Td
+(batch production within the ZAYVORA Health OS manufacturing continuum. All formulations are verified against) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 516.00 Td
+(the Unani Pharmacopoeia of India \(UPI\), Ayurvedic Pharmacopoeia of India \(API\), and AYUSH GMP norms.) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 504.00 Td
+() Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+40.00 492.00 Td
+(Key Manufacturing Directives:) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+40.00 480.00 Td
+(1. Standardization Thresholds: All botanical extracts must meet HPLC assayed active marker concentrations \(e.g., Withanolides 5%,) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 468.00 Td
+(   Gymnemic acids 25%, AKBA 30%, Reserpine 1.0%\). Crude unstandardized powders are rejected at QA quarantine.) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+40.00 456.00 Td
+(2. Schedule E\(1\) Gates: Ingredients such as Kuchla \(Strychnos nux-vomica\) and Suranjan \(Colchicum autumnale\) require authenticated) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 444.00 Td
+(   SOP Mudabbar certificates prior to release from Raw Material Stores.) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+40.00 432.00 Td
+(3. Kushta / Calcined Mineral Processing: Products containing Kushta \(Tin calx, Egg Shell calx, Coral calx\) are manufactured in dedicated) Tj
+ET
+BT
+/F1 8.5 Tf
+0.250 0.250 0.250 rg
+40.00 420.00 Td
+(   micro-pulverization clean rooms under AYUSH Proprietary licensing.) Tj
+ET
+BT
+/F2 11 Tf
+0.180 0.420 0.310 rg
+40.00 398.00 Td
+(2. PRODUCT PORTFOLIO STRUCTURE SUMMARY) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 394.00 515.28 1.00 re
+f
+0.180 0.420 0.310 rg
+40.00 362.00 515.28 16.00 re
+f
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+48.00 366.00 Td
+(CATALOG TIER) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+170.00 366.00 Td
+(UNITS) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+220.00 366.00 Td
+(ORGAN AXES / SCOPE) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+400.00 366.00 Td
+(REGULATORY JURISDICTION) Tj
+ET
+0.950 0.960 0.950 rg
+0.850 0.880 0.860 RG
+40.00 348.00 515.28 16.00 re
+B
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+48.00 352.00 Td
+(Master Clinical Formulations) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+170.00 352.00 Td
+(32 SKUs) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+220.00 352.00 Td
+(15 Organ Axes \(Cardiac, Neuro, Endo, etc.\)) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 352.00 Td
+(AYUSH Classical / AYUSH Proprietary) Tj
+ET
+0.950 0.960 0.950 rg
+0.850 0.880 0.860 RG
+40.00 332.00 515.28 16.00 re
+B
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+48.00 336.00 Td
+(Clinical Protocol Kits) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+170.00 336.00 Td
+(21 Kits) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+220.00 336.00 Td
+(Multi-Product Synergistic Regimens \(K-01 to K-21\)) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 336.00 Td
+(Prescription OPD Treatment Packs) Tj
+ET
+0.950 0.960 0.950 rg
+0.850 0.880 0.860 RG
+40.00 316.00 515.28 16.00 re
+B
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+48.00 320.00 Td
+(Retail Storefront Products) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+170.00 320.00 Td
+(10 Products) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+220.00 320.00 Td
+(Direct Consumer Wellness & Adaptogens) Tj
+ET
+BT
+/F1 8 Tf
+0.100 0.100 0.100 rg
+400.00 320.00 Td
+(OTC Nutraceutical / Classical) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 9 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+9 0 obj
+<< /Length 15721 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 2) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+BT
+/F2 12 Tf
+0.110 0.260 0.200 rg
+40.00 790.00 Td
+(3. MASTER CLINICAL PRODUCTS: COMPLETE BILL OF MATERIALS \(BOM\)) Tj
+ET
+0.110 0.260 0.200 rg
+40.00 786.00 515.28 1.20 re
+f
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 756.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 761.00 Td
+(ZAY-001: TensioCalm(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 761.00 Td
+(Classical: Safoof-e-Tansiyat-ud-Dam) Tj
+ET
+BT
+/F2 7.5 Tf
+0.750 0.150 0.150 rg
+385.28 761.00 Td
+(PRESCRIPTION ONLY \(SCHEDULE E-1 / POTENT\)) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 728.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 742.00 Td
+(Organ Axis: CEREBROVASCULAR) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 742.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 742.00 Td
+(Regulatory: AYUSH_SCHEDULE_E1_RX) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 742.00 Td
+(MRP: INR 1850) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 732.00 Td
+(Indication: Essential Hypertension \(Stage 1 & 2\), Stress-induced systolic spikes, Zayt-e-Dam \(blood tension\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 711.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 714.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 714.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 714.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 714.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 698.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 701.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 701.50 Td
+(Asrol \(Rauwolfia serpentina\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 701.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 701.50 Td
+(Reserpine 1.0%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 685.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 688.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 688.50 Td
+(Ustukhuddus \(Lavandula stoechas\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 688.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 688.50 Td
+(Linalool 3.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 672.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 675.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 675.50 Td
+(Filfil Siyah \(Piper nigrum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 675.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 675.50 Td
+(Piperine 95%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 659.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 662.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 662.50 Td
+(Kishneez Khushk \(Coriandrum sativum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 662.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 662.50 Td
+(Volatile Oil 0.8%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 646.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 649.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 649.50 Td
+(Gul-e-Surkh \(Rosa damascena\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 649.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 649.50 Td
+(Total Phenolics 5.0%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 633.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 636.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 636.50 Td
+(Gaozaban \(Borago officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 636.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 636.50 Td
+(Mucilage & Flavonoids) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 621.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 624.00 Td
+(Dose: 1 to 2 capsules twice daily with lukewarm water or Arq Gaozaban 30 min | Total Actives per Unit: 1000 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 597.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 602.00 Td
+(ZAY-002: Glucovora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 602.00 Td
+(Classical: Safoof-e-Qawi-e-Banas) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 602.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 569.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 583.00 Td
+(Organ Axis: PANCREATIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 583.00 Td
+(Dosage Form: Micro-Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 583.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 583.00 Td
+(MRP: INR 1450) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 573.00 Td
+(Indication: Ziabetus Shakari \(Type 2 Diabetes Mellitus\), Impaired Fasting Glucose, Peripheral Insulin Resistance...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 552.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 555.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 555.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 555.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 555.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 539.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 542.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 542.50 Td
+(Jamun Seeds \(Syzygium cumini\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 542.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 542.50 Td
+(Jamboline & Tannins 15%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 526.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 529.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 529.50 Td
+(Karela \(Momordica charantia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 529.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 529.50 Td
+(Charantin 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 513.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 516.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 516.50 Td
+(Methi \(Trigonella foenum-graecum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 516.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 516.50 Td
+(4-Hydroxyisoleucine 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 500.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 503.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 503.50 Td
+(Gurmar \(Gymnema sylvestre\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 503.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 503.50 Td
+(Gymnemic Acids 25%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 487.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 490.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 490.50 Td
+(Tukhm-e-Hulba) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 490.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 490.50 Td
+(Saponins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 474.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 477.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 477.50 Td
+(Kushta Baiza-e-Murgh) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 477.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 477.50 Td
+(Micro-calcified Elemental Calcium) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 462.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 465.00 Td
+(Dose: 1 stick sachet \(5g\) twice daily dissolved in 100ml warm water 20 minut | Total Actives per Unit: 1150 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 438.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 443.00 Td
+(ZAY-003: CardioVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 443.00 Td
+(Classical: Majoon-e-Muqawwi-e-Qalb) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 443.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 410.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 424.00 Td
+(Organ Axis: CARDIOVASCULAR) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 424.00 Td
+(Dosage Form: Majoon Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 424.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 424.00 Td
+(MRP: INR 2200) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 414.00 Td
+(Indication: Zof-e-Qalb \(Cardiac weakness\), Khafqan \(Palpitations\), Post-cardiac rehabilitation, Endothelial dysf...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 393.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 396.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 396.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 396.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 396.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 380.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 383.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 383.50 Td
+(Zafran \(Crocus sativus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 383.50 Td
+(20 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 383.50 Td
+(Crocin & Safranal 3.0%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 367.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 370.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 370.50 Td
+(Marwareed \(Pearl calx\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 370.50 Td
+(30 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 370.50 Td
+(Bioactive Coral Carbonate) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 354.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 357.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 357.50 Td
+(Yashab Sabz) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 357.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 357.50 Td
+(Purified Jade Calx) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 341.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 344.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 344.50 Td
+(Arjun Chhal \(Terminalia arjuna\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 344.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 344.50 Td
+(Arjunic acid & Tannins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 328.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 331.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 331.50 Td
+(Badranjboya \(Melissa officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 331.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 331.50 Td
+(Rosmarinic Acid 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 315.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 318.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 318.50 Td
+(Seb juice & Asl base) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 318.50 Td
+(3500 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 318.50 Td
+(Natural Honey & Pectin Matrix) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 303.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 306.00 Td
+(Dose: 1 stick sachet \(5g\) in the morning on empty stomach with warm milk or  | Total Actives per Unit: 4200 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 279.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 284.00 Td
+(ZAY-004: LiverPrime(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 284.00 Td
+(Classical: Safoof-e-Muqawwi-e-Jigar) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 284.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 251.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 265.00 Td
+(Organ Axis: HEPATOBILIARY) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 265.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 265.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 265.00 Td
+(MRP: INR 1350) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 255.00 Td
+(Indication: Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease \(NAFLD/MASLD\), Sluggish bile clearance, Elevated tran...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 234.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 237.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 237.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 237.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 237.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 221.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 224.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 224.50 Td
+(Kasni \(Cichorium intybus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 224.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 224.50 Td
+(Cichoric acid 2.0%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 208.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 211.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 211.50 Td
+(Mako \(Solanum nigrum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 211.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 211.50 Td
+(Solanine alkaloids <0.1%, Polyphenols 8%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 195.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 198.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 198.50 Td
+(Tukhm-e-Kasoos \(Cuscuta reflexa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 198.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 198.50 Td
+(Cuscutin 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 182.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 185.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 185.50 Td
+(Zarishk \(Berberis vulgaris\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 185.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 185.50 Td
+(Berberine 8%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 169.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 172.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 172.50 Td
+(Revand Chini \(Rheum emodi\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 172.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 172.50 Td
+(Emodin & Rhein 3.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 156.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 159.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 159.50 Td
+(Afsanteen \(Artemisia absinthium\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 159.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 159.50 Td
+(Absinthin 1.5%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 144.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 147.00 Td
+(Dose: 1 to 2 capsules twice daily 30 minutes after meals with warm water or  | Total Actives per Unit: 1200 mg) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 11 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+11 0 obj
+<< /Length 15179 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 3) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-005: LipidoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Islah-e-Dam) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: METABOLIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 1250) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Dasaumat-ud-Dam \(Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Lasan \(Allium sativum extract\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Allicin 2.0%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Guggulu \(Commiphora mukul\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Guggulsterones E & Z 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Amla \(Phyllanthus emblica - Musleh for Guggulu\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Tannins & Vitamin C 30%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Zanjabil \(Zingiber officinale\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Gingerols 5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Halela Siyah \(Terminalia chebula\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Chebulinic acid 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 649.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 652.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 652.50 Td
+(Zeera Siyah \(Carum carvi\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 652.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 652.50 Td
+(Carvone 3%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 637.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 640.00 Td
+(Dose: 1 to 2 capsules twice daily after heavy meals with warm water | Total Actives per Unit: 1150 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 613.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 618.00 Td
+(ZAY-006: PulmoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 618.00 Td
+(Classical: Lauq-e-Muqawwi-e-Sadr) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 618.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 585.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 599.00 Td
+(Organ Axis: PULMONARY) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 599.00 Td
+(Dosage Form: Effervescent Micro-Granules \(30 Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 599.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 599.00 Td
+(MRP: INR 950) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 589.00 Td
+(Indication: Zeequn-Nafs \(Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 568.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 571.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 571.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 571.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 571.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Asl-us-Soos \(Glycyrrhiza glabra\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Glycyrrhizin 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Sapistan \(Cordia latifolia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Polysaccharide mucilage 20%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Unnab \(Ziziphus jujuba\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Jujubosides 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Behidana \(Cydonia oblonga\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Pectin & Mucilage 25%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 503.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 506.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 506.50 Td
+(Banafsha \(Viola odorata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 506.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 506.50 Td
+(Violanthin & Rutin 2%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 490.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 493.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 493.50 Td
+(Natural Honey Base) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 493.50 Td
+(4000 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 493.50 Td
+(Pure Forest Flora) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 478.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 481.00 Td
+(Dose: 1 sachet dissolved in 100ml warm water, sip slowly twice daily, follow | Total Actives per Unit: 5000 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 454.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 459.00 Td
+(ZAY-007: SynovoFlex(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 459.00 Td
+(Classical: Safoof-e-Muhallil-e-Mafasil) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 459.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 426.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 440.00 Td
+(Organ Axis: MUSCULOSKELETAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 440.00 Td
+(Dosage Form: Micro-Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 440.00 Td
+(Regulatory: AYUSH_PROPRIETARY) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 440.00 Td
+(MRP: INR 1650) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 430.00 Td
+(Indication: Waja-ul-Mafasil \(Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 409.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 412.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 412.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 412.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 412.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Suranjan Shirin \(Colchicum autumnale - purified\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Colchicine < 0.2%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Asgandh \(Withania somnifera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Withanolides 5.0%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Zanjabil \(Zingiber officinale\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Gingerols 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 357.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 360.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 360.50 Td
+(Kundur \(Boswellia serrata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 360.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 360.50 Td
+(AKBA \(3-O-acetyl-11-keto-beta-boswellic ) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 344.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 347.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 347.50 Td
+(Filfil Daraz \(Piper longum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 347.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 347.50 Td
+(Piperine 95%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 332.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 335.00 Td
+(Dose: 1 stick sachet \(5g\) twice daily with warm milk or lukewarm water after | Total Actives per Unit: 1000 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 308.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 313.00 Td
+(ZAY-008: NeuroVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 313.00 Td
+(Classical: Majoon-e-Mufarrih-e-Arwah) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 313.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 280.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 294.00 Td
+(Organ Axis: NEUROPSYCHIATRIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 294.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 294.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 294.00 Td
+(MRP: INR 1750) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 284.00 Td
+(Indication: Malikhuliya \(Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 263.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 266.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 266.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 266.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 266.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Brahmi \(Bacopa monnieri\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Bacosides A & B 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(Shankhpushpi \(Convolvulus pluricaulis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Total Alkaloids 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Ustukhuddus \(Lavandula stoechas\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Linalool 3.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 211.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 214.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 214.50 Td
+(Gaozaban \(Borago officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 214.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 214.50 Td
+(Flavonoids 2%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 198.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 201.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 201.50 Td
+(Badranjboya \(Melissa officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 201.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 201.50 Td
+(Rosmarinic acid 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 185.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 188.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 188.50 Td
+(Jadwar \(Delphinium denudatum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 188.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 188.50 Td
+(Denudatine alkaloids 1%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 173.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 176.00 Td
+(Dose: 1 to 2 capsules twice daily \(in the morning and 1 hour before sleep\) w | Total Actives per Unit: 1200 mg) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 13 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+13 0 obj
+<< /Length 15982 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 4) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-009: NeuroShield-Rx(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Qurs-e-Taqwiyat-e-Quwwat-e-Baah) Tj
+ET
+BT
+/F2 7.5 Tf
+0.750 0.150 0.150 rg
+385.28 777.00 Td
+(PRESCRIPTION ONLY \(SCHEDULE E-1 / POTENT\)) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: Habb / Coated Micro-Tablets \(60 Tabs\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: AYUSH_SCHEDULE_E1_RX) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 3400) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Severe Neuro-Vascular Erectile Dysfunction \(Zof-e-Baah Shadeed\), Loss of Penile Tumescence...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Zafran \(Crocus sativus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(30 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Crocin 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Jund Bedastar \(Castoreum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Purified Castorin Complex) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Regmahi \(Scincus officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Calcified Bio-Peptides) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Kuchla Mudabbar \(Purified Strychnos nux-vomica\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(15 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Strychnine 1.15%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Salab Misri \(Orchis mascula\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Glucomannan 15%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 649.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 652.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 652.50 Td
+(Amber \(Ambra grisea\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 652.50 Td
+(10 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 652.50 Td
+(Ambrein 25%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 637.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 640.00 Td
+(Dose: 1 tablet at night with 250ml warm saffron milk 2 hours after meal \(Max | Total Actives per Unit: 455 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 613.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 618.00 Td
+(ZAY-010: SpermoPro(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 618.00 Td
+(Classical: Majoon-e-Taqwiyat-e-Mani-Shadeed) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 618.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 585.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 599.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 599.00 Td
+(Dosage Form: Majoon / Oral Paste \(30 Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 599.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 599.00 Td
+(MRP: INR 3800) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 589.00 Td
+(Indication: Severe Oligospermia \(<10 million/ml\), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume ...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 568.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 571.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 571.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 571.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 571.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Salab Panja \(Dactylorhiza hatagirea\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Mucilaginous Glycoproteins 18%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Khulanjan \(Alpinia galanga\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Galangin 3%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Behman Surkh \(Salvia haematodes\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Salvianolic Acids 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Behman Safed \(Centaurea behen\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Total Sterols 2%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 503.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 506.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 506.50 Td
+(Maghz-e-Badam \(Prunus amygdalus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 506.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 506.50 Td
+(Oleic & Linoleic Essential Lipids) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 490.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 493.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 493.50 Td
+(Maghz-e-Pista \(Pistacia vera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 493.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 493.50 Td
+(Phytosterols & Tocopherols) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 477.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 480.50 Td
+(7) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 480.50 Td
+(Zafran \(Crocus sativus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 480.50 Td
+(15 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 480.50 Td
+(Safranal 2%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 464.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 467.50 Td
+(8) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 467.50 Td
+(Kushta Nuqra \(Silver Calx\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 467.50 Td
+(30 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 467.50 Td
+(Sub-micron Silver Nanoparticles) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 452.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 455.00 Td
+(Dose: 1 sachet \(10g\) in the morning on empty stomach with 250ml full-fat luk | Total Actives per Unit: 1545 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 428.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 433.00 Td
+(ZAY-011: VigorVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 433.00 Td
+(Classical: Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 433.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 400.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 414.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 414.00 Td
+(Dosage Form: Standardized Micro-Granules \(30 Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 414.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 414.00 Td
+(MRP: INR 1150) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 404.00 Td
+(Indication: General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 383.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 386.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 386.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 386.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 386.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Ashwagandha \(Withania somnifera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Withanolides 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 357.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 360.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 360.50 Td
+(Gokshura \(Tribulus terrestris\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 360.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 360.50 Td
+(Protodioscin 40%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 344.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 347.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 347.50 Td
+(Safed Musli \(Chlorophytum borivilianum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 347.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 347.50 Td
+(Saponins 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 331.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 334.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 334.50 Td
+(Shatavari \(Asparagus racemosus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 334.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 334.50 Td
+(Shatavarins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 318.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 321.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 321.50 Td
+(Shilajit \(purified asphaltum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 321.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 321.50 Td
+(Fulvic Acid 60%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 305.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 308.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 308.50 Td
+(Akarkara \(Anacyclus pyrethrum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 308.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 308.50 Td
+(Pellitorine 1.5%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 293.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 296.00 Td
+(Dose: 1 sachet \(3g\) daily in the morning with warm water or milk | Total Actives per Unit: 1250 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 269.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 274.00 Td
+(ZAY-012: SomnoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 274.00 Td
+(Classical: Safoof-e-Taskeen-e-Dimagh) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 274.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 241.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 255.00 Td
+(Organ Axis: NEUROPSYCHIATRIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 255.00 Td
+(Dosage Form: Herbal Infusion / Decoction Elixir \(200ml\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 255.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 255.00 Td
+(MRP: INR 1250) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 245.00 Td
+(Indication: Sahar \(Insomnia\), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 224.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 227.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 227.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 227.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 227.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 211.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 214.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 214.50 Td
+(Ashwagandha \(Withania somnifera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 214.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 214.50 Td
+(Withanolides 5% \(high withanolide-A\)) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 198.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 201.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 201.50 Td
+(Tagar \(Valeriana wallichii\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 201.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 201.50 Td
+(Valerenic Acids 0.8%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 185.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 188.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 188.50 Td
+(Jatamansi \(Nardostachys jatamansi\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 188.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 188.50 Td
+(Jatamansone 2%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 172.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 175.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 175.50 Td
+(Chamomile Extract) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 175.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 175.50 Td
+(Apigenin 1.2%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 159.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 162.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 162.50 Td
+(Tukhm-e-Khashkhash \(Poppy seeds - purified\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 162.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 162.50 Td
+(Nutritional Lipid & Tryptophan Matrix) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 147.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 150.00 Td
+(Dose: 10ml to 15ml with warm milk or chamomile infusion 45 minutes before be | Total Actives per Unit: 1300 mg) Tj
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 15 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+15 0 obj
+<< /Length 14161 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 5) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-013: VitalMani(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Muwalid-e-Mani-Mutawassit) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 1850) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Moderate Oligospermia \(10-15 million/ml\), Decreased seminal volume, Semen liquefaction delay...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Safed Musli \(Chlorophytum borivilianum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Saponins 25%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Kaunch Beej \(Mucuna pruriens\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(L-Dopa 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Talmakhana \(Asteracantha longifolia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Mucilaginous Sterols 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Tukhm-e-Utangan \(Blepharis edulis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Total Glycosides 4%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Gond Katira \(Astragalus gummifer\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Tragacanthin Polysaccharide) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 650.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 653.00 Td
+(Dose: 1 to 2 capsules twice daily with warm milk | Total Actives per Unit: 1250 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 626.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 631.00 Td
+(ZAY-014: DermaVora-Hair(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 631.00 Td
+(Classical: Safoof-e-Munbit-e-Sha'r) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 631.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 598.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 612.00 Td
+(Organ Axis: DERMATOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 612.00 Td
+(Dosage Form: Micro-Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 612.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 612.00 Td
+(MRP: INR 1100) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 602.00 Td
+(Indication: Intisaar-ush-Sha'r \(Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 581.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 584.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 584.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 584.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 584.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 568.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 571.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 571.50 Td
+(Amla \(Emblica officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 571.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 571.50 Td
+(Tannins 30%, Vitamin C natural) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Bhringraj \(Eclipta alba\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Wedelolactone 2%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Shikakai \(Acacia concinna\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Saponins 15%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Halela Siyah \(Terminalia chebula\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Polyphenols 20%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Tukhm-e-Kahu \(Lactuca sativa seeds\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Lactucin & Flavonoids) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 504.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 507.00 Td
+(Dose: 1 stick sachet \(5g\) daily in the morning with water; optionally paired | Total Actives per Unit: 1150 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 480.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 485.00 Td
+(ZAY-015: LithoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 485.00 Td
+(Classical: Safoof-e-Mufattit-e-Hisat) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 485.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 452.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 466.00 Td
+(Organ Axis: UROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 466.00 Td
+(Dosage Form: Targeted Micro-Granules \(30 x 5g Daily Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 466.00 Td
+(Regulatory: AYUSH_PROPRIETARY) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 466.00 Td
+(MRP: INR 1350) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 456.00 Td
+(Indication: Hisat-e-Kulya wa Masana \(Kidney and bladder calculi <8mm\), Crystalluria, Burning micturition \(Sozish...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 435.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 438.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 438.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 438.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 438.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 422.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 425.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 425.50 Td
+(Kulthi \(Macrotyloma uniflorum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 425.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 425.50 Td
+(Phytic Acid & Flavonoids 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 409.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 412.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 412.50 Td
+(Gokshura \(Tribulus terrestris\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 412.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 412.50 Td
+(Saponins 40%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Pashanbhed \(Bergenia ligulata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Bergenin 8%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Hajr-ul-Yahood Bhasma \(Lapis judaicus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Natural Calcium Silicate complex) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Javakhar \(Potassium carbonate from barley ash\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Potassium Carbonate 80%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 358.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 361.00 Td
+(Dose: 1 stick sachet \(5g\) twice daily dissolved in a full glass of water \(ma | Total Actives per Unit: 1300 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 334.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 339.00 Td
+(ZAY-016: GynaeVora-L(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 339.00 Td
+(Classical: Safoof-e-Qabiz-e-Reham) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 339.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 306.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 320.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 320.00 Td
+(Dosage Form: Micro-Calcified Tablets \(60 Tabs\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 320.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 320.00 Td
+(MRP: INR 1150) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 310.00 Td
+(Indication: Sailan-ur-Reham \(Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 289.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 292.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 292.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 292.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 292.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 276.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 279.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 279.50 Td
+(Lodhra \(Symplocos racemosa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 279.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 279.50 Td
+(Total Alkaloids \(Loturine\) 1.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 263.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 266.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 266.50 Td
+(Mochras \(Bombax ceiba gum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 266.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 266.50 Td
+(Tannins & Mucilage 20%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Ashok Chhal \(Saraca asoca\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Catechin & Tannins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(Gond Dhak \(Butea monosperma gum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Butein & Tannic Acid 15%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Phitkari Biryan \(Purified roasted alum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Purified Potash Alum) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 212.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 215.00 Td
+(Dose: 1 to 2 tablets twice daily with rice water \(Maa-ul-Arz\) or lukewarm wa | Total Actives per Unit: 1200 mg) Tj
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 17 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+17 0 obj
+<< /Length 14010 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 6) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-017: MetaboBurn-M(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Tahleel-e-Shahm) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: METABOLIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 1450) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Shahm-e-Mufrit \(Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Garcinia cambogia) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Hydroxycitric Acid \(HCA\) 60%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Green Coffee Bean) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Chlorogenic Acid \(CGA\) 50%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Zeera Siyah \(Carum carvi\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Carvone 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Ajwain \(Trachyspermum ammi\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Thymol 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Filfil Siyah \(Piper nigrum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Piperine 95%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 650.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 653.00 Td
+(Dose: 1 to 2 capsules twice daily 30 minutes before major meals with warm wa | Total Actives per Unit: 1100 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 626.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 631.00 Td
+(ZAY-018: ThyroMet-W(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 631.00 Td
+(Classical: Safoof-e-Islah-e-Ghudda-e-Darqiya) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 631.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 598.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 612.00 Td
+(Organ Axis: ENDOCRINE) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 612.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 612.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 612.00 Td
+(MRP: INR 1550) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 602.00 Td
+(Indication: Ghudda-e-Darqiya sluggishness \(Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishne...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 581.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 584.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 584.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 584.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 584.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 568.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 571.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 571.50 Td
+(Kanchnar Chhal \(Bauhinia variegata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 571.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 571.50 Td
+(Flavonoids 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Guggulu \(Commiphora mukul\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Guggulsterones 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Triphala \(Terminalia chebula, bellerica, Emblica) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Tannins 35%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Trikatu \(Zingiber, Piper nigrum, Piper longum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Piperine & Gingerols 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Varuna \(Crataeva nurvala\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Lupeol 1.5%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 504.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 507.00 Td
+(Dose: 1 to 2 capsules twice daily with warm ginger infusion or lukewarm wate | Total Actives per Unit: 1250 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 480.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 485.00 Td
+(ZAY-019: FemmeDaily(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 485.00 Td
+(Classical: Safoof-e-Nisa) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 485.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 452.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 466.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 466.00 Td
+(Dosage Form: Compressed Tablets \(60 Tabs\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 466.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 466.00 Td
+(MRP: INR 1150) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 456.00 Td
+(Indication: General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 435.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 438.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 438.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 438.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 438.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 422.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 425.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 425.50 Td
+(Shatavari \(Asparagus racemosus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 425.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 425.50 Td
+(Shatavarins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 409.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 412.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 412.50 Td
+(Ashok Chhal \(Saraca asoca\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 412.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 412.50 Td
+(Tannins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Lodhra \(Symplocos racemosa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Loturine 1.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Giloy \(Tinospora cordifolia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Bitters 3%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Iron Bhasma \(Kushta Khabs-ul-Hadeed\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Micro-calcified Elemental Iron) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 358.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 361.00 Td
+(Dose: 1 to 2 tablets daily in the morning with milk or warm water | Total Actives per Unit: 1200 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 334.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 339.00 Td
+(ZAY-020: GlucoBalance(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 339.00 Td
+(Classical: Safoof-e-Daf-e-Ziabetus-Mutawassit) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 339.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 306.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 320.00 Td
+(Organ Axis: PANCREATIC) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 320.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 320.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 320.00 Td
+(MRP: INR 1250) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 310.00 Td
+(Indication: Prediabetes \(HbA1c 5.7-6.4%\), Impaired fasting glucose, Postprandial glucose surges...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 289.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 292.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 292.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 292.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 292.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 276.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 279.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 279.50 Td
+(Vijaysar \(Pterocarpus marsupium\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 279.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 279.50 Td
+(Marsupsin & Pterosupin 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 263.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 266.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 266.50 Td
+(Gurmar \(Gymnema sylvestre\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 266.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 266.50 Td
+(Gymnemic acids 25%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Methi \(Trigonella foenum-graecum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Galactomannan 30%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(Jamun \(Syzygium cumini\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Jamboline 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Dalchini \(Cinnamomum verum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Polyphenols 10%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 212.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 215.00 Td
+(Dose: 1 to 2 capsules twice daily 15 minutes before lunch and dinner with wa | Total Actives per Unit: 1250 mg) Tj
+ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 19 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+19 0 obj
+<< /Length 15577 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 7) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-021: ImmunoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Muqawwi-e-Tabiyat) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: IMMUNOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: Purified Herbal Granules \(30 Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 950) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Giloy \(Tinospora cordifolia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Tinosporaside & Cordifolioside 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Tulsi \(Ocimum sanctum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Ursolic acid 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Kalmegh \(Andrographis paniculata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Andrographolide 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Amla \(Emblica officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Vitamin C & Tannins 30%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Haldi \(Curcuma longa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Curcuminoids 95%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 649.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 652.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 652.50 Td
+(Filfil Siyah \(Piper nigrum - Bio-enhancer Mu'in\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 652.50 Td
+(20 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 652.50 Td
+(Piperine 95%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 637.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 640.00 Td
+(Dose: 1 sachet \(3g\) once or twice daily dissolved in warm water or green tea | Total Actives per Unit: 1320 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 613.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 618.00 Td
+(ZAY-022: GastroVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 618.00 Td
+(Classical: Safoof-e-Islah-e-Amaa) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 618.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 585.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 599.00 Td
+(Organ Axis: GASTROINTESTINAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 599.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 599.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 599.00 Td
+(MRP: INR 1150) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 589.00 Td
+(Indication: Zalaq-ul-Amaa / Nafkh-e-Shikam \(Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Fla...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 568.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 571.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 571.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 571.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 571.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Bilva \(Aegle marmelos\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Marmelosin & Tannins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Ispaghul Husk \(Plantago ovata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Soluble dietary fiber 85%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Saunf \(Foeniculum vulgare\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Anethole 2%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Pudina \(Mentha piperita\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Menthol 1.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 503.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 506.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 506.50 Td
+(Zeera Safed \(Cuminum cyminum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 506.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 506.50 Td
+(Cuminaldehyde 2%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 491.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 494.00 Td
+(Dose: 1 to 2 capsules twice daily 20 minutes after food with fresh buttermil | Total Actives per Unit: 1250 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 467.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 472.00 Td
+(ZAY-023: NeuroVigor-Rx(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 472.00 Td
+(Classical: Habb-e-Azaraqi Mudabbar \(Majoon-e-Muhrik-e-Baah\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.750 0.150 0.150 rg
+385.28 472.00 Td
+(PRESCRIPTION ONLY \(SCHEDULE E-1 / POTENT\)) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 439.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 453.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 453.00 Td
+(Dosage Form: Coated Micro-Tablets \(Alu-Alu Blister, 60 Tabs\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 453.00 Td
+(Regulatory: AYUSH_SCHEDULE_E1_RX) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 453.00 Td
+(MRP: INR 1850) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 443.00 Td
+(Indication: Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 422.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 425.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 425.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 425.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 425.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 409.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 412.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 412.50 Td
+(Zafran \(Crocus sativus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 412.50 Td
+(35 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 412.50 Td
+(Crocin 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Kuchla Mudabbar \(Purified Nux-vomica\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(20 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Strychnine 1.15%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Salab Panja \(Dactylorhiza hatagirea\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Mucilaginous Glycoproteins 18%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Shingraf Mudabbar \(Purified Cinnabar\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(15 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Traditional detoxified mercuric sulfide ) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 357.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 360.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 360.50 Td
+(Darchini \(Cinnamomum zeylanicum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 360.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 360.50 Td
+(Cinnamaldehyde 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 344.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 347.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 347.50 Td
+(Asgandh \(Withania somnifera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 347.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 347.50 Td
+(Withanolides 5%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 332.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 335.00 Td
+(Dose: 1 tablet at bedtime with 250ml full-cream milk \(Maximum 3 times weekly | Total Actives per Unit: 770 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 308.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 313.00 Td
+(ZAY-024: SpermoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 313.00 Td
+(Classical: Safoof-e-Mujaddid-e-Nutfa-Shadeed) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 313.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 280.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 294.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 294.00 Td
+(Dosage Form: Single-Serve Paste Sachets \(30 x 7g\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 294.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 294.00 Td
+(MRP: INR 2250) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 284.00 Td
+(Indication: Severe Oligo-Astheno-Teratozoospermia \(OAT Syndrome\), Elevated DNA Fragmentation Index \(DFI > 25%\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 263.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 266.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 266.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 266.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 266.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Coenzyme Q10) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Pure Ubiquinone 99%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(L-Carnitine L-Tartrate) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(500 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Pure L-Carnitine 68%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Lycopene 10%) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(25 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Natural Tomato Lycopene Extract) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 211.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 214.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 214.50 Td
+(Salab Misri \(Orchis mascula\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 214.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 214.50 Td
+(Glucomannan 15%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 198.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 201.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 201.50 Td
+(Safed Musli \(Chlorophytum borivilianum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 201.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 201.50 Td
+(Saponins 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 185.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 188.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 188.50 Td
+(Zinc Monomethionine) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 188.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 188.50 Td
+(Elemental Zinc 10mg) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 172.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 175.50 Td
+(7) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 175.50 Td
+(Selenium Yeast) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 175.50 Td
+(40 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 175.50 Td
+(Elemental Selenium 40mcg) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 160.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 163.00 Td
+(Dose: 1 sachet \(7g paste\) twice daily with milk or fresh pomegranate juice f | Total Actives per Unit: 1465 mg) Tj
+ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 21 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+21 0 obj
+<< /Length 14488 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 8) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-025: ManiVital Pro(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Mumsik-e-Mani-Shadeed) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: Micro-Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: AYUSH_PROPRIETARY) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 1950) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Surat-e-Inzal \(Premature Ejaculation, IELT < 1 minute\), Riqat-e-Mani \(Seminal hyperviscosity/thinnes...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Tukhm-e-Kahu \(Lactuca sativa seeds\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Lactucopicrin 1.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(Tukhm-e-Khashkhash \(Purified poppy seeds\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Total Lipids & Alkaloids) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Gond Kikar \(Acacia arabica gum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Arabinogalactan 35%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Mochras \(Bombax ceiba gum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(Tannins 20%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Kushta Qalai \(Tin calx\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Purified Stannic Oxide complex) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 650.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 653.00 Td
+(Dose: 1 stick sachet \(5g\) twice daily with lukewarm milk 1 hour before sleep | Total Actives per Unit: 1050 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 626.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 631.00 Td
+(ZAY-026: ProstaVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 631.00 Td
+(Classical: Safoof-e-Mulayyim-e-Ghudda-e-Baristeht) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 631.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 598.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 612.00 Td
+(Organ Axis: UROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 612.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 612.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 612.00 Td
+(MRP: INR 1850) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 602.00 Td
+(Indication: Waram-e-Ghudda-e-Baristeht \(Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesita...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 581.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 584.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 584.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 584.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 584.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 568.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 571.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 571.50 Td
+(Saw Palmetto Extract \(Serenoa repens\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 571.50 Td
+(320 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 571.50 Td
+(Fatty Acids 45%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 555.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 558.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 558.50 Td
+(Nettle Root \(Urtica dioica\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 558.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 558.50 Td
+(Beta-Sitosterol 0.8%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Gokshura \(Tribulus terrestris\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Saponins 40%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Varuna \(Crataeva nurvala\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Lupeol 1.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Pumpkin Seed Extract \(Cucurbita pepo\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Phytosterols 20%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 504.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 507.00 Td
+(Dose: 1 to 2 capsules twice daily after meals with water | Total Actives per Unit: 1320 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 480.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 485.00 Td
+(ZAY-027: AndroVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 485.00 Td
+(Classical: Majoon-e-Muqawwi-e-Khusyatain) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 485.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 452.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 466.00 Td
+(Organ Axis: ANDROLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 466.00 Td
+(Dosage Form: Targeted HPMC Veg Capsules \(60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 466.00 Td
+(Regulatory: AYUSH_CLASSICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 466.00 Td
+(MRP: INR 3600) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 456.00 Td
+(Indication: Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 435.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 438.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 438.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 438.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 438.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 422.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 425.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 425.50 Td
+(Salab Gatta \(Orchis latifolia\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 425.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 425.50 Td
+(Bioactive Mucilage 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 409.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 412.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 412.50 Td
+(Khusyat-us-Salab \(Testicular Bio-Extract\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 412.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 412.50 Td
+(Standardized Peptide Fraction) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Zafran \(Crocus sativus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(20 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Crocin 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Asgandh \(Withania somnifera\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Withanolides 5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Kushta Nuqra \(Silver calx\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(30 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Sub-micron Silver Particles) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 357.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 360.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 360.50 Td
+(Maghz-e-Chilgoza \(Pinus gerardiana\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 360.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 360.50 Td
+(Pinolenic Acid 15%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 345.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 348.00 Td
+(Dose: 1 to 2 capsules in the morning on empty stomach with warm milk | Total Actives per Unit: 1150 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 321.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 326.00 Td
+(ZAY-028: LeucoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 326.00 Td
+(Classical: Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 326.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 293.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 307.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 307.00 Td
+(Dosage Form: Micro-Granules \(30 x 3g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 307.00 Td
+(Regulatory: AYUSH_PROPRIETARY) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 307.00 Td
+(MRP: INR 1650) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 297.00 Td
+(Indication: Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 276.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 279.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 279.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 279.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 279.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 263.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 266.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 266.50 Td
+(Lodhra \(Symplocos racemosa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 266.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 266.50 Td
+(Loturine 1.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Ashok Chhal \(Saraca asoca\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Tannins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(Mochras \(Bombax ceiba gum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Tannins & Mucilage 20%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Kushta Baiza-e-Murgh) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Egg Shell Micro-Calcified Calcium) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 211.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 214.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 214.50 Td
+(Phitkari Biryan \(Roasted alum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 214.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 214.50 Td
+(Purified Potash Alum) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 199.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 202.00 Td
+(Dose: 1 stick sachet \(3g\) twice daily with rice water \(Maa-ul-Arz\) 30 minute | Total Actives per Unit: 1250 mg) Tj
+ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 23 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+23 0 obj
+<< /Length 15219 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 9) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 772.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 777.00 Td
+(ZAY-029: OvaSync-PCOS(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 777.00 Td
+(Classical: Safoof-e-Munazzim-e-Haiz) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 777.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 744.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 758.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 758.00 Td
+(Dosage Form: Micro-Granules \(30 x 5g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 758.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 758.00 Td
+(MRP: INR 2400) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 748.00 Td
+(Indication: Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham \(PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, ...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 727.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 730.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 730.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 730.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 730.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 714.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 717.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 717.50 Td
+(Myo-Inositol) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 717.50 Td
+(2000 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 717.50 Td
+(Pure USP Grade \(40:1 ratio match\)) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 701.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 704.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 704.50 Td
+(D-Chiro-Inositol) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 704.50 Td
+(50 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 704.50 Td
+(Pure USP Grade \(40:1 ratio match\)) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 688.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 691.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 691.50 Td
+(Kanchnar Chhal \(Bauhinia variegata\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 691.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 691.50 Td
+(Flavonoids 5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 675.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 678.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 678.50 Td
+(Methi \(Trigonella foenum-graecum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 678.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 678.50 Td
+(4-Hydroxyisoleucine 20%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 662.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 665.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 665.50 Td
+(Haldi \(Curcuma longa\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 665.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 665.50 Td
+(Curcuminoids 95%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 649.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 652.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 652.50 Td
+(Dalchini \(Cinnamomum verum\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 652.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 652.50 Td
+(Polyphenols 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 636.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 639.50 Td
+(7) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 639.50 Td
+(Filfil Siyah \(Piper nigrum - Bio-enhancer Mu'in\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 639.50 Td
+(15 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 639.50 Td
+(Piperine 95%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 624.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 627.00 Td
+(Dose: 1 stick sachet \(5g\) twice daily dissolved in 150ml water 20 minutes be | Total Actives per Unit: 3065 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 600.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 605.00 Td
+(ZAY-030: MensoCalm(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 605.00 Td
+(Classical: Majoon-e-Muqawwi-e-Reham-Shadeed) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 605.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 572.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 586.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 586.00 Td
+(Dosage Form: HPMC Veg Capsules \(Alu-Alu Blister, 60 Caps\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 586.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 586.00 Td
+(MRP: INR 1850) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 576.00 Td
+(Indication: Zof-e-Reham \(Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy\)...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 555.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 558.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 558.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 558.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 558.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 542.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 545.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 545.50 Td
+(Ashok Chhal \(Saraca asoca\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 545.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 545.50 Td
+(Catechins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 529.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 532.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 532.50 Td
+(Shatavari \(Asparagus racemosus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 532.50 Td
+(350 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 532.50 Td
+(Shatavarins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 516.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 519.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 519.50 Td
+(Supari Mudabbar \(Purified Areca catechu\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 519.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 519.50 Td
+(Arecoline detoxified <0.05%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 503.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 506.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 506.50 Td
+(Gond Katira \(Astragalus gummifer\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 506.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 506.50 Td
+(Tragacanthin 40%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 490.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 493.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 493.50 Td
+(Asl-us-Soos \(Glycyrrhiza glabra\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 493.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 493.50 Td
+(Glycyrrhizin 10%) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 478.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 481.00 Td
+(Dose: 1 to 2 capsules twice daily with warm milk | Total Actives per Unit: 1250 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 454.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 459.00 Td
+(ZAY-031: MenoVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 459.00 Td
+(Classical: Safoof-e-Daf-e-Araz-e-Yas) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 459.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 426.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 440.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 440.00 Td
+(Dosage Form: Micro-Granules \(30 x 3g Daily Stick Sachets\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 440.00 Td
+(Regulatory: AYUSH_PROPRIETARY) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 440.00 Td
+(MRP: INR 1750) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 430.00 Td
+(Indication: Sinn-e-Yas \(Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone ...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 409.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 412.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 412.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 412.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 412.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 396.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 399.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 399.50 Td
+(Shatavari \(Asparagus racemosus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 399.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 399.50 Td
+(Shatavarins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 383.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 386.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 386.50 Td
+(Black Cohosh \(Actaea racemosa extract\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 386.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 386.50 Td
+(Triterpene Glycosides 2.5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 370.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 373.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 373.50 Td
+(Shankhpushpi \(Convolvulus pluricaulis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 373.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 373.50 Td
+(Total Alkaloids 2.5%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 357.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 360.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 360.50 Td
+(Badranjboya \(Melissa officinalis\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 360.50 Td
+(200 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 360.50 Td
+(Rosmarinic Acid 5%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 344.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 347.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 347.50 Td
+(Praval Pishti \(Purified Coral Calx\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 347.50 Td
+(150 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 347.50 Td
+(Bioactive Calcium & Trace Minerals) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 332.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 335.00 Td
+(Dose: 1 stick sachet \(3g\) twice daily with lukewarm water after breakfast an | Total Actives per Unit: 1150 mg) Tj
+ET
+0.900 0.940 0.920 rg
+0.700 0.800 0.750 RG
+40.00 308.00 515.28 20.00 re
+B
+BT
+/F2 10.5 Tf
+0.110 0.260 0.200 rg
+48.00 313.00 Td
+(ZAY-032: ConceiveVora(TM)) Tj
+ET
+BT
+/F3 9 Tf
+0.250 0.250 0.250 rg
+230.00 313.00 Td
+(Classical: Safoof-e-Mualijat-e-Uqr-e-Nisa) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+385.28 313.00 Td
+(AYUSH OTC / DISPENSARY) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 280.00 515.28 24.00 re
+B
+BT
+/F2 7.5 Tf
+0.300 0.300 0.300 rg
+46.00 294.00 Td
+(Organ Axis: GYNECOLOGICAL) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+170.00 294.00 Td
+(Dosage Form: Compressed Tablets \(60 Tabs\)) Tj
+ET
+BT
+/F1 7.5 Tf
+0.200 0.200 0.200 rg
+290.00 294.00 Td
+(Regulatory: FSSAI_NUTRACEUTICAL) Tj
+ET
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+485.28 294.00 Td
+(MRP: INR 3800) Tj
+ET
+BT
+/F3 7 Tf
+0.400 0.400 0.400 rg
+46.00 284.00 Td
+(Indication: Uqr-e-Nisa \(Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Li...) Tj
+ET
+0.180 0.420 0.310 rg
+40.00 263.00 515.28 14.00 re
+f
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+46.00 266.00 Td
+(#) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+64.00 266.00 Td
+(BOTANICAL / CLASSICAL INGREDIENT) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+285.00 266.00 Td
+(AMOUNT \(MG\)) Tj
+ET
+BT
+/F2 7.5 Tf
+1.000 1.000 1.000 rg
+365.00 266.00 Td
+(HPLC STANDARDIZATION / SPECIFICATION) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 250.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 253.50 Td
+(1) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 253.50 Td
+(Shatavari \(Asparagus racemosus\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 253.50 Td
+(400 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 253.50 Td
+(Shatavarins 10%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 237.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 240.50 Td
+(2) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 240.50 Td
+(Shivlingi \(Bryonia laciniosa seeds\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 240.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 240.50 Td
+(Bryonin 2%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 224.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 227.50 Td
+(3) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 227.50 Td
+(Putranjiva \(Putranjiva roxburghii\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 227.50 Td
+(250 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 227.50 Td
+(Total Glycosides 3%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 211.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 214.50 Td
+(4) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 214.50 Td
+(Ashok Chhal \(Saraca asoca\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 214.50 Td
+(300 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 214.50 Td
+(Tannins 10%) Tj
+ET
+1.000 1.000 1.000 rg
+0.900 0.900 0.900 RG
+40.00 198.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 201.50 Td
+(5) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 201.50 Td
+(Coenzyme Q10) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 201.50 Td
+(100 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 201.50 Td
+(Pure Ubiquinone 99%) Tj
+ET
+0.960 0.970 0.960 rg
+0.900 0.900 0.900 RG
+40.00 185.00 515.28 13.00 re
+B
+BT
+/F1 7 Tf
+0.300 0.300 0.300 rg
+46.00 188.50 Td
+(6) Tj
+ET
+BT
+/F1 7.5 Tf
+0.100 0.100 0.100 rg
+64.00 188.50 Td
+(L-Methylfolate \(Active Folate\)) Tj
+ET
+BT
+/F2 7.5 Tf
+0.180 0.420 0.310 rg
+290.00 188.50 Td
+(0.5 mg) Tj
+ET
+BT
+/F3 7 Tf
+0.350 0.350 0.350 rg
+365.00 188.50 Td
+(Pure Active L-5-MTHF) Tj
+ET
+0.920 0.940 0.930 rg
+40.00 173.00 515.28 12.00 re
+f
+BT
+/F2 7 Tf
+0.200 0.300 0.250 rg
+46.00 176.00 Td
+(Dose: 1 to 2 tablets twice daily with warm milk starting on Day 5 of menstru | Total Actives per Unit: 1300.5 mg) Tj
+ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 25 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+25 0 obj
+<< /Length 7757 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 10) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+BT
+/F2 12 Tf
+0.110 0.260 0.200 rg
+40.00 790.00 Td
+(4. MASTER CLINICAL PROTOCOL KITS \(K-01 TO K-21\)) Tj
+ET
+0.110 0.260 0.200 rg
+40.00 786.00 515.28 1.20 re
+f
+0.180 0.420 0.310 rg
+40.00 760.00 515.28 16.00 re
+f
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+46.00 764.00 Td
+(KIT ID) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+90.00 764.00 Td
+(CLINICAL PROTOCOL NAME) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+240.00 764.00 Td
+(COMPONENT FORMULATIONS \(SKU & ROLE\)) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 702.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 746.00 Td
+(K-01) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 746.00 Td
+(Diabetes Control Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 746.00 Td
+(? ZAY-004: LiverPrime(TM) - Hepatic insulin sensitization) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 734.00 Td
+(? ZAY-002: Glucovora(TM) - Beta-cell support & carbohydrate enzyme inhibition) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 722.00 Td
+(? ZAY-008: NeuroVora(TM) - Cortisol dampening & stress hyperglycemia control) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 642.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 686.00 Td
+(K-02) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 686.00 Td
+(Metabolic Burn Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 686.00 Td
+(? ZAY-004: LiverPrime(TM) - Hepatic detox & bile flow optimization) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 674.00 Td
+(? ZAY-017: MetaboBurn-M(TM) - Thermogenic lipolysis & ATP-citrate lyase inhibi) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 662.00 Td
+(? ZAY-005: LipidoVora(TM) - Circulating atherogenic lipid clearance) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 582.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 626.00 Td
+(K-03) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 626.00 Td
+(Lipid Management Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 626.00 Td
+(? ZAY-005: LipidoVora(TM) - HMG-CoA reductase modulation & reverse cholesterol) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 614.00 Td
+(? ZAY-004: LiverPrime(TM) - Biliary excretion of cholesterol metabolites) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 602.00 Td
+(? ZAY-003: CardioVora(TM) - Endothelial nitric oxide enhancement & antioxidant) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 522.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 566.00 Td
+(K-04) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 566.00 Td
+(Blood Pressure Kit \(Rx\)) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 566.00 Td
+(? ZAY-001: TensioCalm(TM) - Central sympatholytic & peripheral vasodilator \(Rx) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 554.00 Td
+(? ZAY-003: CardioVora(TM) - Arterial compliance & inotropic support) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 542.00 Td
+(? ZAY-008: NeuroVora(TM) - Baroreflex sensitivity & neuro-calmative balance) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 462.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 506.00 Td
+(K-05) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 506.00 Td
+(Cardiac Protection Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 506.00 Td
+(? ZAY-003: CardioVora(TM) - Myocardial tonic & antioxidant preservation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 494.00 Td
+(? ZAY-005: LipidoVora(TM) - Plaque stabilization & lipid profile optimization) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 482.00 Td
+(? ZAY-001: TensioCalm(TM) - Afterload reduction & hemodynamic soothing) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 414.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 446.00 Td
+(K-06) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 446.00 Td
+(Stress-Anxiety Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 446.00 Td
+(? ZAY-008: NeuroVora(TM) - HPA axis balancing & GABAergic neuroprotection) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 434.00 Td
+(? ZAY-012: SomnoVora(TM) - Somatic stress relief & evening relaxation) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 366.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 398.00 Td
+(K-07) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 398.00 Td
+(Sleep Restore Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 398.00 Td
+(? ZAY-012: SomnoVora(TM) - Slow-wave sleep induction & GABA-A potentiation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 386.00 Td
+(? ZAY-008: NeuroVora(TM) - Daytime emotional stabilizing & circadian entrainme) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 318.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 350.00 Td
+(K-08) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 350.00 Td
+(Respiratory Care Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 350.00 Td
+(? ZAY-006: PulmoVora(TM) - Bronchodilation, mucosal soothing & phlegm expector) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 338.00 Td
+(? ZAY-021: ImmunoVora(TM) - Immunomodulation & systemic anti-inflammatory prot) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 270.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 302.00 Td
+(K-09) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 302.00 Td
+(Joint Care Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 302.00 Td
+(? ZAY-007: SynovoFlex(TM) - 5-LOX inhibition, synovial decongestion & joint cu) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 290.00 Td
+(? ZAY-021: ImmunoVora(TM) - Systemic antioxidant & matrix metalloproteinase re) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 210.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 254.00 Td
+(K-10) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 254.00 Td
+(ED Restore Kit \(Rx\)) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 254.00 Td
+(? ZAY-023: NeuroVigor-Rx(TM) - Potent PDE5-independent pelvic perfusion & spin) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 242.00 Td
+(? ZAY-027: AndroVora(TM) - Leydig cell trophic support & free testosterone amp) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 230.00 Td
+(? ZAY-008: NeuroVora(TM) - Performance anxiety mitigation & central dopaminerg) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 150.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 194.00 Td
+(K-11) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 194.00 Td
+(Male Fertility Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 194.00 Td
+(? ZAY-024: SpermoVora(TM) - Mitochondrial bioenergetics \(CoQ10/L-Carnitine\) & ) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 182.00 Td
+(? ZAY-010: SpermoPro(TM) - Spermatogenic epithelium nourishment & volume boost) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 170.00 Td
+(? ZAY-025: ManiVital Pro(TM) - Seminal plasma antioxidant buffer & liquefactio) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 102.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 134.00 Td
+(K-12) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 134.00 Td
+(Testosterone Restore Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 134.00 Td
+(? ZAY-027: AndroVora(TM) - Gonadal steroidogenesis upregulation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 122.00 Td
+(? ZAY-011: VigorVora(TM) - DHEA/testosterone precursor micro-nutrients & vigor) Tj
+ET
+endstream
+endobj
+26 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 27 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+27 0 obj
+<< /Length 5950 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 11) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 734.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 778.00 Td
+(K-13) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 778.00 Td
+(Prostate Health Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 778.00 Td
+(? ZAY-026: ProstaVora(TM) - 5-alpha reductase inhibition & stromal remodeling) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 766.00 Td
+(? ZAY-015: LithoVora(TM) - Bladder neck spasmolytic & anti-crystalluria cleara) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 754.00 Td
+(? ZAY-011: VigorVora(TM) - Cellular antioxidant & systemic vitality) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 674.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 718.00 Td
+(K-14) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 718.00 Td
+(PCOS Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 718.00 Td
+(? ZAY-029: OvaSync-PCOS(TM) - 40:1 Inositol insulin sensitization & ovarian st) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 706.00 Td
+(? ZAY-004: LiverPrime(TM) - Hepatic SHBG production & excess androgen clearanc) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 694.00 Td
+(? ZAY-008: NeuroVora(TM) - HPA axis moderating & stress cortisol suppression) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 614.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 658.00 Td
+(K-15) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 658.00 Td
+(Leucorrhoea Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 658.00 Td
+(? ZAY-028: LeucoVora(TM) - Endocervical astringency, moisture control & tissue) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 646.00 Td
+(? ZAY-016: GynaeVora-L(TM) - Pelvic decongestion & vaginal barrier defense) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 634.00 Td
+(? ZAY-019: FemmeDaily(TM) - Hematinic & systemic mucosal rejuvenation) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 554.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 598.00 Td
+(K-16) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 598.00 Td
+(Cycle Care Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 598.00 Td
+(? ZAY-030: MensoCalm(TM) - Myometrial spasmolytic tonic & luteal phase support) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 586.00 Td
+(? ZAY-016: GynaeVora-L(TM) - Pelvic circulatory rhythm) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 574.00 Td
+(? ZAY-019: FemmeDaily(TM) - Nutritional replenishment & hormonal balancing) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 494.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 538.00 Td
+(K-17) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 538.00 Td
+(Menopause Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 538.00 Td
+(? ZAY-031: MenoVora(TM) - Phytoestrogenic hypothalamic modulation & bone calci) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 526.00 Td
+(? ZAY-019: FemmeDaily(TM) - General female vitality & adrenal adaptogen) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 514.00 Td
+(? ZAY-003: CardioVora(TM) - Post-menopausal vascular endothelial preservation) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 434.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 478.00 Td
+(K-18) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 478.00 Td
+(Female Fertility Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 478.00 Td
+(? ZAY-032: ConceiveVora(TM) - Oocyte bioenergetics \(CoQ10/Folate\) & follicular) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 466.00 Td
+(? ZAY-029: OvaSync-PCOS(TM) - Insulin-mediated ovulatory regularisation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 454.00 Td
+(? ZAY-030: MensoCalm(TM) - Endometrial receptivity & implantation optimization) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 386.00 515.28 44.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 418.00 Td
+(K-19) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 418.00 Td
+(Immunity Shield Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 418.00 Td
+(? ZAY-021: ImmunoVora(TM) - Natural killer cell activation & antioxidant shiel) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 406.00 Td
+(? ZAY-006: PulmoVora(TM) - Respiratory tract epithelial barrier enhancement) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 326.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 370.00 Td
+(K-20) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 370.00 Td
+(Gut Restore Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 370.00 Td
+(? ZAY-022: GastroVora(TM) - Mucosal barrier restoration & motility normalizati) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 358.00 Td
+(? ZAY-004: LiverPrime(TM) - Bile acid flow & digestive enzymatic stimulation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 346.00 Td
+(? ZAY-008: NeuroVora(TM) - Gut-brain axis signaling & visceral hypersensitivit) Tj
+ET
+0.970 0.980 0.970 rg
+0.850 0.880 0.860 RG
+40.00 266.00 515.28 56.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+46.00 310.00 Td
+(K-21) Tj
+ET
+BT
+/F2 8.5 Tf
+0.150 0.150 0.150 rg
+90.00 310.00 Td
+(Hair Restore Kit) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 310.00 Td
+(? ZAY-014: DermaVora-Hair(TM) - Anagen phase elongation & micro-circulation) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 298.00 Td
+(? ZAY-019: FemmeDaily(TM) - Nutritional ferritin & mineral fortification) Tj
+ET
+BT
+/F1 7 Tf
+0.250 0.250 0.250 rg
+240.00 286.00 Td
+(? ZAY-008: NeuroVora(TM) - Stress-induced telogen shed prevention) Tj
+ET
+endstream
+endobj
+28 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 29 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+29 0 obj
+<< /Length 7113 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 12) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+BT
+/F2 12 Tf
+0.110 0.260 0.200 rg
+40.00 790.00 Td
+(5. DIRECT-TO-CONSUMER RETAIL / OTC PRODUCTS \(10 FORMULATIONS\)) Tj
+ET
+0.110 0.260 0.200 rg
+40.00 786.00 515.28 1.20 re
+f
+0.180 0.420 0.310 rg
+40.00 760.00 515.28 16.00 re
+f
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+46.00 764.00 Td
+(ID) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+105.00 764.00 Td
+(PRODUCT NAME & FORM) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+250.00 764.00 Td
+(PRIMARY INGREDIENTS & SPECIFICATION) Tj
+ET
+BT
+/F2 8 Tf
+1.000 1.000 1.000 rg
+515.28 764.00 Td
+(MRP) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 726.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 746.00 Td
+(ZAY-RET-01) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 746.00 Td
+(ManiVital Pro(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 736.00 Td
+(Safoof / Granules \(150g Jar\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 746.00 Td
+(Withania somnifera \(Ashwagandha 5%\), Mucuna pruriens \(Kaunch 10% ) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 736.00 Td
+(Dose: 5g twice daily with lukewarm milk) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 744.00 Td
+(?1450) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 690.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 710.00 Td
+(ZAY-RET-02) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 710.00 Td
+(OvaSync(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 700.00 Td
+(Granules \(150g Jar\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 710.00 Td
+(Asparagus racemosus \(Shatavari 10%\), Saraca asoca \(Ashoka Chhal\),) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 700.00 Td
+(Dose: 5g twice daily with milk / water) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 708.00 Td
+(?1380) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 654.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 674.00 Td
+(ZAY-RET-03) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 674.00 Td
+(Qurs-e-Taqwiyat-e-Mani(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 664.00 Td
+(Tablets \(60 Tablets bottle\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 674.00 Td
+(Salep Orchis, Zafran \(Saffron\), Kushta Baiza-e-Murgh, Amber compo) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 664.00 Td
+(Dose: 2 tablets twice daily after meals) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 672.00 Td
+(?890) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 618.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 638.00 Td
+(ZAY-RET-04) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 638.00 Td
+(MetaboCore Elite(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 628.00 Td
+(Veg Capsules \(60 Caps\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 638.00 Td
+(Gymnema sylvestre \(25% Gymnemic Acids\), Berberis aristata \(Daruha) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 628.00 Td
+(Dose: 1 capsule 20 mins before main meals) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 636.00 Td
+(?1250) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 582.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 602.00 Td
+(ZAY-RET-05) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 602.00 Td
+(ThyroMet Axis(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 592.00 Td
+(Tablets \(60 Tablets bottle\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 602.00 Td
+(Commiphora mukul \(Purified Guggulu - Guggulsterones 2.5%\), Bauhin) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 592.00 Td
+(Dose: 1 tablet morning and evening) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 600.00 Td
+(?1320) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 546.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 566.00 Td
+(ZAY-RET-06) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 566.00 Td
+(LiverPrime Core(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 556.00 Td
+(Herbal Decoction Syrup \(200ml Bottle\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 566.00 Td
+(Picrorhiza kurroa \(Kutki 5% Kutkin\), Cichorium intybus \(Kasni\), A) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 556.00 Td
+(Dose: 10ml twice daily before meals) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 564.00 Td
+(?1150) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 510.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 530.00 Td
+(ZAY-RET-07) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 530.00 Td
+(NeuroCalmX(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 520.00 Td
+(Granules / Majoon \(125g Jar\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 530.00 Td
+(Bacopa monnieri \(Brahmi 20% Bacosides\), Convolvulus pluricaulis \() Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 520.00 Td
+(Dose: 5g at bedtime with warm milk) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 528.00 Td
+(?1200) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 474.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 494.00 Td
+(ZAY-RET-08) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 494.00 Td
+(NightOne X(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 484.00 Td
+(Veg Capsules \(30 Caps\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 494.00 Td
+(Valeriana wallichii \(Tagar 0.8% Valerenic acid\), Nardostachys jat) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 484.00 Td
+(Dose: 1 capsule 30 minutes before sleep) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 492.00 Td
+(?1320) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 438.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 458.00 Td
+(ZAY-RET-09) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 458.00 Td
+(Sleep Stress Harmonizer(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 448.00 Td
+(Infusion Tisane / Powder \(100g Pouch\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 458.00 Td
+(Matricaria chamomilla, Ocimum sanctum \(Tulsi\), Rosa damascena \(Gu) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 448.00 Td
+(Dose: 1 teaspoon steeped in warm water 45 mins before bed) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 456.00 Td
+(?1180) Tj
+ET
+0.980 0.980 0.980 rg
+0.880 0.880 0.880 RG
+40.00 402.00 515.28 32.00 re
+B
+BT
+/F2 7.5 Tf
+0.110 0.260 0.200 rg
+46.00 422.00 Td
+(ZAY-RET-10) Tj
+ET
+BT
+/F2 8 Tf
+0.100 0.100 0.100 rg
+105.00 422.00 Td
+(Men Daily Vitality(TM)) Tj
+ET
+BT
+/F3 6.5 Tf
+0.400 0.400 0.400 rg
+105.00 412.00 Td
+(Multi-Herb Tablets \(60 Tablets\)) Tj
+ET
+BT
+/F1 7 Tf
+0.200 0.200 0.200 rg
+250.00 422.00 Td
+(Emblica officinalis \(Amla standardized Vitamin C\), Tribulus terre) Tj
+ET
+BT
+/F3 6.5 Tf
+0.350 0.350 0.350 rg
+250.00 412.00 Td
+(Dose: 1 tablet daily after breakfast) Tj
+ET
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+515.28 420.00 Td
+(?950) Tj
+ET
+endstream
+endobj
+30 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 31 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> >>
+endobj
+31 0 obj
+<< /Length 3676 >>
+stream
+0.180 0.420 0.310 rg
+40.00 805.00 515.28 1.00 re
+f
+BT
+/F2 8 Tf
+0.180 0.420 0.310 rg
+40.00 812.00 Td
+(ZAYVORA HEALTH OS(TM) - PHARMACEUTICAL MANUFACTURING SPECIFICATIONS & BOM) Tj
+ET
+BT
+/F1 7.5 Tf
+0.400 0.400 0.400 rg
+340.28 812.00 Td
+(STRICTLY CONFIDENTIAL - AYUSH GMP & ISO 9001:2015) Tj
+ET
+0.700 0.700 0.700 rg
+40.00 35.00 515.28 0.80 re
+f
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+40.00 24.00 Td
+(Document ID: ZAY-MFG-BOM-2026-V5 | Rev 5.0 | Page 13) Tj
+ET
+BT
+/F1 8 Tf
+0.400 0.400 0.400 rg
+330.28 24.00 Td
+(Valid for Commercial Batch Production & QA Release Verification) Tj
+ET
+BT
+/F2 12 Tf
+0.110 0.260 0.200 rg
+40.00 790.00 Td
+(6. QUALITY ASSURANCE, PACKAGING & RELEASE CONTROLS) Tj
+ET
+0.110 0.260 0.200 rg
+40.00 786.00 515.28 1.20 re
+f
+BT
+/F2 9.5 Tf
+0.110 0.260 0.200 rg
+40.00 772.00 Td
+(A. Schedule T \(AYUSH Good Manufacturing Practice\) Parameters:) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 758.00 Td
+(? Raw Material Testing: Macro & microscopic botanical authentication, TLC/HPTLC fingerprinting against UPI/API standards.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 746.00 Td
+(? Heavy Metal Limits: Lead \(< 10 ppm\), Cadmium \(< 0.3 ppm\), Arsenic \(< 3.0 ppm\), Mercury \(< 1.0 ppm\) per ICP-MS.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 734.00 Td
+(? Microbial Safety: Total Aerobic Count \(< 10^5 CFU/g\), Yeast/Mould \(< 10^3 CFU/g\), E. coli \(Absent\), Salmonella \(Absent\).) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 722.00 Td
+(? Pesticide Residues & Aflatoxins: Total Aflatoxins B1+B2+G1+G2 \(< 10 ppb\) per AOAC fluorometric assay.) Tj
+ET
+BT
+/F2 9.5 Tf
+0.110 0.260 0.200 rg
+40.00 704.00 Td
+(B. Schedule E\(1\) Mudabbar \(Detoxification\) Protocol:) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 690.00 Td
+(? Kuchla \(Strychnos nux-vomica\): 7-day immersion in cow's milk with daily replacement, boiling, endocarp de-sheathing,) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 678.00 Td
+(  and light roasting in Cow Ghee \(Roghan-e-Zard\) to achieve Strychnine alkaloid moderation.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 666.00 Td
+(? Suranjan \(Colchicum autumnale\): Steeping in Roghan-e-Badam \(sweet almond oil\) followed by decoction rinsing to moderate Colchicine.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 654.00 Td
+(? Kushtajat \(Calx\): Quadruple calcination cycle in airtight earthen crucibles \(Boodha\) monitored by X-Ray Diffraction \(XRD\).) Tj
+ET
+BT
+/F2 9.5 Tf
+0.110 0.260 0.200 rg
+40.00 636.00 Td
+(C. Primary Packaging & Shelf-Life Specifications:) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 622.00 Td
+(? Safoof / Powders: Food-grade amber HDPE jars with heat-induction foil seals and food-grade silica desiccant bags.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 610.00 Td
+(? Capsules / Tablets: Cold-form Alu-Alu blister packaging with light-blocking barrier film.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 598.00 Td
+(? Syrups & Decoctions: Amber PET pharmaceutical bottles with tamper-evident pilfer-proof \(ROPP\) caps.) Tj
+ET
+BT
+/F1 8 Tf
+0.200 0.200 0.200 rg
+48.00 586.00 Td
+(? Shelf-Life: 36 months from Date of Manufacturing under ambient controlled temperature \(20-25 deg C, RH < 60%\).) Tj
+ET
+0.950 0.970 0.960 rg
+0.800 0.850 0.820 RG
+40.00 508.00 515.28 60.00 re
+B
+BT
+/F2 8.5 Tf
+0.110 0.260 0.200 rg
+50.00 552.00 Td
+(MANUFACTURING APPROVAL & AUTHORIZATION SIGN-OFF) Tj
+ET
+BT
+/F1 8 Tf
+0.300 0.300 0.300 rg
+50.00 536.00 Td
+(Head of Manufacturing & Technical Operations: ___________________________) Tj
+ET
+BT
+/F1 8 Tf
+0.300 0.300 0.300 rg
+50.00 520.00 Td
+(Chief Quality Assurance Officer \(QA/QC\): ___________________________) Tj
+ET
+BT
+/F2 8 Tf
+0.300 0.300 0.300 rg
+435.28 520.00 Td
+(Date: ____ / ____ / 2026) Tj
+ET
+endstream
+endobj
+xref
+0 32
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000199 00000 n 
+0000000269 00000 n 
+0000000344 00000 n 
+0000000422 00000 n 
+0000000574 00000 n 
+0000006851 00000 n 
+0000007003 00000 n 
+0000022777 00000 n 
+0000022931 00000 n 
+0000038164 00000 n 
+0000038318 00000 n 
+0000054354 00000 n 
+0000054508 00000 n 
+0000068723 00000 n 
+0000068877 00000 n 
+0000082941 00000 n 
+0000083095 00000 n 
+0000098726 00000 n 
+0000098880 00000 n 
+0000113422 00000 n 
+0000113576 00000 n 
+0000128849 00000 n 
+0000129003 00000 n 
+0000136813 00000 n 
+0000136967 00000 n 
+0000142970 00000 n 
+0000143124 00000 n 
+0000150290 00000 n 
+0000150444 00000 n 
+trailer
+<< /Size 32 /Root 1 0 R >>
+startxref
+154173
+%%EOF

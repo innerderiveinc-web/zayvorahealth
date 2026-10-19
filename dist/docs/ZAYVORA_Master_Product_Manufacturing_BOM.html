@@ -1,0 +1,3138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAYVORA Health OS™ - Master Manufacturing BOM & Formulations Dossier</title>
+  <style>
+    :root {
+      --primary: #1B4332;
+      --primary-dark: #0D2818;
+      --primary-light: #2D6A4F;
+      --accent: #D4AF37;
+      --accent-warm: #E76F51;
+      --bg: #FAFAF7;
+      --card-bg: #FFFFFF;
+      --text: #1F2937;
+      --text-muted: #4B5563;
+      --border: #E5E7EB;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+      padding: 24px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .print-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+    }
+    .btn-print {
+      background: var(--primary-light);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-print:hover { background: var(--primary); }
+    .header-banner {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      padding: 32px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .header-banner h1 { margin: 0 0 6px 0; font-size: 26px; letter-spacing: -0.5px; }
+    .header-banner .subtitle { color: #A7F3D0; font-size: 15px; margin: 0 0 12px 0; font-weight: 500; }
+    .header-banner .doc-info { font-size: 12px; color: #D1FAE5; display: flex; gap: 20px; flex-wrap: wrap; }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+    .meta-box {
+      background: #F9FAFB;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      font-size: 13px;
+    }
+    .meta-item strong { color: var(--primary-dark); display: block; font-size: 11px; text-transform: uppercase; }
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+    .product-header {
+      background: #F0FDF4;
+      border-bottom: 1px solid #DCFCE7;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .product-sku {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 16px;
+      margin-right: 8px;
+    }
+    .product-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .product-unani {
+      font-style: italic;
+      color: #4B5563;
+      font-size: 13px;
+      margin-left: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-rx { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+    .badge-otc { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+    .badge-reg { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; }
+    .product-meta-row {
+      padding: 10px 20px;
+      background: #F9FAFB;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    table.bom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    table.bom-table th {
+      background: #F3F4F6;
+      color: #374151;
+      text-align: left;
+      padding: 8px 14px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    table.bom-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    table.bom-table tr:nth-child(even) { background: #FAFAFA; }
+    .product-footer {
+      padding: 10px 20px;
+      background: #F8FAFC;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    @media print {
+      body { background: white; padding: 0; }
+      .container { max-width: 100%; padding: 0; box-shadow: none; }
+      .print-bar { display: none; }
+      .product-card { page-break-inside: avoid; }
+      @page { size: A4; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="print-bar">
+      <div>
+        <strong>ZAYVORA Health OS™ Pharmaceutical Manufacturing Dossier</strong>
+        <span style="color:#059669; margin-left: 10px;">• Ready for Commercial Export / PDF Print</span>
+      </div>
+      <button class="btn-print" onclick="window.print()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
+        Print / Save to PDF
+      </button>
+    </div>
+
+    <div class="header-banner">
+      <h1>ZAYVORA HEALTH OS™ — PHARMACEUTICAL MASTER BOM</h1>
+      <div class="subtitle">Complete Standardized Formulations, HPLC Extract Assays & Manufacturing Specifications</div>
+      <div class="doc-info">
+        <span><strong>Document ID:</strong> ZAY-MFG-BOM-2026-V5</span>
+        <span><strong>Version:</strong> 5.0 Enterprise</span>
+        <span><strong>Compliance:</strong> AYUSH Schedule T (GMP) / FSSAI 2022</span>
+        <span><strong>Coverage:</strong> 32 Master Clinical + 21 Protocol Kits + 10 Retail</span>
+      </div>
+    </div>
+
+    <div class="meta-box">
+      <div class="meta-item">
+        <strong>Manufacturer / Sponsor</strong>
+        ZAYVORA Health OS Technologies & Herbal Formulations Desk
+      </div>
+      <div class="meta-item">
+        <strong>Pharmacopoeial Reference</strong>
+        Unani Pharmacopoeia of India (UPI) & Ayurvedic Pharmacopoeia (API)
+      </div>
+      <div class="meta-item">
+        <strong>Quality Control Assurance</strong>
+        HPLC Phytochemical Marker Assay + Heavy Metal ICP-MS Clearance
+      </div>
+      <div class="meta-item">
+        <strong>Schedule E(1) Governance</strong>
+        Verified Mudabbar (Detoxification) Process Standard Operating Procedures
+      </div>
+    </div>
+
+    <div class="section-title">1. Master Clinical Formulations (ZAY-001 through ZAY-032)</div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-001</span>
+          <span class="product-title">TensioCalm™</span>
+          <span class="product-unani">(Safoof-e-Tansiyat-ud-Dam)</span>
+        </div>
+        <div>
+          <span class="badge badge-rx">Rx Schedule E-1 / Doctor Signature</span>
+          <span class="badge badge-reg">AYUSH_SCHEDULE_E1_RX</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> CEREBROVASCULAR</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1850</span>
+        <span><strong>Primary Indication:</strong> Essential Hypertension (Stage 1 & 2), Stress-induced systolic spikes, Zayt-e-Dam (blood tension)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Asrol (Rauwolfia serpentina)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>25.0%</td>
+            <td><code>Reserpine 1.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Ustukhuddus (Lavandula stoechas)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>20.0%</td>
+            <td><code>Linalool 3.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Filfil Siyah (Piper nigrum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>5.0%</td>
+            <td><code>Piperine 95%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Kishneez Khushk (Coriandrum sativum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>25.0%</td>
+            <td><code>Volatile Oil 0.8%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Gul-e-Surkh (Rosa damascena)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>15.0%</td>
+            <td><code>Total Phenolics 5.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Gaozaban (Borago officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>10.0%</td>
+            <td><code>Mucilage & Flavonoids</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily with lukewarm water or Arq Gaozaban 30 mins after meals</div>
+        <div><strong>Total Actives per Dose:</strong> 1000 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-002</span>
+          <span class="product-title">Glucovora™</span>
+          <span class="product-unani">(Safoof-e-Qawi-e-Banas)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> PANCREATIC</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1450</span>
+        <span><strong>Primary Indication:</strong> Ziabetus Shakari (Type 2 Diabetes Mellitus), Impaired Fasting Glucose, Peripheral Insulin Resistance</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Jamun Seeds (Syzygium cumini)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>26.1%</td>
+            <td><code>Jamboline & Tannins 15%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Karela (Momordica charantia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>21.7%</td>
+            <td><code>Charantin 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Methi (Trigonella foenum-graecum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>17.4%</td>
+            <td><code>4-Hydroxyisoleucine 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Gurmar (Gymnema sylvestre)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>21.7%</td>
+            <td><code>Gymnemic Acids 25%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Tukhm-e-Hulba</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.7%</td>
+            <td><code>Saponins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Kushta Baiza-e-Murgh</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>4.3%</td>
+            <td><code>Micro-calcified Elemental Calcium</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) twice daily dissolved in 100ml warm water 20 minutes before breakfast and dinner</div>
+        <div><strong>Total Actives per Dose:</strong> 1150 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-003</span>
+          <span class="product-title">CardioVora™</span>
+          <span class="product-unani">(Majoon-e-Muqawwi-e-Qalb)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> CARDIOVASCULAR</span>
+        <span><strong>Dosage Form:</strong> Majoon Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹2200</span>
+        <span><strong>Primary Indication:</strong> Zof-e-Qalb (Cardiac weakness), Khafqan (Palpitations), Post-cardiac rehabilitation, Endothelial dysfunction</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Zafran (Crocus sativus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">20 mg</td>
+            <td>0.5%</td>
+            <td><code>Crocin & Safranal 3.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Marwareed (Pearl calx)</strong></td>
+            <td style="color: #047857; font-weight: 600;">30 mg</td>
+            <td>0.7%</td>
+            <td><code>Bioactive Coral Carbonate</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Yashab Sabz</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>1.2%</td>
+            <td><code>Purified Jade Calx</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Arjun Chhal (Terminalia arjuna)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>9.5%</td>
+            <td><code>Arjunic acid & Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Badranjboya (Melissa officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>4.8%</td>
+            <td><code>Rosmarinic Acid 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Seb juice & Asl base</strong></td>
+            <td style="color: #047857; font-weight: 600;">3500 mg</td>
+            <td>83.3%</td>
+            <td><code>Natural Honey & Pectin Matrix</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) in the morning on empty stomach with warm milk or Arq Gulab</div>
+        <div><strong>Total Actives per Dose:</strong> 4200 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-004</span>
+          <span class="product-title">LiverPrime™</span>
+          <span class="product-unani">(Safoof-e-Muqawwi-e-Jigar)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> HEPATOBILIARY</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1350</span>
+        <span><strong>Primary Indication:</strong> Zof-e-Jigar, Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD), Sluggish bile clearance, Elevated transaminases</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Kasni (Cichorium intybus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>29.2%</td>
+            <td><code>Cichoric acid 2.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Mako (Solanum nigrum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>25.0%</td>
+            <td><code>Solanine alkaloids <0.1%, Polyphenols 8%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Tukhm-e-Kasoos (Cuscuta reflexa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.5%</td>
+            <td><code>Cuscutin 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Zarishk (Berberis vulgaris)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.7%</td>
+            <td><code>Berberine 8%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Revand Chini (Rheum emodi)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.3%</td>
+            <td><code>Emodin & Rhein 3.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Afsanteen (Artemisia absinthium)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.3%</td>
+            <td><code>Absinthin 1.5%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily 30 minutes after meals with warm water or Arq Kasni</div>
+        <div><strong>Total Actives per Dose:</strong> 1200 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-005</span>
+          <span class="product-title">LipidoVora™</span>
+          <span class="product-unani">(Safoof-e-Islah-e-Dam)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> METABOLIC</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1250</span>
+        <span><strong>Primary Indication:</strong> Dasaumat-ud-Dam (Hyperlipidemia, Dyslipidemia, elevated LDL/Triglycerides, low HDL)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Lasan (Allium sativum extract)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>21.7%</td>
+            <td><code>Allicin 2.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Guggulu (Commiphora mukul)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>26.1%</td>
+            <td><code>Guggulsterones E & Z 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Amla (Phyllanthus emblica - Musleh for Guggulu)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Tannins & Vitamin C 30%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Zanjabil (Zingiber officinale)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Gingerols 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Halela Siyah (Terminalia chebula)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Chebulinic acid 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Zeera Siyah (Carum carvi)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Carvone 3%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily after heavy meals with warm water</div>
+        <div><strong>Total Actives per Dose:</strong> 1150 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-006</span>
+          <span class="product-title">PulmoVora™</span>
+          <span class="product-unani">(Lauq-e-Muqawwi-e-Sadr)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> PULMONARY</span>
+        <span><strong>Dosage Form:</strong> Effervescent Micro-Granules (30 Sachets)</span>
+        <span><strong>MRP:</strong> ₹950</span>
+        <span><strong>Primary Indication:</strong> Zeequn-Nafs (Bronchial Asthma, Chronic Bronchitis, Spasmodic Cough, Post-viral mucosal congestion)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Asl-us-Soos (Glycyrrhiza glabra)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>6.0%</td>
+            <td><code>Glycyrrhizin 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Sapistan (Cordia latifolia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>5.0%</td>
+            <td><code>Polysaccharide mucilage 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Unnab (Ziziphus jujuba)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>4.0%</td>
+            <td><code>Jujubosides 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Behidana (Cydonia oblonga)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>3.0%</td>
+            <td><code>Pectin & Mucilage 25%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Banafsha (Viola odorata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>2.0%</td>
+            <td><code>Violanthin & Rutin 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Natural Honey Base</strong></td>
+            <td style="color: #047857; font-weight: 600;">4000 mg</td>
+            <td>80.0%</td>
+            <td><code>Pure Forest Flora</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 sachet dissolved in 100ml warm water, sip slowly twice daily, followed by warm water or fennel tea</div>
+        <div><strong>Total Actives per Dose:</strong> 5000 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-007</span>
+          <span class="product-title">SynovoFlex™</span>
+          <span class="product-unani">(Safoof-e-Muhallil-e-Mafasil)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_PROPRIETARY</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> MUSCULOSKELETAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1650</span>
+        <span><strong>Primary Indication:</strong> Waja-ul-Mafasil (Osteoarthritis, Rheumatoid stiffness, Joint inflammation, Cartilage degradation)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Suranjan Shirin (Colchicum autumnale - purified)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>15.0%</td>
+            <td><code>Colchicine < 0.2%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Asgandh (Withania somnifera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>30.0%</td>
+            <td><code>Withanolides 5.0%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Zanjabil (Zingiber officinale)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>20.0%</td>
+            <td><code>Gingerols 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Kundur (Boswellia serrata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>25.0%</td>
+            <td><code>AKBA (3-O-acetyl-11-keto-beta-boswellic acid) 30%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Filfil Daraz (Piper longum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>10.0%</td>
+            <td><code>Piperine 95%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) twice daily with warm milk or lukewarm water after breakfast and dinner</div>
+        <div><strong>Total Actives per Dose:</strong> 1000 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-008</span>
+          <span class="product-title">NeuroVora™</span>
+          <span class="product-unani">(Majoon-e-Mufarrih-e-Arwah)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> NEUROPSYCHIATRIC</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1750</span>
+        <span><strong>Primary Indication:</strong> Malikhuliya (Anxiety, Neurosis, Chronic Cortisol Dysregulation, Mental Burnout, Cognitive Fatigue)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Brahmi (Bacopa monnieri)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>29.2%</td>
+            <td><code>Bacosides A & B 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Shankhpushpi (Convolvulus pluricaulis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>25.0%</td>
+            <td><code>Total Alkaloids 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Ustukhuddus (Lavandula stoechas)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.7%</td>
+            <td><code>Linalool 3.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Gaozaban (Borago officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.5%</td>
+            <td><code>Flavonoids 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Badranjboya (Melissa officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.5%</td>
+            <td><code>Rosmarinic acid 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Jadwar (Delphinium denudatum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>4.2%</td>
+            <td><code>Denudatine alkaloids 1%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily (in the morning and 1 hour before sleep) with warm milk</div>
+        <div><strong>Total Actives per Dose:</strong> 1200 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-009</span>
+          <span class="product-title">NeuroShield-Rx™</span>
+          <span class="product-unani">(Qurs-e-Taqwiyat-e-Quwwat-e-Baah)</span>
+        </div>
+        <div>
+          <span class="badge badge-rx">Rx Schedule E-1 / Doctor Signature</span>
+          <span class="badge badge-reg">AYUSH_SCHEDULE_E1_RX</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Habb / Coated Micro-Tablets (60 Tabs)</span>
+        <span><strong>MRP:</strong> ₹3400</span>
+        <span><strong>Primary Indication:</strong> Severe Neuro-Vascular Erectile Dysfunction (Zof-e-Baah Shadeed), Loss of Penile Tumescence</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Zafran (Crocus sativus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">30 mg</td>
+            <td>6.6%</td>
+            <td><code>Crocin 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Jund Bedastar (Castoreum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>11.0%</td>
+            <td><code>Purified Castorin Complex</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Regmahi (Scincus officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>11.0%</td>
+            <td><code>Calcified Bio-Peptides</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Kuchla Mudabbar (Purified Strychnos nux-vomica)</strong></td>
+            <td style="color: #047857; font-weight: 600;">15 mg</td>
+            <td>3.3%</td>
+            <td><code>Strychnine 1.15%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Salab Misri (Orchis mascula)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>65.9%</td>
+            <td><code>Glucomannan 15%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Amber (Ambra grisea)</strong></td>
+            <td style="color: #047857; font-weight: 600;">10 mg</td>
+            <td>2.2%</td>
+            <td><code>Ambrein 25%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 tablet at night with 250ml warm saffron milk 2 hours after meal (Maximum 3 tablets per week; Rx restricted)</div>
+        <div><strong>Total Actives per Dose:</strong> 455 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-010</span>
+          <span class="product-title">SpermoPro™</span>
+          <span class="product-unani">(Majoon-e-Taqwiyat-e-Mani-Shadeed)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Majoon / Oral Paste (30 Sachets)</span>
+        <span><strong>MRP:</strong> ₹3800</span>
+        <span><strong>Primary Indication:</strong> Severe Oligospermia (<10 million/ml), Asthenozoospermia, Teratozoospermia, Semen Viscosity & Volume Deficit</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Salab Panja (Dactylorhiza hatagirea)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>19.4%</td>
+            <td><code>Mucilaginous Glycoproteins 18%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Khulanjan (Alpinia galanga)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>12.9%</td>
+            <td><code>Galangin 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Behman Surkh (Salvia haematodes)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>12.9%</td>
+            <td><code>Salvianolic Acids 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Behman Safed (Centaurea behen)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>12.9%</td>
+            <td><code>Total Sterols 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Maghz-e-Badam (Prunus amygdalus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>25.9%</td>
+            <td><code>Oleic & Linoleic Essential Lipids</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Maghz-e-Pista (Pistacia vera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>12.9%</td>
+            <td><code>Phytosterols & Tocopherols</code></td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td><strong>Zafran (Crocus sativus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">15 mg</td>
+            <td>1.0%</td>
+            <td><code>Safranal 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>8</td>
+            <td><strong>Kushta Nuqra (Silver Calx)</strong></td>
+            <td style="color: #047857; font-weight: 600;">30 mg</td>
+            <td>1.9%</td>
+            <td><code>Sub-micron Silver Nanoparticles</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 sachet (10g) in the morning on empty stomach with 250ml full-fat lukewarm milk for 90 days minimum</div>
+        <div><strong>Total Actives per Dose:</strong> 1545 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-011</span>
+          <span class="product-title">VigorVora™</span>
+          <span class="product-unani">(Safoof-e-Taqwiyat-e-Umumi-Lil-Rijal)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Standardized Micro-Granules (30 Sachets)</span>
+        <span><strong>MRP:</strong> ₹1150</span>
+        <span><strong>Primary Indication:</strong> General male vitality, everyday physical endurance, mild fatigue, micronutrient repletion</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Ashwagandha (Withania somnifera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>Withanolides 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Gokshura (Tribulus terrestris)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>Protodioscin 40%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Safed Musli (Chlorophytum borivilianum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Saponins 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Shatavari (Asparagus racemosus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Shatavarins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Shilajit (purified asphaltum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Fulvic Acid 60%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Akarkara (Anacyclus pyrethrum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.0%</td>
+            <td><code>Pellitorine 1.5%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 sachet (3g) daily in the morning with warm water or milk</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-012</span>
+          <span class="product-title">SomnoVora™</span>
+          <span class="product-unani">(Safoof-e-Taskeen-e-Dimagh)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> NEUROPSYCHIATRIC</span>
+        <span><strong>Dosage Form:</strong> Herbal Infusion / Decoction Elixir (200ml)</span>
+        <span><strong>MRP:</strong> ₹1250</span>
+        <span><strong>Primary Indication:</strong> Sahar (Insomnia), Disrupted sleep architecture, Elevated evening cortisol, Nocturnal restlessness</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Ashwagandha (Withania somnifera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>30.8%</td>
+            <td><code>Withanolides 5% (high withanolide-A)</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Tagar (Valeriana wallichii)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>23.1%</td>
+            <td><code>Valerenic Acids 0.8%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Jatamansi (Nardostachys jatamansi)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>19.2%</td>
+            <td><code>Jatamansone 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Chamomile Extract</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>11.5%</td>
+            <td><code>Apigenin 1.2%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Tukhm-e-Khashkhash (Poppy seeds - purified)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>15.4%</td>
+            <td><code>Nutritional Lipid & Tryptophan Matrix</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 10ml to 15ml with warm milk or chamomile infusion 45 minutes before bedtime</div>
+        <div><strong>Total Actives per Dose:</strong> 1300 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-013</span>
+          <span class="product-title">VitalMani™</span>
+          <span class="product-unani">(Safoof-e-Muwalid-e-Mani-Mutawassit)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1850</span>
+        <span><strong>Primary Indication:</strong> Moderate Oligospermia (10-15 million/ml), Decreased seminal volume, Semen liquefaction delay</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Safed Musli (Chlorophytum borivilianum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>28.0%</td>
+            <td><code>Saponins 25%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Kaunch Beej (Mucuna pruriens)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>L-Dopa 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Talmakhana (Asteracantha longifolia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>20.0%</td>
+            <td><code>Mucilaginous Sterols 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Tukhm-e-Utangan (Blepharis edulis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Total Glycosides 4%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Gond Katira (Astragalus gummifer)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Tragacanthin Polysaccharide</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily with warm milk</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-014</span>
+          <span class="product-title">DermaVora-Hair™</span>
+          <span class="product-unani">(Safoof-e-Munbit-e-Sha'r)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> DERMATOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1100</span>
+        <span><strong>Primary Indication:</strong> Intisaar-ush-Sha'r (Hair thinning, Telogen Effluvium, Early Greying, Scalp follicular weakness)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Amla (Emblica officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>34.8%</td>
+            <td><code>Tannins 30%, Vitamin C natural</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Bhringraj (Eclipta alba)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>30.4%</td>
+            <td><code>Wedelolactone 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Shikakai (Acacia concinna)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Saponins 15%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Halela Siyah (Terminalia chebula)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Polyphenols 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Tukhm-e-Kahu (Lactuca sativa seeds)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.7%</td>
+            <td><code>Lactucin & Flavonoids</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) daily in the morning with water; optionally paired with topical Roghan Baiza-e-Murgh</div>
+        <div><strong>Total Actives per Dose:</strong> 1150 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-015</span>
+          <span class="product-title">LithoVora™</span>
+          <span class="product-unani">(Safoof-e-Mufattit-e-Hisat)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_PROPRIETARY</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> UROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Targeted Micro-Granules (30 x 5g Daily Sachets)</span>
+        <span><strong>MRP:</strong> ₹1350</span>
+        <span><strong>Primary Indication:</strong> Hisat-e-Kulya wa Masana (Kidney and bladder calculi <8mm), Crystalluria, Burning micturition (Sozish-e-Baul)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Kulthi (Macrotyloma uniflorum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>30.8%</td>
+            <td><code>Phytic Acid & Flavonoids 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Gokshura (Tribulus terrestris)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>26.9%</td>
+            <td><code>Saponins 40%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Pashanbhed (Bergenia ligulata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>23.1%</td>
+            <td><code>Bergenin 8%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Hajr-ul-Yahood Bhasma (Lapis judaicus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>11.5%</td>
+            <td><code>Natural Calcium Silicate complex</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Javakhar (Potassium carbonate from barley ash)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>7.7%</td>
+            <td><code>Potassium Carbonate 80%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) twice daily dissolved in a full glass of water (maintain minimum 3 liters daily fluid intake)</div>
+        <div><strong>Total Actives per Dose:</strong> 1300 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-016</span>
+          <span class="product-title">GynaeVora-L™</span>
+          <span class="product-unani">(Safoof-e-Qabiz-e-Reham)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Calcified Tablets (60 Tabs)</span>
+        <span><strong>MRP:</strong> ₹1150</span>
+        <span><strong>Primary Indication:</strong> Sailan-ur-Reham (Non-infective Leucorrhoea, Vaginal Discharge, Pelvic Congestion)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Lodhra (Symplocos racemosa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>29.2%</td>
+            <td><code>Total Alkaloids (Loturine) 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Mochras (Bombax ceiba gum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>25.0%</td>
+            <td><code>Tannins & Mucilage 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Ashok Chhal (Saraca asoca)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>29.2%</td>
+            <td><code>Catechin & Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Gond Dhak (Butea monosperma gum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.5%</td>
+            <td><code>Butein & Tannic Acid 15%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Phitkari Biryan (Purified roasted alum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>4.2%</td>
+            <td><code>Purified Potash Alum</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 tablets twice daily with rice water (Maa-ul-Arz) or lukewarm water after meals</div>
+        <div><strong>Total Actives per Dose:</strong> 1200 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-017</span>
+          <span class="product-title">MetaboBurn-M™</span>
+          <span class="product-unani">(Safoof-e-Tahleel-e-Shahm)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> METABOLIC</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1450</span>
+        <span><strong>Primary Indication:</strong> Shahm-e-Mufrit (Central Obesity, Slow Basal Metabolic Rate, Visceral Adipose Tissue Excess)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Garcinia cambogia</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>31.8%</td>
+            <td><code>Hydroxycitric Acid (HCA) 60%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Green Coffee Bean</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>22.7%</td>
+            <td><code>Chlorogenic Acid (CGA) 50%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Zeera Siyah (Carum carvi)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>18.2%</td>
+            <td><code>Carvone 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Ajwain (Trachyspermum ammi)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>18.2%</td>
+            <td><code>Thymol 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Filfil Siyah (Piper nigrum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>9.1%</td>
+            <td><code>Piperine 95%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily 30 minutes before major meals with warm water</div>
+        <div><strong>Total Actives per Dose:</strong> 1100 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-018</span>
+          <span class="product-title">ThyroMet-W™</span>
+          <span class="product-unani">(Safoof-e-Islah-e-Ghudda-e-Darqiya)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ENDOCRINE</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1550</span>
+        <span><strong>Primary Indication:</strong> Ghudda-e-Darqiya sluggishness (Subclinical Hypothyroidism, Cold intolerance, Myxedematous sluggishness)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Kanchnar Chhal (Bauhinia variegata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>32.0%</td>
+            <td><code>Flavonoids 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Guggulu (Commiphora mukul)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>Guggulsterones 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Triphala (Terminalia chebula, bellerica, Emblica officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>20.0%</td>
+            <td><code>Tannins 35%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Trikatu (Zingiber, Piper nigrum, Piper longum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Piperine & Gingerols 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Varuna (Crataeva nurvala)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Lupeol 1.5%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily with warm ginger infusion or lukewarm water</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-019</span>
+          <span class="product-title">FemmeDaily™</span>
+          <span class="product-unani">(Safoof-e-Nisa)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Compressed Tablets (60 Tabs)</span>
+        <span><strong>MRP:</strong> ₹1150</span>
+        <span><strong>Primary Indication:</strong> General female vitality, nutritional anemia, premenstrual fatigue, hormonal equilibrium</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Shatavari (Asparagus racemosus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>33.3%</td>
+            <td><code>Shatavarins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Ashok Chhal (Saraca asoca)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>25.0%</td>
+            <td><code>Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Lodhra (Symplocos racemosa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>20.8%</td>
+            <td><code>Loturine 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Giloy (Tinospora cordifolia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.7%</td>
+            <td><code>Bitters 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Iron Bhasma (Kushta Khabs-ul-Hadeed)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>4.2%</td>
+            <td><code>Micro-calcified Elemental Iron</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 tablets daily in the morning with milk or warm water</div>
+        <div><strong>Total Actives per Dose:</strong> 1200 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-020</span>
+          <span class="product-title">GlucoBalance™</span>
+          <span class="product-unani">(Safoof-e-Daf-e-Ziabetus-Mutawassit)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> PANCREATIC</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1250</span>
+        <span><strong>Primary Indication:</strong> Prediabetes (HbA1c 5.7–6.4%), Impaired fasting glucose, Postprandial glucose surges</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Vijaysar (Pterocarpus marsupium)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>28.0%</td>
+            <td><code>Marsupsin & Pterosupin 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Gurmar (Gymnema sylvestre)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>Gymnemic acids 25%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Methi (Trigonella foenum-graecum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>20.0%</td>
+            <td><code>Galactomannan 30%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Jamun (Syzygium cumini)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Jamboline 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Dalchini (Cinnamomum verum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Polyphenols 10%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily 15 minutes before lunch and dinner with water</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-021</span>
+          <span class="product-title">ImmunoVora™</span>
+          <span class="product-unani">(Safoof-e-Muqawwi-e-Tabiyat)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> IMMUNOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Purified Herbal Granules (30 Sachets)</span>
+        <span><strong>MRP:</strong> ₹950</span>
+        <span><strong>Primary Indication:</strong> Tabiyat Mudabbira-e-Badan enhancer, Recurrent seasonal infections, Post-infectious asthenia</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Giloy (Tinospora cordifolia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>30.3%</td>
+            <td><code>Tinosporaside & Cordifolioside 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Tulsi (Ocimum sanctum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>18.9%</td>
+            <td><code>Ursolic acid 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Kalmegh (Andrographis paniculata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>15.2%</td>
+            <td><code>Andrographolide 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Amla (Emblica officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>22.7%</td>
+            <td><code>Vitamin C & Tannins 30%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Haldi (Curcuma longa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>11.4%</td>
+            <td><code>Curcuminoids 95%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Filfil Siyah (Piper nigrum - Bio-enhancer Mu'in)</strong></td>
+            <td style="color: #047857; font-weight: 600;">20 mg</td>
+            <td>1.5%</td>
+            <td><code>Piperine 95%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 sachet (3g) once or twice daily dissolved in warm water or green tea</div>
+        <div><strong>Total Actives per Dose:</strong> 1320 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-022</span>
+          <span class="product-title">GastroVora™</span>
+          <span class="product-unani">(Safoof-e-Islah-e-Amaa)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GASTROINTESTINAL</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1150</span>
+        <span><strong>Primary Indication:</strong> Zalaq-ul-Amaa / Nafkh-e-Shikam (Irritable Bowel Syndrome, Gut Dysbiosis, Postprandial Cramping & Flatulence)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Bilva (Aegle marmelos)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>32.0%</td>
+            <td><code>Marmelosin & Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Ispaghul Husk (Plantago ovata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>28.0%</td>
+            <td><code>Soluble dietary fiber 85%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Saunf (Foeniculum vulgare)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Anethole 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Pudina (Mentha piperita)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Menthol 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Zeera Safed (Cuminum cyminum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Cuminaldehyde 2%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily 20 minutes after food with fresh buttermilk or water</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-023</span>
+          <span class="product-title">NeuroVigor-Rx™</span>
+          <span class="product-unani">(Habb-e-Azaraqi Mudabbar (Majoon-e-Muhrik-e-Baah))</span>
+        </div>
+        <div>
+          <span class="badge badge-rx">Rx Schedule E-1 / Doctor Signature</span>
+          <span class="badge badge-reg">AYUSH_SCHEDULE_E1_RX</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Coated Micro-Tablets (Alu-Alu Blister, 60 Tabs)</span>
+        <span><strong>MRP:</strong> ₹1850</span>
+        <span><strong>Primary Indication:</strong> Refractory Erectile Dysfunction, Severe Loss of Libido, Chronic Neuro-vascular Impotence</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Zafran (Crocus sativus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">35 mg</td>
+            <td>4.5%</td>
+            <td><code>Crocin 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Kuchla Mudabbar (Purified Nux-vomica)</strong></td>
+            <td style="color: #047857; font-weight: 600;">20 mg</td>
+            <td>2.6%</td>
+            <td><code>Strychnine 1.15%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Salab Panja (Dactylorhiza hatagirea)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>45.5%</td>
+            <td><code>Mucilaginous Glycoproteins 18%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Shingraf Mudabbar (Purified Cinnabar)</strong></td>
+            <td style="color: #047857; font-weight: 600;">15 mg</td>
+            <td>1.9%</td>
+            <td><code>Traditional detoxified mercuric sulfide compound</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Darchini (Cinnamomum zeylanicum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>13.0%</td>
+            <td><code>Cinnamaldehyde 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Asgandh (Withania somnifera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>32.5%</td>
+            <td><code>Withanolides 5%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 tablet at bedtime with 250ml full-cream milk (Maximum 3 times weekly; strictly requires registered AYUSH practitioner prescription)</div>
+        <div><strong>Total Actives per Dose:</strong> 770 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-024</span>
+          <span class="product-title">SpermoVora™</span>
+          <span class="product-unani">(Safoof-e-Mujaddid-e-Nutfa-Shadeed)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Single-Serve Paste Sachets (30 x 7g)</span>
+        <span><strong>MRP:</strong> ₹2250</span>
+        <span><strong>Primary Indication:</strong> Severe Oligo-Astheno-Teratozoospermia (OAT Syndrome), Elevated DNA Fragmentation Index (DFI > 25%)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Coenzyme Q10</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>13.7%</td>
+            <td><code>Pure Ubiquinone 99%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>L-Carnitine L-Tartrate</strong></td>
+            <td style="color: #047857; font-weight: 600;">500 mg</td>
+            <td>34.1%</td>
+            <td><code>Pure L-Carnitine 68%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Lycopene 10%</strong></td>
+            <td style="color: #047857; font-weight: 600;">25 mg</td>
+            <td>1.7%</td>
+            <td><code>Natural Tomato Lycopene Extract</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Salab Misri (Orchis mascula)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>23.9%</td>
+            <td><code>Glucomannan 15%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Safed Musli (Chlorophytum borivilianum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>20.5%</td>
+            <td><code>Saponins 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Zinc Monomethionine</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>3.4%</td>
+            <td><code>Elemental Zinc 10mg</code></td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td><strong>Selenium Yeast</strong></td>
+            <td style="color: #047857; font-weight: 600;">40 mg</td>
+            <td>2.7%</td>
+            <td><code>Elemental Selenium 40mcg</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 sachet (7g paste) twice daily with milk or fresh pomegranate juice for 90 to 120 days</div>
+        <div><strong>Total Actives per Dose:</strong> 1465 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-025</span>
+          <span class="product-title">ManiVital Pro™</span>
+          <span class="product-unani">(Safoof-e-Mumsik-e-Mani-Shadeed)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_PROPRIETARY</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1950</span>
+        <span><strong>Primary Indication:</strong> Surat-e-Inzal (Premature Ejaculation, IELT < 1 minute), Riqat-e-Mani (Seminal hyperviscosity/thinness)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Tukhm-e-Kahu (Lactuca sativa seeds)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>23.8%</td>
+            <td><code>Lactucopicrin 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Tukhm-e-Khashkhash (Purified poppy seeds)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>23.8%</td>
+            <td><code>Total Lipids & Alkaloids</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Gond Kikar (Acacia arabica gum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>28.6%</td>
+            <td><code>Arabinogalactan 35%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Mochras (Bombax ceiba gum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>19.0%</td>
+            <td><code>Tannins 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Kushta Qalai (Tin calx)</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>4.8%</td>
+            <td><code>Purified Stannic Oxide complex</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) twice daily with lukewarm milk 1 hour before sleep</div>
+        <div><strong>Total Actives per Dose:</strong> 1050 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-026</span>
+          <span class="product-title">ProstaVora™</span>
+          <span class="product-unani">(Safoof-e-Mulayyim-e-Ghudda-e-Baristeht)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> UROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1850</span>
+        <span><strong>Primary Indication:</strong> Waram-e-Ghudda-e-Baristeht (Benign Prostatic Hyperplasia - BPH Grade 1 & 2, Nocturia, Urinary Hesitancy)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Saw Palmetto Extract (Serenoa repens)</strong></td>
+            <td style="color: #047857; font-weight: 600;">320 mg</td>
+            <td>24.2%</td>
+            <td><code>Fatty Acids 45%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Nettle Root (Urtica dioica)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>18.9%</td>
+            <td><code>Beta-Sitosterol 0.8%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Gokshura (Tribulus terrestris)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>22.7%</td>
+            <td><code>Saponins 40%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Varuna (Crataeva nurvala)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>18.9%</td>
+            <td><code>Lupeol 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Pumpkin Seed Extract (Cucurbita pepo)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>15.2%</td>
+            <td><code>Phytosterols 20%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily after meals with water</div>
+        <div><strong>Total Actives per Dose:</strong> 1320 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-027</span>
+          <span class="product-title">AndroVora™</span>
+          <span class="product-unani">(Majoon-e-Muqawwi-e-Khusyatain)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_CLASSICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> ANDROLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Targeted HPMC Veg Capsules (60 Caps)</span>
+        <span><strong>MRP:</strong> ₹3600</span>
+        <span><strong>Primary Indication:</strong> Late-onset Hypogonadism, Andropause, Sarcopenia, Testicular Axis Fatigue, Low Free Testosterone</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Salab Gatta (Orchis latifolia)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>26.1%</td>
+            <td><code>Bioactive Mucilage 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Khusyat-us-Salab (Testicular Bio-Extract)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>21.7%</td>
+            <td><code>Standardized Peptide Fraction</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Zafran (Crocus sativus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">20 mg</td>
+            <td>1.7%</td>
+            <td><code>Crocin 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Asgandh (Withania somnifera)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>26.1%</td>
+            <td><code>Withanolides 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Kushta Nuqra (Silver calx)</strong></td>
+            <td style="color: #047857; font-weight: 600;">30 mg</td>
+            <td>2.6%</td>
+            <td><code>Sub-micron Silver Particles</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Maghz-e-Chilgoza (Pinus gerardiana)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>21.7%</td>
+            <td><code>Pinolenic Acid 15%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules in the morning on empty stomach with warm milk</div>
+        <div><strong>Total Actives per Dose:</strong> 1150 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-028</span>
+          <span class="product-title">LeucoVora™</span>
+          <span class="product-unani">(Safoof-e-Daf-e-Sailan-ur-Reham-Shadeed)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_PROPRIETARY</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 3g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1650</span>
+        <span><strong>Primary Indication:</strong> Intractable Chronic Leucorrhoea, Cervical Erosion, Sacral backache associated with vaginal discharge</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Lodhra (Symplocos racemosa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>32.0%</td>
+            <td><code>Loturine 1.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Ashok Chhal (Saraca asoca)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>28.0%</td>
+            <td><code>Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Mochras (Bombax ceiba gum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>24.0%</td>
+            <td><code>Tannins & Mucilage 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Kushta Baiza-e-Murgh</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.0%</td>
+            <td><code>Egg Shell Micro-Calcified Calcium</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Phitkari Biryan (Roasted alum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.0%</td>
+            <td><code>Purified Potash Alum</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (3g) twice daily with rice water (Maa-ul-Arz) 30 minutes before meals</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-029</span>
+          <span class="product-title">OvaSync-PCOS™</span>
+          <span class="product-unani">(Safoof-e-Munazzim-e-Haiz)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 5g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹2400</span>
+        <span><strong>Primary Indication:</strong> Ehtebas-e-Tams / Marz-e-Keesa-tul-Khusyatur-Reham (PCOS/PCOD, Anovulatory Cycles, Hyperandrogenism, Insulin Resistance)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Myo-Inositol</strong></td>
+            <td style="color: #047857; font-weight: 600;">2000 mg</td>
+            <td>65.3%</td>
+            <td><code>Pure USP Grade (40:1 ratio match)</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>D-Chiro-Inositol</strong></td>
+            <td style="color: #047857; font-weight: 600;">50 mg</td>
+            <td>1.6%</td>
+            <td><code>Pure USP Grade (40:1 ratio match)</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Kanchnar Chhal (Bauhinia variegata)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>11.4%</td>
+            <td><code>Flavonoids 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Methi (Trigonella foenum-graecum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>9.8%</td>
+            <td><code>4-Hydroxyisoleucine 20%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Haldi (Curcuma longa)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>6.5%</td>
+            <td><code>Curcuminoids 95%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>Dalchini (Cinnamomum verum)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>4.9%</td>
+            <td><code>Polyphenols 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td><strong>Filfil Siyah (Piper nigrum - Bio-enhancer Mu'in)</strong></td>
+            <td style="color: #047857; font-weight: 600;">15 mg</td>
+            <td>0.5%</td>
+            <td><code>Piperine 95%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (5g) twice daily dissolved in 150ml water 20 minutes before meals for 3 to 6 consecutive cycles</div>
+        <div><strong>Total Actives per Dose:</strong> 3065 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-030</span>
+          <span class="product-title">MensoCalm™</span>
+          <span class="product-unani">(Majoon-e-Muqawwi-e-Reham-Shadeed)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> HPMC Veg Capsules (Alu-Alu Blister, 60 Caps)</span>
+        <span><strong>MRP:</strong> ₹1850</span>
+        <span><strong>Primary Indication:</strong> Zof-e-Reham (Uterine Atony, Pelvic Floor Laxity, Dysmenorrhea, Luteal Phase Inadequacy)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Ashok Chhal (Saraca asoca)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>32.0%</td>
+            <td><code>Catechins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Shatavari (Asparagus racemosus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">350 mg</td>
+            <td>28.0%</td>
+            <td><code>Shatavarins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Supari Mudabbar (Purified Areca catechu)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Arecoline detoxified <0.05%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Gond Katira (Astragalus gummifer)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>16.0%</td>
+            <td><code>Tragacanthin 40%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Asl-us-Soos (Glycyrrhiza glabra)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>12.0%</td>
+            <td><code>Glycyrrhizin 10%</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 capsules twice daily with warm milk</div>
+        <div><strong>Total Actives per Dose:</strong> 1250 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-031</span>
+          <span class="product-title">MenoVora™</span>
+          <span class="product-unani">(Safoof-e-Daf-e-Araz-e-Yas)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">AYUSH_PROPRIETARY</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Micro-Granules (30 x 3g Daily Stick Sachets)</span>
+        <span><strong>MRP:</strong> ₹1750</span>
+        <span><strong>Primary Indication:</strong> Sinn-e-Yas (Menopausal Syndrome, Vasomotor Hot Flashes, Night Sweats, Mood Swings, Accelerated Bone Demineralization)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Shatavari (Asparagus racemosus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>34.8%</td>
+            <td><code>Shatavarins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Black Cohosh (Actaea racemosa extract)</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>8.7%</td>
+            <td><code>Triterpene Glycosides 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Shankhpushpi (Convolvulus pluricaulis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>26.1%</td>
+            <td><code>Total Alkaloids 2.5%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Badranjboya (Melissa officinalis)</strong></td>
+            <td style="color: #047857; font-weight: 600;">200 mg</td>
+            <td>17.4%</td>
+            <td><code>Rosmarinic Acid 5%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Praval Pishti (Purified Coral Calx)</strong></td>
+            <td style="color: #047857; font-weight: 600;">150 mg</td>
+            <td>13.0%</td>
+            <td><code>Bioactive Calcium & Trace Minerals</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 stick sachet (3g) twice daily with lukewarm water after breakfast and dinner</div>
+        <div><strong>Total Actives per Dose:</strong> 1150 mg</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <span class="product-sku">ZAY-032</span>
+          <span class="product-title">ConceiveVora™</span>
+          <span class="product-unani">(Safoof-e-Mualijat-e-Uqr-e-Nisa)</span>
+        </div>
+        <div>
+          <span class="badge badge-otc">Dispensary Standard</span>
+          <span class="badge badge-reg">FSSAI_NUTRACEUTICAL</span>
+        </div>
+      </div>
+      <div class="product-meta-row">
+        <span><strong>Organ Axis:</strong> GYNECOLOGICAL</span>
+        <span><strong>Dosage Form:</strong> Compressed Tablets (60 Tabs)</span>
+        <span><strong>MRP:</strong> ₹3800</span>
+        <span><strong>Primary Indication:</strong> Uqr-e-Nisa (Female Infertility, Diminished Ovarian Reserve, Poor Oocyte Quality, Thin Endometrial Lining)</span>
+      </div>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Botanical / Classical Component</th>
+            <th style="width: 120px;">Amount (mg)</th>
+            <th style="width: 100px;">% of Formula</th>
+            <th>Standardization / Active Marker Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td>1</td>
+            <td><strong>Shatavari (Asparagus racemosus)</strong></td>
+            <td style="color: #047857; font-weight: 600;">400 mg</td>
+            <td>30.8%</td>
+            <td><code>Shatavarins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Shivlingi (Bryonia laciniosa seeds)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>19.2%</td>
+            <td><code>Bryonin 2%</code></td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Putranjiva (Putranjiva roxburghii)</strong></td>
+            <td style="color: #047857; font-weight: 600;">250 mg</td>
+            <td>19.2%</td>
+            <td><code>Total Glycosides 3%</code></td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Ashok Chhal (Saraca asoca)</strong></td>
+            <td style="color: #047857; font-weight: 600;">300 mg</td>
+            <td>23.1%</td>
+            <td><code>Tannins 10%</code></td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td><strong>Coenzyme Q10</strong></td>
+            <td style="color: #047857; font-weight: 600;">100 mg</td>
+            <td>7.7%</td>
+            <td><code>Pure Ubiquinone 99%</code></td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td><strong>L-Methylfolate (Active Folate)</strong></td>
+            <td style="color: #047857; font-weight: 600;">0.5 mg</td>
+            <td>0.0%</td>
+            <td><code>Pure Active L-5-MTHF</code></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="product-footer">
+        <div><strong>Dosage & Route:</strong> 1 to 2 tablets twice daily with warm milk starting on Day 5 of menstrual cycle continuously for 90 days</div>
+        <div><strong>Total Actives per Dose:</strong> 1300.5 mg</div>
+      </div>
+    </div>
+
+    <div class="section-title">2. Clinical Protocol Kits (21 Treatment Packs)</div>
+    <table class="bom-table" style="background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px;">
+      <thead>
+        <tr>
+          <th style="width: 80px;">Kit ID</th>
+          <th style="width: 260px;">Protocol Name</th>
+          <th>Component Formulations & Clinical Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-01</strong></td>
+          <td><strong>Diabetes Control Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-004 (LiverPrime™):</strong> Hepatic insulin sensitization</li><li style='margin-bottom: 4px;'><strong>ZAY-002 (Glucovora™):</strong> Beta-cell support & carbohydrate enzyme inhibition</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Cortisol dampening & stress hyperglycemia control</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-02</strong></td>
+          <td><strong>Metabolic Burn Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-004 (LiverPrime™):</strong> Hepatic detox & bile flow optimization</li><li style='margin-bottom: 4px;'><strong>ZAY-017 (MetaboBurn-M™):</strong> Thermogenic lipolysis & ATP-citrate lyase inhibition</li><li style='margin-bottom: 4px;'><strong>ZAY-005 (LipidoVora™):</strong> Circulating atherogenic lipid clearance</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-03</strong></td>
+          <td><strong>Lipid Management Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-005 (LipidoVora™):</strong> HMG-CoA reductase modulation & reverse cholesterol transport</li><li style='margin-bottom: 4px;'><strong>ZAY-004 (LiverPrime™):</strong> Biliary excretion of cholesterol metabolites</li><li style='margin-bottom: 4px;'><strong>ZAY-003 (CardioVora™):</strong> Endothelial nitric oxide enhancement & antioxidant protection</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-04</strong></td>
+          <td><strong>Blood Pressure Kit (Rx)</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-001 (TensioCalm™):</strong> Central sympatholytic & peripheral vasodilator (Rx Asrol)</li><li style='margin-bottom: 4px;'><strong>ZAY-003 (CardioVora™):</strong> Arterial compliance & inotropic support</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Baroreflex sensitivity & neuro-calmative balance</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-05</strong></td>
+          <td><strong>Cardiac Protection Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-003 (CardioVora™):</strong> Myocardial tonic & antioxidant preservation</li><li style='margin-bottom: 4px;'><strong>ZAY-005 (LipidoVora™):</strong> Plaque stabilization & lipid profile optimization</li><li style='margin-bottom: 4px;'><strong>ZAY-001 (TensioCalm™):</strong> Afterload reduction & hemodynamic soothing</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-06</strong></td>
+          <td><strong>Stress-Anxiety Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> HPA axis balancing & GABAergic neuroprotection</li><li style='margin-bottom: 4px;'><strong>ZAY-012 (SomnoVora™):</strong> Somatic stress relief & evening relaxation</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-07</strong></td>
+          <td><strong>Sleep Restore Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-012 (SomnoVora™):</strong> Slow-wave sleep induction & GABA-A potentiation</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Daytime emotional stabilizing & circadian entrainment</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-08</strong></td>
+          <td><strong>Respiratory Care Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-006 (PulmoVora™):</strong> Bronchodilation, mucosal soothing & phlegm expectoration</li><li style='margin-bottom: 4px;'><strong>ZAY-021 (ImmunoVora™):</strong> Immunomodulation & systemic anti-inflammatory protection</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-09</strong></td>
+          <td><strong>Joint Care Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-007 (SynovoFlex™):</strong> 5-LOX inhibition, synovial decongestion & joint cushioning</li><li style='margin-bottom: 4px;'><strong>ZAY-021 (ImmunoVora™):</strong> Systemic antioxidant & matrix metalloproteinase reduction</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-10</strong></td>
+          <td><strong>ED Restore Kit (Rx)</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-023 (NeuroVigor-Rx™):</strong> Potent PDE5-independent pelvic perfusion & spinal reflex excitation (Rx)</li><li style='margin-bottom: 4px;'><strong>ZAY-027 (AndroVora™):</strong> Leydig cell trophic support & free testosterone amplification</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Performance anxiety mitigation & central dopaminergic tone</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-11</strong></td>
+          <td><strong>Male Fertility Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-024 (SpermoVora™):</strong> Mitochondrial bioenergetics (CoQ10/L-Carnitine) & DNA integrity</li><li style='margin-bottom: 4px;'><strong>ZAY-010 (SpermoPro™):</strong> Spermatogenic epithelium nourishment & volume boost</li><li style='margin-bottom: 4px;'><strong>ZAY-025 (ManiVital Pro™):</strong> Seminal plasma antioxidant buffer & liquefaction normalizing</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-12</strong></td>
+          <td><strong>Testosterone Restore Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-027 (AndroVora™):</strong> Gonadal steroidogenesis upregulation</li><li style='margin-bottom: 4px;'><strong>ZAY-011 (VigorVora™):</strong> DHEA/testosterone precursor micro-nutrients & vigor</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-13</strong></td>
+          <td><strong>Prostate Health Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-026 (ProstaVora™):</strong> 5-alpha reductase inhibition & stromal remodeling</li><li style='margin-bottom: 4px;'><strong>ZAY-015 (LithoVora™):</strong> Bladder neck spasmolytic & anti-crystalluria clearance</li><li style='margin-bottom: 4px;'><strong>ZAY-011 (VigorVora™):</strong> Cellular antioxidant & systemic vitality</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-14</strong></td>
+          <td><strong>PCOS Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-029 (OvaSync-PCOS™):</strong> 40:1 Inositol insulin sensitization & ovarian steroidogenesis</li><li style='margin-bottom: 4px;'><strong>ZAY-004 (LiverPrime™):</strong> Hepatic SHBG production & excess androgen clearance</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> HPA axis moderating & stress cortisol suppression</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-15</strong></td>
+          <td><strong>Leucorrhoea Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-028 (LeucoVora™):</strong> Endocervical astringency, moisture control & tissue repair</li><li style='margin-bottom: 4px;'><strong>ZAY-016 (GynaeVora-L™):</strong> Pelvic decongestion & vaginal barrier defense</li><li style='margin-bottom: 4px;'><strong>ZAY-019 (FemmeDaily™):</strong> Hematinic & systemic mucosal rejuvenation</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-16</strong></td>
+          <td><strong>Cycle Care Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-030 (MensoCalm™):</strong> Myometrial spasmolytic tonic & luteal phase support</li><li style='margin-bottom: 4px;'><strong>ZAY-016 (GynaeVora-L™):</strong> Pelvic circulatory rhythm</li><li style='margin-bottom: 4px;'><strong>ZAY-019 (FemmeDaily™):</strong> Nutritional replenishment & hormonal balancing</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-17</strong></td>
+          <td><strong>Menopause Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-031 (MenoVora™):</strong> Phytoestrogenic hypothalamic modulation & bone calcium</li><li style='margin-bottom: 4px;'><strong>ZAY-019 (FemmeDaily™):</strong> General female vitality & adrenal adaptogen</li><li style='margin-bottom: 4px;'><strong>ZAY-003 (CardioVora™):</strong> Post-menopausal vascular endothelial preservation</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-18</strong></td>
+          <td><strong>Female Fertility Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-032 (ConceiveVora™):</strong> Oocyte bioenergetics (CoQ10/Folate) & follicular recruitment</li><li style='margin-bottom: 4px;'><strong>ZAY-029 (OvaSync-PCOS™):</strong> Insulin-mediated ovulatory regularisation</li><li style='margin-bottom: 4px;'><strong>ZAY-030 (MensoCalm™):</strong> Endometrial receptivity & implantation optimization</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-19</strong></td>
+          <td><strong>Immunity Shield Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-021 (ImmunoVora™):</strong> Natural killer cell activation & antioxidant shield</li><li style='margin-bottom: 4px;'><strong>ZAY-006 (PulmoVora™):</strong> Respiratory tract epithelial barrier enhancement</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-20</strong></td>
+          <td><strong>Gut Restore Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-022 (GastroVora™):</strong> Mucosal barrier restoration & motility normalization</li><li style='margin-bottom: 4px;'><strong>ZAY-004 (LiverPrime™):</strong> Bile acid flow & digestive enzymatic stimulation</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Gut-brain axis signaling & visceral hypersensitivity reduction</li></ul></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">K-21</strong></td>
+          <td><strong>Hair Restore Kit</strong></td>
+          <td><ul style="margin: 0; padding-left: 18px; font-size: 12px;"><li style='margin-bottom: 4px;'><strong>ZAY-014 (DermaVora-Hair™):</strong> Anagen phase elongation & micro-circulation</li><li style='margin-bottom: 4px;'><strong>ZAY-019 (FemmeDaily™):</strong> Nutritional ferritin & mineral fortification</li><li style='margin-bottom: 4px;'><strong>ZAY-008 (NeuroVora™):</strong> Stress-induced telogen shed prevention</li></ul></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="section-title">3. Consumer Retail / Storefront Products (10 Formulations)</div>
+    <table class="bom-table" style="background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px;">
+      <thead>
+        <tr>
+          <th style="width: 90px;">SKU ID</th>
+          <th style="width: 180px;">Product Name & Form</th>
+          <th>Primary Key Ingredients</th>
+          <th style="width: 220px;">Dosage & Indication</th>
+          <th style="width: 80px;">MRP</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-01</strong></td>
+          <td><strong>ManiVital Pro™</strong><br><small style="color:#6B7280;">Safoof / Granules (150g Jar)</small></td>
+          <td style="font-size: 12px;">Withania somnifera (Ashwagandha 5%), Mucuna pruriens (Kaunch 10% L-DOPA), Safed Musli, Salep, Kushta Qalai.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 5g twice daily with lukewarm milk<br><strong>Indication:</strong> Male reproductive vitality, seminal viscosity, oligospermia, fatigue.</td>
+          <td><strong style="color:#047857;">₹1450</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-02</strong></td>
+          <td><strong>OvaSync™</strong><br><small style="color:#6B7280;">Granules (150g Jar)</small></td>
+          <td style="font-size: 12px;">Asparagus racemosus (Shatavari 10%), Saraca asoca (Ashoka Chhal), Symplocos racemosa (Lodhra), Aloe vera.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 5g twice daily with milk / water<br><strong>Indication:</strong> Ovarian reserve support, follicular rhythm balancer, PCOS/PCOD, luteal phase support.</td>
+          <td><strong style="color:#047857;">₹1380</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-03</strong></td>
+          <td><strong>Qurs-e-Taqwiyat-e-Mani™</strong><br><small style="color:#6B7280;">Tablets (60 Tablets bottle)</small></td>
+          <td style="font-size: 12px;">Salep Orchis, Zafran (Saffron), Kushta Baiza-e-Murgh, Amber compound, Gond Kikar.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 2 tablets twice daily after meals<br><strong>Indication:</strong> Classical seminal viscosity, reproductive tone, nocturnal emissions, asthenospermia.</td>
+          <td><strong style="color:#047857;">₹890</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-04</strong></td>
+          <td><strong>MetaboCore Elite™</strong><br><small style="color:#6B7280;">Veg Capsules (60 Caps)</small></td>
+          <td style="font-size: 12px;">Gymnema sylvestre (25% Gymnemic Acids), Berberis aristata (Daruhald 95% Berberine), Momordica charantia, Fenugreek.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 1 capsule 20 mins before main meals<br><strong>Indication:</strong> Metabolic syndrome, insulin resistance, HbA1c moderation, atherogenic lipid control.</td>
+          <td><strong style="color:#047857;">₹1250</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-05</strong></td>
+          <td><strong>ThyroMet Axis™</strong><br><small style="color:#6B7280;">Tablets (60 Tablets bottle)</small></td>
+          <td style="font-size: 12px;">Commiphora mukul (Purified Guggulu - Guggulsterones 2.5%), Bauhinia variegata (Kanchnar), Piper longum (Trikatu).</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 1 tablet morning and evening<br><strong>Indication:</strong> Subclinical hypothyroidism, sluggish metabolic rate, cold sensitivity, water retention.</td>
+          <td><strong style="color:#047857;">₹1320</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-06</strong></td>
+          <td><strong>LiverPrime Core™</strong><br><small style="color:#6B7280;">Herbal Decoction Syrup (200ml Bottle)</small></td>
+          <td style="font-size: 12px;">Picrorhiza kurroa (Kutki 5% Kutkin), Cichorium intybus (Kasni), Andrographis paniculata (Kalmegh 10% Andrographolide), Bhumyamalaki.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 10ml twice daily before meals<br><strong>Indication:</strong> Non-alcoholic fatty liver (NAFLD), sluggish biliary flow, hepatomegaly, toxic burden.</td>
+          <td><strong style="color:#047857;">₹1150</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-07</strong></td>
+          <td><strong>NeuroCalmX™</strong><br><small style="color:#6B7280;">Granules / Majoon (125g Jar)</small></td>
+          <td style="font-size: 12px;">Bacopa monnieri (Brahmi 20% Bacosides), Convolvulus pluricaulis (Shankhpushpi), Lavandula stoechas (Ustukhuddus), Melissa officinalis.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 5g at bedtime with warm milk<br><strong>Indication:</strong> GABAergic calm, mental resilience, generalized tension, insomnia, mental fatigue.</td>
+          <td><strong style="color:#047857;">₹1200</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-08</strong></td>
+          <td><strong>NightOne X™</strong><br><small style="color:#6B7280;">Veg Capsules (30 Caps)</small></td>
+          <td style="font-size: 12px;">Valeriana wallichii (Tagar 0.8% Valerenic acid), Nardostachys jatamansi (Jatamansi), Withania somnifera, Lactuca sativa.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 1 capsule 30 minutes before sleep<br><strong>Indication:</strong> Circadian rhythm disruption, fragmented sleep, non-REM deficiency, jet lag recovery.</td>
+          <td><strong style="color:#047857;">₹1320</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-09</strong></td>
+          <td><strong>Sleep Stress Harmonizer™</strong><br><small style="color:#6B7280;">Infusion Tisane / Powder (100g Pouch)</small></td>
+          <td style="font-size: 12px;">Matricaria chamomilla, Ocimum sanctum (Tulsi), Rosa damascena (Gul-e-Surkh), Coriandrum sativum, Cardamom.</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 1 teaspoon steeped in warm water 45 mins before bed<br><strong>Indication:</strong> Nocturnal cortisol surges, 3 AM wakefulness, hyperarousal, restless leg tension.</td>
+          <td><strong style="color:#047857;">₹1180</strong></td>
+        </tr>
+
+        <tr>
+          <td><strong style="color: var(--primary);">ZAY-RET-10</strong></td>
+          <td><strong>Men Daily Vitality™</strong><br><small style="color:#6B7280;">Multi-Herb Tablets (60 Tablets)</small></td>
+          <td style="font-size: 12px;">Emblica officinalis (Amla standardized Vitamin C), Tribulus terrestris (Gokshura 40%), Panax ginseng, Shilajit purified (Fulvic Acid 50%).</td>
+          <td style="font-size: 12px;"><strong>Dose:</strong> 1 tablet daily after breakfast<br><strong>Indication:</strong> General debility, micronutrient replenishment, physical stamina, daily cellular antioxidant defence.</td>
+          <td><strong style="color:#047857;">₹950</strong></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="section-title">4. GMP Quality Assurance & Schedule E(1) Mudabbar SOPs</div>
+    <div style="background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-size: 13px; line-height: 1.6;">
+      <h4 style="margin: 0 0 8px 0; color: var(--primary);">Schedule T (AYUSH GMP) Release Controls</h4>
+      <p style="margin: 0 0 12px 0;">All finished batches must undergo release testing before leaving the quarantine hold: Assay testing by HPLC, Moisture content (Loss on Drying &lt; 8.0%), Disintegration time for tablets (&lt; 30 minutes), and Aerobic Microbial Plate Count (&lt; 10^5 CFU/g).</p>
+      
+      <h4 style="margin: 0 0 8px 0; color: var(--primary);">Mudabbar (Purification) Certification for Schedule E(1) Herbs</h4>
+      <p style="margin: 0 0 12px 0;">Kuchla (Strychnos nux-vomica) and Suranjan (Colchicum autumnale) are subject to mandatory multi-stage purification protocols. Raw batches must be accompanied by an authenticated Mudabbar batch certificate showing alkaloid moderation prior to formulation into finished products.</p>
+      
+      <h4 style="margin: 0 0 8px 0; color: var(--primary);">Packaging & Shelf-Life Protocol</h4>
+      <p style="margin: 0;">Finished products must be packaged into food-grade, induction-sealed HDPE containers or Alu-Alu cold form blisters with nitrogen purging where appropriate. Labeled shelf-life: 36 months under controlled ambient room temperature (20-25°C, RH &lt; 60%).</p>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; border-top: 2px dashed #D1D5DB; display: flex; justify-content: space-between; font-size: 12px; color: #6B7280;">
+      <div>Authorized Signatory (Manufacturing QA): ___________________________</div>
+      <div>Technical Director (Formulations): ___________________________</div>
+      <div>Date: ____ / ____ / 2026</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+[build]
+  command = "mkdir -p dist && cp -r index.html app.html science_and_research.html _redirects CNAME manifest.json sw.js tailwind.min.js favicon.ico zayvora-logo.png js docs dist/"
+  publish = "dist"
+
+[[redirects]]
+  from = "/app"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/clinical"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/portal"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/science"
+  to = "/science_and_research.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"

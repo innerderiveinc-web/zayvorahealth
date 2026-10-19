@@ -1,0 +1,5 @@
+/app        /app.html                  200
+/clinical   /app.html                  200
+/portal     /app.html                  200
+/science    /science_and_research.html 200
+/*          /index.html                200

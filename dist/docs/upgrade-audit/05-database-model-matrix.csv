@@ -1,0 +1,13 @@
+Table Name,Microservice,Primary Key,Key Foreign Keys,Key Columns,Encryption / Integrity,Status
+users,identity,id (UUID),None,email, role, hashed_password, organization_id,PBKDF2 Hashing,ACTIVE
+organizations,identity,id (UUID),None,name, domain, tier, settings,Tenant Isolation,ACTIVE
+patients,clinical,id (UUID),organization_id,mrn, first_name, last_name, dob, gender, phone,AES-256 GCM (PHI),ACTIVE
+appointments,clinical,id (UUID),patient_id, organization_id,scheduled_time, duration, token, status,Audited,ACTIVE
+encounters,clinical,id (UUID),patient_id, appointment_id,clinician_id, start_time, vitals_json, status,Audited,ACTIVE
+clinical_notes,clinical,id (UUID),encounter_id,subjective, objective, assessment, plan,SHA-256 Checksum,ACTIVE
+prescriptions,clinical,id (UUID),encounter_id, patient_id,diagnosis, compounds_json, safe_to_lock, status,21 CFR 11 Merkle,ACTIVE
+invoices,clinical,id (UUID),patient_id,amount, status, transaction_ref, timestamp,PCI-DSS Compliant,ACTIVE
+pharmacy_inventory,therapeutic,id (UUID),organization_id,item_name, batch_no, expiry_date, stock_units,FEFO Index,ACTIVE
+pharmacy_orders,therapeutic,id (UUID),prescription_id,allocated_batch, mudabbar_verified, status,Tracked,ACTIVE
+adverse_events,therapeutic,id (UUID),patient_id,suspected_drug, batch_no, reaction, severity,ICH E2B Compliant,ACTIVE
+audit_ledger,clinical,id (UUID),user_id,action, details, timestamp, merkle_leaf_hash,Merkle Chaining,ACTIVE
