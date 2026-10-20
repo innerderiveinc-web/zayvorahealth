@@ -59,8 +59,31 @@ def should_exclude_file(filename: str, rel_path: str) -> bool:
     return False
 
 
+def sanitize_databases_for_release():
+    """Sanitizes local databases before packaging: removes transient sessions and active OTPs (OS-010)."""
+    import sqlite3
+    db_file = os.path.join(BASE_DIR, "database", "zayvora_live.db")
+    if os.path.isfile(db_file):
+        try:
+            conn = sqlite3.connect(db_file)
+            c = conn.cursor()
+            c.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            tables = set(r[0] for r in c.fetchall())
+            if "sessions" in tables:
+                c.execute("DELETE FROM sessions")
+            if "password_reset_otps" in tables:
+                c.execute("DELETE FROM password_reset_otps")
+            conn.commit()
+            c.execute("VACUUM")
+            conn.close()
+            print("✓ Database hygiene: purged transient session state and OTPs from zayvora_live.db.")
+        except Exception as e:
+            print(f"[WARN] Database sanitation notice: {e}")
+
+
 def package_release():
     print(f"Building canonical production release: {OUTPUT_ZIP}...")
+    sanitize_databases_for_release()
     total_files = 0
     total_bytes = 0
 

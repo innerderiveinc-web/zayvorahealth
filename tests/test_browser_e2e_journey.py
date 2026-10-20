@@ -109,7 +109,7 @@ class TestBrowserE2EUserJourney(unittest.TestCase):
         """Authenticate Dr. Irfan Ashraf and verify clinician session."""
         status, resp = self.client.request("POST", "/api/v1/auth/login", {
             "email": "dr.irfan@zayvorahealth",
-            "password": "Zayvora@123"
+            "password": "doctor123"
         })
         self.assertEqual(status, 200, f"Login failed: {resp}")
         self.assertTrue(resp.get("ok"))

@@ -8,6 +8,7 @@ import uuid
 
 try:
     from fastapi import APIRouter, HTTPException, Depends, WebSocket, WebSocketDisconnect
+    from app.core.auth_dependency import get_current_user, CurrentUser
 except ImportError:
     class APIRouter:  # type: ignore
         def __init__(self, *args, **kwargs):
@@ -23,6 +24,8 @@ except ImportError:
     Depends = object
     WebSocket = Any
     WebSocketDisconnect = Exception
+    CurrentUser = Any
+    get_current_user = lambda: None
 
 try:
     from pydantic import BaseModel, Field
@@ -60,7 +63,7 @@ class ClinicianSignOffRequest(BaseModel):
 
 
 @router.post("/process-transcript", summary="Process dialogue transcript into structured Unani SOAP draft")
-async def process_transcript(payload: TranscriptProcessRequest):
+async def process_transcript(payload: TranscriptProcessRequest, current_user: CurrentUser = Depends(get_current_user)):
     if not payload.transcript.strip():
         raise HTTPException(status_code=400, detail="Transcript cannot be empty.")
 
@@ -88,7 +91,7 @@ async def process_transcript(payload: TranscriptProcessRequest):
 
 
 @router.get("/notes/{note_id}", summary="Retrieve a SOAP note by ID")
-async def get_soap_note(note_id: str):
+async def get_soap_note(note_id: str, current_user: CurrentUser = Depends(get_current_user)):
     note = SOAP_NOTES_STORE.get(note_id)
     if not note:
         raise HTTPException(status_code=404, detail=f"SOAP note '{note_id}' not found.")
@@ -96,17 +99,26 @@ async def get_soap_note(note_id: str):
 
 
 @router.post("/sign-and-lock", summary="Clinician reviews, verifies, and locks a SOAP note")
-async def sign_and_lock_soap_note(payload: ClinicianSignOffRequest):
+async def sign_and_lock_soap_note(payload: ClinicianSignOffRequest, current_user: CurrentUser = Depends(get_current_user)):
+    allowed_signers = {"DOCTOR", "PHYSICIAN", "HAKEEM", "CLINICIAN", "SUPER_ADMIN"}
+    user_roles_upper = {r.upper() for r in current_user.roles}
+    if not user_roles_upper.intersection(allowed_signers) and "*" not in current_user.permissions:
+        raise HTTPException(status_code=403, detail="Forbidden: Scribe SOAP note lock requires licensed clinician authority.")
+
     note = SOAP_NOTES_STORE.get(payload.note_id)
     if not note:
         raise HTTPException(status_code=404, detail=f"SOAP note '{payload.note_id}' not found.")
 
+    clinician_id = current_user.user_id
+    clinician_name = payload.clinician_name or clinician_id
+    clinician_role = next((r for r in current_user.roles if r.upper() in allowed_signers), "DOCTOR")
+
     try:
         updated_note = AmbientScribeEngine.clinician_sign_and_lock(
             soap_note=note,
-            clinician_id=payload.clinician_id,
-            clinician_name=payload.clinician_name,
-            clinician_role=payload.clinician_role,
+            clinician_id=clinician_id,
+            clinician_name=clinician_name,
+            clinician_role=clinician_role,
             clinical_amendments=payload.clinical_amendments,
             clinician_notes=payload.clinician_notes,
         )

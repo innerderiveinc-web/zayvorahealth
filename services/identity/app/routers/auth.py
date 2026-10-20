@@ -133,9 +133,22 @@ def signup(payload: UserSignup, request: Request, db: Session = Depends(get_db))
     if existing:
         raise HTTPException(status_code=409, detail="A user with this email already exists")
 
+    # Security Hardening (OS-012): Prevent privilege escalation on public self-registration
+    requested_role_name = (payload.role_name or "PATIENT").strip().upper()
+    if requested_role_name != "PATIENT":
+        raise HTTPException(
+            status_code=403,
+            detail="Public self-registration only permits the 'PATIENT' role. Privileged roles must be provisioned by an administrator."
+        )
+
     role = db.execute(
-        select(Role).where(Role.organization_id == org.id, Role.name == payload.role_name)
+        select(Role).where(Role.organization_id == org.id, Role.name == requested_role_name)
     ).scalar_one_or_none()
+    if not role:
+        # Fallback to case-insensitive match for patient
+        role = db.execute(
+            select(Role).where(Role.organization_id == org.id, Role.name.ilike("patient"))
+        ).scalar_one_or_none()
     if not role:
         raise HTTPException(
             status_code=422,

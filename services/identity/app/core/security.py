@@ -276,16 +276,15 @@ def decode_access_token(token: str) -> dict:
     settings = get_settings()
     _, pub_key, _ = _get_rsa_keys()
 
-    payload = None
     if pub_key is not None and settings.jwt_algorithm == "RS256":
-        try:
-            payload = jwt.decode(token, pub_key, algorithms=["RS256"])
-        except Exception:
-            payload = None
-
-    if payload is None:
+        # Security Hardening (OS-005): Strictly enforce RS256 when configured
+        payload = jwt.decode(token, pub_key, algorithms=["RS256"])
+    else:
+        if settings.environment in ("production", "prod") and not settings.jwt_secret:
+            raise HTTPException(status_code=500, detail="JWT secret must be configured in production.")
         secret = settings.jwt_secret or "development-only-insecure-secret-do-not-use-in-production"
-        payload = jwt.decode(token, secret, algorithms=[settings.jwt_algorithm, "HS256"])
+        alg = settings.jwt_algorithm if settings.jwt_algorithm in ("HS256", "HS384", "HS512") else "HS256"
+        payload = jwt.decode(token, secret, algorithms=[alg])
 
     jti = payload.get("jti")
     if is_token_revoked(jti):
@@ -348,16 +347,14 @@ def verify_refresh_token(token: str) -> str:
     _, pub_key, _ = _get_rsa_keys()
 
     try:
-        payload: dict | None = None
         if pub_key is not None and settings.jwt_algorithm == "RS256":
-            try:
-                payload = jwt.decode(token, pub_key, algorithms=["RS256"])
-            except Exception:
-                payload = None
-
-        if payload is None:
+            payload = jwt.decode(token, pub_key, algorithms=["RS256"])
+        else:
+            if settings.environment in ("production", "prod") and not settings.jwt_secret:
+                raise HTTPException(status_code=500, detail="JWT secret must be configured in production.")
             secret = settings.jwt_secret or "development-only-insecure-secret-do-not-use-in-production"
-            payload = jwt.decode(token, secret, algorithms=[settings.jwt_algorithm, "HS256"])
+            alg = settings.jwt_algorithm if settings.jwt_algorithm in ("HS256", "HS384", "HS512") else "HS256"
+            payload = jwt.decode(token, secret, algorithms=[alg])
     except jwt.ExpiredSignatureError as exc:
         raise HTTPException(status_code=401, detail="Refresh token has expired") from exc
     except jwt.InvalidTokenError as exc:
@@ -401,14 +398,13 @@ def rotate_refresh_token(
     # so we can still revoke it if it is a reuse attempt.
     try:
         if pub_key is not None and settings.jwt_algorithm == "RS256":
-            try:
-                raw_payload: dict = jwt.decode(old_token, pub_key, algorithms=["RS256"])
-            except Exception:
-                secret = settings.jwt_secret or "development-only-insecure-secret-do-not-use-in-production"
-                raw_payload = jwt.decode(old_token, secret, algorithms=[settings.jwt_algorithm, "HS256"])
+            raw_payload: dict = jwt.decode(old_token, pub_key, algorithms=["RS256"])
         else:
+            if settings.environment in ("production", "prod") and not settings.jwt_secret:
+                raise HTTPException(status_code=500, detail="JWT secret must be configured in production.")
             secret = settings.jwt_secret or "development-only-insecure-secret-do-not-use-in-production"
-            raw_payload = jwt.decode(old_token, secret, algorithms=[settings.jwt_algorithm, "HS256"])
+            alg = settings.jwt_algorithm if settings.jwt_algorithm in ("HS256", "HS384", "HS512") else "HS256"
+            raw_payload = jwt.decode(old_token, secret, algorithms=[alg])
     except jwt.ExpiredSignatureError as exc:
         raise HTTPException(status_code=401, detail="Refresh token has expired") from exc
     except jwt.InvalidTokenError as exc:

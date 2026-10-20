@@ -20,8 +20,10 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
+
+from app.core.auth_dependency import get_current_user, CurrentUser
 
 from app.engines.clinical_intelligence_core_orchestrator import (
     ClinicalIntelligenceCoreOrchestrator,
@@ -76,7 +78,9 @@ class ReferralRedeemPayload(BaseModel):
 
 
 @router.post("/execute", summary="Execute Complete 12-Stage Clinical Intelligence Continuum")
-def execute_clinical_continuum(payload: ContinuumExecutionPayload) -> Dict[str, Any]:
+def execute_clinical_continuum(payload: ContinuumExecutionPayload, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
+    clinician_id = current_user.user_id
+    clinician_role = current_user.roles[0] if current_user.roles else payload.clinician_role
     req = ClinicalContinuumRequest(
         patient_id=payload.patient_id,
         patient_name=payload.patient_name,
@@ -89,8 +93,8 @@ def execute_clinical_continuum(payload: ContinuumExecutionPayload) -> Dict[str, 
         constitutional_signs=payload.constitutional_signs,
         targeted_axes=payload.targeted_axes,
         candidate_drugs=payload.candidate_drugs,
-        clinician_id=payload.clinician_id,
-        clinician_role=payload.clinician_role,
+        clinician_id=clinician_id,
+        clinician_role=clinician_role,
         is_pregnant=payload.is_pregnant,
         has_renal_impairment=payload.has_renal_impairment,
         followup_proms_day=payload.followup_proms_day,
@@ -102,7 +106,9 @@ def execute_clinical_continuum(payload: ContinuumExecutionPayload) -> Dict[str, 
 
 
 @router.post("/fhir-bundle/op-consult", summary="Generate ABDM FHIR R4 OPConsultRecord Document Bundle")
-def generate_abdm_op_consult_bundle(payload: ContinuumExecutionPayload) -> Dict[str, Any]:
+def generate_abdm_op_consult_bundle(payload: ContinuumExecutionPayload, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
+    clinician_id = current_user.user_id
+    clinician_role = current_user.roles[0] if current_user.roles else payload.clinician_role
     req = ClinicalContinuumRequest(
         patient_id=payload.patient_id,
         patient_name=payload.patient_name,
@@ -115,8 +121,8 @@ def generate_abdm_op_consult_bundle(payload: ContinuumExecutionPayload) -> Dict[
         constitutional_signs=payload.constitutional_signs,
         targeted_axes=payload.targeted_axes,
         candidate_drugs=payload.candidate_drugs,
-        clinician_id=payload.clinician_id,
-        clinician_role=payload.clinician_role,
+        clinician_id=clinician_id,
+        clinician_role=clinician_role,
         is_pregnant=payload.is_pregnant,
         has_renal_impairment=payload.has_renal_impairment,
         followup_proms_day=payload.followup_proms_day,
@@ -133,7 +139,9 @@ def generate_abdm_op_consult_bundle(payload: ContinuumExecutionPayload) -> Dict[
 
 
 @router.post("/fhir-bundle/prescription", summary="Generate ABDM FHIR R4 PrescriptionRecord Document Bundle")
-def generate_abdm_prescription_bundle(payload: ContinuumExecutionPayload) -> Dict[str, Any]:
+def generate_abdm_prescription_bundle(payload: ContinuumExecutionPayload, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
+    clinician_id = current_user.user_id
+    clinician_role = current_user.roles[0] if current_user.roles else payload.clinician_role
     req = ClinicalContinuumRequest(
         patient_id=payload.patient_id,
         patient_name=payload.patient_name,
@@ -146,8 +154,8 @@ def generate_abdm_prescription_bundle(payload: ContinuumExecutionPayload) -> Dic
         constitutional_signs=payload.constitutional_signs,
         targeted_axes=payload.targeted_axes,
         candidate_drugs=payload.candidate_drugs,
-        clinician_id=payload.clinician_id,
-        clinician_role=payload.clinician_role,
+        clinician_id=clinician_id,
+        clinician_role=clinician_role,
         is_pregnant=payload.is_pregnant,
         has_renal_impairment=payload.has_renal_impairment,
         followup_proms_day=payload.followup_proms_day,
@@ -164,7 +172,7 @@ def generate_abdm_prescription_bundle(payload: ContinuumExecutionPayload) -> Dic
 
 
 @router.get("/who-smart-dak/mufrad/{mufrad_name}", summary="Get WHO SMART Guidelines Level 3 Computable DAK")
-def get_who_smart_dak(mufrad_name: str) -> Dict[str, Any]:
+def get_who_smart_dak(mufrad_name: str, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     matched = next((m for m in get_upi_mufradat() if mufrad_name.lower() in m["name"].lower()), None)
     if not matched:
         raise HTTPException(status_code=404, detail=f"Mufrad '{mufrad_name}' not found in ratified pharmacopoeia")
@@ -173,7 +181,7 @@ def get_who_smart_dak(mufrad_name: str) -> Dict[str, Any]:
 
 
 @router.get("/learning-health-system/summary", summary="Get Closed-Loop Learning Health System Cohort Summary")
-def get_lhs_summary() -> Dict[str, Any]:
+def get_lhs_summary(current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     registry = ClosedLoopLearningEngine.get_registry_summary()
     return {
         "status": "OPERATIONAL",
@@ -183,19 +191,20 @@ def get_lhs_summary() -> Dict[str, Any]:
 
 
 @router.get("/federation/clinics", summary="List All Federated Facilities in Multi-Clinic Network")
-def list_federated_clinics() -> Dict[str, Any]:
+def list_federated_clinics(current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     clinics = MultiClinicFederationEngine.list_clinics()
     return {"ok": True, "facilities": clinics, "total_facilities": len(clinics)}
 
 
 @router.post("/federation/referral", summary="Create Cryptographically Signed Inter-Clinic Referral")
-def create_federated_referral(payload: InterClinicReferralPayload) -> Dict[str, Any]:
+def create_federated_referral(payload: InterClinicReferralPayload, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
+    referring_clinician_id = current_user.user_id
     try:
         ref = MultiClinicFederationEngine.create_inter_clinic_referral(
             patient_id=payload.patient_id,
             source_facility_id=payload.source_facility_id,
             target_facility_id=payload.target_facility_id,
-            referring_clinician_id=payload.referring_clinician_id,
+            referring_clinician_id=referring_clinician_id,
             clinical_condition=payload.clinical_condition,
             specialty_axis_required=payload.specialty_axis_required,
             reason_for_referral=payload.reason_for_referral,
@@ -207,11 +216,12 @@ def create_federated_referral(payload: InterClinicReferralPayload) -> Dict[str, 
 
 
 @router.post("/federation/referral/redeem", summary="Redeem Inter-Clinic Referral at Target Clinic")
-def redeem_federated_referral(payload: ReferralRedeemPayload) -> Dict[str, Any]:
+def redeem_federated_referral(payload: ReferralRedeemPayload, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
+    accepting_clinician_id = current_user.user_id
     res = MultiClinicFederationEngine.redeem_inter_clinic_referral(
         referral_token=payload.referral_token,
         receiving_facility_id=payload.receiving_facility_id,
-        accepting_clinician_id=payload.accepting_clinician_id,
+        accepting_clinician_id=accepting_clinician_id,
     )
     if not res.get("success"):
         raise HTTPException(status_code=400, detail=res.get("error", "Referral redemption failed"))
@@ -219,19 +229,19 @@ def redeem_federated_referral(payload: ReferralRedeemPayload) -> Dict[str, Any]:
 
 
 @router.get("/population-health/seasonal-alerts", summary="Get Asbab-e-Sittah Seasonal Humoral Surveillance Advisory")
-def get_seasonal_humoral_alerts(season: Optional[str] = None) -> Dict[str, Any]:
+def get_seasonal_humoral_alerts(season: Optional[str] = None, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     s_enum = CanonicalSeason(season) if season else None
     advisory = PopulationHealthEngine.generate_seasonal_surveillance_advisory(s_enum)
     return {"ok": True, "advisory": asdict(advisory)}
 
 
 @router.get("/population-health/epidemiology", summary="Get Cohort Humoral Temperament Distribution")
-def get_population_epidemiology(facility_id: Optional[str] = None) -> Dict[str, Any]:
+def get_population_epidemiology(facility_id: Optional[str] = None, current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     dist = PopulationHealthEngine.get_humoral_epidemiology_distribution(facility_id)
     return {"ok": True, "epidemiology": dist}
 
 
 @router.get("/population-health/adr-clusters", summary="Scan for Multi-Clinic Pharmacovigilance Clusters")
-def scan_adr_clusters() -> Dict[str, Any]:
+def scan_adr_clusters(current_user: CurrentUser = Depends(get_current_user)) -> Dict[str, Any]:
     alerts = PopulationHealthEngine.scan_adr_clusters()
     return {"ok": True, "cluster_alerts": [asdict(a) for a in alerts], "count": len(alerts)}

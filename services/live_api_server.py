@@ -1150,18 +1150,57 @@ if IS_PROD_ENV and (not PHI_ENV_KEY or PHI_ENV_KEY in ("change_me", "zayvora-phi
 def _get_phi_salt():
     return os.environ.get("PHI_ENCRYPTION_KEY", "zayvora-phi-dev-key-change-in-prod")
 
+def _derive_phi_keys(salt_bytes: bytes):
+    secret = _get_phi_salt().encode("utf-8")
+    derived = hashlib.pbkdf2_hmac("sha256", secret, salt_bytes, 10000, dklen=64)
+    return derived[:32], derived[32:]
+
+def _keystream_bytes(key: bytes, nonce: bytes, length: int) -> bytes:
+    out = bytearray()
+    counter = 0
+    while len(out) < length:
+        block = hmac.new(key, nonce + counter.to_bytes(4, byteorder="big"), hashlib.sha256).digest()
+        out.extend(block)
+        counter += 1
+    return bytes(out[:length])
+
 def _encrypt_phi(value: str) -> str:
-    """Field-level encryption for sensitive Protected Health Information."""
+    """Field-level authenticated encryption (AES-CTR equivalent + HMAC-SHA256 Encrypt-then-MAC)."""
     if not value or str(value).startswith("ENC:"):
         return value
-    salt = _get_phi_salt()
-    encoded = base64.b64encode(f"{salt}:{value}".encode("utf-8")).decode("utf-8")
-    return f"ENC:{encoded}"
+    data = value.encode("utf-8")
+    salt = os.urandom(16)
+    nonce = os.urandom(16)
+    enc_key, mac_key = _derive_phi_keys(salt)
+    keystream = _keystream_bytes(enc_key, nonce, len(data))
+    ciphertext = bytes(a ^ b for a, b in zip(data, keystream))
+    tag = hmac.new(mac_key, salt + nonce + ciphertext, hashlib.sha256).digest()
+    payload = salt + nonce + tag + ciphertext
+    return f"ENC:V2:{base64.urlsafe_b64encode(payload).decode('ascii')}"
 
 def _decrypt_phi(value: str) -> str:
-    """Decrypt field-level encrypted PHI string."""
+    """Decrypt field-level encrypted PHI with integrity authentication."""
     if not value or not str(value).startswith("ENC:"):
         return value
+    if str(value).startswith("ENC:V2:"):
+        try:
+            raw = base64.urlsafe_b64decode(value[7:].encode("ascii"))
+            if len(raw) < 16 + 16 + 32:
+                return value
+            salt = raw[:16]
+            nonce = raw[16:32]
+            expected_tag = raw[32:64]
+            ciphertext = raw[64:]
+            enc_key, mac_key = _derive_phi_keys(salt)
+            computed_tag = hmac.new(mac_key, salt + nonce + ciphertext, hashlib.sha256).digest()
+            if not hmac.compare_digest(expected_tag, computed_tag):
+                return "[INTEGRITY_CHECK_FAILED]"
+            keystream = _keystream_bytes(enc_key, nonce, len(ciphertext))
+            plaintext_bytes = bytes(a ^ b for a, b in zip(ciphertext, keystream))
+            return plaintext_bytes.decode("utf-8")
+        except Exception:
+            return value
+    # Backward compatibility with legacy ENC: base64
     salt = _get_phi_salt()
     try:
         decoded = base64.b64decode(value[4:]).decode("utf-8")
@@ -1728,7 +1767,16 @@ def request_otp_challenge(identifier: str, channel: str = "sms") -> dict:
         "attempts": 0
     }
     
-    print(f"[AUTH OTP DISPATCH] Identifier: {clean_id} | Channel: {channel} | Code: {otp} | TTL: 300s")
+    # Redact sensitive identifier and secret token in system logs for ISO 27001 / HIPAA compliance
+    if "@" in clean_id:
+        user_part, domain = clean_id.split("@", 1)
+        masked_id = f"{user_part[:2]}***@{domain}"
+    else:
+        masked_id = f"{clean_id[:3]}***{clean_id[-2:]}" if len(clean_id) >= 5 else "***"
+    
+    debug_otp = os.environ.get("DEBUG_OTP", "0") == "1"
+    logged_code = otp if debug_otp else "[REDACTED]"
+    print(f"[AUTH OTP DISPATCH] Identifier: {masked_id} | Channel: {channel} | Code: {logged_code} | TTL: 300s")
     
     return {
         "ok": True,
@@ -1836,22 +1884,7 @@ def validate_session_token(token: str) -> dict:
     except Exception:
         pass
 
-    if token.startswith("jwt-live-") or token.startswith("jwt-zayvora-"):
-        role = "SUPER_ADMIN"
-        for r in ["DOCTOR", "RECEPTIONIST", "PHARMACIST", "PATIENT", "CLINIC_ADMIN"]:
-            if r.lower() in token.lower():
-                role = r
-                break
-        return {
-            "userId": "USR-ADMIN-01",
-            "email": "mansoor.alam@zayvora.health",
-            "fullName": "Prof. (Dr.) Mansoor Alam",
-            "role": role,
-            "facilityId": "FAC-HQ-01",
-            "mrn": "MRN-2026-0814",
-            "permissions": ROLE_PERMISSIONS.get(role, [])
-        }
-
+    # Legacy prefix tokens without cryptographic signature validation are strictly rejected
     return None
 
 def revoke_session_token(token: str) -> bool:
@@ -2331,22 +2364,36 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         req_origin = self.headers.get("Origin", "") if hasattr(self, "headers") and self.headers else ""
         allowed_env = os.getenv("CORS_ALLOWED_ORIGINS", "")
+        origin_to_send = None
+
         if allowed_env:
             allowed_list = [o.strip() for o in allowed_env.split(",") if o.strip()]
             if req_origin in allowed_list:
                 origin_to_send = req_origin
             elif "*" in allowed_list:
                 origin_to_send = "*"
-            else:
+            elif allowed_list:
                 origin_to_send = allowed_list[0]
-        else:
-            if req_origin:
-                if any(d in req_origin for d in ["localhost", "127.0.0.1", "0.0.0.0", "zayvora.com", "github.io"]):
+        elif req_origin:
+            try:
+                parsed_origin = urllib.parse.urlparse(req_origin)
+                hostname = (parsed_origin.hostname or "").lower()
+                # Strict domain checking: localhost, 127.0.0.1, or exact zayvora/netlify domains
+                if (
+                    hostname in ("localhost", "127.0.0.1", "0.0.0.0")
+                    or hostname == "zayvorahealth.com"
+                    or hostname.endswith(".zayvorahealth.com")
+                    or hostname.endswith(".netlify.app")
+                    or hostname.endswith(".railway.app")
+                    or hostname.endswith(".github.io")
+                ):
                     origin_to_send = req_origin
-                else:
-                    origin_to_send = req_origin
-            else:
-                origin_to_send = "*"
+            except Exception:
+                pass
+
+        if not origin_to_send:
+            origin_to_send = "https://zayvorahealth.com"
+
         self.send_header("Access-Control-Allow-Origin", origin_to_send)
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-Facility-ID")
@@ -2432,21 +2479,25 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         return "*" in perms or required_perm in perms
 
     def _resolve_facility(self, auth_ctx: dict = None, query_params: dict = None, body: dict = None) -> str:
-        """Resolves facility tenant context based on auth, headers, body, or query parameters."""
-        hdr_fac = self.headers.get("X-Facility-ID")
-        if hdr_fac and hdr_fac.strip():
-            return hdr_fac.strip()
-        if body and isinstance(body, dict):
-            b_fac = body.get("facilityId") or body.get("facility_id")
-            if b_fac and str(b_fac).strip():
-                return str(b_fac).strip()
-        if query_params and isinstance(query_params, dict):
-            qp_fac = query_params.get("facility_id")
-            if qp_fac and len(qp_fac) > 0 and qp_fac[0] and str(qp_fac[0]).strip():
-                return str(qp_fac[0]).strip()
-        if auth_ctx and auth_ctx.get("facilityId") and str(auth_ctx["facilityId"]).strip():
-            return str(auth_ctx["facilityId"]).strip()
-        return "FAC-HQ-01"
+        """Resolves facility tenant context securely. Non-superadmins are strictly bound to their assigned facility."""
+        user_fac = (auth_ctx.get("facilityId") if auth_ctx else None) or "FAC-HQ-01"
+        is_admin = bool(auth_ctx and (auth_ctx.get("role") in ("SUPER_ADMIN", "ADMIN") or "*" in auth_ctx.get("permissions", [])))
+
+        # Multi-Tenant Isolation (OS-014): Only authorized administrators can query cross-facility
+        if is_admin:
+            hdr_fac = self.headers.get("X-Facility-ID")
+            if hdr_fac and hdr_fac.strip():
+                return hdr_fac.strip()
+            if body and isinstance(body, dict):
+                b_fac = body.get("facilityId") or body.get("facility_id")
+                if b_fac and str(b_fac).strip():
+                    return str(b_fac).strip()
+            if query_params and isinstance(query_params, dict):
+                qp_fac = query_params.get("facility_id")
+                if qp_fac and len(qp_fac) > 0 and qp_fac[0] and str(qp_fac[0]).strip():
+                    return str(qp_fac[0]).strip()
+
+        return user_fac
 
     # =========================================================================
     # GET Endpoints
@@ -5893,8 +5944,21 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             password = body.get("password") or ""
             full_name = (body.get("fullName") or body.get("full_name") or "").strip()
             phone = (body.get("phone") or "").strip()
-            role = (body.get("role") or body.get("role_name") or "PATIENT").upper()
-            facility_id = body.get("facilityId") or body.get("facility_id") or "FAC-HQ-01"
+            
+            # Security Hardening (OS-003): Enforce PATIENT / least privilege on public registration.
+            # Privileged roles require authenticated administrator provisioning.
+            req_role = (body.get("role") or body.get("role_name") or "PATIENT").upper()
+            if req_role != "PATIENT":
+                auth_ctx = self._get_auth_context()
+                if not auth_ctx or auth_ctx.get("role") not in ("SUPER_ADMIN", "ADMIN"):
+                    self._send_error("Public self-registration only permits the PATIENT role. Privileged accounts must be provisioned by an administrator.", status=403, code="PRIVILEGE_ESCALATION_BLOCKED")
+                    return
+                role = req_role
+            else:
+                role = "PATIENT"
+
+            # Derive facility server-side for public signups to prevent cross-facility spoofing
+            facility_id = "FAC-HQ-01"
 
             if not email or "@" not in email:
                 self._send_error("A valid email address is required.", status=400, code="INVALID_EMAIL")
@@ -5967,11 +6031,27 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
 
         # ── Master OS System Settings Persistence ───────────────────────────
         if path == "/api/v1/system/settings":
+            auth_ctx = self._get_auth_context()
+            if not auth_ctx:
+                self._send_error("Authentication required to update system settings.", status=401, code="UNAUTHENTICATED")
+                return
+            if auth_ctx.get("role") not in ("SUPER_ADMIN", "ADMIN") and not self._has_permission(auth_ctx, "system.settings.write"):
+                self._send_error("Forbidden: Administrative privilege required to modify system settings.", status=403, code="FORBIDDEN")
+                return
+
+            ALLOWED_SETTING_KEYS = {
+                "platform_edition", "dark_mode", "maintenance_mode", "telemetry_enabled",
+                "session_timeout_minutes", "default_facility_id", "clinical_version",
+                "mizaj_assessment_version", "prescriptions_auto_issue", "theme", "logo_url",
+                "support_email", "support_phone", "audit_retention_days", "fhir_export_enabled"
+            }
             try:
                 with get_db() as conn:
                     cur = conn.cursor()
                     cur.execute("CREATE TABLE IF NOT EXISTS system_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
                     for k, v in body.items():
+                        if k not in ALLOWED_SETTING_KEYS:
+                            continue
                         val_str = json.dumps(v) if isinstance(v, (dict, list)) else str(v)
                         cur.execute("INSERT OR REPLACE INTO system_settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)", (k, val_str))
                     conn.commit()
@@ -6080,7 +6160,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 fac_row = cur.fetchone()
                 fac_name = fac_row["name"] if fac_row else "ZAYVORA Health — Virtual Matab & Tele-Care HQ"
 
-            pwd_matches = verify_password(password, user["password_hash"], user["salt"]) or (password == "Zayvora@123")
+            pwd_matches = verify_password(password, user["password_hash"], user["salt"])
             if not pwd_matches:
                 self._send_error("Invalid password.", status=401, code="INVALID_CREDENTIALS")
                 return
@@ -10364,7 +10444,12 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
 
 
 def ensure_essential_accounts():
-    """Guarantee all standard department desk accounts exist in DB at boot."""
+    """Guarantee standard department desk accounts exist in DB during development/staging."""
+    env = os.environ.get("ENVIRONMENT", os.environ.get("NODE_ENV", "development")).lower()
+    if env in ("production", "prod") and os.environ.get("SEED_DEV_ACCOUNTS") != "1":
+        print("[SECURITY] Production environment active: static test credential seeding disabled.")
+        return
+
     try:
         with get_db() as conn:
             cur = conn.cursor()

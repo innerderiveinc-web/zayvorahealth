@@ -4,9 +4,11 @@ Provides endpoints for audit trail logging, chain verification, Part 11 digital 
 and exportable regulatory compliance inspection bundles.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Dict, Any, Optional
 from pydantic import BaseModel, Field
+
+from app.core.auth_dependency import get_current_user, CurrentUser
 from ..governance.audit_trail_engine import (
     GLOBAL_AUDIT_LEDGER,
     Part11SignatureAuthority,
@@ -20,8 +22,8 @@ SIGNATURE_ENVELOPES_STORE: Dict[str, Part11SignatureEnvelope] = {}
 
 
 class RecordAuditEventRequest(BaseModel):
-    actor_id: str = Field(..., description="ID of the user, clinician, or system")
-    actor_role: str = Field(..., description="Role of the actor (e.g. CLINICIAN, PHARMACIST, QA_LEAD)")
+    actor_id: Optional[str] = Field(None, description="ID of the user, clinician, or system")
+    actor_role: Optional[str] = Field(None, description="Role of the actor")
     action: str = Field(..., description="Action name (e.g. PRESCRIPTION_SIGNED, MUDABBAR_CHECK_PASSED)")
     resource_type: str = Field(..., description="Type of clinical resource (e.g. Prescription, SOAPNote)")
     resource_id: str = Field(..., description="Resource ID")
@@ -29,9 +31,9 @@ class RecordAuditEventRequest(BaseModel):
 
 
 class CreateSignatureRequest(BaseModel):
-    signer_id: str = Field(..., description="Unique ID of accredited clinician or officer")
-    signer_name: str = Field(..., description="Printed full name of the signer")
-    signer_role: str = Field(..., description="Professional role (Clinician, Hakeem, QA Manager)")
+    signer_id: Optional[str] = Field(None, description="Unique ID of accredited clinician or officer")
+    signer_name: Optional[str] = Field(None, description="Printed full name of the signer")
+    signer_role: Optional[str] = Field(None, description="Professional role (Clinician, Hakeem, QA Manager)")
     document_payload: Dict[str, Any] = Field(..., description="The clinical document JSON being attested")
     signature_meaning: Optional[str] = Field(
         "Clinical Review & Statutory Approval (21 CFR § 11.50)",
@@ -45,10 +47,14 @@ class VerifySignatureRequest(BaseModel):
 
 
 @router.post("/audit/record", summary="Record a clinical action into the Merkle-linked audit ledger")
-async def record_audit_event(payload: RecordAuditEventRequest):
+async def record_audit_event(payload: RecordAuditEventRequest, current_user: CurrentUser = Depends(get_current_user)):
+    # Security Hardening (OS-008): Bind actor identity strictly to authenticated token context
+    actor_id = current_user.user_id
+    actor_role = current_user.roles[0] if current_user.roles else "USER"
+
     block = GLOBAL_AUDIT_LEDGER.record_event(
-        actor_id=payload.actor_id,
-        actor_role=payload.actor_role,
+        actor_id=actor_id,
+        actor_role=actor_role,
         action=payload.action,
         resource_type=payload.resource_type,
         resource_id=payload.resource_id,
@@ -143,11 +149,24 @@ async def verify_audit_anchors():
 
 
 @router.post("/signatures/sign", summary="Generate 21 CFR Part 11 compliant digital signature envelope")
-async def create_part11_signature(payload: CreateSignatureRequest):
+async def create_part11_signature(payload: CreateSignatureRequest, current_user: CurrentUser = Depends(get_current_user)):
+    # 21 CFR Part 11 Security Hardening (OS-008): Non-repudiation requires verified identity binding
+    allowed_signers = {"DOCTOR", "PHYSICIAN", "HAKEEM", "CLINICIAN", "QA_LEAD", "QA_MANAGER", "SUPER_ADMIN", "ADMIN"}
+    user_roles_upper = {r.upper() for r in current_user.roles}
+    if not user_roles_upper.intersection(allowed_signers) and "*" not in current_user.permissions:
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: 21 CFR Part 11 digital signatures can only be executed by accredited practitioners or QA officers."
+        )
+
+    signer_id = current_user.user_id
+    signer_role = next((r for r in current_user.roles if r.upper() in allowed_signers), current_user.roles[0] if current_user.roles else "CLINICIAN")
+    signer_name = payload.signer_name or signer_id
+
     envelope = Part11SignatureAuthority.create_signature_envelope(
-        signer_id=payload.signer_id,
-        signer_name=payload.signer_name,
-        signer_role=payload.signer_role,
+        signer_id=signer_id,
+        signer_name=signer_name,
+        signer_role=signer_role,
         document_payload=payload.document_payload,
         signature_meaning=payload.signature_meaning,
     )
@@ -155,8 +174,8 @@ async def create_part11_signature(payload: CreateSignatureRequest):
 
     # Also record signing event into audit ledger
     GLOBAL_AUDIT_LEDGER.record_event(
-        actor_id=payload.signer_id,
-        actor_role=payload.signer_role,
+        actor_id=signer_id,
+        actor_role=signer_role,
         action="PART11_SIGNATURE_EXECUTED",
         resource_type="SignatureEnvelope",
         resource_id=envelope.signature_id,

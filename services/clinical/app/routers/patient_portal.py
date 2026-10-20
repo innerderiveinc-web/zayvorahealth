@@ -3,9 +3,11 @@ ZAYVORA HEALTH™ — Patient Portal Router
 Provides endpoints for patient daily schedule ("Today" view), posology adherence logging, and secure messaging.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
+
+from app.core.auth_dependency import get_current_user, CurrentUser
 from ..patient_portal.portal_engine import (
     PatientPortalEngine,
     DailyDoseItem,
@@ -14,6 +16,19 @@ from ..patient_portal.portal_engine import (
 )
 
 router = APIRouter(prefix="/api/v1/patient-portal", tags=["Patient App 2.0 & Adherence"])
+
+
+def _verify_patient_access(current_user: CurrentUser, target_patient_id: str):
+    """Verifies that the caller owns this patient profile or is an authorized care team member (OS-007)."""
+    privileged_roles = {"DOCTOR", "PHYSICIAN", "HAKEEM", "CLINICIAN", "NURSE", "ADMIN", "SUPER_ADMIN", "CARE_COORDINATOR"}
+    user_roles_upper = {r.upper() for r in current_user.roles}
+    is_staff = bool(user_roles_upper.intersection(privileged_roles) or "*" in current_user.permissions)
+    is_owner = (current_user.user_id == target_patient_id)
+    if not (is_owner or is_staff):
+        raise HTTPException(
+            status_code=403,
+            detail="Forbidden: Access to this patient portal record requires identity ownership or care-team authorization."
+        )
 
 
 class LogAdherenceRequest(BaseModel):
@@ -31,7 +46,8 @@ class SendMessageRequest(BaseModel):
 
 
 @router.get("/{patient_id}/today", summary="Retrieve personalized daily clinical schedule ('Today' view)")
-async def get_patient_today(patient_id: str, date: Optional[str] = None):
+async def get_patient_today(patient_id: str, date: Optional[str] = None, current_user: CurrentUser = Depends(get_current_user)):
+    _verify_patient_access(current_user, patient_id)
     schedule = PatientPortalEngine.get_daily_schedule(patient_id, date)
     return {
         "patient_id": schedule.patient_id,
@@ -59,7 +75,8 @@ async def get_patient_today(patient_id: str, date: Optional[str] = None):
 
 
 @router.post("/adherence", summary="Log medication intake adherence")
-async def log_adherence(payload: LogAdherenceRequest):
+async def log_adherence(payload: LogAdherenceRequest, current_user: CurrentUser = Depends(get_current_user)):
+    _verify_patient_access(current_user, payload.patient_id)
     try:
         item = PatientPortalEngine.log_adherence(
             patient_id=payload.patient_id,
@@ -78,7 +95,8 @@ async def log_adherence(payload: LogAdherenceRequest):
 
 
 @router.post("/messages/send", summary="Send asynchronous message between patient and clinician")
-async def send_message(payload: SendMessageRequest):
+async def send_message(payload: SendMessageRequest, current_user: CurrentUser = Depends(get_current_user)):
+    _verify_patient_access(current_user, payload.patient_id)
     msg = PatientPortalEngine.send_message(
         patient_id=payload.patient_id,
         sender_type=payload.sender_type,
@@ -97,7 +115,8 @@ async def send_message(payload: SendMessageRequest):
 
 
 @router.get("/{patient_id}/messages", summary="Get message thread for patient")
-async def get_patient_messages(patient_id: str):
+async def get_patient_messages(patient_id: str, current_user: CurrentUser = Depends(get_current_user)):
+    _verify_patient_access(current_user, patient_id)
     messages = PatientPortalEngine.get_messages(patient_id)
     return [
         {
@@ -123,7 +142,8 @@ class VoiceSynthesisRequest(BaseModel):
 
 
 @router.post("/voice/synthesize", summary="Synthesize localized audio instructions via Bhashini / Indic TTS engine (Issue ENH-02)")
-async def synthesize_medication_voice_prompt(payload: VoiceSynthesisRequest):
+async def synthesize_medication_voice_prompt(payload: VoiceSynthesisRequest, current_user: CurrentUser = Depends(get_current_user)):
+    _verify_patient_access(current_user, payload.patient_id)
     from ..patient_portal.voice_synthesizer import BhashiniVoiceSynthesizer
 
     med_name = payload.medication_name or "Prescribed Medication"

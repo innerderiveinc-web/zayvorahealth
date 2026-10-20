@@ -16,17 +16,17 @@ class CurrentUser:
 
 def _decode_token(token: str) -> dict:
     settings = get_settings()
-    payload = None
+    env = getattr(settings, "environment", "development").lower()
 
-    if settings.jwt_public_key_pem.strip():
-        try:
-            payload = jwt.decode(token, settings.jwt_public_key_pem, algorithms=["RS256"])
-        except Exception:
-            payload = None
-
-    if payload is None:
+    if settings.jwt_public_key_pem and settings.jwt_public_key_pem.strip():
+        # Security Hardening (OS-005): Enforce asymmetric verification strictly; never fall back to insecure dev secret
+        payload = jwt.decode(token, settings.jwt_public_key_pem.strip(), algorithms=["RS256"])
+    else:
+        if env in ("production", "prod") and not settings.jwt_secret:
+            raise HTTPException(status_code=500, detail="JWT secret must be configured in production.")
         secret = settings.jwt_secret or "development-only-insecure-secret-do-not-use-in-production"
-        payload = jwt.decode(token, secret, algorithms=[settings.jwt_algorithm, "HS256", "RS256"])
+        alg = settings.jwt_algorithm if settings.jwt_algorithm in ("HS256", "HS384", "HS512") else "HS256"
+        payload = jwt.decode(token, secret, algorithms=[alg])
 
     jti = payload.get("jti")
     if jti and settings.redis_url:
