@@ -150,6 +150,37 @@ for hf in html_files:
             log_error(f"{hf} missing doctype or closing html tag")
 
 # -------------------------------------------------------------------------
+# 5. SECURITY & ANTI-BACKDOOR AUDIT SHIELD
+# -------------------------------------------------------------------------
+log_header("5. Security & Anti-Backdoor Audit Shield")
+
+FORBIDDEN_SECURITY_PATTERNS = [
+    (r'password\s*==\s*["\']Zayvora@123["\']', "Hardcoded master password bypass (OS-001)"),
+    (r'token\.startswith\(["\']jwt-live-["\']\)', "Unsigned legacy session token bypass (OS-002)"),
+    (r'token\.startswith\(["\']jwt-zayvora-["\']\)', "Unsigned legacy session token bypass (OS-002)"),
+    (r'base64\.b64encode\(f"\{salt\}:\{value\}"', "Reversible Base64 PHI pseudo-encryption (OS-009)"),
+]
+
+import re
+security_violations = 0
+for root, dirs, files in os.walk(os.path.join(BASE_DIR, "services")):
+    for file in files:
+        if file.endswith(".py"):
+            fpath = os.path.join(root, file)
+            rel_file = os.path.relpath(fpath, BASE_DIR)
+            try:
+                content = open(fpath, "r", encoding="utf-8", errors="ignore").read()
+                for pattern, desc in FORBIDDEN_SECURITY_PATTERNS:
+                    if re.search(pattern, content):
+                        log_error(f"{rel_file} contains forbidden pattern: {desc}")
+                        security_violations += 1
+            except Exception as e:
+                pass
+
+if security_violations == 0:
+    log_success("Zero backdoor patterns or insecure authentication bypasses detected")
+
+# -------------------------------------------------------------------------
 # SUMMARY & VERDICT
 # -------------------------------------------------------------------------
 print("\n" + "=" * 65)

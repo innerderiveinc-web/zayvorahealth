@@ -5733,6 +5733,16 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             return
 
         if path in ("/api/v1/audit/ledger", "/api/v1/clinical/audit-ledger"):
+            auth_ctx = self._get_auth_context()
+            if not auth_ctx:
+                self._send_error("Authentication required to access clinical audit ledger.", status=401, code="UNAUTHENTICATED")
+                return
+            allowed_audit_roles = {"DOCTOR", "PHYSICIAN", "ADMIN", "SUPER_ADMIN", "QA_LEAD", "AUDITOR", "CLINIC_ADMIN"}
+            user_role = (auth_ctx.get("role") or "").upper()
+            if user_role not in allowed_audit_roles and "*" not in auth_ctx.get("permissions", []):
+                self._send_error("Forbidden: Access to clinical audit ledger requires clinical audit authority.", status=403, code="FORBIDDEN")
+                return
+
             audit_events = []
             with get_db() as conn:
                 cur = conn.cursor()
