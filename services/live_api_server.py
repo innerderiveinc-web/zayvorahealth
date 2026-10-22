@@ -2360,6 +2360,28 @@ try:
 except ImportError:
     from security_shield import check_rate_limit, inspect_payload_safety, apply_enterprise_security_headers
 
+
+def _safe_instantiate_dataclass(target_cls, data_dict):
+    """Instantiate a dataclass safely by filtering keys to avoid unexpected keyword errors."""
+    if not target_cls:
+        return None
+    if not isinstance(data_dict, dict) or not data_dict:
+        try:
+            return target_cls()
+        except Exception:
+            return None
+    try:
+        import inspect
+        sig = inspect.signature(target_cls)
+        valid_keys = set(sig.parameters.keys())
+        filtered = {k: v for k, v in data_dict.items() if k in valid_keys}
+        return target_cls(**filtered)
+    except Exception:
+        try:
+            return target_cls()
+        except Exception:
+            return None
+
 class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         req_origin = self.headers.get("Origin", "") if hasattr(self, "headers") and self.headers else ""
@@ -8800,8 +8822,8 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             labs_data = body.get("modern_labs", {})
             clinical_ctx = body.get("clinical_context", {})
             if QaroorahDiagnosticEngine and QaroorahPhysicalInspection and ModernUrinalysisData:
-                insp = QaroorahPhysicalInspection(**insp_data) if insp_data else QaroorahPhysicalInspection()
-                labs = ModernUrinalysisData(**labs_data) if labs_data else ModernUrinalysisData()
+                insp = _safe_instantiate_dataclass(QaroorahPhysicalInspection, insp_data)
+                labs = _safe_instantiate_dataclass(ModernUrinalysisData, labs_data)
                 res = QaroorahDiagnosticEngine.analyze_qaroorah(patient_id, insp, labs, clinical_ctx)
                 self._send_json({"ok": True, "qaroorah_diagnostic": res})
             else:
@@ -8814,7 +8836,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             insp_data = body.get("inspection", {})
             clinical_ctx = body.get("clinical_context", {})
             if BaraazDiagnosticEngine and BaraazInspectionInput:
-                inp = BaraazInspectionInput(**insp_data) if insp_data else BaraazInspectionInput()
+                inp = _safe_instantiate_dataclass(BaraazInspectionInput, insp_data)
                 res = BaraazDiagnosticEngine.analyze_baraaz(patient_id, inp, clinical_ctx)
                 self._send_json({"ok": True, "baraaz_diagnostic": res})
             else:
@@ -8827,7 +8849,7 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             patient_mizaj = body.get("patient_mizaj", "Motadil")
             lifestyle_data = body.get("lifestyle", {})
             if AsbabSittaScoringEngine and AsbabSittaPatientInput:
-                inp = AsbabSittaPatientInput(**lifestyle_data) if lifestyle_data else AsbabSittaPatientInput()
+                inp = _safe_instantiate_dataclass(AsbabSittaPatientInput, lifestyle_data)
                 res = AsbabSittaScoringEngine.evaluate_lifestyle_equilibrium(patient_id, patient_mizaj, inp)
                 self._send_json({"ok": True, "asbab_sitta_evaluation": res})
             else:
