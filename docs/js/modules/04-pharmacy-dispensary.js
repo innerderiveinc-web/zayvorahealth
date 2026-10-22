@@ -4319,52 +4319,6 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         return;
       }
 
-      const offlineCreds = {
-        'doctor': { pass: 'doctor123', name: 'Hakeem Dr. Irfan Ashraf', role: 'doctor', title: 'Senior Tabeeb (NCISM-BUMS)', email: 'dr.irfan@zayvorahealth.com' },
-        'doctor@zayvorahealth.com': { pass: 'doctor123', name: 'Hakeem Dr. Irfan Ashraf', role: 'doctor', title: 'Senior Tabeeb (NCISM-BUMS)', email: 'dr.irfan@zayvorahealth.com' },
-        'dr.irfan@zayvorahealth.com': { pass: 'doctor123', name: 'Hakeem Dr. Irfan Ashraf', role: 'doctor', title: 'Senior Tabeeb (NCISM-BUMS)', email: 'dr.irfan@zayvorahealth.com' },
-        'dr.irfanashraf@zayvorahealth.com': { pass: 'doctor123', name: 'Hakeem Dr. Irfan Ashraf', role: 'doctor', title: 'Senior Tabeeb (NCISM-BUMS)', email: 'dr.irfan@zayvorahealth.com' },
-        'dr.irfan@zayvorahealth': { pass: 'doctor123', name: 'Hakeem Dr. Irfan Ashraf', role: 'doctor', title: 'Senior Tabeeb (NCISM-BUMS)', email: 'dr.irfan@zayvorahealth.com' },
-        'admin': { pass: 'admin123', name: 'Enterprise Super Administrator', role: 'admin', title: 'Enterprise Security Admin', email: 'admin@zayvorahealth.com' },
-        'admin@zayvorahealth.com': { pass: 'admin123', name: 'Enterprise Super Administrator', role: 'admin', title: 'Enterprise Security Admin', email: 'admin@zayvorahealth.com' },
-        'admin@zayvorahealth': { pass: 'admin123', name: 'Enterprise Super Administrator', role: 'admin', title: 'Enterprise Security Admin', email: 'admin@zayvorahealth.com' },
-        'hamza.farooqi@gmail.com': { pass: 'password123', name: 'Hamza Farooqi', role: 'patient', title: 'Patient MRN-2026-0814', email: 'hamza.farooqi@gmail.com' },
-        'patient@zayvorahealth.com': { pass: 'password123', name: 'Hamza Farooqi', role: 'patient', title: 'Patient MRN-2026-0814', email: 'hamza.farooqi@gmail.com' },
-        'patient': { pass: 'password123', name: 'Hamza Farooqi', role: 'patient', title: 'Patient MRN-2026-0814', email: 'hamza.farooqi@gmail.com' },
-        'pharmacy@zayvorahealth.com': { pass: 'pharmacy123', name: 'Zainab Ali', role: 'pharmacy', title: 'Clinical Pharmacist (FEFO)', email: 'pharmacy@zayvorahealth.com' },
-        'pharmacy@zayvorahealth': { pass: 'pharmacy123', name: 'Zainab Ali', role: 'pharmacy', title: 'Clinical Pharmacist (FEFO)', email: 'pharmacy@zayvorahealth.com' },
-        'pharmacy': { pass: 'pharmacy123', name: 'Zainab Ali', role: 'pharmacy', title: 'Clinical Pharmacist (FEFO)', email: 'pharmacy@zayvorahealth.com' },
-        'nurse@zayvorahealth.com': { pass: 'nurse123', name: 'Sister Farzana Khan', role: 'nurse', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com' },
-        'nurse@zayvorahealth': { pass: 'nurse123', name: 'Sister Farzana Khan', role: 'nurse', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com' },
-        'nurse': { pass: 'nurse123', name: 'Sister Farzana Khan', role: 'nurse', title: 'Ward 2A Triage In-Charge', email: 'nurse@zayvorahealth.com' },
-        'reception@zayvorahealth.com': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator', email: 'reception@zayvorahealth.com' },
-        'reception@zayvorahealth': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator', email: 'reception@zayvorahealth.com' },
-        'reception': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator', email: 'reception@zayvorahealth.com' },
-        'clinic': { pass: 'reception123', name: 'Sana Khan', role: 'clinic', title: 'OPD Reception Coordinator', email: 'reception@zayvorahealth.com' },
-        'manufacturing@zayvorahealth.com': { pass: 'admin123', name: 'Head of Botanical QA/QC', role: 'manufacturing', title: 'eBMR Batch Release Officer', email: 'manufacturing@zayvorahealth.com' },
-        'manufacturing@zayvorahealth': { pass: 'admin123', name: 'Head of Botanical QA/QC', role: 'manufacturing', title: 'eBMR Batch Release Officer', email: 'manufacturing@zayvorahealth.com' },
-        'manufacturing': { pass: 'admin123', name: 'Head of Botanical QA/QC', role: 'manufacturing', title: 'eBMR Batch Release Officer', email: 'manufacturing@zayvorahealth.com' },
-        'research@zayvorahealth.com': { pass: 'doctor123', name: 'Principal Clinical Investigator', role: 'research', title: 'RWE & Pharmacopoeia Editorial Board', email: 'research@zayvorahealth.com' },
-        'research@zayvorahealth': { pass: 'doctor123', name: 'Principal Clinical Investigator', role: 'research', title: 'RWE & Pharmacopoeia Editorial Board', email: 'research@zayvorahealth.com' },
-        'research': { pass: 'doctor123', name: 'Principal Clinical Investigator', role: 'research', title: 'RWE & Pharmacopoeia Editorial Board', email: 'research@zayvorahealth.com' }
-      };
-
-      const matched = offlineCreds[email];
-      const isUniversalPass = (pass === 'Zayvora@123' || pass === 'doctor123' || pass === 'admin123');
-
-      function authenticateLocal(profile) {
-        const offlineToken = 'zyv.' + btoa(JSON.stringify({ uid: 'OFFLINE-' + profile.role.toUpperCase(), email: profile.email || email, name: profile.name, role: profile.role.toUpperCase(), exp: Math.floor(Date.now() / 1000) + 86400 })) + '.demo-sig';
-        state.currentUser = { email: profile.email || email, name: profile.name, title: profile.title, role: profile.role, isSuperAdmin: (profile.role === 'admin' || profile.role === 'super_admin'), token: offlineToken };
-        try {
-          localStorage.setItem('zayvora_token', offlineToken);
-          localStorage.setItem('zayvora_user', JSON.stringify(state.currentUser));
-        } catch(e) {}
-        toggleLoginModal(false);
-        updateAuthHeaderUI();
-        switchRole(profile.role, true);
-        showNotification(`Authenticated as ${profile.name} (${profile.title}). Cryptographic session active.`, 'success');
-      }
-
       if (submitBtn) { submitBtn.textContent = 'Authenticating...'; submitBtn.disabled = true; }
       if (errBox) errBox.classList.add('hidden');
 
@@ -4406,23 +4360,13 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
           return;
         }
 
-        // Netlify CDN fallback or backend 404/500/unreachable
-        if (matched && (matched.pass === pass || isUniversalPass)) {
-          authenticateLocal(matched);
-          return;
-        }
-
         if (errBox) {
           errBox.textContent = data.error || data.message || 'Invalid email or password. Please check your credentials and try again.';
           errBox.classList.remove('hidden');
         }
       } catch (err) {
-        if (matched && (matched.pass === pass || isUniversalPass)) {
-          authenticateLocal(matched);
-          return;
-        }
         if (errBox) {
-          errBox.textContent = 'Invalid email or password. Please check your credentials and try again.';
+          errBox.textContent = 'Unable to connect to the ZAYVORA backend server. Please verify network connectivity and ensure the API server is online.';
           errBox.classList.remove('hidden');
         }
       } finally {

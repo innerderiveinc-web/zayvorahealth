@@ -159,10 +159,14 @@ FORBIDDEN_SECURITY_PATTERNS = [
     (r'token\.startswith\(["\']jwt-live-["\']\)', "Unsigned legacy session token bypass (OS-002)"),
     (r'token\.startswith\(["\']jwt-zayvora-["\']\)', "Unsigned legacy session token bypass (OS-002)"),
     (r'base64\.b64encode\(f"\{salt\}:\{value\}"', "Reversible Base64 PHI pseudo-encryption (OS-009)"),
+    (r'isUniversalPass', "Frontend JS universal master password bypass (AUD-01)"),
+    (r'\.offline-sig', "Frontend unsigned offline fake session token (AUD-01)"),
 ]
 
 import re
 security_violations = 0
+
+# Check Python backend files
 for root, dirs, files in os.walk(os.path.join(BASE_DIR, "services")):
     for file in files:
         if file.endswith(".py"):
@@ -177,8 +181,23 @@ for root, dirs, files in os.walk(os.path.join(BASE_DIR, "services")):
             except Exception as e:
                 pass
 
+# Check Frontend JavaScript files
+for root, dirs, files in os.walk(os.path.join(BASE_DIR, "js")):
+    for file in files:
+        if file.endswith(".js"):
+            fpath = os.path.join(root, file)
+            rel_file = os.path.relpath(fpath, BASE_DIR)
+            try:
+                content = open(fpath, "r", encoding="utf-8", errors="ignore").read()
+                for pattern, desc in FORBIDDEN_SECURITY_PATTERNS:
+                    if re.search(pattern, content):
+                        log_error(f"{rel_file} contains forbidden pattern: {desc}")
+                        security_violations += 1
+            except Exception as e:
+                pass
+
 if security_violations == 0:
-    log_success("Zero backdoor patterns or insecure authentication bypasses detected")
+    log_success("Zero backdoor patterns or insecure authentication bypasses detected in Python or JavaScript")
 
 # -------------------------------------------------------------------------
 # SUMMARY & VERDICT
