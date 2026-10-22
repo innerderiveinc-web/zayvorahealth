@@ -1,9 +1,11 @@
 import { Platform } from 'react-native';
 
-// Use 10.0.2.2 for Android emulator (maps to host localhost), else localhost
-const BASE_URL = Platform.OS === 'android'
+// Configurable backend API: defaults to local host or emulator, or cloud URL via EXPO_PUBLIC_API_URL
+const DEFAULT_LOCAL = Platform.OS === 'android'
   ? 'http://10.0.2.2:8000'
   : 'http://localhost:8000';
+
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || DEFAULT_LOCAL;
 
 let _authToken: string | null = null;
 
