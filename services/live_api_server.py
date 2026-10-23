@@ -2799,6 +2799,40 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "count": len(attachments), "attachments": attachments})
             return
 
+        if path.startswith("/api/v1/media/products/"):
+            sku = path.replace("/api/v1/media/products/", "").strip().split("/")[0].upper()
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            prod_dir = os.path.join(base_dir, "uploads", "products")
+            found_file = None
+            found_mime = "image/png"
+            if os.path.exists(prod_dir):
+                for fname in os.listdir(prod_dir):
+                    name_part, ext_part = os.path.splitext(fname)
+                    if name_part.upper() == sku:
+                        found_file = os.path.join(prod_dir, fname)
+                        ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif"}
+                        found_mime = ext_map.get(ext_part.lower(), "image/png")
+                        break
+
+            if not found_file or not os.path.exists(found_file):
+                self._send_error(f"No photo found for product SKU {sku}.", status=404, code="PRODUCT_PHOTO_NOT_FOUND")
+                return
+
+            try:
+                with open(found_file, "rb") as f:
+                    media_bytes = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", found_mime)
+                self.send_header("Content-Length", str(len(media_bytes)))
+                self.send_header("Cache-Control", "public, max-age=86400")
+                apply_enterprise_security_headers(self)
+                self.end_headers()
+                self.wfile.write(media_bytes)
+                return
+            except Exception as e:
+                self._send_error(f"Failed to serve product photo: {str(e)}", status=500, code="MEDIA_SERVE_FAILED")
+                return
+
         if path.startswith("/api/v1/media/"):
             att_id = path.replace("/api/v1/media/", "").strip().split("/")[0]
             with get_db() as conn:
@@ -5981,6 +6015,86 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     "created_at": now_str
                 }
             }, status=201)
+            return
+
+        # ── Product Packaging & Formulation Photo Upload (Service 4) ─────────
+        if path in ("/api/v1/products/upload-photo", "/api/v1/therapeutic/products/upload-photo"):
+            sku = (body.get("sku") or body.get("product_code") or "").strip().upper()
+            file_name = (body.get("file_name") or f"{sku}.png").strip()
+            raw_data = body.get("file_data") or body.get("image_data") or ""
+
+            if not sku:
+                self._send_error("Product SKU (e.g. 'ZAY-001') is required.", status=400, code="MISSING_SKU")
+                return
+            if not raw_data:
+                self._send_error("file_data (Base64 image) is required.", status=400, code="MISSING_FILE_DATA")
+                return
+
+            # Parse MIME and decode base64
+            mime_type = "image/png"
+            if raw_data.startswith("data:") and ";base64," in raw_data:
+                header, b64_part = raw_data.split(";base64,", 1)
+                mime_type = header.replace("data:", "").strip()
+            else:
+                b64_part = raw_data
+                ext = os.path.splitext(file_name)[1].lower()
+                ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif"}
+                mime_type = ext_map.get(ext, "image/png")
+
+            ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+            if mime_type.lower() not in ALLOWED_IMAGE_TYPES:
+                self._send_error(f"Unsupported product image format: {mime_type}. Allowed formats: JPG, PNG, WEBP, GIF.", status=400, code="INVALID_MIME_TYPE")
+                return
+
+            try:
+                file_bytes = base64.b64decode(b64_part)
+            except Exception:
+                self._send_error("Invalid Base64 payload encoding.", status=400, code="INVALID_BASE64")
+                return
+
+            if len(file_bytes) > 15 * 1024 * 1024:
+                self._send_error("Image exceeds 15 MB limit.", status=400, code="FILE_TOO_LARGE")
+                return
+
+            ext = os.path.splitext(file_name)[1]
+            if not ext:
+                ext = ".png" if "png" in mime_type.lower() else ".jpg"
+            safe_filename = f"{sku}{ext}"
+
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            prod_dir = os.path.join(base_dir, "uploads", "products")
+            os.makedirs(prod_dir, exist_ok=True)
+            target_path = os.path.join(prod_dir, safe_filename)
+
+            with open(target_path, "wb") as f:
+                f.write(file_bytes)
+
+            image_url = f"/api/v1/media/products/{sku}"
+
+            # Update database record
+            with get_db() as conn:
+                cur = conn.cursor()
+                try:
+                    cur.execute("ALTER TABLE master_products ADD COLUMN image_url TEXT")
+                except Exception:
+                    pass
+                try:
+                    cur.execute("ALTER TABLE inventory ADD COLUMN image_url TEXT")
+                except Exception:
+                    pass
+
+                cur.execute("UPDATE master_products SET image_url = ? WHERE UPPER(sku) = ?", (image_url, sku))
+                cur.execute("UPDATE inventory SET image_url = ? WHERE UPPER(batch_number) LIKE ? OR UPPER(name) LIKE ?", (image_url, f"%{sku}%", f"%{sku}%"))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": f"Product photo for {sku} uploaded and linked successfully.",
+                "sku": sku,
+                "image_url": image_url,
+                "file_size_bytes": len(file_bytes),
+                "mime_type": mime_type
+            }, status=200)
             return
 
         # ── Universal Task Engine: Create Task (Service 8) ───────────────────

@@ -20406,6 +20406,50 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
       renderZayvoraProductsCatalog(query, activeZayvoraProductAxisFilter);
     }
 
+    async function uploadProductPhoto(sku, inputEl) {
+      if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
+      const file = inputEl.files[0];
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const base64Data = e.target.result;
+        try {
+          if (typeof showNotification === 'function') {
+            showNotification(`Uploading packaging photo for ${sku}...`, 'info');
+          }
+          const res = await fetch('/api/v1/products/upload-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sku: sku, file_name: file.name, file_data: base64Data })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            if (typeof showNotification === 'function') {
+              showNotification(`✓ Packaging photo for ${sku} updated successfully!`, 'success');
+            }
+            if (typeof ZAYVORA_PRODUCTS_16 !== 'undefined') {
+              const item = ZAYVORA_PRODUCTS_16.find(x => (x.code || x.sku) === sku);
+              if (item) item.image_url = data.image_url;
+            }
+            if (typeof ZAYVORA_PRODUCTS_32 !== 'undefined') {
+              const item = ZAYVORA_PRODUCTS_32.find(x => (x.code || x.sku) === sku);
+              if (item) item.image_url = data.image_url;
+            }
+            renderZayvoraProductsCatalog();
+          } else {
+            if (typeof showNotification === 'function') {
+              showNotification(data.error || 'Failed to upload product photo', 'error');
+            }
+          }
+        } catch (err) {
+          if (typeof showNotification === 'function') {
+            showNotification('Network error uploading product photo', 'error');
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+    window.uploadProductPhoto = uploadProductPhoto;
+
     function renderZayvoraProductsCatalog(query, axisFilter) {
       const container = document.getElementById('zayvora-products-container');
       if (!container) return;
@@ -20423,15 +20467,18 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
         <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition space-y-2 flex flex-col justify-between">
           <div class="space-y-1.5">
             <div class="flex justify-between items-start gap-2">
-              <div>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-bold">${p.code}</span>
-                  <strong class="text-white text-sm">${p.name}</strong>
-                  ${p.is_hero_launch ? '<span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 text-[9px] tracking-wide">★ HERO LAUNCH</span>' : ''}
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[11px] text-amber-400 font-medium">${p.axis}</span>
-                  ${p.unani_name ? `<span class="text-[10px] text-slate-400 italic">(${p.unani_name})</span>` : ''}
+              <div class="flex items-center gap-2.5">
+                ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}" class="w-11 h-11 object-cover rounded-lg border border-amber-500/30 bg-slate-800 shrink-0">` : `<div class="w-11 h-11 rounded-lg border border-slate-700/60 bg-slate-800/80 flex flex-col items-center justify-center text-slate-500 text-[9px] font-mono shrink-0"><span>📦</span><span>No Img</span></div>`}
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-bold">${p.code}</span>
+                    <strong class="text-white text-sm">${p.name}</strong>
+                    ${p.is_hero_launch ? '<span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 text-[9px] tracking-wide">★ HERO LAUNCH</span>' : ''}
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[11px] text-amber-400 font-medium">${p.axis}</span>
+                    ${p.unani_name ? `<span class="text-[10px] text-slate-400 italic">(${p.unani_name})</span>` : ''}
+                  </div>
                 </div>
               </div>
               <span class="text-xs font-bold text-white font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">${p.price}</span>
@@ -20453,10 +20500,15 @@ if (typeof initWebsiteWaveform === 'function') initWebsiteWaveform();
             </div>
           </div>
 
-          <div class="pt-2 border-t border-slate-800 flex justify-end gap-2">
-            <button onclick='openCoaModal("${p.bmr}")' class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-semibold">
-              Inspect COA
-            </button>
+          <div class="pt-2 border-t border-slate-800 flex justify-between items-center gap-2">
+            <label class="px-2.5 py-1.5 bg-slate-800/80 hover:bg-slate-700 text-amber-300 rounded-lg text-[11px] font-semibold cursor-pointer transition flex items-center gap-1 border border-amber-500/20" title="Upload official bottle / packaging photo">
+              <span>📷 Photo</span>
+              <input type="file" accept="image/*" class="hidden" onchange='uploadProductPhoto("${p.code}", this)'>
+            </label>
+            <div class="flex gap-2">
+              <button onclick='openCoaModal("${p.bmr}")' class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-semibold">
+                Inspect COA
+              </button>
             <button onclick='addPrescriptionMedicine(${JSON.stringify({
               name: p.name,
               form: p.form,

@@ -46,3 +46,25 @@ class TestPatientAttachmentsApi(unittest.TestCase):
         })
         self.assertEqual(status, 400)
         self.assertIn('Unsupported file format', body.get('error', ''))
+
+    def test_upload_and_serve_product_photo(self):
+        # 1. Upload photo for ZAY-001
+        status, body, _ = self.sim.request('POST', '/api/v1/products/upload-photo', data={
+            'sku': 'ZAY-001',
+            'file_name': 'tensiocalm_bottle.png',
+            'file_data': self.b64_img
+        })
+        self.assertEqual(status, 200)
+        self.assertTrue(body.get('ok'))
+        self.assertEqual(body.get('sku'), 'ZAY-001')
+        self.assertEqual(body.get('image_url'), '/api/v1/media/products/ZAY-001')
+
+        # 2. Fetch the product photo media
+        status, media_body, headers = self.sim.request('GET', '/api/v1/media/products/ZAY-001')
+        self.assertEqual(status, 200)
+        self.assertEqual(headers.get('content-type'), 'image/png')
+
+        # 3. Verify product record in master_products has updated image_url
+        status, prod_body, _ = self.sim.request('GET', '/api/v1/therapeutic/products/ZAY-001')
+        self.assertEqual(status, 200)
+        self.assertEqual(prod_body.get('product', {}).get('image_url'), '/api/v1/media/products/ZAY-001')
