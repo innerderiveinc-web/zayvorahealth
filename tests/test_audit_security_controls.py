@@ -79,7 +79,10 @@ class DirectApiSimulator:
             try:
                 resp_body = json.loads(parts[1].decode("utf-8"))
             except Exception:
-                resp_body = {"raw": parts[1].decode("utf-8")}
+                try:
+                    resp_body = {"raw": parts[1].decode("utf-8")}
+                except Exception:
+                    resp_body = {"raw_bytes": parts[1]}
                 
         return status_code, resp_body, resp_headers
 

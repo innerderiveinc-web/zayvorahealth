@@ -33,3 +33,7 @@ scratch/
 # Certificates and keys
 *.pem
 keys/
+
+# User uploads and media storage
+uploads/*
+!uploads/.gitkeep

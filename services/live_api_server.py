@@ -20,7 +20,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import urllib.parse
 import random
-from datetime import datetime, date
+from datetime import datetime, date, timezone
+import secrets
 from dataclasses import asdict
 import importlib.util
 import re
@@ -2755,6 +2756,73 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     return
             except Exception as e:
                 self._send_json({"ok": False, "error": str(e)}, status=500)
+                return
+
+        # ── Patient Medical Picture & Document Attachments (Service 2) ───────
+        if path == "/api/v1/patient/attachments":
+            target_mrn = query_params.get("mrn", [None])[0]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    CREATE TABLE IF NOT EXISTS patient_attachments (
+                        id TEXT PRIMARY KEY,
+                        mrn TEXT NOT NULL,
+                        document_type TEXT NOT NULL,
+                        file_name TEXT NOT NULL,
+                        file_path TEXT NOT NULL,
+                        file_size_bytes INTEGER NOT NULL,
+                        mime_type TEXT NOT NULL,
+                        description TEXT,
+                        uploaded_by TEXT,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                if target_mrn:
+                    cur.execute("SELECT id, mrn, document_type, file_name, file_size_bytes, mime_type, description, uploaded_by, created_at FROM patient_attachments WHERE mrn = ? ORDER BY created_at DESC", (target_mrn,))
+                else:
+                    cur.execute("SELECT id, mrn, document_type, file_name, file_size_bytes, mime_type, description, uploaded_by, created_at FROM patient_attachments ORDER BY created_at DESC LIMIT 50")
+                rows = cur.fetchall()
+                attachments = []
+                for r in rows:
+                    attachments.append({
+                        "id": r[0],
+                        "mrn": r[1],
+                        "document_type": r[2],
+                        "file_name": r[3],
+                        "file_size_bytes": r[4],
+                        "mime_type": r[5],
+                        "description": r[6],
+                        "uploaded_by": r[7],
+                        "created_at": str(r[8]),
+                        "url": f"/api/v1/media/{r[0]}"
+                    })
+            self._send_json({"ok": True, "count": len(attachments), "attachments": attachments})
+            return
+
+        if path.startswith("/api/v1/media/"):
+            att_id = path.replace("/api/v1/media/", "").strip().split("/")[0]
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT file_path, mime_type, file_name FROM patient_attachments WHERE id = ?", (att_id,))
+                row = cur.fetchone()
+            if not row or not os.path.exists(row[0]):
+                self._send_error("Media attachment not found.", status=404, code="ATTACHMENT_NOT_FOUND")
+                return
+            file_path, mime_type, file_name = row[0], row[1], row[2]
+            try:
+                with open(file_path, "rb") as f:
+                    media_bytes = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", mime_type or "application/octet-stream")
+                self.send_header("Content-Length", str(len(media_bytes)))
+                self.send_header("Content-Disposition", f'inline; filename="{file_name}"')
+                self.send_header("Cache-Control", "public, max-age=86400")
+                apply_enterprise_security_headers(self)
+                self.end_headers()
+                self.wfile.write(media_bytes)
+                return
+            except Exception as e:
+                self._send_error(f"Failed to serve media: {str(e)}", status=500, code="MEDIA_SERVE_FAILED")
                 return
 
         # ── Universal Task Engine (Service 8) ────────────────────────────────
@@ -5817,6 +5885,104 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             return
         auth_ctx = self._get_auth_context()
 
+        # ── Patient Medical Picture & Document Upload (Service 2) ────────────
+        if path in ("/api/v1/patient/attachments", "/api/v1/media/upload"):
+            mrn = (body.get("mrn") or "GENERAL").strip()
+            doc_type = (body.get("document_type") or "GENERAL").strip().upper()
+            file_name = (body.get("file_name") or "image.png").strip()
+            raw_data = body.get("file_data") or body.get("image_data") or ""
+            description = (body.get("description") or "").strip()
+            uploaded_by = (auth_ctx.get("email") if auth_ctx else body.get("uploaded_by") or "CLINICIAN").strip()
+
+            if not raw_data:
+                self._send_error("file_data (Base64 or Data URI) is required.", status=400, code="MISSING_FILE_DATA")
+                return
+
+            # Parse MIME and decode base64
+            mime_type = "image/png"
+            if raw_data.startswith("data:") and ";base64," in raw_data:
+                header, b64_part = raw_data.split(";base64,", 1)
+                mime_type = header.replace("data:", "").strip()
+            else:
+                b64_part = raw_data
+                ext = os.path.splitext(file_name)[1].lower()
+                ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif", ".pdf": "application/pdf"}
+                mime_type = ext_map.get(ext, "image/png")
+
+            ALLOWED_MIME_TYPES = {
+                "image/jpeg", "image/png", "image/webp", "image/gif", "image/bmp", "application/pdf"
+            }
+            if mime_type.lower() not in ALLOWED_MIME_TYPES:
+                self._send_error(f"Unsupported file format: {mime_type}. Allowed formats: JPG, PNG, WEBP, GIF, PDF.", status=400, code="INVALID_MIME_TYPE")
+                return
+
+            try:
+                file_bytes = base64.b64decode(b64_part)
+            except Exception:
+                self._send_error("Invalid Base64 payload encoding.", status=400, code="INVALID_BASE64")
+                return
+
+            MAX_FILE_BYTES = 15 * 1024 * 1024  # 15 MB
+            if len(file_bytes) > MAX_FILE_BYTES:
+                self._send_error(f"File size exceeds maximum allowed limit (15 MB). Size: {len(file_bytes)} bytes", status=400, code="FILE_TOO_LARGE")
+                return
+
+            att_id = f"ATT-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{secrets.token_hex(4).upper()}"
+            ext = os.path.splitext(file_name)[1]
+            if not ext:
+                mime_ext_map = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif", "application/pdf": ".pdf"}
+                ext = mime_ext_map.get(mime_type.lower(), ".png")
+            safe_filename = f"{att_id}{ext}"
+
+            # Target directory
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            upload_dir = os.path.join(base_dir, "uploads", "patients", mrn)
+            os.makedirs(upload_dir, exist_ok=True)
+            target_path = os.path.join(upload_dir, safe_filename)
+
+            with open(target_path, "wb") as f:
+                f.write(file_bytes)
+
+            now_str = datetime.now(timezone.utc).isoformat()
+            with get_db() as conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    CREATE TABLE IF NOT EXISTS patient_attachments (
+                        id TEXT PRIMARY KEY,
+                        mrn TEXT NOT NULL,
+                        document_type TEXT NOT NULL,
+                        file_name TEXT NOT NULL,
+                        file_path TEXT NOT NULL,
+                        file_size_bytes INTEGER NOT NULL,
+                        mime_type TEXT NOT NULL,
+                        description TEXT,
+                        uploaded_by TEXT,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                cur.execute("""
+                    INSERT INTO patient_attachments (id, mrn, document_type, file_name, file_path, file_size_bytes, mime_type, description, uploaded_by, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (att_id, mrn, doc_type, file_name, target_path, len(file_bytes), mime_type, description, uploaded_by, now_str))
+                conn.commit()
+
+            self._send_json({
+                "ok": True,
+                "message": "Medical document / photo uploaded successfully.",
+                "attachment": {
+                    "id": att_id,
+                    "mrn": mrn,
+                    "document_type": doc_type,
+                    "file_name": file_name,
+                    "mime_type": mime_type,
+                    "file_size_bytes": len(file_bytes),
+                    "url": f"/api/v1/media/{att_id}",
+                    "uploaded_by": uploaded_by,
+                    "created_at": now_str
+                }
+            }, status=201)
+            return
+
         # ── Universal Task Engine: Create Task (Service 8) ───────────────────
         if path == "/api/v1/tasks":
             title = (body.get("title") or "Clinical Action Required").strip()
@@ -6310,7 +6476,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
 
             if user_row:
                 user = dict(user_row)
-                import secrets
                 raw_otp = f"{secrets.randbelow(900000) + 100000:06d}"
                 salt = uuid.uuid4().hex
                 otp_hash = hashlib.pbkdf2_hmac("sha256", raw_otp.encode("utf-8"), salt.encode("utf-8"), 10000).hex()
