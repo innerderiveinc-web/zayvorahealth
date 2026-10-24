@@ -4974,7 +4974,10 @@ function toggleDemoCredentials() {
               <div class="space-y-1 pt-1 max-h-24 overflow-y-auto">
                 ${(pr.suggested_medicines || []).map(m => `
                   <div class="p-1 rounded bg-black/40 border border-slate-800 text-[10px] flex items-center justify-between">
-                    <span class="font-bold text-slate-200 truncate">${m.name}</span>
+                    <div class="flex items-center gap-1 min-w-0">
+                      <span class="font-bold text-slate-200 truncate">${m.name}</span>
+                      ${m.clinician_badge ? `<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[8px] font-bold border border-amber-500/30 flex-shrink-0">${m.clinician_badge}</span>` : ''}
+                    </div>
                     <span class="text-emerald-400 text-[9px] font-mono ml-1 flex-shrink-0">${m.dose || m.frequency}</span>
                   </div>
                 `).join('')}
@@ -9521,6 +9524,36 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
             status: 'LOCKED_AUTHORIZED'
           }
         }).catch(() => {});
+
+        // Phase 4: ReinforcementAgent Closed-Loop Feedback Dispatch
+        if (Array.isArray(rxMeds) && rxMeds.length > 0) {
+          const aiProposed = state.preConsultBrief?.proposed_regimen?.suggested_medicines || [];
+          const aiMap = {};
+          aiProposed.forEach(m => { if (m && m.name) aiMap[m.name.toLowerCase().trim()] = m; });
+          const currentAxis = state.preConsultBrief?.humoral_pathology?.axis || 'General';
+
+          rxMeds.forEach(med => {
+            const medName = med.name || med.medicineName || '';
+            if (!medName) return;
+            const matchAI = aiMap[medName.toLowerCase().trim()];
+            const actionType = matchAI ? (matchAI.dose === med.dose ? 'ACCEPTED' : 'DOSE_CHANGE') : 'HERB_ADDED';
+
+            fetch('/api/v1/clinical/agent/reinforcement/record-override', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                mrn: patMrn,
+                doctor_id: 'DOC-IRFAN',
+                formulation_name: medName,
+                ai_proposed_dose: matchAI ? matchAI.dose : '',
+                doctor_prescribed_dose: med.dose || med.strength || '',
+                action_type: actionType,
+                clinical_rationale: `Clinician prescription sign-off (Action: ${actionType})`,
+                organ_axis: currentAxis
+              })
+            }).catch(() => {});
+          });
+        }
       } catch (e) {}
 
       showNotification('Prescription cryptographically locked and transmitted to Central Pharmacy.', 'success');
