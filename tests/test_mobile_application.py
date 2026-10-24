@@ -108,5 +108,34 @@ class TestMobileApplicationWorkflows(unittest.TestCase):
         self.assertIn("⏳ Not Yet", home_src)
         self.assertIn("✕ Skipped", home_src)
 
+    def test_eas_standalone_apk_configuration(self):
+        """Verify eas.json configures Android standalone APK build type."""
+        import json
+        eas_path = os.path.join(self.mobile_dir, "eas.json")
+        self.assertTrue(os.path.exists(eas_path), "eas.json must exist")
+        with open(eas_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        self.assertIn("build", data)
+        self.assertIn("preview", data["build"])
+        self.assertEqual(data["build"]["preview"]["android"]["buildType"], "apk")
+
+    def test_package_json_build_scripts(self):
+        """Verify package.json contains standalone APK build scripts."""
+        import json
+        pkg_path = os.path.join(self.mobile_dir, "package.json")
+        self.assertTrue(os.path.exists(pkg_path), "package.json must exist")
+        with open(pkg_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        scripts = data.get("scripts", {})
+        self.assertIn("build:apk", scripts)
+        self.assertIn("build:apk:cloud", scripts)
+        self.assertIn("build:aab", scripts)
+
+    def test_mobile_apk_build_script_executable(self):
+        """Verify scripts/build_mobile_apk.sh exists and is executable."""
+        script_path = os.path.join(self.base_dir, "scripts", "build_mobile_apk.sh")
+        self.assertTrue(os.path.exists(script_path), "build_mobile_apk.sh must exist")
+        self.assertTrue(os.access(script_path, os.X_OK), "build_mobile_apk.sh must be executable")
+
 if __name__ == "__main__":
     unittest.main()

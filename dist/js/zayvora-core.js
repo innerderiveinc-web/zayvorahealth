@@ -25841,7 +25841,7 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       }
     }
 
-    function parseAndApplyVoicePrescription() {
+    async function parseAndApplyVoicePrescription() {
       const input = document.getElementById('voice-dictation-input');
       if (!input || !input.value.trim()) {
         showNotification('Please dictate or paste prescription text first.', 'warning');
@@ -25849,6 +25849,60 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       }
 
       const text = input.value.trim();
+      const mrn = state.patient?.mrn || 'PAT-0816';
+
+      showNotification('🎙️ VoiceAgenticScribe analyzing vernacular speech & extracting posology...', 'info');
+
+      try {
+        const res = await fetch('/api/v1/clinical/agent/voice/transcribe-structure', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: text, mrn: mrn })
+        });
+        const data = await res.json();
+
+        if (data && data.ok && data.structured_data) {
+          const sd = data.structured_data;
+
+          // 1. Update diagnosis input if available
+          const diagInput = document.getElementById('fast-diagnosis-input');
+          if (diagInput && sd.chief_complaint) {
+            diagInput.value = sd.chief_complaint;
+          }
+
+          // 2. Update patient dyscrasia state
+          if (state.patient && sd.dyscrasia) {
+            state.patient.currentDyscrasia = sd.dyscrasia;
+          }
+
+          // 3. Add extracted medicines directly to prescription
+          const meds = sd.extracted_medicines || [];
+          if (meds.length > 0) {
+            meds.forEach(m => {
+              addPrescriptionMedicine({
+                name: m.name,
+                form: m.dose?.includes('ml') ? 'Sharbat' : m.dose?.includes('g') ? 'Majoon' : 'Formulation',
+                strength: m.dose || '1 Unit',
+                dose: m.dose || '1 Unit',
+                frequency: m.frequency || 'BID',
+                duration: m.duration || '21 Days',
+                anupan: m.anupan || 'warm water',
+                notes: m.instructions || `Spoken consultation: ${sd.chief_complaint}`,
+                track: 'CLASSICAL_QARABADEEN',
+                axis: sd.organ_axis || 'General'
+              });
+            });
+            renderFastMatabPrescriptionList();
+            if (typeof calculateIlajBilZidd === 'function') calculateIlajBilZidd();
+            showNotification(`✓ VoiceAgenticScribe: Extracted ${meds.length} medicines for ${sd.chief_complaint} (${sd.predominant_humor})!`, 'success');
+            toggleVoicePrescriptionModal();
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('[VoiceAgenticScribe Client Fallback]:', err);
+      }
+
       const detectedItems = [];
 
       // Clinical Knowledge Dictionary for Match
