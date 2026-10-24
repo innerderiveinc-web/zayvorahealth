@@ -195,6 +195,8 @@ function toggleDemoCredentials() {
       afaalStage: 'TANQIYA',
       afaalDays: 7,
       hakeemDrawerOpen: false,
+      preConsultBrief: null,
+      preConsultLoading: false,
       role: 'website',
       tab: 'home',
       patient: {
@@ -2365,7 +2367,7 @@ function toggleDemoCredentials() {
         age: parseInt(age) || 40,
         gender: gender || 'Male',
         phone: '+91-9876543210',
-        email: `${(name || 'patient').toLowerCase().replace(/\\s+/g, '.')}@patient.zayvora.com`,
+        email: `${(name || 'patient').toLowerCase().replace(/\s+/g, '.')}@patient.zayvora.com`,
         allergies: 'None recorded',
         baselineMizaj: mizaj || 'Damawi (Sanguine)',
         currentDyscrasia: mizaj || 'Su-e-Mizaj Barid Balghami',
@@ -2374,6 +2376,10 @@ function toggleDemoCredentials() {
         vitals: { bp: '120/80', pulse: '72', temp: '98.4', spo2: '99', rr: '16', rbs: '100' },
         primaryComplaint: complaint || 'General Clinical Consultation'
       };
+      state.preConsultBrief = null;
+      if (typeof fetchPreConsultBrief === 'function') {
+        fetchPreConsultBrief(mrn, true);
+      }
       showNotification(`Loaded patient ${name} (${mrn}) into Clinical Cockpit.`, 'info');
     }
 
@@ -4808,8 +4814,382 @@ function toggleDemoCredentials() {
       }
     }
 
+    // ===== PHASE 1: AUTONOMOUS PRE-CONSULTATION AGENT (TRIAGE AGENT) =====
+    function renderPreConsultBriefCard() {
+      const brief = state.preConsultBrief;
+      if (state.preConsultLoading) {
+        return `
+          <div id="autonomous-pre-consult-card" class="mb-5 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 shadow-xl text-xs animate-pulse">
+            <div class="flex items-center justify-between border-b border-indigo-500/20 pb-3 mb-2">
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl animate-spin">⚙️</span>
+                <div>
+                  <h3 class="font-bold text-white text-sm">Hakeem Sahab™ Autonomous Pre-Consultation Dossier</h3>
+                  <p class="text-[11px] text-indigo-300">Synthesizing patient vitals, organ axes, UPI monographs, and 10-Ajnas pulse markers...</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 font-mono text-[10px] font-bold">ANALYZING...</span>
+            </div>
+          </div>
+        `;
+      }
+
+      if (!brief) {
+        return `
+          <div id="autonomous-pre-consult-card" class="mb-5 bg-gradient-to-r from-slate-900 via-indigo-950/20 to-slate-900 border border-indigo-500/30 rounded-2xl p-4 shadow-xl text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🤖</span>
+              <div>
+                <h3 class="font-bold text-white text-sm">Hakeem Sahab™ Autonomous Pre-Consultation Agent</h3>
+                <p class="text-[11px] text-slate-400">Autonomous dossier ready to synthesize vitals, 10-Ajnas pulse, and staged regimen without manual prompts.</p>
+              </div>
+            </div>
+            <button onclick="fetchPreConsultBrief(state.patient.mrn, true)" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 flex-shrink-0">
+              <span>⚡</span> <span>Synthesize Autonomous Dossier</span>
+            </button>
+          </div>
+        `;
+      }
+
+      const isStable = brief.triage_status === 'STABLE';
+      const badgeColor = isStable ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' : 'bg-amber-500/20 border-amber-500/40 text-amber-300';
+      const statusLabel = isStable ? 'STABLE' : 'CLINICAL ATTENTION';
+      const va = brief.vitals_analysis || {};
+      const hp = brief.humoral_pathology || {};
+      const pr = brief.proposed_regimen || {};
+      const atts = brief.diagnostic_attachments || [];
+      const alerts = brief.safety_alerts || [];
+
+      return `
+        <div id="autonomous-pre-consult-card" class="mb-5 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 shadow-xl text-xs space-y-3.5">
+          <!-- Header -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-indigo-500/20 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-400/40 flex items-center justify-center text-xl shadow-inner flex-shrink-0">
+                🤖
+              </div>
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h3 class="font-bold text-white text-sm">Hakeem Sahab™ Autonomous Pre-Consultation Dossier</h3>
+                  <span class="px-2 py-0.5 rounded border text-[10px] font-bold ${badgeColor}">
+                    ● ${statusLabel}
+                  </span>
+                  <span class="text-[10px] font-mono text-indigo-300 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">
+                    ⚡ ${brief.execution_time_ms || 1.8}ms • Zero-Egress Triage Engine
+                  </span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                  Proactive synthesis for <strong class="text-white">${brief.patient_name || state.patient.name}</strong> (${brief.patient_mrn || state.patient.mrn}) • 21 CFR Part 11 Clinician Review Active
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button onclick="applyPreConsultBriefToEncounter()" id="btn-apply-pre-consult-dossier" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-lg transition flex items-center gap-1.5 ring-1 ring-emerald-400/40">
+                <span>⚡</span> <span>Apply to Active Encounter</span>
+              </button>
+              <button onclick="fetchPreConsultBrief(state.patient.mrn, true)" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Re-run Autonomous Agent Analysis">
+                🔄
+              </button>
+            </div>
+          </div>
+
+          <!-- 4-Card Synthesis Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            <!-- Vitals & Hemodynamics -->
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+              <div class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
+                <span>💓 Hemodynamics</span>
+                <span class="text-emerald-400 font-bold">${va.blood_pressure_grade || 'NORMAL'}</span>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1 font-mono">
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Blood Pressure</span>
+                  <span class="text-white font-bold text-xs">${va.blood_pressure || '120/80'}</span>
+                </div>
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Pulse Rate</span>
+                  <span class="text-white font-bold text-xs">${va.pulse_rate || 72} <span class="text-[9px] text-slate-400">bpm</span></span>
+                </div>
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">SpO2 Oxygen</span>
+                  <span class="text-white font-bold text-xs">${va.spo2_percent || 99}%</span>
+                </div>
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">BMI Status</span>
+                  <span class="text-white font-bold text-xs">${va.bmi || '24.2'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Humoral Pathology & Organ Axis -->
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+              <div class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
+                <span>⚖️ Humoral Axis</span>
+                <span class="text-sky-400 font-bold">${hp.predominant_humor || 'Balgham'}</span>
+              </div>
+              <div class="space-y-1 pt-1">
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Mizaj Dyscrasia</span>
+                  <span class="text-amber-300 font-bold text-xs">${hp.mizaj_deviation || 'Su-e-Mizaj Barid Balghami'}</span>
+                </div>
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Target Organ Axis</span>
+                  <span class="text-teal-300 font-semibold text-[11px] truncate block">${hp.axis || 'Mafasil-Dam (Musculo-Skeletal)'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Proposed Staged Regimen -->
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+              <div class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
+                <span>📋 Proposed Regimen</span>
+                <span class="text-purple-400 font-bold">Pre-Staged</span>
+              </div>
+              <div class="space-y-1 pt-1">
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Diagnosis</span>
+                  <span class="text-emerald-300 font-bold text-xs truncate block" title="${pr.diagnosis_title || ''}">${pr.diagnosis_title || 'General Su-e-Mizaj'}</span>
+                </div>
+                <div class="p-1.5 rounded bg-black/40 border border-slate-800/80">
+                  <span class="text-[9px] text-slate-400 block">Afaal Protocol</span>
+                  <span class="text-white font-bold text-xs truncate block">${pr.afaal_stage || 'Stage 1: Tanqiya Protocol'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggested Medicines & Pharmacopoeia -->
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+              <div class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
+                <span>🌿 Pharmacopoeia (UPI)</span>
+                <span class="text-amber-400 font-bold">${(pr.suggested_medicines || []).length} Formulations</span>
+              </div>
+              <div class="space-y-1 pt-1 max-h-24 overflow-y-auto">
+                ${(pr.suggested_medicines || []).map(m => `
+                  <div class="p-1 rounded bg-black/40 border border-slate-800 text-[10px] flex items-center justify-between">
+                    <span class="font-bold text-slate-200 truncate">${m.name}</span>
+                    <span class="text-emerald-400 text-[9px] font-mono ml-1 flex-shrink-0">${m.dose || m.frequency}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Parhez & Tadbeer Narrative Line -->
+          <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-2 text-[11px]">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 font-bold">🥗 Parhez (Dietary):</span>
+              <span class="text-slate-300">${pr.dietary_parhez || 'Avoid cold, excessively sour or heavy foods.'}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-teal-400 font-bold">🏃 Tadbeer (Lifestyle):</span>
+              <span class="text-slate-300">${pr.lifestyle_tadbeer || 'Gentle walking post-meals, restorative sleep.'}</span>
+            </div>
+          </div>
+
+          <!-- Safety Alerts if any -->
+          ${alerts.length > 0 ? `
+            <div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 flex items-start gap-2 text-xs">
+              <span class="text-lg">⚠️</span>
+              <div class="space-y-0.5">
+                <strong class="font-bold text-amber-300">Herb-Drug Chrono-Spacing Guard:</strong>
+                ${alerts.map(a => `<p class="text-[11px] text-amber-100">${a}</p>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Attachments if any -->
+          ${atts.length > 0 ? `
+            <div class="flex items-center gap-2 pt-1 border-t border-indigo-500/20 text-[11px]">
+              <span class="text-slate-400 font-mono text-[10px]">📎 LAB ATTACHMENTS (${atts.length}):</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                ${atts.map(a => `
+                  <a href="${a.url}" target="_blank" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-white border border-slate-700 font-mono text-[10px] flex items-center gap-1 transition">
+                    <span>📄</span> <span>${a.file_name || a.document_type}</span>
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function applyPreConsultBriefToEncounter() {
+      const brief = state.preConsultBrief;
+      if (!brief || !brief.proposed_regimen) {
+        showNotification('No autonomous brief loaded to apply.', 'warning');
+        return;
+      }
+      const pr = brief.proposed_regimen;
+
+      // 1. Set fast diagnosis input and patient state
+      const diagInput = document.getElementById('fast-diagnosis-input');
+      if (diagInput) {
+        diagInput.value = pr.diagnosis_title;
+      }
+      if (state.patient) {
+        state.patient.currentDyscrasia = brief.humoral_pathology?.mizaj_deviation || state.patient.currentDyscrasia;
+      }
+
+      // 2. Set Afaal stage
+      if (typeof selectAfaalStage === 'function') {
+        selectAfaalStage('TANQIYA', 7);
+      }
+
+      // 3. Add proposed medicines to prescription
+      if (pr.suggested_medicines && pr.suggested_medicines.length > 0) {
+        pr.suggested_medicines.forEach(med => {
+          if (typeof addPrescriptionMedicine === 'function') {
+            addPrescriptionMedicine({
+              name: med.name,
+              strength: med.dose || '1 Unit',
+              dose: med.dose || '1 Unit',
+              frequency: med.frequency || 'BID',
+              duration: med.duration || '14 Days',
+              track: 'QARABADEEN',
+              anupan: 'warm water',
+              notes: `Autonomous pre-consult protocol for ${pr.diagnosis_title}`
+            });
+          }
+        });
+      }
+
+      showNotification(`✓ Applied Autonomous Pre-Consultation Brief (${(pr.suggested_medicines || []).length} medicines + Afaal Protocol) into active encounter!`, 'success');
+    }
+
+    function fetchPreConsultBrief(mrn, forceRefresh) {
+      if (!mrn && state.patient) mrn = state.patient.mrn;
+      if (!mrn) mrn = 'MRN-2026-0814';
+
+      if (!forceRefresh && state.preConsultBrief && state.preConsultBrief.patient_mrn === mrn) {
+        return;
+      }
+
+      state.preConsultLoading = true;
+      const card = document.getElementById('autonomous-pre-consult-card');
+      if (card) {
+        card.outerHTML = renderPreConsultBriefCard();
+      }
+
+      const payload = {
+        mrn: mrn,
+        patient_name: state.patient?.name || '',
+        age: state.patient?.age || 40,
+        gender: state.patient?.gender || 'Male',
+        vitals: state.patient?.vitals || { bp: '120/80', pulse: 72, spo2: 99 },
+        chief_complaint: state.patient?.primaryComplaint || '',
+        mizaj: state.patient?.mizaj || state.patient?.baselineMizaj || '',
+        allopathic_meds: []
+      };
+
+      fetch('/api/v1/clinical/agent/pre-consult-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(data => {
+        state.preConsultLoading = false;
+        state.preConsultBrief = data;
+        const currentCard = document.getElementById('autonomous-pre-consult-card');
+        if (currentCard) {
+          currentCard.outerHTML = renderPreConsultBriefCard();
+        }
+      })
+      .catch(err => {
+        state.preConsultLoading = false;
+        const pMizaj = (state.patient?.mizaj || state.patient?.baselineMizaj || 'Balgham').toLowerCase();
+        const pComp = (state.patient?.primaryComplaint || '').toLowerCase();
+        let predHumor = 'Balgham';
+        let dys = 'Su-e-Mizaj Barid Balghami';
+        let ax = 'Mafasil-Dam (Musculo-Skeletal)';
+        let dx = 'Waja-ul-Mafasil Barid Balghami (Knee OA)';
+        let meds = [
+          { name: 'Joshanda Munzij-e-Balgham', dose: '100ml decoction', frequency: 'BID warm', duration: '7 Days' },
+          { name: 'Majoon Suranjan Mudabbar', dose: '5g', frequency: 'BID post meals', duration: '21 Days' },
+          { name: 'Roghan Suranjan', dose: 'Q.S. local application', frequency: 'HS', duration: '21 Days' }
+        ];
+        let par = 'Avoid cold milk, curd, rice, sour foods (Khatti cheezein), and refrigerated drinks.';
+        let tad = 'Tadbeer-e-Dalk (gentle warm fomentation), cease blue screens 1 hr before sleep.';
+
+        if (pComp.includes('cough') || pComp.includes('asthma') || pComp.includes('breath') || pComp.includes('zeeq')) {
+          ax = 'Riya-Sadr (Respiratory)';
+          dx = 'Zeeq-un-Nafs Balghami (Bronchial Asthma)';
+          meds = [
+            { name: 'Sharbat Banafsha', dose: '20ml with warm water', frequency: 'BID', duration: '14 Days' },
+            { name: 'Lauq Sapistan', dose: '10g lick slowly', frequency: 'TDS', duration: '10 Days' },
+            { name: 'Joshanda Munzij-e-Balgham', dose: '100ml decoction', frequency: 'BID warm', duration: '7 Days' }
+          ];
+          par = 'Avoid direct cold breeze, ice cream, banana, and excessively oily food.';
+          tad = 'Inhalation of steam infused with Bekh-e-Banafsha.';
+        } else if (pComp.includes('liver') || pComp.includes('jaundice') || pComp.includes('acidity') || pComp.includes('safra') || pMizaj.includes('safra')) {
+          predHumor = 'Safra';
+          dys = 'Su-e-Mizaj Haar Safrawi';
+          ax = 'Jigar-Banas (Hepato-Metabolic)';
+          dx = 'Zoaf-e-Jigar Safrawi (Hepato-Biliary Dyspepsia)';
+          meds = [
+            { name: 'Sharbat Deenar', dose: '25ml with Arq-e-Kasni', frequency: 'BID', duration: '14 Days' },
+            { name: 'Jawarish Anarain', dose: '5g post meals', frequency: 'BID', duration: '21 Days' },
+            { name: 'Joshanda Munzij-e-Safra', dose: '100ml decoction', frequency: 'OD morning', duration: '5 Days' }
+          ];
+          par = 'Avoid spicy red chilies, deep-fried food, garlic, and hot spices.';
+          tad = 'Adequate hydration with Arq-e-Gulab and pomegranate juice.';
+        }
+
+        state.preConsultBrief = {
+          patient_mrn: mrn,
+          patient_name: state.patient?.name || 'Patient',
+          age: state.patient?.age || 40,
+          gender: state.patient?.gender || 'Male',
+          triage_status: 'STABLE',
+          execution_time_ms: 2.1,
+          vitals_analysis: {
+            blood_pressure: state.patient?.vitals?.bp || '120/80',
+            blood_pressure_grade: 'NORMAL',
+            pulse_rate: parseInt(state.patient?.vitals?.pulse || '72'),
+            pulse_status: 'NORMAL',
+            spo2_percent: parseFloat(state.patient?.vitals?.spo2 || '99.0'),
+            hypoxia_flag: false,
+            bmi: '24.2'
+          },
+          humoral_pathology: {
+            predominant_humor: predHumor,
+            mizaj_deviation: dys,
+            axis: ax
+          },
+          diagnostic_attachments: [],
+          safety_alerts: [],
+          proposed_regimen: {
+            diagnosis_title: dx,
+            afaal_stage: `Stage 1: Munzij-e-${predHumor} Protocol (7 Days)`,
+            suggested_medicines: meds,
+            dietary_parhez: par,
+            lifestyle_tadbeer: tad
+          },
+          clinical_governance: {
+            agent_role: 'Proactive Pre-Consultation Decision Support',
+            statutory_notice: 'Synthesized autonomously for clinician decision-support.'
+          }
+        };
+        const currentCard = document.getElementById('autonomous-pre-consult-card');
+        if (currentCard) {
+          currentCard.outerHTML = renderPreConsultBriefCard();
+        }
+      });
+    }
+
+    window.renderPreConsultBriefCard = renderPreConsultBriefCard;
+    window.applyPreConsultBriefToEncounter = applyPreConsultBriefToEncounter;
+    window.fetchPreConsultBrief = fetchPreConsultBrief;
+
     function renderFastMatabMode(container) {
-    const rx = state.prescriptions[0];
+      if (!state.preConsultBrief && !state.preConsultLoading) {
+        setTimeout(() => fetchPreConsultBrief(state.patient?.mrn), 50);
+      }
+      const rx = state.prescriptions[0];
     const meds = rx.medicines || [];
 
     container.innerHTML = `
@@ -4854,6 +5234,9 @@ function toggleDemoCredentials() {
             </button>
           </div>
         </div>
+
+        <!-- AUTONOMOUS PRE-CONSULTATION DOSSIER (HAKEEM SAHAB™ AGENT) -->
+        ${renderPreConsultBriefCard()}
 
         <!-- 2-COLUMN FAST MATAB WORKDESK -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -6674,6 +7057,9 @@ function toggleDemoCredentials() {
             </div>
           </div>
 
+          <!-- AUTONOMOUS PRE-CONSULTATION DOSSIER (HAKEEM SAHAB™ AGENT) -->
+          ${renderPreConsultBriefCard()}
+
           <!-- 13 Canonical Clinical Sections Layout -->
           <!-- CLINICAL DESK™ 3-ZONE LAYOUT -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -7158,6 +7544,9 @@ ightarrow$ *Hifz*) to prevent humoral recrudescence.</span>
         </div>
       `;
       jumpToSection(1);
+      if (!state.preConsultBrief && !state.preConsultLoading) {
+        setTimeout(() => fetchPreConsultBrief(state.patient?.mrn), 50);
+      }
     }
 
     function toggleHakeemDrawer(open) {

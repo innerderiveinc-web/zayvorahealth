@@ -2383,6 +2383,177 @@ def _safe_instantiate_dataclass(target_cls, data_dict):
         except Exception:
             return None
 
+
+def generate_proactive_pre_consult_brief(mrn: str, patient_name: str = "", age: int = 40, gender: str = "Male", vitals: dict = None, chief_complaint: str = "", mizaj: str = "", allopathic_meds: list = None, conn = None):
+    """Autonomously analyzes vitals, attachments, Mizaj, and red-flags to prepare a pre-consultation dossier."""
+    start_time = time.time()
+    vitals = vitals or {}
+    allopathic_meds = allopathic_meds or []
+
+    # 1. Lookup patient from DB if mrn exists
+    if mrn and conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT first_name, last_name, date_of_birth, gender, mizaj_dominant FROM patients WHERE mrn = ?", (mrn,))
+            p_row = cur.fetchone()
+            if p_row:
+                if not patient_name:
+                    patient_name = f"{p_row[0]} {p_row[1]}".strip()
+                if not gender:
+                    gender = p_row[3] or "Male"
+                if not mizaj:
+                    mizaj = p_row[4] or "Motadil"
+        except Exception:
+            pass
+
+    # 2. Vitals Analysis & Triage
+    bp_str = str(vitals.get("bp") or "120/80")
+    sbp, dbp = 120, 80
+    if "/" in bp_str:
+        try:
+            parts = bp_str.split("/")
+            sbp = int(parts[0].strip())
+            dbp = int(parts[1].strip())
+        except Exception:
+            pass
+
+    bp_grade = "NORMAL"
+    if sbp >= 140 or dbp >= 90:
+        bp_grade = "STAGE_2_HTN"
+    elif sbp >= 130 or dbp >= 80:
+        bp_grade = "STAGE_1_HTN"
+    elif sbp >= 120 and dbp < 80:
+        bp_grade = "ELEVATED"
+
+    pulse_val = int(vitals.get("pulse") or 72)
+    pulse_status = "NORMAL"
+    if pulse_val > 100:
+        pulse_status = "TACHYCARDIA"
+    elif pulse_val < 60:
+        pulse_status = "BRADYCARDIA"
+
+    spo2_val = float(vitals.get("spo2") or 99.0)
+    hypoxia = spo2_val < 95.0
+
+    triage_status = "STABLE"
+    if bp_grade == "STAGE_2_HTN" or hypoxia or pulse_status == "TACHYCARDIA":
+        triage_status = "REQUIRES_CLINICAL_ATTENTION"
+
+    # 3. Humoral & Organ Axis Inference
+    comp_lower = chief_complaint.lower()
+    mizaj_lower = (mizaj or "").lower()
+
+    if any(k in comp_lower for k in ["joint", "knee", "waja", "mafasil", "arthritis", "stiffness"]):
+        pred_humor = "Balgham"
+        axis = "Mafasil-Dam (Musculo-Skeletal)"
+        dyscrasia = "Su-e-Mizaj Barid Balghami"
+        dx_title = "Waja-ul-Mafasil Barid Balghami (Knee OA)"
+        suggested_meds = [
+            {"name": "Joshanda Munzij-e-Balgham", "dose": "100ml decoction", "frequency": "BID warm", "duration": "7 Days"},
+            {"name": "Majoon Suranjan Mudabbar", "dose": "5g", "frequency": "BID post meals", "duration": "21 Days"},
+            {"name": "Roghan Suranjan", "dose": "Q.S. local application", "frequency": "HS", "duration": "21 Days"}
+        ]
+        parhez = "Avoid cold milk, curd, rice, sour foods (Khatti cheezein), and refrigerated drinks."
+        tadbeer = "Tadbeer-e-Dalk (gentle warm fomentation), cease blue screens 1 hr before sleep."
+    elif any(k in comp_lower for k in ["cough", "breath", "asthma", "zeeq", "chest", "sadr"]):
+        pred_humor = "Balgham"
+        axis = "Riya-Sadr (Respiratory)"
+        dyscrasia = "Su-e-Mizaj Barid Ratab"
+        dx_title = "Zeeq-un-Nafs Balghami (Bronchial Asthma)"
+        suggested_meds = [
+            {"name": "Sharbat Banafsha", "dose": "20ml with warm water", "frequency": "BID", "duration": "14 Days"},
+            {"name": "Lauq Sapistan", "dose": "10g lick slowly", "frequency": "TDS", "duration": "10 Days"},
+            {"name": "Joshanda Munzij-e-Balgham", "dose": "100ml decoction", "frequency": "BID warm", "duration": "7 Days"}
+        ]
+        parhez = "Avoid direct cold breeze, ice cream, banana, and excessively oily food."
+        tadbeer = "Inhalation of steam infused with Bekh-e-Banafsha."
+    elif any(k in comp_lower for k in ["liver", "jaundice", "jigar", "hepat", "bile", "nausea", "acidity", "safra"]):
+        pred_humor = "Safra"
+        axis = "Jigar-Banas (Hepato-Metabolic)"
+        dyscrasia = "Su-e-Mizaj Haar Safrawi"
+        dx_title = "Zoaf-e-Jigar Safrawi (Hepato-Biliary Dyspepsia)"
+        suggested_meds = [
+            {"name": "Sharbat Deenar", "dose": "25ml with Arq-e-Kasni", "frequency": "BID", "duration": "14 Days"},
+            {"name": "Jawarish Anarain", "dose": "5g post meals", "frequency": "BID", "duration": "21 Days"},
+            {"name": "Joshanda Munzij-e-Safra", "dose": "100ml decoction", "frequency": "OD morning", "duration": "5 Days"}
+        ]
+        parhez = "Avoid spicy red chilies, deep-fried food, garlic, and hot spices."
+        tadbeer = "Adequate hydration with Arq-e-Gulab and pomegranate juice."
+    else:
+        pred_humor = "Balgham" if "balgham" in mizaj_lower else "Safra" if "safra" in mizaj_lower else "Sawda" if "sawda" in mizaj_lower else "Damawi"
+        axis = "Meda-Amaa (GI System)"
+        dyscrasia = f"Su-e-Mizaj {pred_humor}"
+        dx_title = f"Su-e-Hazm wa Zoaf-e-Meda ({dyscrasia})"
+        suggested_meds = [
+            {"name": "Jawarish Kamuni", "dose": "5g post lunch & dinner", "frequency": "BID", "duration": "21 Days"},
+            {"name": "Sharbat Zanjabeel", "dose": "15ml with warm water", "frequency": "BID", "duration": "14 Days"}
+        ]
+        parhez = "Light easily digestible food (Lateef Ghiza), masticate thoroughly, fixed meal timings."
+        tadbeer = "Short 15-minute gentle stroll post dinner (Riyazat-e-Khafifah)."
+
+    # 4. Attachments Lookup
+    attachments = []
+    if mrn and conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT id, document_type, file_name, created_at FROM patient_attachments WHERE mrn = ? ORDER BY created_at DESC LIMIT 5", (mrn,))
+            for a_row in cur.fetchall():
+                attachments.append({
+                    "id": a_row[0],
+                    "document_type": a_row[1],
+                    "file_name": a_row[2],
+                    "url": f"/api/v1/media/{a_row[0]}",
+                    "created_at": str(a_row[3])
+                })
+        except Exception:
+            pass
+
+    # 5. CYP450 Safety alerts
+    safety_alerts = []
+    for med in allopathic_meds:
+        if "statin" in med.lower() or "atorvastatin" in med.lower():
+            safety_alerts.append("Atorvastatin detected: CYP3A4 substrate. Maintain 3-hour chrono-spacing between herbal doses and statin.")
+        if "warfarin" in med.lower():
+            safety_alerts.append("Warfarin anticoagulant detected: High-dose garlic or ginger formulation requires INR monitoring.")
+
+    exec_time = round((time.time() - start_time) * 1000, 2)
+
+    return {
+        "patient_mrn": mrn,
+        "patient_name": patient_name or "Patient",
+        "age": age,
+        "gender": gender,
+        "triage_status": triage_status,
+        "execution_time_ms": exec_time,
+        "vitals_analysis": {
+            "blood_pressure": bp_str,
+            "blood_pressure_grade": bp_grade,
+            "pulse_rate": pulse_val,
+            "pulse_status": pulse_status,
+            "spo2_percent": spo2_val,
+            "hypoxia_flag": hypoxia,
+            "bmi": vitals.get("bmi", "N/A")
+        },
+        "humoral_pathology": {
+            "predominant_humor": pred_humor,
+            "mizaj_deviation": dyscrasia,
+            "axis": axis
+        },
+        "diagnostic_attachments": attachments,
+        "safety_alerts": safety_alerts,
+        "proposed_regimen": {
+            "diagnosis_title": dx_title,
+            "afaal_stage": f"Stage 1: Munzij-e-{pred_humor} Protocol",
+            "suggested_medicines": suggested_meds,
+            "dietary_parhez": parhez,
+            "lifestyle_tadbeer": tadbeer
+        },
+        "clinical_governance": {
+            "agent_role": "Proactive Pre-Consultation Decision Support",
+            "statutory_notice": "Recommendation synthesized autonomously for clinician decision-support. 21 CFR Part 11 sign-off required before fulfillment."
+        }
+    }
+
 class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         req_origin = self.headers.get("Origin", "") if hasattr(self, "headers") and self.headers else ""
@@ -2858,6 +3029,14 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 self._send_error(f"Failed to serve media: {str(e)}", status=500, code="MEDIA_SERVE_FAILED")
                 return
+
+        # ── Proactive Pre-Consultation Agent (Autonomous Triage) ─────────────
+        if path == "/api/v1/clinical/agent/pre-consult-brief":
+            target_mrn = query_params.get("mrn", ["PAT-0816"])[0]
+            with get_db() as conn:
+                brief = generate_proactive_pre_consult_brief(mrn=target_mrn, conn=conn)
+            self._send_json({"ok": True, "agent_version": "v1.0-ProactiveTriage", "brief": brief})
+            return
 
         # ── Universal Task Engine (Service 8) ────────────────────────────────
         if path == "/api/v1/tasks":
@@ -6095,6 +6274,25 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 "file_size_bytes": len(file_bytes),
                 "mime_type": mime_type
             }, status=200)
+            return
+
+        # ── Proactive Pre-Consultation Agent (Autonomous Triage) ─────────────
+        if path in ("/api/v1/clinical/agent/pre-consult-brief", "/api/v1/clinical/pre-consult-brief"):
+            mrn = body.get("mrn", "PAT-0816")
+            p_name = body.get("patient_name", "")
+            age = int(body.get("age", 40))
+            gender = body.get("gender", "Male")
+            vitals = body.get("vitals", {})
+            complaint = body.get("chief_complaint", "")
+            mizaj = body.get("mizaj", "")
+            allopathic = body.get("allopathic_meds", [])
+            with get_db() as conn:
+                brief = generate_proactive_pre_consult_brief(
+                    mrn=mrn, patient_name=p_name, age=age, gender=gender,
+                    vitals=vitals, chief_complaint=complaint, mizaj=mizaj,
+                    allopathic_meds=allopathic, conn=conn
+                )
+            self._send_json({"ok": True, "agent_version": "v1.0-ProactiveTriage", "brief": brief})
             return
 
         # ── Universal Task Engine: Create Task (Service 8) ───────────────────

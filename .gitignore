@@ -11,9 +11,11 @@ coverage/
 *.db
 *.db-shm
 *.db-wal
+*.db-journal
 *.sqlite
 *.sqlite3
 database/zayvora_live.db
+database/backups/
 
 # Logs and archives
 *.log
