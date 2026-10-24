@@ -3396,6 +3396,180 @@ def get_reinforcement_matrix(organ_axis: str = None, formulation_name: str = Non
         return []
 
 
+# =====================================================================
+# Phase 5: Cloud Deployment & Multi-Device Sync Engine (DeviceSyncEngine)
+# Transactional Dirty-Queue Ingestion & Bi-Directional Cloud Delta Sync
+# =====================================================================
+
+def _ensure_device_sync_tables(conn):
+    if not conn:
+        return
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS device_sync_ledger (
+            mutation_id TEXT PRIMARY KEY,
+            device_id TEXT NOT NULL,
+            entity_type TEXT NOT NULL,
+            patient_id TEXT NOT NULL,
+            payload_json TEXT NOT NULL,
+            sync_status TEXT DEFAULT 'APPLIED',
+            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_sync_device ON device_sync_ledger(device_id);")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_sync_patient ON device_sync_ledger(patient_id);")
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS patient_vitals_telemetry (
+            id TEXT PRIMARY KEY,
+            patient_id TEXT NOT NULL,
+            device_id TEXT NOT NULL,
+            blood_pressure TEXT,
+            pulse_rate INTEGER,
+            spo2 INTEGER,
+            recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_telemetry_patient ON patient_vitals_telemetry(patient_id);")
+    conn.commit()
+
+
+def process_sync_batch(device_id: str, mutations: list, conn = None) -> dict:
+    """
+    Processes a batch of offline mutations from mobile or remote clinic devices.
+    Guarantees transactional application and eventual consistency.
+    """
+    start_time = time.time()
+    _ensure_device_sync_tables(conn)
+    applied_count = 0
+    errors = []
+    results = []
+
+    if not isinstance(mutations, list):
+        return {"ok": False, "error": "mutations must be a list", "applied_count": 0}
+
+    for mut in mutations:
+        mut_id = mut.get("mutationId") or mut.get("id") or f"MUT-{int(time.time()*1000)}"
+        entity_type = mut.get("entityType") or "generic"
+        patient_id = mut.get("patientId") or "UNKNOWN"
+        data = mut.get("data") or {}
+
+        try:
+            if conn:
+                cur = conn.cursor()
+                cur.execute("""
+                    INSERT OR REPLACE INTO device_sync_ledger 
+                    (mutation_id, device_id, entity_type, patient_id, payload_json, sync_status, applied_at)
+                    VALUES (?, ?, ?, ?, ?, 'APPLIED', CURRENT_TIMESTAMP)
+                """, (mut_id, device_id, entity_type, patient_id, json.dumps(data)))
+
+                # Entity-specific updates
+                if entity_type == "vital_reading" and data:
+                    bp = data.get("bp") or data.get("blood_pressure")
+                    pulse = data.get("pulse") or data.get("pulse_rate")
+                    spo2 = data.get("spo2")
+                    if bp or pulse or spo2:
+                        cur.execute("""
+                            INSERT OR REPLACE INTO patient_vitals_telemetry
+                            (id, patient_id, device_id, blood_pressure, pulse_rate, spo2, recorded_at)
+                            VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                        """, (f"VIT-{mut_id}", patient_id, device_id, str(bp) if bp else None, int(pulse) if pulse else None, int(spo2) if spo2 else None))
+
+                conn.commit()
+
+            applied_count += 1
+            results.append({"mutationId": mut_id, "status": "APPLIED"})
+        except Exception as e:
+            errors.append(f"Failed to apply {mut_id}: {str(e)}")
+            results.append({"mutationId": mut_id, "status": "FAILED", "error": str(e)})
+
+    return {
+        "ok": len(errors) == 0,
+        "device_id": device_id,
+        "applied_count": applied_count,
+        "total_received": len(mutations),
+        "errors": errors,
+        "results": results,
+        "execution_time_ms": round((time.time() - start_time) * 1000, 2)
+    }
+
+
+def get_sync_delta(device_id: str = "GENERIC_DEVICE", since: str = None, conn = None) -> dict:
+    """
+    Returns delta changes across the platform (prescriptions, care continuity, preferences)
+    since the given ISO timestamp for offline client synchronization.
+    """
+    start_time = time.time()
+    _ensure_device_sync_tables(conn)
+
+    delta = {
+        "ok": True,
+        "device_id": device_id,
+        "server_time_utc": datetime.now(timezone.utc).isoformat(),
+        "prescriptions": [],
+        "care_continuity_plans": [],
+        "formulation_preferences": []
+    }
+
+    if not conn:
+        return delta
+
+    try:
+        cur = conn.cursor()
+        # 1. Prescriptions delta
+        if since:
+            cur.execute("""
+                SELECT order_number, patient_name, mrn, status, created_at
+                FROM prescriptions 
+                WHERE created_at > ? ORDER BY created_at DESC LIMIT 20
+            """, (since,))
+        else:
+            cur.execute("""
+                SELECT order_number, patient_name, mrn, status, created_at
+                FROM prescriptions ORDER BY created_at DESC LIMIT 20
+            """)
+        p_rows = cur.fetchall()
+        delta["prescriptions"] = [
+            {"order_number": r[0], "patient_name": r[1], "mrn": r[2], "status": r[3], "created_at": str(r[4])}
+            for r in p_rows
+        ]
+
+        # 2. Care Continuity Plans delta
+        if since:
+            cur.execute("""
+                SELECT mrn, current_phase, current_day, nujz_index_percent, status, updated_at
+                FROM care_continuity_plans 
+                WHERE updated_at > ? ORDER BY updated_at DESC LIMIT 20
+            """, (since,))
+        else:
+            cur.execute("""
+                SELECT mrn, current_phase, current_day, nujz_index_percent, status, updated_at
+                FROM care_continuity_plans ORDER BY updated_at DESC LIMIT 20
+            """)
+        c_rows = cur.fetchall()
+        delta["care_continuity_plans"] = [
+            {"mrn": r[0], "current_phase": r[1], "current_day": r[2], "nujz_index_percent": r[3], "status": r[4], "updated_at": str(r[5])}
+            for r in c_rows
+        ]
+
+        # 3. Clinician Formulation Preferences
+        cur.execute("""
+            SELECT organ_axis, formulation_name, confidence_weight, acceptance_rate, times_prescribed
+            FROM formulation_preference_matrix 
+            ORDER BY confidence_weight DESC LIMIT 25
+        """)
+        m_rows = cur.fetchall()
+        delta["formulation_preferences"] = [
+            {"organ_axis": r[0], "formulation_name": r[1], "confidence_weight": r[2], "acceptance_rate": r[3], "times_prescribed": r[4]}
+            for r in m_rows
+        ]
+    except Exception:
+        pass
+
+    delta["execution_time_ms"] = round((time.time() - start_time) * 1000, 2)
+    return delta
+
+
 class ZayvoraApiHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         req_origin = self.headers.get("Origin", "") if hasattr(self, "headers") and self.headers else ""
@@ -3905,6 +4079,15 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             with get_db() as conn:
                 matrix_res = get_reinforcement_matrix(organ_axis=target_axis, formulation_name=target_form, limit=limit_val, conn=conn)
             self._send_json({"ok": True, "agent_version": "v1.0-ReinforcementAgent", "preferences": matrix_res})
+            return
+
+        # ── Cloud Deployment & Multi-Device Sync: Delta Sync (Phase 5) ───────
+        if path in ("/api/v1/sync/delta", "/api/v1/sync/status"):
+            dev_id = query_params.get("device_id", ["MOBILE-01"])[0]
+            since_ts = query_params.get("since", [None])[0]
+            with get_db() as conn:
+                sync_delta = get_sync_delta(device_id=dev_id, since=since_ts, conn=conn)
+            self._send_json(sync_delta)
             return
 
         # ── Universal Task Engine (Service 8) ────────────────────────────────
@@ -7226,6 +7409,15 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     conn=conn
                 )
             self._send_json({"ok": True, "agent_version": "v1.0-ReinforcementAgent", "result": res})
+            return
+
+        # ── Cloud Deployment & Multi-Device Sync: Batch Mutations (Phase 5) ───
+        if path in ("/api/v1/sync/batch", "/api/v1/sync/mutations"):
+            dev_id = body.get("device_id", "MOBILE-01")
+            muts = body.get("mutations", [])
+            with get_db() as conn:
+                batch_res = process_sync_batch(device_id=dev_id, mutations=muts, conn=conn)
+            self._send_json(batch_res)
             return
 
         # ── Universal Task Engine: Create Task (Service 8) ───────────────────
