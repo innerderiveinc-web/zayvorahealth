@@ -2,8 +2,26 @@
 # ZAYVORA Health OS™ — Developer Makefile
 # ============================================================
 
-.PHONY: up down logs restart build migrate test lint clean sync \
+.PHONY: run test-all quality apk package up down logs restart build migrate test lint clean sync \
         helm-install helm-upgrade shell-identity shell-clinical
+
+# ---------------------------------------------------------------
+# Canonical Platform Runners
+# ---------------------------------------------------------------
+run:
+	./start.sh
+
+test-all:
+	python3 -m unittest discover -s tests
+
+quality:
+	python3 scripts/quality_gate.py
+
+apk:
+	./scripts/build_mobile_apk.sh --cloud
+
+package:
+	python3 scripts/package_production_release.py
 
 sync:
 	./scripts/sync_platform_mirrors.sh
