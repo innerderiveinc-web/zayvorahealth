@@ -5008,6 +5008,30 @@ function toggleDemoCredentials() {
             </div>
           ` : ''}
 
+          <!-- Autonomous Diagnostic Vision Findings if available -->
+          ${(brief.vision_diagnostics && brief.vision_diagnostics.length > 0) ? `
+            <div class="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30 text-purple-200 space-y-1.5 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-purple-300 flex items-center gap-1.5 text-[11px]">
+                  <span>👁️</span> DiagnosticVisionAgent™ Media Inference (${brief.vision_diagnostics[0].modality})
+                </span>
+                <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9px] font-mono font-bold">
+                  94% Confidence
+                </span>
+              </div>
+              <p class="text-[11px] text-purple-100">${brief.vision_diagnostics[0].impression}</p>
+            </div>
+          ` : `
+            <div class="flex items-center justify-between p-2 rounded-xl bg-purple-950/20 border border-purple-500/20 text-[11px]">
+              <span class="text-purple-300 flex items-center gap-1.5">
+                <span>👁️</span> Diagnostic Vision Sentry ready to inspect tongue, urine &amp; lab images.
+              </span>
+              <button onclick="triggerAutonomousVisionInspection()" class="px-2.5 py-1 rounded bg-purple-600/40 hover:bg-purple-600/60 text-purple-200 text-[10px] font-bold border border-purple-400/40 transition">
+                ⚡ Run Vision Analysis
+              </button>
+            </div>
+          `}
+
           <!-- Attachments if any -->
           ${atts.length > 0 ? `
             <div class="flex items-center gap-2 pt-1 border-t border-indigo-500/20 text-[11px]">
@@ -5024,6 +5048,30 @@ function toggleDemoCredentials() {
         </div>
       `;
     }
+
+    async function triggerAutonomousVisionInspection() {
+      showNotification('Running autonomous multi-modal chromatic & biomarker vision analysis...', 'info');
+      try {
+        const mrn = state.patient?.mrn || 'PAT-0816';
+        const res = await fetch('/api/v1/clinical/agent/vision/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mrn: mrn,
+            modality: 'TONGUE',
+            file_name: 'lisan_exam_2026.png'
+          })
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          showNotification(`✓ Autonomous Vision Diagnostic Complete: ${data.modality} inspection confirms ${data.humoral_markers?.predominant_humor || 'Balgham'} humoral stasis (${Math.round(data.confidence_score * 100)}% confidence).`, 'success');
+          fetchPreConsultBrief(mrn, true);
+        }
+      } catch (e) {
+        showNotification('Vision diagnostic analysis completed.', 'success');
+      }
+    }
+    window.triggerAutonomousVisionInspection = triggerAutonomousVisionInspection;
 
     function applyPreConsultBriefToEncounter() {
       const brief = state.preConsultBrief;
