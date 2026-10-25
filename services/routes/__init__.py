@@ -17,6 +17,10 @@ from .telemedicine_routes import (
 )
 from .patient_routes import handle_patient_get, handle_patient_post
 from .encounter_routes import handle_encounter_get, handle_encounter_post
+from .billing_prescription_routes import (
+    handle_billing_prescription_get,
+    handle_billing_prescription_post,
+)
 
 __all__ = [
     "handle_agentic_get",
@@ -37,4 +41,6 @@ __all__ = [
     "handle_patient_post",
     "handle_encounter_get",
     "handle_encounter_post",
+    "handle_billing_prescription_get",
+    "handle_billing_prescription_post",
 ]
