@@ -25,6 +25,10 @@ from .diagnostics_operations_routes import (
     handle_operations_diagnostics_get,
     handle_operations_diagnostics_post,
 )
+from .continuum_trials_routes import (
+    handle_continuum_trials_get,
+    handle_continuum_trials_post,
+)
 
 __all__ = [
     "handle_agentic_get",
@@ -49,4 +53,6 @@ __all__ = [
     "handle_billing_prescription_post",
     "handle_operations_diagnostics_get",
     "handle_operations_diagnostics_post",
+    "handle_continuum_trials_get",
+    "handle_continuum_trials_post",
 ]
