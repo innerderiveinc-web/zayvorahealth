@@ -5,7 +5,7 @@
 
   [![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Zero%20Defects-2D6A4F?style=for-the-badge&logo=shield)](scripts/quality_gate.py)
   [![Tests](https://img.shields.io/badge/Tests-718%2F718%20Passing-success?style=for-the-badge&logo=checkmarx)](tests/)
-  [![Compliance](https://img.shields.io/badge/Compliance-21%20CFR%20Part%2011%20%7C%20AYUSH%20UPI-blue?style=for-the-badge)](policies/)
+  [![Compliance](https://img.shields.io/badge/Compliance-21%20CFR%20Part%2011%20%7C%20AYUSH%20UPI-blue?style=for-the-badge)](docs/governance/policies/)
   [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20APK%20%7C%20Docker-purple?style=for-the-badge)](Dockerfile)
 </div>
 
@@ -120,17 +120,24 @@ zayvora-platform/
 │
 ├── dist/                             # Pre-compiled static distribution mirror
 ├── docs/                             # Comprehensive structured documentation
+│   ├── ai_doctrine/                  # AI system prompts, doctrine & non-stochastic bounds
 │   ├── architecture/                 # System blueprints & architectural decision records
 │   ├── clinical/                     # Classical medical treatises & monographs
 │   ├── compendiums/                  # Formal BOM & Product Manufacturing PDFs
+│   ├── governance/                   # 21 CFR Part 11, HIPAA, Clinical Pilot & Protocols
+│   │   ├── clinical_pilot/           # 20 Clinical pilot SOPs, consent forms & KPI charters
+│   │   ├── policies/                 # 21 CFR Part 11, HIPAA & Safe-to-Lock enforcement
+│   │   └── protocols/                # Clinical governance charter & Mudabbar SOPs
 │   └── reports/
 │       ├── historical/               # Archived audit reports & certification logs
 │       ├── test_runs/                # Verification manifests & XML test reports
 │       └── coverage/                 # Code coverage summaries
 │
 ├── js/                               # Frontend core engines (zayvora-core.js)
-├── policies/                         # 21 CFR Part 11, HIPAA & clinical governance policies
-├── protocols/                        # Classical Unani treatment protocols & Mudabbar SOPs
+├── knowledge/                        # Canonical Medical Knowledge & Pharmacopoeia
+│   ├── pharmacopoeia/                # UPI monographs, NFUM formulations & Schedule E(1)
+│   ├── asbab_sittah_guidelines.json  # Six Essential Lifestyle Principles
+│   └── organ_axis_pathways.json      # 12-Organ Axis Physiological Pathways
 │
 ├── scripts/                          # 20 Active operational & CI/CD tools
 │   ├── quality_gate.py               # Pre-commit zero-defect syntax & security gate
