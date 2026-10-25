@@ -5,8 +5,11 @@ Provides decoupled, domain-specific request dispatchers for ZAYVORA live API ser
 """
 
 from .agentic_routes import handle_agentic_get, handle_agentic_post
+from .auth_routes import handle_auth_get, handle_auth_post
 
 __all__ = [
     "handle_agentic_get",
     "handle_agentic_post",
+    "handle_auth_get",
+    "handle_auth_post",
 ]
