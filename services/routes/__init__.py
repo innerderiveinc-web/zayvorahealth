@@ -16,6 +16,7 @@ from .telemedicine_routes import (
     handle_telemedicine_delete,
 )
 from .patient_routes import handle_patient_get, handle_patient_post
+from .encounter_routes import handle_encounter_get, handle_encounter_post
 
 __all__ = [
     "handle_agentic_get",
@@ -34,4 +35,6 @@ __all__ = [
     "handle_telemedicine_delete",
     "handle_patient_get",
     "handle_patient_post",
+    "handle_encounter_get",
+    "handle_encounter_post",
 ]
