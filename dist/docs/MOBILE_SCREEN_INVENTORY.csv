@@ -1,8 +1,0 @@
-Screen_Name,Component_File,Primary_Role,Vernacular_Audio,Camera_Upload,Queue_Tracking,Connected_API,Zero_Simulated_Tokens,Classification,Required_Hardening
-App Entry & Multi-Role Shell,apps/mobile/App.tsx,Doctor/Patient/Reception,Yes (Urdu/Hindi/English),Yes,Yes,Yes,Yes,VERIFIED LIVE,Native keychain biometric storage
-Patient Home Screen,apps/mobile/src/screens/HomeScreen.tsx,Patient,Yes,No,Yes,Yes,Yes,VERIFIED LIVE,Background health sync
-Appointments & Booking Screen,apps/mobile/src/screens/AppointmentsScreen.tsx,Patient,No,No,Yes,Yes,Yes,VERIFIED LIVE,Push notification on queue call
-Prescriptions Repository Screen,apps/mobile/src/screens/PrescriptionsScreen.tsx,Patient,Yes,No,No,Yes,Yes,VERIFIED LIVE,Offline PDF caching
-Clinician Companion Screen,apps/mobile/src/screens/ClinicianCompanionScreen.tsx,Doctor,No,No,Yes,Yes,Yes,VERIFIED LIVE,Voice dictation ambient scribe
-Teleconsultation Room,apps/mobile/src/screens/TeleConsultRoom.tsx,Doctor/Patient,No,No,No,Yes,Yes,READY FOR PILOT,Native WebRTC video bridge
-Lifestyle Tracker Screen,apps/mobile/src/screens/LifestyleTrackerScreen.tsx,Patient,No,No,No,Yes,Yes,VERIFIED LIVE,HealthKit / Google Fit sensor link

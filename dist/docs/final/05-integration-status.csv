@@ -1,8 +1,0 @@
-Integration Target,Protocol / Standard,Data Exchanged,Security Envelope,Validation Status
-NHA ABDM Gateway,HTTPS / mTLS / REST,"ABHA Verification, Consent Artifacts, FHIR Push",mTLS + RSA-2048 JWT,VERIFIED_ACTIVE
-HL7 FHIR R4,JSON FHIR R4 Specification,"OPConsultRecord, MedicationRequest, Composition",NRCeS Profile Validated,VERIFIED_ACTIVE
-TRAI DLT SMS Gateway,SMPP / HTTPS REST,"Prescription Ready, Appointment Confirmations",TRAI Principal Entity Whitelist,VERIFIED_ACTIVE
-WhatsApp Business API,Meta Cloud Graph API,"Longitudinal Care Plans, Tadbeer Reminders",TLS 1.3 + Meta HSM Whitelist,VERIFIED_ACTIVE
-Razorpay Payment Gateway,HTTPS Webhook Callbacks,"Invoices, Encounters, Telehealth Fees",HMAC-SHA256 Webhook Verification,VERIFIED_ACTIVE
-Bhashini Vernacular Audio,WAV PCM 16-bit 24kHz,"Vernacular Posology Prompts (Urdu, Hindi)",Deterministic Harmonic Audio,VERIFIED_ACTIVE
-Prometheus / OpenTelemetry,W3C Traceparent / Metrics,"Request Histograms, Latency, Error Rates",W3C Distributed Trace Headers,VERIFIED_ACTIVE

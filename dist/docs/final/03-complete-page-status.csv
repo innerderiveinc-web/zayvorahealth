@@ -1,8 +1,0 @@
-Page ID,Route / Section,Role Shell,UX Persona,Components Rendered,Test Verification,Status
-PAGE-01,Public Portal Home,Public Web,Prospective Patient,"Hero, Philosophy, Provider Directory, Booking CTA",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-02,Patient Dashboard,Patient App,Hamza Farooqi,"Care Timeline, Posology Voice, Asbab Sittah, PROMs",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-03,Doctor Workspace,Clinical Workspace,Hakim Dr. Tariq Mansoor,"16-Section Unified Clinical Desk (SOAP, Mizaj, Nuskha, Lock)",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-04,Clinic Operations,Clinic Ops,Sana Khan (Receptionist),"Patient Queue, Bed Roster, Billing, Provider Schedule",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-05,Pharmacy OS,Pharmacy OS,Zainab Ali (Pharmacist),"Prescription Ingestion, Mudabbar Gate, FEFO Lot Dispatch",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-06,Research Cloud,Research & Admin,Dr. K. Saxena (Researcher),"RWE Cohorts, WHO-UMC ADRs, Merkle Tree Inspector",test_rescue_user_experience.py,PRODUCTION_ACTIVE
-PAGE-07,Platform Admin,Platform Admin,System Administrator,"Quorum Voting, ABDM M1-M3, Backup Drills, Telemetry",test_rescue_user_experience.py,PRODUCTION_ACTIVE

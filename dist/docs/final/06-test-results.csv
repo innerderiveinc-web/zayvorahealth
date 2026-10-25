@@ -1,9 +1,0 @@
-Test Suite Name,Total Assertions,Passed,Failed,Duration (s),Exit Code,Result
-tests/run_all_tests.py,259,259,0,0.95,0,PASSED_100_PERCENT
-tests/test_45_engines_connected.py,45,45,0,0.32,0,PASSED_100_PERCENT
-tests/test_30_critical_workflows.py,30,30,0,0.28,0,PASSED_100_PERCENT
-tests/test_definition_of_done.py,25,25,0,0.22,0,PASSED_100_PERCENT
-tests/test_rescue_user_experience.py,4,4,0,0.15,0,PASSED_100_PERCENT
-tests/run_comprehensive_verification_audit.py,293,293,0,1.10,0,PASSED_100_PERCENT
-tests/test_end_to_end_clinical_continuum.py,11,11,0,0.18,0,PASSED_100_PERCENT
-OVERALL SYSTEM VERIFICATION,667,667,0,3.20,0,100_PERCENT_PRODUCTION_READY

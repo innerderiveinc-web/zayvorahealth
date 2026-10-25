@@ -10,7 +10,7 @@ regardless of whether the Dashboard Publish directory is configured as
 import shutil
 from pathlib import Path
 
-ROOT = Path("/Users/irfanashraf/Downloads/zayvora-platform-phase0-4")
+ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 
 def build():
@@ -45,11 +45,11 @@ def build():
         shutil.copytree(js_src, DIST / "js")
         print("✓ Copied js/ to dist/js/")
 
-    # Docs directory
-    docs_src = ROOT / "docs"
-    if docs_src.exists():
-        shutil.copytree(docs_src, DIST / "docs")
-        print("✓ Copied docs/ to dist/docs/")
+    # Design system assets if present
+    design_system_src = ROOT / "design-system"
+    if design_system_src.exists():
+        shutil.copytree(design_system_src, DIST / "design-system")
+        print("✓ Copied design-system/ to dist/design-system/")
 
     print("=== Dist build completed successfully ===")
 
