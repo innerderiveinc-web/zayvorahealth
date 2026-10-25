@@ -4755,23 +4755,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "canonical_id": c_id, "audience": aud, "term": term})
             return
 
-        # ── Appointment Lifecycle OS (Service 6 & 7) ─────────────────────────
-        if path.startswith("/api/v1/appointments/patient/"):
-            pat_id = path.replace("/api/v1/appointments/patient/", "").strip()
-            if AppointmentLifecycleOS:
-                apts = AppointmentLifecycleOS.get_patient_appointments(pat_id)
-            else:
-                apts = []
-            self._send_json({"ok": True, "patient_id": pat_id, "count": len(apts), "appointments": apts})
-            return
-
-        if path in ("/api/v1/appointments/lifecycle", "/api/v1/appointments/queue-lifecycle"):
-            pat_id = query_params.get("patient_id", ["PAT-774901"])[0]
-            if AppointmentLifecycleOS:
-                apts = AppointmentLifecycleOS.get_patient_appointments(pat_id)
-            else:
-                apts = []
-            self._send_json({"ok": True, "patient_id": pat_id, "count": len(apts), "appointments": apts})
+        # ── Modular Telemedicine & Appointments Domain Dispatcher (/api/v1/appointments, telemed, qsura) ──
+        from services.routes.telemedicine_routes import handle_telemedicine_get
+        if handle_telemedicine_get(self, path, query_params, auth_ctx):
             return
 
         # ── Lab & Diagnostics OS (Service 2 & 5) ──────────────────────────────
@@ -5108,19 +5094,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             self._send_json({"ok": True, "patient": res})
             return
 
-        # Appointments & OPD Queue (Tenant-Scoped)
-        if path == "/api/v1/appointments":
-            target_facility = self._resolve_facility(auth_ctx, query_params)
-            with get_db() as conn:
-                cur = conn.cursor()
-                if (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and not query_params):
-                    cur.execute("SELECT * FROM appointments ORDER BY appointment_time ASC")
-                else:
-                    cur.execute("SELECT * FROM appointments WHERE facility_id = ? ORDER BY appointment_time ASC", (target_facility,))
-                rows = [dict(r) for r in cur.fetchall()]
-            self._send_json({"ok": True, "count": len(rows), "facilityId": target_facility, "appointments": rows})
-            return
-
         # Prescriptions (Tenant-Scoped with Status Filter)
         if path == "/api/v1/prescriptions":
             target_facility = self._resolve_facility(auth_ctx, query_params)
@@ -5406,66 +5379,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     except Exception:
                         res[clean_k] = {}
             self._send_json({"ok": True, "consultation": res})
-            return
-
-        # QSURA Templates Catalog
-        if path == "/api/v1/qsura/templates":
-            self._send_json({"ok": True, "templates": MESSAGE_TEMPLATES})
-            return
-
-        # QSURA Dispatch Logs / Notifications (Facility & Patient Scoped)
-        if path in ("/api/v1/qsura/notifications", "/api/v1/qsura/logs"):
-            target_facility = self._resolve_facility(auth_ctx, query_params)
-            with get_db() as conn:
-                cur = conn.cursor()
-                if auth_ctx and auth_ctx["role"] == "PATIENT":
-                    cur.execute("SELECT * FROM notifications WHERE mrn = ? ORDER BY created_at DESC", (auth_ctx["mrn"],))
-                elif "mrn" in query_params:
-                    cur.execute("SELECT * FROM notifications WHERE mrn = ? ORDER BY created_at DESC", (query_params["mrn"][0],))
-                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and "all" in query_params.get("scope", [])):
-                    cur.execute("SELECT * FROM notifications ORDER BY created_at DESC")
-                else:
-                    cur.execute("SELECT * FROM notifications WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
-                rows = [dict(r) for r in cur.fetchall()]
-            self._send_json({"ok": True, "count": len(rows), "notifications": rows})
-            return
-
-        # Telemedicine Active Rooms List
-        if path == "/api/v1/telemedicine/rooms":
-            target_facility = self._resolve_facility(auth_ctx, query_params)
-            with get_db() as conn:
-                cur = conn.cursor()
-                if auth_ctx and auth_ctx["role"] == "PATIENT":
-                    cur.execute("SELECT * FROM telemedicine_rooms WHERE mrn = ? ORDER BY created_at DESC", (auth_ctx["mrn"],))
-                elif (auth_ctx and auth_ctx["role"] == "SUPER_ADMIN" and "all" in query_params.get("scope", [])) or (not auth_ctx and "all" in query_params.get("scope", [])):
-                    cur.execute("SELECT * FROM telemedicine_rooms ORDER BY created_at DESC")
-                else:
-                    cur.execute("SELECT * FROM telemedicine_rooms WHERE facility_id = ? ORDER BY created_at DESC", (target_facility,))
-                rows = [dict(r) for r in cur.fetchall()]
-            self._send_json({"ok": True, "count": len(rows), "rooms": rows})
-            return
-
-        # Single Telemedicine Room Lookup
-        if path.startswith("/api/v1/telemedicine/rooms/"):
-            room_id = path.split("/")[-1]
-            with get_db() as conn:
-                cur = conn.cursor()
-                cur.execute("SELECT * FROM telemedicine_rooms WHERE id = ? OR room_id = ?", (room_id, room_id))
-                row = cur.fetchone()
-                if not row:
-                    self._send_error("Telemedicine consultation room not found.", status=404, code="ROOM_NOT_FOUND")
-                    return
-                r_dict = dict(row)
-                if auth_ctx and auth_ctx["role"] == "PATIENT":
-                    if r_dict.get("mrn") != auth_ctx.get("mrn"):
-                        self._send_error("Access denied: Patient is not authorized to access consultation rooms of other patients.", status=403, code="UNAUTHORIZED_ROOM_ACCESS")
-                        return
-                elif auth_ctx and auth_ctx["role"] != "SUPER_ADMIN":
-                    if r_dict.get("facility_id") and r_dict["facility_id"] != auth_ctx["facilityId"]:
-                        self._send_error("Access denied: You do not have authorization to view clinical sessions from a different healthcare facility.", status=403, code="CROSS_TENANT_ACCESS_DENIED")
-                        return
-
-            self._send_json({"ok": True, "room": r_dict})
             return
 
         # Patient Self-Service Records Aggregation
@@ -7648,35 +7561,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             }, status=201)
             return
 
-        # ── Appointment Lifecycle Transitions (Service 6 & 7) ─────────────────
-        if path == "/api/v1/appointments/check-in":
-            apt_id = body.get("appointment_id", "")
-            proms = float(body.get("proms_score", 4.0))
-            if AppointmentLifecycleOS:
-                try:
-                    res = AppointmentLifecycleOS.digital_check_in(apt_id, proms)
-                    self._send_json(res, status=200)
-                except KeyError as ke:
-                    self._send_error(str(ke), status=404, code="APPOINTMENT_NOT_FOUND")
-            else:
-                self._send_error("Appointment Lifecycle engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
-            return
-
-        if path == "/api/v1/appointments/transition":
-            apt_id = body.get("appointment_id", "")
-            target_state = body.get("target_state", "WAITING_IN_OPD")
-            actor_id = body.get("actor_id", "STAFF-01")
-            notes = body.get("notes", "")
-            if AppointmentLifecycleOS:
-                try:
-                    res = AppointmentLifecycleOS.transition_state(apt_id, target_state, actor_id, notes)
-                    self._send_json(res, status=200)
-                except KeyError as ke:
-                    self._send_error(str(ke), status=404, code="APPOINTMENT_NOT_FOUND")
-                except ValueError as ve:
-                    self._send_error(str(ve), status=400, code="INVALID_STATE")
-            else:
-                self._send_error("Appointment Lifecycle engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
+        # ── Modular Telemedicine & Appointments Domain Dispatcher (/api/v1/appointments, telemed, qsura) ──
+        from services.routes.telemedicine_routes import handle_telemedicine_post
+        if handle_telemedicine_post(self, path, query_params, auth_ctx, body):
             return
 
         # ── Diagnostics Status Transition (Service 2 & 5) ────────────────────
@@ -7843,49 +7730,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                     "Damwi": 25,
                     "Safrawi": 20,
                     "Saudawi": 10
-                }
-            }, status=201)
-            return
-
-        # Book Appointment
-        if path == "/api/v1/appointments":
-            patient_name = body.get("patientName") or body.get("patient_name") or "Walk-in Patient"
-            mrn = body.get("mrn") or f"MRN-2026-{uuid.uuid4().hex[:4].upper()}"
-            doctor_name = body.get("doctorName") or body.get("doctor_name") or "Prof. (Dr.) Mansoor Alam"
-            app_date = body.get("date") or datetime.now().strftime("%Y-%m-%d")
-            app_time = body.get("timeSlot") or body.get("time_slot") or "11:00 AM"
-            chief_complaint = body.get("chiefComplaint") or body.get("chief_complaint") or "General Health Assessment"
-            acuity = body.get("acuity") or "STANDARD"
-            fee = float(body.get("fee", 800.0))
-            facility_id = self._resolve_facility(auth_ctx, query_params, body)
-
-            with get_db() as conn:
-                cur = conn.cursor()
-                cur.execute("SELECT COUNT(*) FROM appointments WHERE appointment_date = ? AND facility_id = ?", (app_date, facility_id))
-                today_count = cur.fetchone()[0] + 101
-                token_num = f"T-{today_count}"
-                apt_id = f"APT-{uuid.uuid4().hex[:6].upper()}"
-
-                cur.execute("""
-                INSERT INTO appointments (id, token_number, mrn, patient_name, doctor_name, department, opd_room, appointment_date, appointment_time, acuity, chief_complaint, status, fee_amount, payment_status, facility_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (apt_id, token_num, mrn, patient_name, doctor_name, "Integrative Unani OPD", "Room 3", app_date, app_time, acuity, chief_complaint, "WAITING", fee, "PAID", facility_id))
-                conn.commit()
-
-            self._send_json({
-                "ok": True,
-                "message": "Appointment booked and token issued.",
-                "appointment": {
-                    "id": apt_id,
-                    "tokenNumber": token_num,
-                    "mrn": mrn,
-                    "patientName": patient_name,
-                    "doctorName": doctor_name,
-                    "appointmentDate": app_date,
-                    "appointmentTime": app_time,
-                    "facilityId": facility_id,
-                    "status": "WAITING",
-                    "feeAmount": fee
                 }
             }, status=201)
             return
@@ -8731,185 +8575,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 "auditBlockHash": audit_leaf,
                 "statutoryDisclaimer": layers["layerE_clinicianReviewBarrier"]["statutoryDisclaimer"]
             }, status=201)
-            return
-
-        # QSURA Notification Dispatch
-        if path == "/api/v1/qsura/send":
-            if not auth_ctx or not (self._has_permission(auth_ctx, "qsura:send") or auth_ctx["role"] in ("SUPER_ADMIN", "CLINIC_ADMIN", "DOCTOR", "HAKEEM", "RECEPTIONIST")):
-                self._send_error("Access denied: You do not have permission to dispatch patient communications.", status=403, code="INSUFFICIENT_PERMISSIONS")
-                return
-
-            channel = (body.get("channel") or "sms").lower().strip()
-            recipient = (body.get("recipient") or "").strip()
-            message_type = (body.get("message_type") or "").strip()
-            parameters = body.get("parameters", {})
-            patient_consent_verified = body.get("patient_consent_verified", True)
-            mrn = body.get("mrn") or (auth_ctx.get("mrn") if auth_ctx.get("role") == "PATIENT" else None)
-            facility_id = self._resolve_facility(auth_ctx, query_params, body)
-
-            if not patient_consent_verified:
-                self._send_error("DISHA/GDPR Consent Violation: Patient communication consent must be verified.", status=400, code="CONSENT_REQUIRED")
-                return
-
-            if channel not in ["whatsapp", "sms", "email", "webhook"]:
-                self._send_error(f"Unsupported communication channel: {channel}. Allowed channels: whatsapp, sms, email, webhook.", status=400, code="INVALID_CHANNEL")
-                return
-
-            if not recipient:
-                self._send_error("Recipient contact information is required.", status=400, code="MISSING_RECIPIENT")
-                return
-
-            if message_type not in MESSAGE_TEMPLATES:
-                self._send_error(f"Unknown message template: {message_type}.", status=400, code="INVALID_TEMPLATE")
-                return
-
-            tpl = MESSAGE_TEMPLATES[message_type]
-            if channel not in tpl["channels"] and channel != "webhook":
-                self._send_error(f"Template '{message_type}' is not authorized for channel '{channel}'. Authorized: {tpl['channels']}", status=400, code="CHANNEL_TEMPLATE_MISMATCH")
-                return
-
-            missing_params = [p for p in tpl["required_params"] if p not in parameters]
-            if missing_params:
-                self._send_error(f"Missing required parameters for template: {', '.join(missing_params)}", status=400, code="MISSING_TEMPLATE_PARAMS")
-                return
-
-            rendered_text = tpl["template_text"].format(**parameters)
-            # TRAI DLT PHI Masking for unencrypted SMS
-            if channel == "sms":
-                rendered_text = re.sub(r"\b\d{10,12}\b", lambda m: m.group(0)[:2] + "******" + m.group(0)[-2:], rendered_text)
-
-            msg_id = f"MSG-{uuid.uuid4().hex[:12].upper()}"
-            notif_uuid = f"NOTIF-{uuid.uuid4().hex[:8].upper()}"
-
-            with get_db() as conn:
-                cur = conn.cursor()
-                cur.execute("""
-                INSERT INTO notifications (id, notification_id, mrn, recipient, channel, template_id, message_text, status, facility_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    notif_uuid,
-                    msg_id,
-                    mrn,
-                    recipient,
-                    channel.upper(),
-                    message_type,
-                    rendered_text,
-                    "DELIVERED",
-                    facility_id
-                ))
-                conn.commit()
-
-            dispatch_record = {
-                "message_id": msg_id,
-                "notification_id": notif_uuid,
-                "channel": channel,
-                "recipient": recipient,
-                "message_type": message_type,
-                "rendered_content": rendered_text,
-                "delivery_status": "DELIVERED",
-                "dispatched_at": datetime.utcnow().isoformat() + "Z",
-                "regulatory_compliance": "DISHA / HIPAA / TRAI DLT Compliant",
-                "facility_id": facility_id
-            }
-
-            self._send_json({"ok": True, "dispatch": dispatch_record}, status=201)
-            return
-
-        # Telemedicine Room Creation
-        if path == "/api/v1/telemedicine/rooms":
-            if not auth_ctx or not (self._has_permission(auth_ctx, "telemedicine:manage") or auth_ctx["role"] in ("SUPER_ADMIN", "CLINIC_ADMIN", "DOCTOR", "HAKEEM", "RECEPTIONIST")):
-                self._send_error("Access denied: Telemedicine room initialization requires clinical practitioner or administrator authorization.", status=403, code="INSUFFICIENT_PERMISSIONS")
-                return
-
-            mrn = (body.get("mrn") or "").strip()
-            if not mrn:
-                self._send_error("Patient MRN is required to create a telemedicine consultation room.", status=400, code="MISSING_MRN")
-                return
-
-            patient_name = (body.get("patient_name") or "").strip()
-            doctor_name = (body.get("doctor_name") or "").strip() or (auth_ctx.get("fullName") or auth_ctx.get("name") or "Clinical Specialist")
-            encounter_id = body.get("encounter_id")
-            appointment_id = body.get("appointment_id")
-            facility_id = self._resolve_facility(auth_ctx, query_params, body)
-
-            with get_db() as conn:
-                cur = conn.cursor()
-                if not patient_name:
-                    cur.execute("SELECT full_name FROM patients WHERE mrn = ?", (mrn,))
-                    p_row = cur.fetchone()
-                    if p_row:
-                        patient_name = p_row["full_name"]
-                    else:
-                        patient_name = "Patient " + mrn
-
-                room_id = f"TELE-ROOM-{uuid.uuid4().hex[:8].upper()}"
-                room_uuid = f"ROOM-{uuid.uuid4().hex[:8].upper()}"
-                session_token = f"zyv.tele.{uuid.uuid4().hex[:16]}.webrtc"
-
-                cur.execute("""
-                INSERT INTO telemedicine_rooms (id, room_id, encounter_id, appointment_id, mrn, patient_name, doctor_name, session_token, status, facility_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    room_uuid,
-                    room_id,
-                    encounter_id,
-                    appointment_id,
-                    mrn,
-                    patient_name,
-                    doctor_name,
-                    session_token,
-                    "ACTIVE",
-                    facility_id
-                ))
-                conn.commit()
-
-            room_data = {
-                "id": room_uuid,
-                "room_id": room_id,
-                "encounter_id": encounter_id,
-                "appointment_id": appointment_id,
-                "mrn": mrn,
-                "patient_name": patient_name,
-                "doctor_name": doctor_name,
-                "session_token": session_token,
-                "status": "ACTIVE",
-                "webrtc_signaling_url": f"wss://telemed.zayvora.internal/v1/signaling/{room_id}",
-                "ice_servers": [
-                    {"urls": "stun:stun.l.google.com:19302"},
-                    {"urls": "turn:turn.zayvora.internal:3478", "username": f"user-{mrn}", "credential": session_token}
-                ],
-                "facility_id": facility_id,
-                "created_at": datetime.utcnow().isoformat() + "Z"
-            }
-
-            self._send_json({"ok": True, "room": room_data}, status=201)
-            return
-
-        # Telemedicine Room Close
-        if path.startswith("/api/v1/telemedicine/rooms/") and path.endswith("/close"):
-            parts = path.split("/")
-            room_id = parts[-2]
-            if not auth_ctx or not (self._has_permission(auth_ctx, "telemedicine:manage") or auth_ctx["role"] in ("SUPER_ADMIN", "CLINIC_ADMIN", "DOCTOR", "HAKEEM", "RECEPTIONIST")):
-                self._send_error("Access denied: Closing a consultation room requires clinical authorization.", status=403, code="INSUFFICIENT_PERMISSIONS")
-                return
-
-            with get_db() as conn:
-                cur = conn.cursor()
-                cur.execute("SELECT * FROM telemedicine_rooms WHERE id = ? OR room_id = ?", (room_id, room_id))
-                row = cur.fetchone()
-                if not row:
-                    self._send_error("Telemedicine room not found.", status=404, code="ROOM_NOT_FOUND")
-                    return
-
-                cur.execute("UPDATE telemedicine_rooms SET status = 'CLOSED', closed_at = CURRENT_TIMESTAMP WHERE id = ? OR room_id = ?", (room_id, room_id))
-                conn.commit()
-
-            self._send_json({
-                "ok": True,
-                "message": "Telemedicine consultation room closed securely.",
-                "room_id": room_id,
-                "status": "CLOSED"
-            })
             return
 
         # Vernacular Audio Posology Engine
@@ -10993,70 +10658,12 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         auth_ctx = self._get_auth_context()
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        query_params = urllib.parse.parse_qs(parsed.query)
         body = self._read_json_body()
 
-        # Appointment Status & Rescheduling Updates
-        if path.startswith("/api/v1/appointments/"):
-            parts = path.strip("/").split("/")
-            apt_id = parts[3] if len(parts) > 3 else parts[-1]
-
-            if path.endswith("/status"):
-                new_status = body.get("status")
-                if not new_status:
-                    self._send_error("Status is required.", status=400, code="MISSING_STATUS")
-                    return
-
-                with get_db() as conn:
-                    cur = conn.cursor()
-                    cur.execute("UPDATE appointments SET status = ? WHERE id = ? OR token_number = ?", (new_status, apt_id, apt_id))
-                    if cur.rowcount == 0:
-                        self._send_error("Appointment record not found.", status=404, code="APPOINTMENT_NOT_FOUND")
-                        return
-                    conn.commit()
-
-                self._send_json({"ok": True, "message": f"Appointment status updated to {new_status}."})
-                return
-
-            date_val = body.get("date") or body.get("appointmentDate")
-            time_val = body.get("timeSlot") or body.get("appointmentTime")
-            status_val = body.get("status") or "RESCHEDULED"
-            complaint_val = body.get("chiefComplaint")
-
-            with get_db() as conn:
-                cur = conn.cursor()
-                updates = []
-                params = []
-                if date_val:
-                    updates.append("appointment_date = ?")
-                    params.append(date_val)
-                if time_val:
-                    updates.append("appointment_time = ?")
-                    params.append(time_val)
-                if status_val:
-                    updates.append("status = ?")
-                    params.append(status_val)
-                if complaint_val:
-                    updates.append("chief_complaint = ?")
-                    params.append(complaint_val)
-
-                if not updates:
-                    self._send_error("No valid update fields provided.", status=400, code="INVALID_UPDATE")
-                    return
-
-                params.extend([apt_id, apt_id])
-                sql = f"UPDATE appointments SET {', '.join(updates)} WHERE id = ? OR token_number = ?"
-                cur.execute(sql, params)
-                if cur.rowcount == 0:
-                    self._send_error("Appointment record not found.", status=404, code="APPOINTMENT_NOT_FOUND")
-                    return
-                conn.commit()
-
-            self._send_json({
-                "ok": True,
-                "message": "Appointment successfully updated.",
-                "appointmentId": apt_id,
-                "status": status_val
-            })
+        # ── Modular Telemedicine & Appointments Domain Dispatcher (/api/v1/appointments, telemed, qsura) ──
+        from services.routes.telemedicine_routes import handle_telemedicine_patch
+        if handle_telemedicine_patch(self, path, query_params, auth_ctx, body):
             return
 
         self._send_error(f"Cannot PATCH to {path}", status=404, code="ROUTE_NOT_FOUND")
@@ -11068,18 +10675,11 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
         auth_ctx = self._get_auth_context()
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        query_params = urllib.parse.parse_qs(parsed.query)
 
-        if path.startswith("/api/v1/appointments/"):
-            apt_id = path.split("/")[-1]
-            with get_db() as conn:
-                cur = conn.cursor()
-                cur.execute("UPDATE appointments SET status = 'CANCELLED' WHERE id = ? OR token_number = ?", (apt_id, apt_id))
-                if cur.rowcount == 0:
-                    self._send_error("Appointment record not found.", status=404, code="APPOINTMENT_NOT_FOUND")
-                    return
-                conn.commit()
-
-            self._send_json({"ok": True, "message": f"Appointment {apt_id} successfully cancelled.", "status": "CANCELLED"})
+        # ── Modular Telemedicine & Appointments Domain Dispatcher (/api/v1/appointments, telemed, qsura) ──
+        from services.routes.telemedicine_routes import handle_telemedicine_delete
+        if handle_telemedicine_delete(self, path, query_params, auth_ctx):
             return
 
         self._send_error(f"Cannot DELETE to {path}", status=404, code="ROUTE_NOT_FOUND")
