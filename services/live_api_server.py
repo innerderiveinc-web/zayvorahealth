@@ -6294,22 +6294,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 self._send_error(f"Product '{prod_id}' not found.", status=404, code="PRODUCT_NOT_FOUND")
             return
 
-        if path in ("/api/v1/clinical/parhez-8/all", "/api/v1/clinical/parhez-8"):
-            self._send_json({
-                "ok": True,
-                "framework": "8 Parhez Clinical Protocols (Volume II)",
-                "total_protocols": len(get_all_parhez_protocols()),
-                "protocols": get_all_parhez_protocols()
-            })
-            return
-
-        if path.startswith("/api/v1/clinical/parhez-8/"):
-            pz_code = path.split("/")[-1].upper()
-            pz_data = get_parhez_protocol_by_code(pz_code)
-            if pz_data:
-                self._send_json({"ok": True, "parhez": pz_data})
-            else:
-                self._send_error(f"Parhez protocol '{pz_code}' not found.", status=404, code="PARHEZ_NOT_FOUND")
+        # ── Modular Clinical Domain Dispatcher ────────────────────────────────
+        from services.routes.clinical_routes import handle_clinical_get
+        if handle_clinical_get(self, path, query_params, auth_ctx):
             return
 
         # ── ZAYVORA Pharmacopoeia: Materia Medica (Single Drugs A–Z) ──────────
@@ -9873,38 +9860,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 self._send_error("Protocols engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
             return
 
-        # ── ZAYVORA 12-Axis Clinical Intelligence Framework™ (Clinical OS) ────
-        if path == "/api/v1/clinical/axes-12/score":
-            axis_id = body.get("axis_id", "AXIS_01")
-            sym = float(body.get("symptoms_score", 0))
-            hist = float(body.get("history_score", 0))
-            inv = float(body.get("investigations_score", 0))
-            life = float(body.get("lifestyle_score", 0))
-            clin = body.get("clinician_assessment")
-            red = bool(body.get("has_red_flags", False))
-            if TwelveAxisEngine:
-                res = TwelveAxisEngine.calculate_single_axis_activity(axis_id, sym, hist, inv, life, clin, red)
-                self._send_json({"ok": True, "axis_score": res})
-            else:
-                self._send_error("12-Axis engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
-            return
-
-        if path == "/api/v1/clinical/axes-12/patient-map":
-            patient_data = body.get("patient_data", body)
-            if TwelveAxisEngine:
-                res = TwelveAxisEngine.generate_patient_360_axis_map(patient_data)
-                self._send_json({"ok": True, "patient_360_map": res})
-            else:
-                self._send_error("12-Axis engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
-            return
-
-        if path == "/api/v1/clinical/axes-12/ai-draft":
-            patient_summary = body.get("patient_summary", body)
-            if TwelveAxisEngine:
-                res = TwelveAxisEngine.generate_hakeem_sahab_ai_draft(patient_summary)
-                self._send_json({"ok": True, "hakeem_sahab_draft": res})
-            else:
-                self._send_error("12-Axis engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
+        # ── Modular Clinical 12-Axis Domain Dispatcher ────────────────────────
+        from services.routes.clinical_routes import handle_clinical_post
+        if handle_clinical_post(self, path, query_params, auth_ctx, body):
             return
 
         # ── ZAYVORA Pharmacopoeia: Formula Thermal & Safety Engine ─────────────
@@ -10215,45 +10173,9 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
             })
             return
 
-        # ── Classical Qaroorah (Urine) & Modern Urinalysis Diagnostic Analysis ──
-        if path in ("/api/v1/clinical/diagnostics/qaroorah-analyze", "/api/v1/clinical/qaroorah"):
-            patient_id = body.get("patient_id", "P-ANON")
-            insp_data = body.get("inspection", {})
-            labs_data = body.get("modern_labs", {})
-            clinical_ctx = body.get("clinical_context", {})
-            if QaroorahDiagnosticEngine and QaroorahPhysicalInspection and ModernUrinalysisData:
-                insp = _safe_instantiate_dataclass(QaroorahPhysicalInspection, insp_data)
-                labs = _safe_instantiate_dataclass(ModernUrinalysisData, labs_data)
-                res = QaroorahDiagnosticEngine.analyze_qaroorah(patient_id, insp, labs, clinical_ctx)
-                self._send_json({"ok": True, "qaroorah_diagnostic": res})
-            else:
-                self._send_error("Qaroorah diagnostic engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
-            return
-
-        # ── Classical Baraaz (Stool & Alimentary) Diagnostic Analysis ─────────
-        if path in ("/api/v1/clinical/diagnostics/baraaz-analyze", "/api/v1/clinical/baraaz"):
-            patient_id = body.get("patient_id", "P-ANON")
-            insp_data = body.get("inspection", {})
-            clinical_ctx = body.get("clinical_context", {})
-            if BaraazDiagnosticEngine and BaraazInspectionInput:
-                inp = _safe_instantiate_dataclass(BaraazInspectionInput, insp_data)
-                res = BaraazDiagnosticEngine.analyze_baraaz(patient_id, inp, clinical_ctx)
-                self._send_json({"ok": True, "baraaz_diagnostic": res})
-            else:
-                self._send_error("Baraaz diagnostic engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
-            return
-
-        # ── Asbab Sitta Zarooriya Dynamic Lifestyle Scoring ───────────────────
-        if path in ("/api/v1/clinical/lifestyle/asbab-sitta-score", "/api/v1/clinical/asbab-sitta"):
-            patient_id = body.get("patient_id", "P-ANON")
-            patient_mizaj = body.get("patient_mizaj", "Motadil")
-            lifestyle_data = body.get("lifestyle", {})
-            if AsbabSittaScoringEngine and AsbabSittaPatientInput:
-                inp = _safe_instantiate_dataclass(AsbabSittaPatientInput, lifestyle_data)
-                res = AsbabSittaScoringEngine.evaluate_lifestyle_equilibrium(patient_id, patient_mizaj, inp)
-                self._send_json({"ok": True, "asbab_sitta_evaluation": res})
-            else:
-                self._send_error("Asbab Sitta scoring engine unavailable.", status=500, code="ENGINE_UNAVAILABLE")
+        # ── Modular Clinical Diagnostics & Asbab-e-Sittah Dispatcher ──────────
+        from services.routes.clinical_routes import handle_clinical_post
+        if handle_clinical_post(self, path, query_params, auth_ctx, body):
             return
 
         # ── Munzij & Mushil (Nujz & Tanqiya) Staging Protocol ─────────────────
