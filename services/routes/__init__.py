@@ -29,6 +29,10 @@ from .continuum_trials_routes import (
     handle_continuum_trials_get,
     handle_continuum_trials_post,
 )
+from .governance_protocols_routes import (
+    handle_governance_protocols_get,
+    handle_governance_protocols_post,
+)
 
 __all__ = [
     "handle_agentic_get",
@@ -55,4 +59,6 @@ __all__ = [
     "handle_operations_diagnostics_post",
     "handle_continuum_trials_get",
     "handle_continuum_trials_post",
+    "handle_governance_protocols_get",
+    "handle_governance_protocols_post",
 ]
