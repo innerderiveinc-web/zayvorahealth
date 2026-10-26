@@ -30,6 +30,7 @@ docs/
 *Authoritative specifications, system topologies, and database schemas.*
 
 - **[System Architecture Master Blueprint](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/architecture/FINAL_ARCHITECTURE.md)**: Master structural design and inter-service communication model.
+- **[System Runtime Topology Specification](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/architecture/SYSTEM_RUNTIME_TOPOLOGY.md)**: Dual-profile runtime formalization (Modular Monolith vs Distributed Cloud).
 - **[Source of Truth Specification](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/architecture/ARCHITECTURE_SOURCE_OF_TRUTH.md)**: Architectural invariants and system constraints.
 - **[Database Schema & Inventory](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/architecture/FINAL_DATABASE_SCHEMA.md)**: Complete relational model, indexing strategy, and table dictionary.
 - **[API Reference & Contracts](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/architecture/FINAL_API_REFERENCE.md)**: Comprehensive REST endpoint reference and JSON payload contracts.
