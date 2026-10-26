@@ -16,6 +16,7 @@ coverage/
 *.sqlite3
 database/zayvora_live.db
 database/backups/
+/backups/
 
 # Logs and archives
 *.log

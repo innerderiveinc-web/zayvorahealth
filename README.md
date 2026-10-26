@@ -3,9 +3,12 @@
   <p><strong>ذیورہ</strong> — Enterprise Autonomous AI Operating System for Classical & Integrative Medicine</p>
   <p><em>Ancient Canonical Treatises. Modern Clinical Intelligence. Closed-Loop Agentic Care.</em></p>
 
+  [![CI Matrix](https://img.shields.io/badge/CI%2FCD-Matrix%20Verified-2D6A4F?style=for-the-badge&logo=githubactions)](infrastructure/ci/github-actions-ci.yml)
   [![Quality Gate](https://img.shields.io/badge/Quality%20Gate-Zero%20Defects-2D6A4F?style=for-the-badge&logo=shield)](scripts/quality_gate.py)
-  [![Tests](https://img.shields.io/badge/Tests-718%2F718%20Passing-success?style=for-the-badge&logo=checkmarx)](tests/)
-  [![Compliance](https://img.shields.io/badge/Compliance-21%20CFR%20Part%2011%20%7C%20AYUSH%20UPI-blue?style=for-the-badge)](docs/governance/policies/)
+  [![Tests](https://img.shields.io/badge/Tests-732%2F732%20Passing-success?style=for-the-badge&logo=checkmarx)](tests/)
+  [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776AB?style=for-the-badge&logo=python)](pyproject.toml)
+  [![Database](https://img.shields.io/badge/Database-SQLite%20WAL%20%7C%20PostgreSQL-336791?style=for-the-badge&logo=postgresql)](database/adapter.py)
+  [![Compliance](https://img.shields.io/badge/Compliance-21%20CFR%20Part%2011%20%7C%20AYUSH%20UPI-blue?style=for-the-badge)](docs/compliance/)
   [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20APK%20%7C%20Docker-purple?style=for-the-badge)](Dockerfile)
 </div>
 
@@ -90,11 +93,26 @@ cd apps/mobile && npm run build:apk:cloud
 
 ```bash
 make run          # Start local production server on port 8000
-make test-all     # Run all 718 automated unit and clinical tests
+make test-all     # Run all 732 automated unit and clinical tests
 make quality      # Run zero-defect pre-commit / pre-push Quality Gate
+make seed         # Seed database profiles (baseline, demo, pilot, zfie, all)
+make bundle-js    # Validate frontend modules and compile production bundle
+make sync         # Synchronize canonical HTML and database mirrors
 make apk          # Submit standalone Android APK build to EAS Cloud
 make package      # Build clean canonical zip release archive
 ```
+
+---
+
+## 📚 Technical Documentation Hub
+
+Comprehensive, international-standard technical documentation organized according to the **Diátaxis Framework**:
+* 🏛️ **[Diátaxis Documentation Hub](docs/README.md)**: Central portal linking all subsystem specifications.
+* 📐 **[System Architecture](docs/architecture/FINAL_ARCHITECTURE.md)** & **[Runtime Topology](docs/architecture/SYSTEM_RUNTIME_TOPOLOGY.md)**: Master structural design & dual-profile runtime specification.
+* ⚖️ **[Compliance & Statutory Mapping](docs/compliance/STATUTORY_COMPLIANCE_AND_REGULATORY_MAPPING.md)**: 21 CFR Part 11, HIPAA, GDPR, ABDM M1-M3 & DISHA controls.
+* 🛡️ **[Security Architecture](docs/security/FINAL_SECURITY_MODEL.md)**: AES-256-GCM authenticated encryption & anti-backdoor shields.
+* 🧪 **[50 DSMB Clinical Validation Vignettes](docs/clinical/ZAYVORA_CLINICAL_VALIDATION_VIGNETTES_50.md)**: Blinded clinician concordance trial benchmarks.
+* 📦 **[Frontend Client Architecture](js/README.md)**: 7 domain modules, zero-build PWA, and React/Next.js client topology.
 
 ---
 
