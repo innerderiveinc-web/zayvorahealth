@@ -57,6 +57,10 @@ def run_integrity_and_backup(max_backups=7):
         for old in existing_backups[:-max_backups]:
             try:
                 os.remove(old)
+                for ext in ["-wal", "-shm"]:
+                    companion = old + ext
+                    if os.path.exists(companion):
+                        os.remove(companion)
                 print(f"[Backup Prune] Removed stale backup: {os.path.basename(old)}")
             except Exception:
                 pass

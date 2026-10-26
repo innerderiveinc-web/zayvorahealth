@@ -17,6 +17,9 @@ test-all:
 quality:
 	python3 scripts/quality_gate.py
 
+seed:
+	python3 database/seed.py --profile=all
+
 apk:
 	./scripts/build_mobile_apk.sh --cloud
 
