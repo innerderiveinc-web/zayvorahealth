@@ -29,6 +29,9 @@ package:
 sync:
 	./scripts/sync_platform_mirrors.sh
 
+bundle-js:
+	python3 scripts/bundle_frontend.py
+
 # ---------------------------------------------------------------
 # Local dev stack
 # ---------------------------------------------------------------
