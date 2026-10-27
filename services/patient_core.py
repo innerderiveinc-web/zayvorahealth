@@ -88,8 +88,13 @@ def _decrypt_phi(value: str) -> str:
         return value
 
 def _build_patient_360_v2(patient_id: str = "PAT-0814") -> Dict[str, Any]:
-    Patient360Master = getattr(srv, "Patient360Master", None)
-    ClinicalTruthFirewall = getattr(srv, "ClinicalTruthFirewall", None)
+    try:
+        import services.live_api_server as srv
+        Patient360Master = getattr(srv, "Patient360Master", None)
+        ClinicalTruthFirewall = getattr(srv, "ClinicalTruthFirewall", None)
+    except Exception:
+        Patient360Master = None
+        ClinicalTruthFirewall = None
     """
     Constructs the authoritative, patient-centric V2 Patient 360 graph:
     Coordinates Identity, Consent, History, Symptoms, Mizaj, Examination, Labs,

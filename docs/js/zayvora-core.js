@@ -29044,6 +29044,15 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
     // CRITICAL MODAL & INTERACTIVE HANDLER SAFETY SHIELD
     // Guarantees all interactive onclick buttons across OS operate without error
     // =========================================================================
+    window.openClinicalTelemetryModal = function() {
+      const m = document.getElementById('clinical-telemetry-modal');
+      if (m) m.classList.remove('hidden');
+    };
+    window.closeClinicalTelemetryModal = function() {
+      const m = document.getElementById('clinical-telemetry-modal');
+      if (m) m.classList.add('hidden');
+    };
+
     window.openBotanicalAtlasModal = function() {
       const m = document.getElementById('botanical-atlas-modal');
       if (m) m.classList.remove('hidden');

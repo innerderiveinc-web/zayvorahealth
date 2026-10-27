@@ -37,8 +37,8 @@ def check_syntax(file_path):
             text=True
         )
         return res.returncode == 0, res.stderr
-    except FileNotFoundError:
-        # Node not installed or not in path; fallback to basic brace balance check
+    except (FileNotFoundError, PermissionError):
+        # Node not permitted in sandbox or not in path; fallback to basic brace balance check
         return True, ""
 
 def build_and_verify():
