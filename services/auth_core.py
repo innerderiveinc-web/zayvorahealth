@@ -18,7 +18,28 @@ import time
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
-import services.live_api_server as srv
+def _get_jwt_secret() -> str:
+    import sys
+    srv = sys.modules.get("services.live_api_server")
+    if srv and hasattr(srv, "JWT_SECRET"):
+        return srv.JWT_SECRET
+    return os.getenv("JWT_SECRET", "zayvora-dev-rotated-hmac-secret-pilot-candidate-2026-64bit-minimum")
+
+def _get_role_permissions(role: str) -> list:
+    import sys
+    srv = sys.modules.get("services.live_api_server")
+    if srv and hasattr(srv, "ROLE_PERMISSIONS"):
+        return srv.ROLE_PERMISSIONS.get(role, [])
+    return ["patients:read", "prescriptions:read"]
+
+def _get_auth_db():
+    import sys
+    srv = sys.modules.get("services.live_api_server")
+    if srv and hasattr(srv, "get_db"):
+        return srv.get_db()
+    from services.db_adapter import get_universal_db
+    DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "zayvora_live.db")
+    return get_universal_db(DB_PATH)
 
 ACTIVE_OTP_RECORDS = {}  # identifier -> {hash, salt, expires_at, attempts}
 OTP_RATE_LIMITS = {}     # identifier -> [timestamps]
@@ -120,11 +141,11 @@ def generate_session_token(user_id: str, role: str, facility_id: str, email: str
     }
     raw_payload = json.dumps(payload, sort_keys=True)
     b64_payload = base64.urlsafe_b64encode(raw_payload.encode()).decode().rstrip("=")
-    sig = hmac.new(srv.JWT_SECRET.encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
+    sig = hmac.new(_get_jwt_secret().encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
     token = f"zyv.{b64_payload}.{sig}"
 
     try:
-        with srv.get_db() as conn:
+        with _get_auth_db() as conn:
             cur = conn.cursor()
             cur.execute("""
             INSERT OR REPLACE INTO sessions (token, user_id, role, facility_id, expires_at, revoked)
@@ -151,7 +172,7 @@ def generate_refresh_token(user_id: str, role: str, facility_id: str) -> str:
     }
     raw_payload = json.dumps(payload, sort_keys=True)
     b64_payload = base64.urlsafe_b64encode(raw_payload.encode()).decode().rstrip("=")
-    sig = hmac.new(srv.JWT_SECRET.encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
+    sig = hmac.new(_get_jwt_secret().encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
     return f"zyv.rf.{b64_payload}.{sig}"
 
 # -----------------------------------------------------------------------------
@@ -238,7 +259,7 @@ def validate_session_token(token: str) -> dict:
         return None
 
     try:
-        with srv.get_db() as conn:
+        with _get_auth_db() as conn:
             cur = conn.cursor()
             cur.execute("SELECT revoked, expires_at FROM sessions WHERE token = ?", (token,))
             row = cur.fetchone()
@@ -252,7 +273,7 @@ def validate_session_token(token: str) -> dict:
         if len(parts) != 3:
             return None
         _, b64_payload, signature = parts
-        expected_sig = hmac.new(srv.JWT_SECRET.encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
+        expected_sig = hmac.new(_get_jwt_secret().encode(), b64_payload.encode(), hashlib.sha256).hexdigest()
         if not hmac.compare_digest(signature, expected_sig):
             return None
 
@@ -274,11 +295,11 @@ def validate_session_token(token: str) -> dict:
             "role": role,
             "facilityId": payload.get("fac", "FAC-HQ-01"),
             "mrn": payload.get("mrn"),
-            "permissions": srv.ROLE_PERMISSIONS.get(role, [])
+            "permissions": _get_role_permissions(role)
         }
 
     try:
-        with srv.get_db() as conn:
+        with _get_auth_db() as conn:
             cur = conn.cursor()
             cur.execute("""
             SELECT s.user_id, s.role, s.facility_id, s.revoked, u.email, u.full_name, u.mrn
@@ -296,7 +317,7 @@ def validate_session_token(token: str) -> dict:
                     "role": role,
                     "facilityId": row["facility_id"],
                     "mrn": row["mrn"],
-                    "permissions": srv.ROLE_PERMISSIONS.get(role, [])
+                    "permissions": _get_role_permissions(role)
                 }
     except Exception:
         pass
@@ -307,7 +328,7 @@ def validate_session_token(token: str) -> dict:
 def revoke_session_token(token: str) -> bool:
     """Revokes active session."""
     try:
-        with srv.get_db() as conn:
+        with _get_auth_db() as conn:
             cur = conn.cursor()
             cur.execute("UPDATE sessions SET revoked = 1 WHERE token = ?", (token,))
             conn.commit()

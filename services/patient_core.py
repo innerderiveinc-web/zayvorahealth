@@ -14,7 +14,14 @@ import json
 import os
 from typing import Any, Dict, List, Optional, Tuple
 
-import services.live_api_server as srv
+def _get_patient_db():
+    import sys
+    srv = sys.modules.get("services.live_api_server")
+    if srv and hasattr(srv, "get_db"):
+        return srv.get_db()
+    from services.db_adapter import get_universal_db
+    DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "zayvora_live.db")
+    return get_universal_db(DB_PATH)
 
 def _get_phi_salt():
     return os.environ.get("PHI_ENCRYPTION_KEY", "zayvora-phi-dev-key-change-in-prod")
@@ -105,7 +112,7 @@ def _build_patient_360_v2(patient_id: str = "PAT-0814") -> Dict[str, Any]:
     rx_rows = []
 
     try:
-        with srv.get_db() as conn:
+        with _get_patient_db() as conn:
             cur = conn.cursor()
             # 1. Patient Demographics & Encrypted PHI
             cur.execute("""
