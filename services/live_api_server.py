@@ -463,7 +463,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
                 self._send_cors_headers()
-                apply_enterprise_security_headers(self)
                 self.end_headers()
                 with open(html_path, "rb") as f:
                     self.wfile.write(f.read())
@@ -479,7 +478,6 @@ class ZayvoraApiHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-Type", "text/html; charset=utf-8")
                 self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
                 self._send_cors_headers()
-                apply_enterprise_security_headers(self)
                 self.end_headers()
                 with open(web_path, "rb") as f:
                     self.wfile.write(f.read())
