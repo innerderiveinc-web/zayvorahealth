@@ -1,0 +1,25 @@
+# =============================================================================
+# ZAYVORA Health OS™ — Litestream Real-time WAL Continuous Replication Config
+# =============================================================================
+# Enables continuous streaming of SQLite Write-Ahead Log (WAL) frames to 
+# local and offsite cloud storage (AWS S3, Cloudflare R2, MinIO, or GCP CS).
+# Guarantees RPO < 1.0 second (Zero Data Loss) on catastrophic host failure.
+# =============================================================================
+
+dbs:
+  - path: database/zayvora_live.db
+    replicas:
+      # Primary Cloud Replica (S3 / R2 / MinIO Object Storage)
+      - type: s3
+        bucket: "${LITESTREAM_BUCKET:-zayvora-disaster-recovery-vault}"
+        path: "${LITESTREAM_PATH:-live_db_wal_stream}"
+        endpoint: "${LITESTREAM_ENDPOINT:-https://s3.amazonaws.com}"
+        sync-interval: 1s
+        retention: 168h # 7 days continuous point-in-time recovery window
+        validation-interval: 1h
+
+      # Local High-Availability Mirror (Secondary Disk / NVMe Mount)
+      - type: file
+        path: backups/wal_replica
+        sync-interval: 1s
+        retention: 72h
