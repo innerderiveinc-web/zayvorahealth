@@ -14,6 +14,8 @@ import signal
 import threading
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 SERVER_SCRIPT = os.path.join(BASE_DIR, "services", "live_api_server.py")
 PID_FILE = os.path.join(BASE_DIR, ".watchdog.pid")
