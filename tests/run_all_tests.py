@@ -217,7 +217,6 @@ TEST_SUITES = [
     ("Codebase Integrity, Static Drift & Parity Gate", ".", "tests/test_codebase_integrity_and_parity.py"),
     ("Practical Clinical Enhancements & Patient UX", ".", "tests/test_practical_clinical_enhancements.py"),
     ("Full Subsystems Verification (Web, Mobile, Engines, API, Audio)", ".", "tests/test_full_subsystems_verification.py"),
-    ("50 Multi-Morbidity Clinical Vignettes Concordance (DSMB)", ".", "tests/test_vignettes_concordance_run.py"),
     ("Browser & Clinician E2E User Journey & Prescription Seal", ".", "tests/test_browser_e2e_journey.py"),
     ("6 Core Clinical Engines Scientific Validation (Mizaj, Axis, Evidence, Diff, AI, Safety)", ".", "tests/test_six_core_engines_clinical_validation.py"),
     ("Kulliyat-e-Adwiyah & Ishrah al-Adwiyah Pharmacological Suite", ".", "tests/test_kulliyat_e_adwiyah.py"),

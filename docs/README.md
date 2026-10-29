@@ -42,7 +42,6 @@ docs/
 
 - **[Final Unani Protocols](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/clinical/FINAL_UNANI_PROTOCOLS.md)**: Canonical clinical pathways for classical formulations.
 - **[Clinical Safety & AI Governance](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/clinical/FINAL_CLINICAL_SAFETY_REPORT.md)**: 12-Gate clinical governance, drug-drug interaction matrix, and contraindication guards.
-- **[50 DSMB Clinical Validation Vignettes](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/clinical/ZAYVORA_CLINICAL_VALIDATION_VIGNETTES_50.md)**: Benchmark concordance scenarios validated against expert clinician panels.
 - **[Agentic Systems Action Plan](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/clinical/ZAYVORA_AGENTIC_SYSTEMS_ACTION_PLAN.md)**: Autonomous agent orchestrators and human-in-the-loop workflows.
 - **[Doctor Approval Workflow](file:///Users/irfanashraf/Downloads/zayvora-platform-phase0-4/docs/clinical/doctor-approval-workflow.md)**: Clinical sign-off policies and prescription verification.
 

@@ -111,7 +111,6 @@ Comprehensive, international-standard technical documentation organized accordin
 * 📐 **[System Architecture](docs/architecture/FINAL_ARCHITECTURE.md)** & **[Runtime Topology](docs/architecture/SYSTEM_RUNTIME_TOPOLOGY.md)**: Master structural design & dual-profile runtime specification.
 * ⚖️ **[Compliance & Statutory Mapping](docs/compliance/STATUTORY_COMPLIANCE_AND_REGULATORY_MAPPING.md)**: 21 CFR Part 11, HIPAA, GDPR, ABDM M1-M3 & DISHA controls.
 * 🛡️ **[Security Architecture](docs/security/FINAL_SECURITY_MODEL.md)**: AES-256-GCM authenticated encryption & anti-backdoor shields.
-* 🧪 **[50 DSMB Clinical Validation Vignettes](docs/clinical/ZAYVORA_CLINICAL_VALIDATION_VIGNETTES_50.md)**: Blinded clinician concordance trial benchmarks.
 * 📦 **[Frontend Client Architecture](js/README.md)**: 7 domain modules, zero-build PWA, and React/Next.js client topology.
 
 ---
