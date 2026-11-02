@@ -8700,7 +8700,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
               <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-2">
                 <span class="text-[var(--muted)] block">GCP Safety Compliance</span>
                 <span class="text-2xl font-bold text-[#2DD4BF]">Zero SAEs</span>
-                <span class="text-[10px] text-emerald-400">Audited by DSMB Committee</span>
+                <span class="text-[10px] text-emerald-400">Automated Algorithmic Safety Sentinel</span>
               </div>
             </div>
           </div>
@@ -8733,7 +8733,7 @@ Courtesy reminder for your follow-up consultation with Hakeem Dr. Irfan Ashraf.
             <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex justify-between items-center">
               <div>
                 <h2 class="text-xl font-bold text-white">ICH E2B Pharmacovigilance Ledger</h2>
-                <p class="text-xs text-[var(--muted)] mt-1">Automated adverse event reporting, severity scoring, and DSMB committee oversight.</p>
+                <p class="text-xs text-[var(--muted)] mt-1">Automated adverse event reporting, severity scoring, and rule-based safety oversight.</p>
               </div>
               <span class="badge-emerald text-xs px-3 py-1 rounded-full font-semibold">0 Critical Adverse Events</span>
             </div>

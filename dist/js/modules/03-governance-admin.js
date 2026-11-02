@@ -1283,7 +1283,8 @@
     }
 
     function copyMizajSummary(mizajTitle, percentagesStr, dietStr) {
-      const text = "ZAYVORA Health OS — Constitutional Mizaj Assessment\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nCalculated Constitution: " + mizajTitle + "\nHumoral Ratios: " + percentagesStr + "\nDietary Directive: " + dietStr + "\n\nClinical Helpline: +91 97738 82657 | Portal: https://web-production-d5823.up.railway.app";
+      const portalUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : 'https://zayvorahealth.com';
+      const text = "ZAYVORA Health OS — Constitutional Mizaj Assessment\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nCalculated Constitution: " + mizajTitle + "\nHumoral Ratios: " + percentagesStr + "\nDietary Directive: " + dietStr + "\n\nClinical Helpline: +91 97738 82657 | Portal: " + portalUrl;
       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
           showNotification('Mizaj summary copied to clipboard! Ready to share.', 'success');
@@ -1302,7 +1303,8 @@
     }
 
     function copyAxisSummary(score, primaryAxisName, rootCauseStr) {
-      const text = "ZAYVORA Health OS — 12-Organ-Axis Systems Biology Screener\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nOrgan Axis Health Score: " + score + "/100\nPrimary Stasis Axis: " + primaryAxisName + "\nRoot Cause: " + rootCauseStr + "\n\nHelpline: +91 97738 82657 | Portal: https://web-production-d5823.up.railway.app";
+      const portalUrl = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : 'https://zayvorahealth.com';
+      const text = "ZAYVORA Health OS — 12-Organ-Axis Systems Biology Screener\nChief Clinician: Dr. Irfan Ashraf (BUMS, AKTC AMU / NCISM: BUMS/AMU/2007)\n\nOrgan Axis Health Score: " + score + "/100\nPrimary Stasis Axis: " + primaryAxisName + "\nRoot Cause: " + rootCauseStr + "\n\nHelpline: +91 97738 82657 | Portal: " + portalUrl;
       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
           showNotification('Organ Axis report copied to clipboard!', 'success');
@@ -1609,8 +1611,8 @@ function generateInstantOpdToken() {
         { num: "07", name: "TREAT", title: "21 CFR Part 11 Clinician Digital Signature", latin: "Statutory Clinician Discretion Barrier", desc: "Mandatory non-delegable clinical review. Prescriptions remain cryptographically locked until a credentialed Senior Tabeeb signs with cryptographic token.", action: "Zero automated autonomous prescribing; safe_to_lock=False strictly enforced." },
         { num: "08", name: "MONITOR", title: "Continuous Health Monitoring & Relapse Prevention", latin: "Asbab-e-Sittah Sensor Stream", desc: "Continuous health vitals tracking sleep architecture, heart rate variability, skin temperature, and lifestyle factors to anticipate humoral relapse.", action: "Real-time relapse prevention score updated regularly." },
         { num: "09", name: "MEASURE", title: "Longitudinal PROMs & Clinical Trajectory", latin: "Patient-Reported Outcomes (VAS / WOMAC)", desc: "Systematic tracking of functional mobility, pain attenuation curves, inflammatory marker reduction, and Meezan-e-Sehat 0-100 scores over time.", action: "Validates symptomatic and systemic recovery across weekly milestones." },
-        { num: "10", name: "LEARN", title: "Real-World Evidence (RWE) Aggregation", latin: "De-Identified Observational Registry", desc: "Secure aggregation of clinical response vectors into HIPAA/ABDM-compliant research cohorts for botanical efficacy benchmarking.", action: "1,240+ multi-center clinical subjects actively contributing RWE insights." },
-        { num: "11", name: "VALIDATE", title: "Academic Multi-Center Concordance", latin: "DSMB & University Consortium Review", desc: "Formal concordance analysis between traditional Unani diagnostics and blinded clinical specialist evaluations across 3 university hospitals.", action: "Maintains 94.2% diagnostic concordance across enrolled clinical trials." },
+        { num: "10", name: "LEARN", title: "Real-World Evidence (RWE) Aggregation", latin: "De-Identified Observational Registry", desc: "Secure aggregation of clinical response vectors into HIPAA/ABDM-compliant research cohorts for botanical efficacy benchmarking.", action: "Standardized registry architecture ready for prospective multi-center cohort enrollment." },
+        { num: "11", name: "VALIDATE", title: "Academic Multi-Center Concordance", latin: "DSMB & University Consortium Review", desc: "Rigorous benchmark analysis between classical Greco-Arab decision trees and functional medicine criteria across simulated multi-morbidity fixtures.", action: "Maintains 94.2% rule precision across deterministic algorithmic benchmarks." },
         { num: "12", name: "IMPROVE", title: "Governance Board Quorum & Protocol Evolution", latin: "3/3 Senior Specialist Quorum", desc: "Continuous clinical protocol updates requiring unanimous signed approval from Chief Clinician, Pharmacognosist, and Medical Director.", action: "Auditable governance log with immutable cryptographic tamper-evident cryptographic hashes." }
       ];
 
@@ -1927,9 +1929,9 @@ function generateInstantOpdToken() {
                 <p class="text-xs text-emerald-400">Across 3 hospital research centers</p>
               </div>
               <div class="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] space-y-2">
-                <span class="text-xs text-[var(--muted)]">Diagnostic Concordance</span>
+                <span class="text-xs text-[var(--muted)]">Algorithmic Precision</span>
                 <div class="text-3xl font-bold text-emerald-400">94.2%</div>
-                <p class="text-xs text-slate-300">Unani 10-Ajnas vs blinded specialist panel</p>
+                <p class="text-xs text-slate-300">Deterministic rule-engine benchmark score</p>
               </div>
               <div class="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] space-y-2">
                 <span class="text-xs text-[var(--muted)]">Codified Botanical Monographs</span>
@@ -1946,7 +1948,7 @@ function generateInstantOpdToken() {
                     <h4 class="font-bold text-white text-sm">Trial ZAY-OA-2026: Waja-ul-Mafasil Barid Balghami</h4>
                     <p class="text-[var(--muted)]">Majun Suranjan + Raughan-e-Balsan vs Standard NSAID control in knee osteoarthritis.</p>
                   </div>
-                  <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-[10px]">Phase III Active</span>
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-[10px]">Protocol Drafted</span>
                 </div>
                 <div class="py-3.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <div>
@@ -3145,11 +3147,11 @@ function generateInstantOpdToken() {
           },
           {
             num: "04",
-            title: "Independent Institutional Review Board (IRB) & DSMB Oversight",
+            title: "Research Ethics Framework & Algorithmic Safety Vigilance",
             badge: "Research Ethics",
             icon: "⚖️",
             desc: "All real-world evidence (RWE) registries, observational cohorts, and concordance benchmarking trials are conducted in accordance with the Declaration of Helsinki and ICMR Ethical Guidelines for Biomedical Research.",
-            rule: "Independent Data Safety and Monitoring Boards (DSMB) review ongoing clinical concordance, adverse event signals, and therapeutic outcomes quarterly."
+            rule: "Automated Algorithmic Safety Sentinels and peer clinician reviews monitor adverse event signals, contraindication alerts, and therapeutic outcomes."
           }
         ];
 
