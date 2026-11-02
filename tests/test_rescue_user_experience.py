@@ -13,7 +13,9 @@ import os
 import sys
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-RESCUE_DIR = os.path.join(BASE_DIR, "docs/rescue")
+RESCUE_DIR = os.path.join(BASE_DIR, "docs/reports/archive_audits/rescue")
+if not os.path.exists(RESCUE_DIR):
+    RESCUE_DIR = os.path.join(BASE_DIR, "docs/rescue")
 PREVIEW_FILE = os.path.join(BASE_DIR, "docs/zayvora_health_os_preview.html")
 
 def test_rescue_documentation_completeness():

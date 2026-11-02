@@ -21,7 +21,9 @@ except ImportError:
             return lambda f: f
 
     HTTPException = Exception
-    Depends = object
+    class Depends:  # type: ignore
+        def __init__(self, *args, **kwargs):
+            pass
     WebSocket = Any
     WebSocketDisconnect = Exception
     CurrentUser = Any

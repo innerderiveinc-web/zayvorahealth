@@ -224,10 +224,31 @@ def handle_telemedicine_post(handler: Any, path: str, query_params: Dict[str, An
             handler._send_error(f"Unknown message template: {message_type}.", status=400, code="INVALID_TEMPLATE")
             return True
 
-        template_text = srv.MESSAGE_TEMPLATES[message_type]
+        tpl = srv.MESSAGE_TEMPLATES[message_type]
+        if isinstance(tpl, dict):
+            allowed_channels = tpl.get("channels", ["whatsapp", "sms", "email", "webhook"])
+            if channel not in allowed_channels and channel != "webhook":
+                handler._send_error(f"Message type '{message_type}' is not approved for channel '{channel}'.", status=400, code="CHANNEL_NOT_APPROVED")
+                return True
+
+            required = tpl.get("required_params", [])
+            for p in required:
+                if p not in parameters or parameters[p] is None or str(parameters[p]).strip() == "":
+                    handler._send_error(f"Missing required template parameter '{p}' for '{message_type}'.", status=400, code="MISSING_TEMPLATE_PARAMS")
+                    return True
+
+            template_text = tpl.get("template_text", "")
+        else:
+            template_text = str(tpl)
+
         rendered_text = template_text
         for k, v in parameters.items():
             rendered_text = rendered_text.replace(f"{{{k}}}", str(v))
+
+        # TRAI DLT PHI Masking for unencrypted SMS
+        if channel == "sms":
+            import re
+            rendered_text = re.sub(r"\b\d{10,12}\b", lambda m: m.group(0)[:2] + "******" + m.group(0)[-2:], rendered_text)
 
         msg_id = f"QSURA-{channel.upper()[:2]}-{uuid.uuid4().hex[:8].upper()}"
         notif_uuid = f"NOTIF-{uuid.uuid4().hex[:8].upper()}"
@@ -251,6 +272,7 @@ def handle_telemedicine_post(handler: Any, path: str, query_params: Dict[str, An
             conn.commit()
 
         dispatch_record = {
+            "message_id": msg_id,
             "dispatch_id": msg_id,
             "channel": channel,
             "recipient": recipient,

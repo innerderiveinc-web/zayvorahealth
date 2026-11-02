@@ -151,6 +151,7 @@ CREATE TABLE IF NOT EXISTS encounters (
     appointment_id TEXT,
     doctor_name TEXT NOT NULL,
     doctor_reg TEXT NOT NULL,
+    department TEXT DEFAULT "Integrative Unani Medicine",
     facility_id TEXT DEFAULT "FAC-HQ-01",
     chief_complaint TEXT,
     examination_notes TEXT,

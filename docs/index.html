@@ -458,6 +458,23 @@
       color: #114B38 !important;
     }
 
+    /* Universal Header Scrollbar Elimination & Dropdown Layering Guarantee */
+    header, header * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    header *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    #preferences-menu-container {
+      overflow: visible !important;
+    }
+    #preferences-dropdown-panel {
+      z-index: 99999 !important;
+    }
+
     /* Front-Door Quick Action Buttons in Light Mode */
     [data-theme="light"] button[onclick*="checkLiveTokenStatusQuick"],
     [data-theme="light"] button[onclick*="LiveToken"] {
@@ -1634,7 +1651,7 @@
         <div id="auth-container" class="flex items-center shrink-0">
           <button id="auth-login-btn" onclick="toggleLoginModal(true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5 shadow-sm" title="Authorized Clinical Portals & Staff Access">
             <svg class="w-3.5 h-3.5 inline-block text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-            <span id="auth-btn-label"><span class="hidden sm:inline">🔐 Clinician &amp; Staff Sign In</span><span class="sm:hidden">Sign In</span></span>
+            <span id="auth-btn-label"><span class="hidden sm:inline">Clinician &amp; Staff Sign In</span><span class="sm:hidden">Sign In</span></span>
           </button>
         </div>
 

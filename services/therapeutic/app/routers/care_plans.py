@@ -8,7 +8,9 @@ try:
     from fastapi.responses import PlainTextResponse
 except ImportError:
     APIRouter = object
-    Depends = object
+    class Depends:  # type: ignore
+        def __init__(self, *args, **kwargs):
+            pass
     HTTPException = Exception
     PlainTextResponse = object
 

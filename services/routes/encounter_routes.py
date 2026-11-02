@@ -319,16 +319,20 @@ def handle_encounter_post(handler: Any, path: str, query_params: Dict[str, Any],
             enc_num = f"ENC-2026-{enc_count:04d}"
             enc_id = f"ENC-{uuid.uuid4().hex[:6].upper()}"
 
+            doc_name = body.get("doctorName") or (auth_ctx["fullName"] if auth_ctx else "Prof. (Dr.) Mansoor Alam")
+            doc_reg = body.get("doctorReg") or (auth_ctx.get("doctorReg") if auth_ctx and isinstance(auth_ctx, dict) else None) or "CCIM-U-1988-0412"
+
             cur.execute("""
-            INSERT INTO encounters (id, encounter_number, appointment_id, mrn, patient_name, doctor_name, department, chief_complaint, vitals_json, examination_notes, soap_json, mizaj_json, organ_axis_json, afaal_cascade_json, status, facility_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO encounters (id, encounter_number, appointment_id, mrn, patient_name, doctor_name, doctor_reg, department, chief_complaint, vitals_json, examination_notes, soap_json, mizaj_json, organ_axis_json, afaal_cascade_json, status, facility_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 enc_id,
                 enc_num,
                 body.get("appointmentId"),
                 mrn,
                 f"{patient['first_name']} {patient['last_name']}",
-                body.get("doctorName") or (auth_ctx["fullName"] if auth_ctx else "Prof. (Dr.) Mansoor Alam"),
+                doc_name,
+                doc_reg,
                 body.get("department") or "Integrative Unani Medicine",
                 body.get("chiefComplaint") or "General Health Assessment",
                 json.dumps(body.get("vitals") or {}),
@@ -340,6 +344,8 @@ def handle_encounter_post(handler: Any, path: str, query_params: Dict[str, Any],
                 "IN_PROGRESS",
                 facility_id
             ))
+            if body.get("appointmentId"):
+                cur.execute("UPDATE appointments SET status = 'IN_CONSULTATION' WHERE id = ?", (body.get("appointmentId"),))
             conn.commit()
 
         handler._send_json({
@@ -411,45 +417,65 @@ def handle_encounter_post(handler: Any, path: str, query_params: Dict[str, Any],
     # 6. ZAPE 2.0 Posology Scaling Endpoint
     if path in ("/api/v1/ai/posology/scale", "/api/v1/hakeem/personalize"):
         patient_context = body.get("patient_context") or body.get("patient") or {}
-        age = body.get("age", patient_context.get("age"))
-        egfr = body.get("egfr", patient_context.get("egfr"))
+        age_val = body.get("age", patient_context.get("age"))
+        egfr_val = body.get("egfr", patient_context.get("egfr"))
         pregnancy = body.get("pregnancy", patient_context.get("pregnancy_status", "no"))
         lactation = body.get("lactation", patient_context.get("lactation_status", "no"))
         mizaj = body.get("mizaj", patient_context.get("mizaj_dominant", "Damawi"))
         season = body.get("season", "Rabi (Spring)")
         items = body.get("items") or body.get("ingredients") or []
+        base_dose = float(body.get("baseDoseMg") or body.get("base_dose_mg") or 500.0)
 
         scaled_items = []
         notes = []
+        warnings = []
 
         scale_factor = 1.0
-        if age is not None:
+        category = "Adult"
+
+        if age_val is not None:
             try:
-                age = float(age)
-                if age < 12:
-                    scale_factor *= 0.5
-                    notes.append("Paediatric downward dose scale (-50%) applied.")
-                elif age >= 65:
-                    scale_factor *= 0.75
+                age_num = float(age_val)
+                if age_num < 1:
+                    category = "Infant"
+                    scale_factor = 0.15
+                    notes.append("Infant dose scale applied.")
+                    warnings.append("Pediatric dosage: infant caution.")
+                elif age_num < 12:
+                    category = "Child"
+                    # Young's formula: age / (age + 12)
+                    scale_factor = round(age_num / (age_num + 12.0), 3)
+                    notes.append(f"Paediatric Young's rule dose scale (factor: {scale_factor}) applied.")
+                    warnings.append(f"Pediatric dosage: Young's rule factor {scale_factor} for age {int(age_num)}.")
+                elif age_num >= 65:
+                    category = "Geriatric"
+                    scale_factor = 0.75
                     notes.append("Geriatric downward dose scale (-25%) applied.")
-            except ValueError:
+                    warnings.append("Geriatric downward dose adjustment applied.")
+            except (ValueError, TypeError):
                 pass
 
-        if egfr is not None:
+        if egfr_val is not None:
             try:
-                egfr = float(egfr)
-                if egfr < 30:
-                    scale_factor *= 0.5
-                    notes.append("Severe renal impairment (eGFR < 30): halving dose.")
-                elif egfr < 60:
-                    scale_factor *= 0.75
-                    notes.append("Moderate renal impairment (eGFR 30-59): reducing dose by 25%.")
-            except ValueError:
+                egfr_num = float(egfr_val)
+                if egfr_num < 15:
+                    scale_factor = round(scale_factor * 0.25, 3)
+                    notes.append("End-stage renal disease (CKD Stage 5 / eGFR < 15): 75% reduction.")
+                    warnings.append("Severe renal impairment (CKD Stage 5 / eGFR < 15): reducing dose by 75%.")
+                elif egfr_num < 30:
+                    scale_factor = round(scale_factor * 0.50, 3)
+                    notes.append("Severe renal impairment (CKD Stage 4 / eGFR < 30): halving dose.")
+                    warnings.append("Severe renal impairment (CKD Stage 4 / eGFR < 30): halving dose.")
+                elif egfr_num < 60:
+                    scale_factor = round(scale_factor * 0.75, 3)
+                    notes.append("Moderate renal impairment (CKD Stage 3 / eGFR 30-59): reducing dose by 25%.")
+                    warnings.append("Moderate renal impairment (CKD Stage 3 / eGFR 30-59): reducing dose by 25%.")
+            except (ValueError, TypeError):
                 pass
 
         for item in items:
             it_name = item.get("name", "")
-            orig_dose = float(item.get("standard_dose_mg") or item.get("dosage_mg") or 500)
+            orig_dose = float(item.get("standard_dose_mg") or item.get("dosage_mg") or base_dose)
             scaled = orig_dose * scale_factor
 
             scaled_items.append({
@@ -460,14 +486,21 @@ def handle_encounter_post(handler: Any, path: str, query_params: Dict[str, Any],
                 "instructions": item.get("instructions", "With lukewarm water")
             })
 
+        scaled_dose_mg = round(base_dose * scale_factor, 2)
+
         handler._send_json({
             "ok": True,
+            "category": category,
+            "scalingFactor": scale_factor,
+            "scaledDoseMg": scaled_dose_mg,
+            "baseDoseMg": base_dose,
+            "warnings": warnings,
             "scaled_items": scaled_items,
             "scale_factor": round(scale_factor, 2),
             "clinical_notes": notes,
             "patient_context": {
-                "age": age,
-                "egfr": egfr,
+                "age": age_val,
+                "egfr": egfr_val,
                 "mizaj": mizaj,
                 "season": season
             }
