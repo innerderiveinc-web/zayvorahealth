@@ -409,6 +409,55 @@
       color: #18634B !important;
     }
 
+    /* Unified Regional & Display Preferences Dropdown in Light Mode */
+    [data-theme="light"] #preferences-dropdown-panel {
+      background-color: #FFFFFF !important;
+      border: 1px solid #DCD5C4 !important;
+      box-shadow: 0 16px 36px rgba(45, 40, 30, 0.16), 0 4px 12px rgba(45, 40, 30, 0.08) !important;
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel .text-white {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel .text-slate-400 {
+      color: #5A6A75 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel .border-slate-800,
+    [data-theme="light"] #preferences-dropdown-panel .border-slate-700 {
+      border-color: #E6E1D5 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel .bg-\[\#0A0F1D\] {
+      background-color: #F8F6F0 !important;
+      border: 1px solid #E2DDD2 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel select {
+      background-color: #FFFFFF !important;
+      border-color: #D6D1C5 !important;
+      color: #18634B !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-en,
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-hi,
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-ur,
+    [data-theme="light"] #preferences-dropdown-panel #theme-btn-dark,
+    [data-theme="light"] #preferences-dropdown-panel #theme-btn-light {
+      color: #1A2328 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-en.bg-emerald-500\/20,
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-hi.bg-emerald-500\/20,
+    [data-theme="light"] #preferences-dropdown-panel #lang-btn-ur.bg-emerald-500\/20 {
+      background-color: rgba(24, 99, 75, 0.15) !important;
+      color: #18634B !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel #header-help-btn {
+      background-color: #F1EFEA !important;
+      color: #18634B !important;
+      border: 1px solid #DCD5C4 !important;
+    }
+    [data-theme="light"] #preferences-dropdown-panel #header-help-btn:hover {
+      background-color: #E6E2D8 !important;
+      color: #114B38 !important;
+    }
+
     /* Front-Door Quick Action Buttons in Light Mode */
     [data-theme="light"] button[onclick*="checkLiveTokenStatusQuick"],
     [data-theme="light"] button[onclick*="LiveToken"] {
@@ -1480,7 +1529,7 @@
     <!-- ===================================================================== -->
   <!-- TOP PLATFORM APPLICATION BAR (EXECUTIVE & CLINICAL RUNTIME) -->
   <!-- ===================================================================== -->
-  <header class="backdrop-blur-md bg-[#0F172A]/95 border-b border-emerald-500/20 px-4 md:px-8 py-3 sticky top-0 z-50 shadow-xl transition-all">
+  <header class="backdrop-blur-md bg-[#0F172A]/95 border-b border-emerald-500/20 px-4 md:px-8 py-3 sticky top-0 z-[100] shadow-xl transition-all">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 min-w-0">
       
       <!-- Facility & Product Brand -->
@@ -1507,7 +1556,7 @@
       </div>
 
       <!-- Persona Switcher, Actions & Utility Bar (Sleek Single-Row Layout) -->
-      <div class="flex items-center gap-1.5 shrink-0 overflow-x-auto max-w-full scrollbar-none">
+      <div class="flex items-center gap-1.5 shrink-0 overflow-visible">
         
         <!-- Platform Edition Switcher (Clinic Mode vs Flagship HQ) -->
         <div id="edition-mode-switcher" class="hidden items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-0.5 shadow-sm shrink-0">
@@ -1582,7 +1631,7 @@
         </div>
 
         <!-- Sleek Unified Settings & Utilities Dropdown -->
-        <div class="relative shrink-0" id="preferences-menu-container">
+        <div class="relative shrink-0 z-[999]" id="preferences-menu-container">
           <button id="preferences-dropdown-trigger" onclick="togglePreferencesDropdown()" class="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500/50 text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1 sm:gap-1.5 shadow-sm cursor-pointer" title="Language, Currency & Display Preferences">
             <span>🌐</span>
             <span class="font-mono text-emerald-400 font-bold text-[11px] hidden sm:inline" id="preferences-current-summary">EN • ₹ INR</span>
@@ -1590,7 +1639,7 @@
           </button>
 
           <!-- Dropdown Panel -->
-          <div id="preferences-dropdown-panel" class="hidden absolute right-0 mt-2 w-72 bg-[#0F172A] border border-emerald-500/30 rounded-2xl p-4 shadow-2xl z-50 space-y-3.5 backdrop-blur-xl text-left">
+          <div id="preferences-dropdown-panel" class="hidden absolute right-0 top-full mt-2 w-72 max-w-[calc(100vw-24px)] bg-[#0F172A] border border-emerald-500/30 rounded-2xl p-4 shadow-2xl z-[9999] space-y-3.5 backdrop-blur-xl text-left">
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
               <div class="flex items-center gap-1.5">
                 <span class="text-xs">⚙️</span>
