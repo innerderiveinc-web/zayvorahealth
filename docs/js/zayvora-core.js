@@ -110,13 +110,13 @@ function toggleDemoCredentials() {
       const container = document.getElementById('theme-pill-container');
       if (!darkBtn || !lightBtn) return;
       if (currentTheme === 'light') {
-        lightBtn.className = 'px-2.5 py-1 rounded-lg bg-[#165B44] text-white font-bold flex items-center gap-1 shadow-sm transition-all cursor-pointer';
-        darkBtn.className = 'px-2.5 py-1 rounded-lg text-[#5F707E] hover:text-[#1B242A] flex items-center gap-1 transition-all cursor-pointer';
-        if (container) container.className = 'flex items-center bg-[#E4DDCF] rounded-xl border border-[#D0C8B7] p-0.5 text-[11px] font-bold shadow-inner';
+        lightBtn.className = 'py-1 rounded-lg bg-emerald-700 text-white font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer';
+        darkBtn.className = 'py-1 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+        if (container) container.className = 'grid grid-cols-2 gap-1.5 p-1 bg-[#0A0F1D] rounded-xl border border-slate-800 text-[11px] font-bold shadow-inner';
       } else {
-        darkBtn.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-emerald-300 font-bold flex items-center gap-1 shadow-sm transition-all cursor-pointer';
-        lightBtn.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white flex items-center gap-1 transition-all cursor-pointer';
-        if (container) container.className = 'flex items-center bg-[#0B0F17] rounded-xl border border-slate-800 p-0.5 text-[11px] font-bold shadow-sm';
+        darkBtn.className = 'py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer';
+        lightBtn.className = 'py-1 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+        if (container) container.className = 'grid grid-cols-2 gap-1.5 p-1 bg-[#0A0F1D] rounded-xl border border-slate-800 text-[11px] font-bold shadow-sm';
       }
     }
 
@@ -567,13 +567,17 @@ function toggleDemoCredentials() {
 
     function scrollToOpdBooking() {
       const card = document.getElementById('opd-booking-card');
-      if (card) {
-        card.scrollIntoView({ behavior: 'smooth' });
+      if (card && card.offsetParent !== null) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else {
+        if (typeof switchRole === 'function' && typeof state !== 'undefined' && state && state.role !== 'website') {
+          switchRole('website');
+        }
         if (typeof viewWebsitePage === 'function') viewWebsitePage('home');
         setTimeout(() => {
-          document.getElementById('opd-booking-card')?.scrollIntoView({ behavior: 'smooth' });
-        }, 120);
+          const el = document.getElementById('opd-booking-card');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
       }
     }
 
@@ -645,6 +649,29 @@ function toggleDemoCredentials() {
       state.role = newRole;
       state.tab = (roleNavs[newRole] && roleNavs[newRole][0]) ? roleNavs[newRole][0].id : 'overview';
       try { sessionStorage.setItem('zayvora_session_desk', newRole); } catch(e) {}
+      try {
+        const savedLang = localStorage.getItem('zayvora_lang');
+        if (savedLang && ['en', 'hi', 'ur'].includes(savedLang)) {
+          state.lang = savedLang;
+          document.documentElement.setAttribute('lang', savedLang);
+          ['en', 'hi', 'ur'].forEach(l => {
+            const btn = document.getElementById(`lang-btn-${l}`);
+            if (btn) {
+              btn.className = (l === savedLang)
+                ? 'py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold transition cursor-pointer'
+                : 'py-1 rounded-lg text-slate-400 hover:text-white font-bold transition cursor-pointer';
+            }
+          });
+        }
+        const savedCur = localStorage.getItem('zayvora_currency');
+        if (savedCur && window.currencyRates && window.currencyRates[savedCur]) {
+          window.activeCurrency = savedCur;
+          const curSelect = document.getElementById('platform-currency-select');
+          if (curSelect) curSelect.value = savedCur;
+        }
+        if (typeof updatePreferencesSummary === 'function') updatePreferencesSummary();
+      } catch (e) {}
+
       const sel = document.getElementById('role-selector');
       if (sel) sel.value = newRole;
       updateAuthHeaderUI();
@@ -22301,16 +22328,20 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
       showNotification(`✓ ${facType} "${name}" (${city}) onboarded into ZAYVORA Enterprise Network! ABDM HFR: ${hfr || 'IN-PENDING'} registered.`, 'success');
     }
 
-    // 5. Language Switcher
+    // 5. Language Switcher (Persisted with Full Typography Sync)
     function switchLanguage(lang) {
-      state.lang = lang;
+      if (typeof state !== 'undefined' && state) state.lang = lang;
+      try { localStorage.setItem('zayvora_lang', lang); } catch (e) {}
+      if (typeof document !== 'undefined' && document.documentElement) {
+        document.documentElement.setAttribute('lang', lang);
+      }
       ['en', 'hi', 'ur'].forEach(l => {
         const btn = document.getElementById(`lang-btn-${l}`);
         if (btn) {
           if (l === lang) {
-            btn.className = 'px-2 py-0.5 rounded-lg bg-[var(--card)] text-[#2DD4BF]';
+            btn.className = 'py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold transition cursor-pointer';
           } else {
-            btn.className = 'px-2 py-0.5 rounded-lg text-[var(--muted)] hover:text-white';
+            btn.className = 'py-1 rounded-lg text-slate-400 hover:text-white font-bold transition cursor-pointer';
           }
         }
       });
@@ -22699,6 +22730,14 @@ https://zayvora.health/rx/RX-2026-0441-Hamza-Farooqi.pdf`;
         if (docM) docM.remove();
         const facM = document.getElementById('onboard-facility-modal');
         if (facM) facM.remove();
+        const prefPanel = document.getElementById('preferences-dropdown-panel');
+        if (prefPanel && !prefPanel.classList.contains('hidden')) prefPanel.classList.add('hidden');
+        const docNav = document.getElementById('doctor-more-nav-menu');
+        if (docNav && !docNav.classList.contains('hidden')) docNav.classList.add('hidden');
+        const emgRef = document.getElementById('emergency-referral-letter-modal');
+        if (emgRef && !emgRef.classList.contains('hidden')) emgRef.classList.add('hidden');
+        const opdPass = document.getElementById('digital-opd-pass-modal');
+        if (opdPass && !opdPass.classList.contains('hidden')) opdPass.classList.add('hidden');
         if (typeof toggleLoginModal === 'function') toggleLoginModal(false);
       }
     });
@@ -27269,16 +27308,17 @@ Direct WhatsApp Matab Desk: https://wa.me/919773882657
     }
 
     function changePlatformCurrency(currencyKey) {
-      if (!window.currencyRates[currencyKey]) return;
+      if (!window.currencyRates || !window.currencyRates[currencyKey]) return;
       window.activeCurrency = currencyKey;
+      try { localStorage.setItem('zayvora_currency', currencyKey); } catch (e) {}
       const select = document.getElementById('platform-currency-select');
       if (select) select.value = currencyKey;
-      
-      updateCartCounters();
+      if (typeof updatePreferencesSummary === 'function') updatePreferencesSummary();
+      if (typeof updateCartCounters === 'function') updateCartCounters();
       if (document.getElementById('commercial-checkout-modal') && !document.getElementById('commercial-checkout-modal').classList.contains('hidden')) {
         renderCheckoutStep();
       }
-      if (state.role === 'website') {
+      if (state && state.role === 'website') {
         renderWebsiteApp(document.getElementById('workspace-container'));
       }
       showNotification(`Currency switched to ${currencyKey} (${window.currencyRates[currencyKey].flag})`, 'info');
